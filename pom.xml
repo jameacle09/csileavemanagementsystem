@@ -12,7 +12,6 @@
 	<artifactId>leavemanagement</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>leavemanagement</name>
-	<description>Demo project for Spring Boot</description>
 
 	<properties>
 		<java.version>11</java.version>
@@ -42,6 +41,10 @@
 			<artifactId>spring-security-test</artifactId>
 			<scope>test</scope>
 		</dependency>
+		<dependency>
+			<groupId>mysql</groupId>
+			<artifactId>mysql-connector-java</artifactId>
+		</dependency>
 	</dependencies>
 
 	<build>
@@ -53,4 +56,5 @@
 		</plugins>
 	</build>
 
+	<description>CSI Leave Management System developed using Spring and React.</description>
 </project>
