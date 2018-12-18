@@ -4,11 +4,11 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
 @SpringBootApplication
-public class LeavemanagementApplication {
+public class MainApplication {
 
 	public static void main(String[] args) {
-		SpringApplication.run(LeavemanagementApplication.class, args);
+		// TODO Auto-generated method stub
+		SpringApplication.run(MainApplication.class, args);
 	}
 
 }
-
