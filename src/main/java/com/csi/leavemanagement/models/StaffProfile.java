@@ -15,30 +15,49 @@ public class StaffProfile {
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int id;
 	
-	@Column(name="staff_number")
-	private String staffNumber;
+	@Column(name="csi_staff_id")
+	private String csiStaffId;
 	
-	@Column(name="first_name")
-	private String firstName;
+	@Column(name="staff_name")
+	private String staffName;
 	
-	@Column(name="last_name")
-	private String lastName;
+	@Column(name="email")
+	private String email;
 	
 	@Column(name="ic_number")
 	private String icNumber;
+	
+	@Column(name="job_title")
+	private String jobTitle; 
+	
+	@Column(name="mobile_no")
+	private String mobileNo; 
+	
+	@Column(name="business_unit")
+	private String businessUnit; 
+	
+	@Column(name="line_manager")
+	private String lineManager; 
+	
+	@Column(name="join_date")
+	private String joinDate; 
 	
 	public StaffProfile() {
 		
 	}
 	
-	public StaffProfile(String staffNumber, String firstName, String lastName, String icNumber ) {
-		this.staffNumber = staffNumber;
-		this.firstName = firstName;
-		this.lastName = lastName;
+	public StaffProfile(String csiStaffId, String staffName, String email, String icNumber, String jobTitle,
+			String mobileNo, String businessUnit, String lineManager, String joinDate) {
+		this.csiStaffId = csiStaffId;
+		this.staffName = staffName;
+		this.email = email;
 		this.icNumber = icNumber;
+		this.jobTitle = jobTitle;
+		this.mobileNo = mobileNo;
+		this.businessUnit = businessUnit;
+		this.lineManager = lineManager;
+		this.joinDate = joinDate;
 	}
-	
-	
 	
 	public int getId() {
 		return id;
@@ -48,28 +67,30 @@ public class StaffProfile {
 		this.id = id;
 	}
 
-	public String getStaffNumber() {
-		return staffNumber;
-	}
 	
-	public void setStaffNumber(String staffNumber) {
-		this.staffNumber = staffNumber;
-	}
 	
-	public String getFirstName() {
-		return firstName;
+	public String getCsiStaffId() {
+		return csiStaffId;
 	}
-	
-	public void setFirstName(String firstName) {
-		this.firstName = firstName;
+
+	public void setCsiStaffId(String csiStaffId) {
+		this.csiStaffId = csiStaffId;
 	}
-	
-	public String getLastName() {
-		return lastName;
+
+	public String getStaffName() {
+		return staffName;
 	}
-	
-	public void setLastName(String lastName) {
-		this.lastName = lastName;
+
+	public void setStaffName(String staffName) {
+		this.staffName = staffName;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
 	}
 	
 	public String getIcNumber() {
@@ -80,13 +101,53 @@ public class StaffProfile {
 		this.icNumber = icNumber;
 	}
 	
+	public String getJobTitle() {
+		return jobTitle;
+	}
+
+	public void setJobTitle(String jobTitle) {
+		this.jobTitle = jobTitle;
+	}
+
+	public String getMobileNo() {
+		return mobileNo;
+	}
+
+	public void setMobileNo(String mobileNo) {
+		this.mobileNo = mobileNo;
+	}
+
+	public String getBusinessUnit() {
+		return businessUnit;
+	}
+
+	public void setBusinessUnit(String businessUnit) {
+		this.businessUnit = businessUnit;
+	}
+
+	public String getLineManager() {
+		return lineManager;
+	}
+
+	public void setLineManager(String lineManager) {
+		this.lineManager = lineManager;
+	}
+
+	public String getJoinDate() {
+		return joinDate;
+	}
+
+	public void setJoinDate(String joinDate) {
+		this.joinDate = joinDate;
+	}
+
+
+
+	@Override
 	public String toString() {
-		String result = "Staff Number: " + this.staffNumber + "\n";
-		result = result + "First Name :" + this.firstName + "\n";
-		result = result + "Last Name :" + this.lastName + "\n";
-		result = result + "IC Number :" + this.icNumber + "\n";
-		return result;
-		
+		return "StaffProfile [id=" + id + ", csiStaffId=" + csiStaffId + ", staffName=" + staffName + ", email=" + email
+				+ ", icNumber=" + icNumber + ", jobTitle=" + jobTitle + ", mobileNo=" + mobileNo + ", businessUnit="
+				+ businessUnit + ", lineManager=" + lineManager + ", joinDate=" + joinDate + "]";
 	}
 	
 }
