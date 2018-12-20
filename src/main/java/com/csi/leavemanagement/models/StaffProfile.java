@@ -5,7 +5,10 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
+
 
 @Entity
 @Table(name="staffprofiles")
@@ -36,8 +39,9 @@ public class StaffProfile {
 	@Column(name="business_unit")
 	private String businessUnit; 
 	
-	@Column(name="line_manager")
-	private String lineManager; 
+	@ManyToOne
+	@JoinColumn(name="line_manager_id")
+	private StaffProfile lineManager;
 	
 	@Column(name="join_date")
 	private String joinDate; 
@@ -47,7 +51,7 @@ public class StaffProfile {
 	}
 	
 	public StaffProfile(String csiStaffId, String staffName, String email, String icNumber, String jobTitle,
-			String mobileNo, String businessUnit, String lineManager, String joinDate) {
+			String mobileNo, String businessUnit, StaffProfile lineManager, String joinDate) {
 		this.csiStaffId = csiStaffId;
 		this.staffName = staffName;
 		this.email = email;
@@ -125,11 +129,11 @@ public class StaffProfile {
 		this.businessUnit = businessUnit;
 	}
 
-	public String getLineManager() {
+	public StaffProfile getLineManager() {
 		return lineManager;
 	}
 
-	public void setLineManager(String lineManager) {
+	public void setLineManager(StaffProfile lineManager) {
 		this.lineManager = lineManager;
 	}
 
