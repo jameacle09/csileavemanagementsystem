@@ -3,11 +3,13 @@ import Header from './common/Header';
 import Footer from './common/Footer';
 
 
+
 class App extends Component {
   render() {
     return (
-      <div className="container">
+      <div>
         <Header />
+        
         <Footer />
       </div>
     );
