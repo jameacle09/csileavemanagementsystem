@@ -27,10 +27,10 @@ public class StaffLeave {
 	private LeaveCategory leaveCategoryId;
 	
 	@Column(name="available_leave")
-	private int availableLeave;
+	private float availableLeave;
 	
 	@Column(name="taken_leave")
-	private int takenLeave;
+	private float takenLeave;
 	
 	
 	public StaffLeave() {
@@ -38,7 +38,7 @@ public class StaffLeave {
 	}
 
 
-	public StaffLeave(StaffProfile staffId, LeaveCategory leaveCategoryId, int availableLeave, int takenLeave) {
+	public StaffLeave(StaffProfile staffId, LeaveCategory leaveCategoryId, float availableLeave, float takenLeave) {
 		this.staffId = staffId;
 		this.leaveCategoryId = leaveCategoryId;
 		this.availableLeave = availableLeave;
@@ -76,22 +76,22 @@ public class StaffLeave {
 	}
 
 
-	public int getAvailableLeave() {
+	public float getAvailableLeave() {
 		return availableLeave;
 	}
 
 
-	public void setAvailableLeave(int availableLeave) {
+	public void setAvailableLeave(float availableLeave) {
 		this.availableLeave = availableLeave;
 	}
 
 
-	public int getTakenLeave() {
+	public float getTakenLeave() {
 		return takenLeave;
 	}
 
 
-	public void setTakenLeave(int takenLeave) {
+	public void setTakenLeave(float takenLeave) {
 		this.takenLeave = takenLeave;
 	}
 

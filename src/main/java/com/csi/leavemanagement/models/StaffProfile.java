@@ -1,5 +1,7 @@
 package com.csi.leavemanagement.models;
 
+import java.util.Date;
+
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
@@ -44,14 +46,14 @@ public class StaffProfile {
 	private StaffProfile lineManager;
 	
 	@Column(name="join_date")
-	private String joinDate; 
+	private Date joinDate; 
 	
 	public StaffProfile() {
 		
 	}
 	
 	public StaffProfile(String csiStaffId, String staffName, String email, String icNumber, String jobTitle,
-			String mobileNo, String businessUnit, StaffProfile lineManager, String joinDate) {
+			String mobileNo, String businessUnit, StaffProfile lineManager, Date joinDate) {
 		this.csiStaffId = csiStaffId;
 		this.staffName = staffName;
 		this.email = email;
@@ -137,11 +139,11 @@ public class StaffProfile {
 		this.lineManager = lineManager;
 	}
 
-	public String getJoinDate() {
+	public Date getJoinDate() {
 		return joinDate;
 	}
 
-	public void setJoinDate(String joinDate) {
+	public void setJoinDate(Date joinDate) {
 		this.joinDate = joinDate;
 	}
 
