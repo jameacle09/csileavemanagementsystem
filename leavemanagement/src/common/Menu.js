@@ -1,37 +1,56 @@
-import React, { Component} from 'react';
+import React, { Component } from 'react';
+import {
+  Collapse,
+  Navbar,
+  NavbarToggler,
+  NavbarBrand,
+  Nav,
+  NavItem,
+  NavLink,
+  Badge
+} from 'reactstrap';
+
 
 class Menu extends Component {
+  constructor(props) {
+    super(props);
 
-    constructor(props) {
-        super(props);
-    }
-
-    render() {
-        return (
-            <nav className="navbar navbar-expand-lg navbar-light bg-light">
-                 <div className="navbar-brand">CSI Interfusion Sdn. Bhd.</div>
-                 <div className="collapse navbar-collapse" id="navbarSupportedContent">
-                    <ul className="navbar-nav mr-auto">
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">Home</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">Booking</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">Projector</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">Meeting Room</a>
-                        </li>
-                        <li className="nav-item">
-                            <a className="nav-link" href="#">Staff Profile</a>
-                        </li>
-                    </ul>
-                 </div>
-            </nav>
-        );
-    }
+    this.toggle = this.toggle.bind(this);
+    this.state = {
+      isOpen: false
+    };
+  }
+  toggle() {
+    this.setState({
+      isOpen: !this.state.isOpen
+    });
+  }
+  render() {
+    return (
+      <div>
+        <Navbar className="navbar navbar-dark bg-primary" expand="md">
+          <NavbarBrand href="/"><Badge color="light">CSI Interfusion Sdn. Bhd.</Badge>Leave Management System</NavbarBrand>
+          <NavbarToggler onClick={this.toggle} />
+          <Collapse isOpen={this.state.isOpen} navbar>
+            <Nav className="ml-auto" navbar>
+              <NavItem>
+                <NavLink href="/applyleave/">Apply Leave</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/myleavehistory/">My Leave History</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/myleavedetails/">My Leave Details</NavLink>
+              </NavItem>
+              <NavItem>
+                <NavLink href="/myprofile">My Profile</NavLink>
+              </NavItem>
+            </Nav>
+          </Collapse>
+        </Navbar>
+      </div>
+    );
+  }
 }
 
 export default Menu;
