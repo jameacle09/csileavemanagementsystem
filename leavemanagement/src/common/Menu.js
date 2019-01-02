@@ -29,10 +29,13 @@ class Menu extends Component {
     return (
       <div>
         <Navbar className="navbar navbar-dark bg-primary" expand="md">
-          <NavbarBrand href="/"><Badge color="light">CSI Interfusion Sdn. Bhd.</Badge>Leave Management System</NavbarBrand>
+          <NavbarBrand href="/"><Badge color="light">CSI Interfusion Sdn. Bhd.</Badge><span> | </span>Leave Management System</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
+              <NavItem>
+                <NavLink href="/home/">Home</NavLink>
+              </NavItem>
               <NavItem>
                 <NavLink href="/applyleave/">Apply Leave</NavLink>
               </NavItem>
