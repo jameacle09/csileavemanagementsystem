@@ -1,14 +1,20 @@
 import React, { Component } from 'react';
 import { Breadcrumb, BreadcrumbItem } from 'reactstrap';
 
-const Header = (props) => {
-  return (
-    <div>
-      <Breadcrumb>
-        <BreadcrumbItem><a href="/home">Home</a></BreadcrumbItem>
-      </Breadcrumb>
-    </div>
-  );
-};
+class Header extends Component{
+  constructor(props) {
+    super(props);
+  }
+
+  render(){
+    return (
+      <div>
+        <Breadcrumb>
+          <BreadcrumbItem><h1>Home</h1></BreadcrumbItem>
+        </Breadcrumb>
+      </div>
+    );
+  }
+} 
 
 export default Header;

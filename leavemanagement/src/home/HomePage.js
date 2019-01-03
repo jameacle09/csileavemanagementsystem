@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import { Jumbotron, Button } from 'reactstrap';
+import Dasboard from './Dashboard';
 
-const WelcomePage = (props) => {
+const HomePage = (props) => {
   return (
     <div>
       <Jumbotron>
@@ -13,8 +14,10 @@ const WelcomePage = (props) => {
           <Button color="primary">Apply Leave</Button>
         </p>
       </Jumbotron>
+      <Dasboard />
     </div>
+    
   );
 };
 
-export default WelcomePage;
+export default HomePage;

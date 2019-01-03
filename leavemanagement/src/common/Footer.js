@@ -1,15 +1,21 @@
 import React, { Component } from 'react';
 
 class Footer extends Component {
+  constructor(props) {
+    super(props);
+    this.footerMessage = `Copyright @copy 2018 CSI Interfusion Sdn. Bhd.`;
+  }
+
   render() {
     const footerStyle = {
+      align: "center",
       textAlign: "center",
       paddingTop: 60
     };
     return (
-      <div className="card" align="center" style = { footerStyle }>
+      <div className="card" style = { footerStyle }>
         <div className="card-header">
-          Copyright © 2019 CSI Interfusion Sdn. Bhd.
+          { this.footerMessage }
         </div>
       </div>
     );
