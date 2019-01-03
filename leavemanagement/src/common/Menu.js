@@ -9,6 +9,7 @@ import {
   NavLink,
   Badge
 } from 'reactstrap';
+import { Link } from 'react-router-dom';
 
 
 class Menu extends Component {
@@ -34,19 +35,19 @@ class Menu extends Component {
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
               <NavItem>
-                <NavLink href="/home/">Home</NavLink>
+                <NavLink tag={Link} to="/" activeClassName="active">Home</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/applyleave/">Apply Leave</NavLink>
+                <NavLink tag={Link} to="/applyleave/" activeClassName="active">Apply Leave</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/myleavehistory/">My Leave History</NavLink>
+                <NavLink tag={Link} to="/myleavehistory/" activeClassName="active">My Leave History</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/myleavedetails/">My Leave Details</NavLink>
+                <NavLink tag={Link} to="/myleavedetails" activeClassName="active">My Leave Details</NavLink>
               </NavItem>
               <NavItem>
-                <NavLink href="/myprofile">My Profile</NavLink>
+                <NavLink tag={Link} to="/myprofile/" activeClassName="active">My Profile</NavLink>
               </NavItem>
             </Nav>
           </Collapse>
