@@ -22,12 +22,12 @@ class App extends Component {
           <Menu />
           <Header />
           <Switch>
-            <Route exact path="/" component={HomePage} />
-            <Route path="/applyleave" component={ApplyLeave} />
-            <Route path="/myleavehistory" component={MyLeaveHistory} />
-            <Route path="/myleavedetails" component={MyLeaveDetails} />
-            <Route path="/myprofile" component={MyProfile} />
-            <Route path="/changepassword" component={ChangePassword} />
+            <Route exact path="/" title="Home" component={HomePage} />
+            <Route path="/applyleave" title="Apply Leave" component={ApplyLeave} />
+            <Route path="/myleavehistory" title="My Leave History" component={MyLeaveHistory} />
+            <Route path="/myleavedetails" title="My Leave Details" component={MyLeaveDetails} />
+            <Route path="/myprofile" title="My Profile" component={MyProfile} />
+            <Route path="/changepassword" title="Change Password" component={ChangePassword} />
           </Switch>
           <Footer />
         </div>
