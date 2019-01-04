@@ -3,8 +3,13 @@ import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 class ChangePassword extends Component {
     render() {
+        const divStyle = {
+            background: "#eee",
+            padding: "20px",
+            borderRadius: "10px"
+          };
         return (
-            <div className="container">
+            <div className="container" style={ divStyle }>
                 <Form>
                     <FormGroup>
                         <Label for="currentPassword">Current Password</Label>

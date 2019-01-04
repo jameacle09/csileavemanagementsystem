@@ -3,8 +3,13 @@ import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
 
 class ApplyLeave extends Component {
     render() {
+        const divStyle = {
+            background: "#eee",
+            padding: "20px",
+            borderRadius: "10px"
+          };
         return (
-            <div className="container">
+            <div className="container" style={ divStyle }>
                 <Form>
                     <FormGroup>
                         <Label for="csiStaffId">CSI Staff ID</Label>
