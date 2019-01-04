@@ -12,6 +12,7 @@ class Footer extends Component {
       textAlign: "center",
       paddingTop: 60
     };
+
     return (
       <div className="card" style = { footerStyle }>
         <div className="card-header">
