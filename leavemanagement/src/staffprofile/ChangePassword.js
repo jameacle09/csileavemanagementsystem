@@ -7,6 +7,10 @@ class ChangePassword extends Component {
             <div className="container">
                 <Form>
                     <FormGroup>
+                        <Label for="currentPassword">Current Password</Label>
+                        <Input type="password" name="currentpassword" id="passcurrentpassword" placeholder="Current Password" />
+                    </FormGroup>
+                    <FormGroup>
                         <Label for="password">Change Password</Label>
                         <Input type="password" name="password" id="password" placeholder="Change Password" />
                     </FormGroup>

@@ -7,6 +7,7 @@ import ApplyLeave from './leaves/ApplyLeave';
 import MyLeaveDetails from './leaves/MyLeaveDetails';
 import MyLeaveHistory from './leaves/MyLeaveHistory';
 import MyProfile from './staffprofile/MyProfile';
+import ChangePassword from './staffprofile/ChangePassword';
 import {
   Route,
   BrowserRouter as Router,
@@ -26,6 +27,7 @@ class App extends Component {
             <Route path="/myleavehistory" component={MyLeaveHistory} />
             <Route path="/myleavedetails" component={MyLeaveDetails} />
             <Route path="/myprofile" component={MyProfile} />
+            <Route path="/changepassword" component={ChangePassword} />
           </Switch>
           <Footer />
         </div>
