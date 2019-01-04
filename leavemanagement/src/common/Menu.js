@@ -9,8 +9,9 @@ import {
   NavLink,
   Badge
 } from 'reactstrap';
-import { Link } from 'react-router-dom';
-
+import {
+  Link
+} from "react-router-dom";
 
 class Menu extends Component {
   constructor(props) {
@@ -28,31 +29,32 @@ class Menu extends Component {
   }
   render() {
     return (
-      <div>
-        <Navbar className="navbar navbar-dark bg-primary" expand="md">
-          <NavbarBrand href="/"><Badge color="light">CSI Interfusion Sdn. Bhd.</Badge><span> | </span>Leave Management System</NavbarBrand>
-          <NavbarToggler onClick={this.toggle} />
-          <Collapse isOpen={this.state.isOpen} navbar>
-            <Nav className="ml-auto" navbar>
-              <NavItem>
-                <NavLink tag={Link} to="/" activeClassName="active">Home</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink tag={Link} to="/applyleave/" activeClassName="active">Apply Leave</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink tag={Link} to="/myleavehistory/" activeClassName="active">My Leave History</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink tag={Link} to="/myleavedetails" activeClassName="active">My Leave Details</NavLink>
-              </NavItem>
-              <NavItem>
-                <NavLink tag={Link} to="/myprofile/" activeClassName="active">My Profile</NavLink>
-              </NavItem>
-            </Nav>
-          </Collapse>
-        </Navbar>
-      </div>
+        <div>
+          <Navbar className="navbar navbar-dark bg-primary" expand="md">
+            <NavbarBrand href="/"><Badge color="light">CSI Interfusion Sdn. Bhd.</Badge><span> | </span>Leave Management System</NavbarBrand>
+            <NavbarToggler onClick={this.toggle} />
+            <Collapse isOpen={this.state.isOpen} navbar>
+              <Nav className="ml-auto" navbar>
+                <NavItem>
+                  <NavLink tag={Link} to="/" activeClassName="active">Home</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} to="/applyleave" activeClassName="active">Apply Leave</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} to="/myleavehistory" activeClassName="active">My Leave History</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} to="/myleavedetails" activeClassName="active">My Leave Details</NavLink>
+                </NavItem>
+                <NavItem>
+                  <NavLink tag={Link} to="/myprofile" activeClassName="active">My Profile</NavLink>
+                </NavItem>
+              </Nav>
+            </Collapse>
+          </Navbar>
+          
+        </div>
     );
   }
 }
