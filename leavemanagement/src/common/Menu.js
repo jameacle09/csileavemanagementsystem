@@ -60,10 +60,10 @@ class Menu extends Component {
                   <DropdownMenu right>
                     <DropdownItem tag={Link} to="/myprofile" activeclassname="active">
                       View Profile
-                  </DropdownItem>
+                    </DropdownItem>
                     <DropdownItem tag={Link} to="/changepassword" activeclassname="active">
                       Change Password
-                  </DropdownItem>
+                    </DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
               </NavItem>
