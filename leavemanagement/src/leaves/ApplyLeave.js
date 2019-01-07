@@ -6,7 +6,7 @@ class ApplyLeave extends Component {
         const divStyle = {
             background: "#eee",
             padding: "20px",
-            borderRadius: "10px"
+            boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
           };
         return (
             <div className="container" style={ divStyle }>
