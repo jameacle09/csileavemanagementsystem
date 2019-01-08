@@ -38,6 +38,22 @@ class Dashboard extends Component {
                         </Card>
                     </Col>
                 </Row>
+                <Row>
+                    <Col xs="6" sm="4">
+                        <Card body inverse color="danger">
+                            <CardTitle>Manager Approval</CardTitle>
+                            <Button color="secondary" tag={Link} to="/managerapproval">View</Button>
+                        </Card>
+                    </Col>
+                </Row>
+                <Row>
+                    <Col xs="6" sm="4">
+                        <Card body inverse color="danger">
+                            <CardTitle>HR Dashboard</CardTitle>
+                            <Button color="secondary" tag={Link} to="/hrdashboard">View</Button>
+                        </Card>
+                    </Col>
+                </Row>
             </div>
 
         );

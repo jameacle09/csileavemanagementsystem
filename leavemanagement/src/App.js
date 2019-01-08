@@ -13,6 +13,8 @@ import {
   BrowserRouter as Router,
   Switch
 } from "react-router-dom";
+import HrDashboard from './hradmin/HrDashboard';
+import ManagerApproval from './manager/ManagerApproval';
 
 class App extends Component {
   render() {
@@ -28,6 +30,8 @@ class App extends Component {
             <Route path="/myleavedetails" title="My Leave Details" component={MyLeaveDetails} />
             <Route path="/myprofile" title="My Profile" component={MyProfile} />
             <Route path="/changepassword" title="Change Password" component={ChangePassword} />
+            <Route path="/managerapproval" title="Manager Approval" component={ManagerApproval} />
+            <Route path="/hrdashboard" title="HR Dashboard" component={HrDashboard} />
           </Switch>
           <Footer />
         </div>
