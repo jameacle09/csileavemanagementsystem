@@ -28,9 +28,6 @@ class SideBar extends Component {
                     <NavItem>
                         <NavLink href="#">Another Link</NavLink>
                     </NavItem>
-                    <NavItem>
-                        <NavLink href="#">Another Link</NavLink>
-                    </NavItem>
                 </Nav>
             </div>
 
