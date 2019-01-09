@@ -61,7 +61,7 @@ class Menu extends Component {
                     <DropdownItem tag={Link} to="/myprofile" activeclassname="active">
                       View Profile
                     </DropdownItem>
-                    <DropdownItem tag={Link} to="/changepassword" activeclassname="active">
+                    <DropdownItem tag={Link} to="/myprofile/changepassword" activeclassname="active">
                       Change Password
                     </DropdownItem>
                   </DropdownMenu>

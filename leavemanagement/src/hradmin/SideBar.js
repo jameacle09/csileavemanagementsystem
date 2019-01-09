@@ -4,9 +4,8 @@ import { Nav, NavItem, NavLink } from 'reactstrap';
 class SideBar extends Component {
     render() {
         const SideBarStyle = {
-            height: "100%",
+            height: "100vh",
             width: "300px",
-            
             background: "#293749"
         }
         return (
