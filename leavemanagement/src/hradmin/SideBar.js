@@ -11,22 +11,23 @@ class SideBar extends Component {
         const SideBarStyle = {
             height: "100vh",
             width: "300px",
-            background: "lightblue"
+            fontSize: "1.2rem",
+            background: "#2b73fa"
         }
         return (
             <div style={SideBarStyle}>
                 <Nav vertical>
                     <NavItem>
-                        <NavLink href="#">Staff Profile</NavLink>
+                        <NavLink tag={Link} to="/liststaffprofile" activeclassname="active" style={{color:'white'}}>Staff Profile</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink href="#">Staff Leave</NavLink>
+                        <NavLink tag={Link} to="/liststaffprofile" activeclassname="active" style={{color:'white'}}>Staff Leave</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink href="#">Public Holiday</NavLink>
+                        <NavLink tag={Link} to="/liststaffprofile" activeclassname="active" style={{color:'white'}}>Public Holiday</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink href="#">Leave Category</NavLink>
+                        <NavLink tag={Link} to="/liststaffprofile" activeclassname="active" style={{color:'white'}}>Leave Category</NavLink>
                     </NavItem>
                 </Nav>
             </div>

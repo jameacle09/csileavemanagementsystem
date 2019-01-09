@@ -16,6 +16,8 @@ import {
 } from "react-router-dom";
 import HrDashboard from './hradmin/HrDashboard';
 import ManagerApproval from './manager/ManagerApproval';
+import ListStaffProfile from './staffprofile/ListStaffProfile';
+import NewStaffProfile from './staffprofile/NewStaffProfile';
 
 class App extends Component {
   render() {
@@ -34,6 +36,8 @@ class App extends Component {
               <Route path="/changepassword" title="Change Password" component={ChangePassword} />
               <Route path="/managerapproval" title="Manager Approval" component={ManagerApproval} />
               <Route path="/hrdashboard" title="HR Dashboard" component={HrDashboard} />
+              <Route path="/liststaffprofile" title="List Staff Profile" component={ListStaffProfile} />
+              <Route path="/newstaffprofile" title="New Staff Profile" component={NewStaffProfile} />
             </Switch>
           </div>
           <Footer />
