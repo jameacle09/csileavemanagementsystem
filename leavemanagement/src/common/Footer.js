@@ -3,7 +3,8 @@ import React, { Component } from 'react';
 class Footer extends Component {
   constructor(props) {
     super(props);
-    this.footerMessage = `Copyright @copy 2018 CSI Interfusion Sdn. Bhd.`;
+    this.date = new Date();
+    this.footerMessage = `CSI Interfusion Sdn. Bhd. All rights reserved.`;
   }
 
   render() {
@@ -14,9 +15,9 @@ class Footer extends Component {
     };
 
     return (
-      <div className="card" style = { footerStyle }>
+      <div className="card" style={footerStyle}>
         <div className="card-header">
-          { this.footerMessage }
+          Copyright &copy; {new Date().getFullYear()} {this.footerMessage}
         </div>
       </div>
     );

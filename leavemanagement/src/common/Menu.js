@@ -58,12 +58,9 @@ class Menu extends Component {
                     My Profile
                 </DropdownToggle>
                   <DropdownMenu right>
-                    <DropdownItem tag={Link} to="/myprofile" activeclassname="active">
-                      View Profile
-                    </DropdownItem>
-                    <DropdownItem tag={Link} to="/changepassword" activeclassname="active">
-                      Change Password
-                    </DropdownItem>
+                    <DropdownItem tag={Link} to="/myprofile" activeclassname="active">View Profile</DropdownItem>
+                    <DropdownItem tag={Link} to="/changepassword" activeclassname="active">Change Password</DropdownItem>
+                    <DropdownItem>Logout</DropdownItem>
                   </DropdownMenu>
                 </UncontrolledDropdown>
               </NavItem>
