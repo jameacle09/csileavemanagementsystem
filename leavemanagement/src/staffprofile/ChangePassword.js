@@ -25,7 +25,7 @@ class ChangePassword extends Component {
                     </FormGroup>
                     <br />
                     <Button color="primary">Submit</Button><span>  </span>
-                    <Button color="primary">Show Password</Button>
+                    <Button color="danger">Show Password</Button>
                 </Form>
             </div>
         );
