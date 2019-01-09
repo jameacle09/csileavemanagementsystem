@@ -1,37 +1,22 @@
 import React, { Component } from 'react';
-import { Nav, NavItem, NavLink } from 'reactstrap';
+import './SideBarStyle.css';
+import { Link } from "react-router-dom";
 
 class SideBar extends Component {
+    constructor(props) {
+        super(props);
+    }
     render() {
-        const SideBarStyle = {
-            height: "100%",
-            width: "300px",
-            
-            background: "#293749"
-        }
         return (
-
-            <div style={SideBarStyle}>
-                <Nav vertical>
-                    <NavItem>
-                        <NavLink href="#">Link</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink href="#">Link</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink href="#">Another Link</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink href="#">Another Link</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink href="#">Another Link</NavLink>
-                    </NavItem>
-                </Nav>
-            </div>
-
-        );
+            <aside class="main_sidebar">
+                <ul>
+                    <li>Staff Profile</li>
+                    <li>Staff Leave</li>
+                    <li>Public Holiday</li>
+                    <li>Leave Category</li>
+                </ul>
+            </aside>
+        )
     }
 }
 

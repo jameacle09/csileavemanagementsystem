@@ -23,7 +23,11 @@ class ApplyLeave extends Component {
                         <Label for="leaveCategory">Leave Category</Label>
                         <Input type="select" name="leaveCategory" id="leaveCategory">
                             <option>Annual Leave</option>
-                            <option>Medical Leave</option>
+                            <option>Medical Leave</option>                            
+                            <option>Emergency Leave</option>
+                            <option>Marriage Leave</option>
+                            <option>Maternity Leave</option>                            
+                            <option>Paternity Leave</option>
                         </Input>
                     </FormGroup>
                     <FormGroup>

@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, ListGroup, ListGroupItem } from 'reactstrap';
+import { Link } from "react-router-dom";
 
 class MyProfile extends Component {
     constructor(props) {
@@ -22,7 +23,7 @@ class MyProfile extends Component {
                     <ListGroupItem>Join Date: </ListGroupItem>
                 </ListGroup>
                 <br />
-                <Button color="primary">Change Password</Button>
+                <Button color="primary" tag={Link} to="/changepassword" activeclassname="active">Change Password</Button>
             </div>
         );
 
