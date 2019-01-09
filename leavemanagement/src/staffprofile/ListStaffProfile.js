@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Table } from 'reactstrap';
+import { Link } from "react-router-dom";
 
 class ListStaffProfile extends Component {
     constructor(props) {
@@ -15,7 +16,7 @@ class ListStaffProfile extends Component {
         return (
             <div className="container">
                 <div style={spacing}>
-                    <button className="btn btn-primary">Add New Employee</button>
+                    <button className="btn btn-primary" tag={Link} to="/newstaffprofile" activeclassname="active">Add New Employee</button>
                 </div>
                 <Table responsive>
                     <thead>
