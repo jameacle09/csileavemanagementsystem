@@ -24,7 +24,8 @@ class ChangePassword extends Component {
                         <Input type="password" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" />
                     </FormGroup>
                     <br />
-                    <Button color="primary">Submit</Button>
+                    <Button color="primary">Submit</Button><span>  </span>
+                    <Button color="primary">Show Password</Button>
                 </Form>
             </div>
         );
