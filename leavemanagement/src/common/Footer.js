@@ -10,7 +10,7 @@ class Footer extends Component {
     const footerStyle = {
       align: "center",
       textAlign: "center",
-      paddingTop: 60
+      marginTop: 20
     };
 
     return (
