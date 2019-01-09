@@ -31,7 +31,7 @@ class App extends Component {
               <Route path="/myleavehistory" title="My Leave History" component={MyLeaveHistory} />
               <Route path="/myleavedetails" title="My Leave Details" component={MyLeaveDetails} />
               <Route path="/myprofile" title="My Profile" component={MyProfile} />
-              <Route path="/myprofile/changepassword" title="Change Password" component={ChangePassword} />
+              <Route path="/changepassword" title="Change Password" component={ChangePassword} />
               <Route path="/managerapproval" title="Manager Approval" component={ManagerApproval} />
               <Route path="/hrdashboard" title="HR Dashboard" component={HrDashboard} />
             </Switch>

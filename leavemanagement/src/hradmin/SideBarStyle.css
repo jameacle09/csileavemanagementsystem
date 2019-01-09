@@ -1,0 +1,21 @@
+.main_sidebar {
+    min-height:50%;
+    top:100;
+    width:300px;
+    box-shadow: inset -1px 0 10px rgba(0, 0, 0, 0.1);
+    background: #2b73fa;
+}
+.main_sidebar ul li {
+    padding:10px;
+    color:#fff;
+    display:block;
+}
+.main_sidebar ul li:hover {
+    background:#167696;
+}
+.main_sidebar ul li.active {
+    background:#0f4698;
+}
+.main_sidebar ul li.active:hover {
+    background:#167696;
+}
