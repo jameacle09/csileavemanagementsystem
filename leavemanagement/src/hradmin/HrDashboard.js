@@ -7,6 +7,7 @@ class HrDashboard extends Component {
             <div>  
                 <SideBar />
             </div>
+            
         );
     }
 }
