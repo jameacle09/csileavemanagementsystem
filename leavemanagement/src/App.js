@@ -19,6 +19,7 @@ import ManagerApproval from './manager/ManagerApproval';
 import ListStaffProfile from './staffprofile/ListStaffProfile';
 import NewStaffProfile from './staffprofile/NewStaffProfile';
 import PublicHoliday from './hradmin/PublicHoliday';
+import LeaveCategory from './hradmin/LeaveCategory';
 
 class App extends Component {
   render() {
@@ -40,6 +41,7 @@ class App extends Component {
               <Route path="/liststaffprofile" title="List Staff Profile" component={ListStaffProfile} />
               <Route path="/newstaffprofile" title="New Staff Profile" component={NewStaffProfile} />
               <Route path="/publicholiday" title="Public Holiday" component={PublicHoliday} />
+              <Route path="/leavecategory" title="Leave Category" component={LeaveCategory} />
             </Switch>
           </div>
           <Footer />
