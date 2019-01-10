@@ -7,9 +7,16 @@ class HomePage extends Component {
     super(props);
   }
   render() {
+    const divStyle = {
+      backgroundImage: "url('http://www.chinasofti.com/en/styles/extends/about/images/header.jpg')",
+      backgroundSize: "cover",
+      marginTop: "-16px",
+      color: "#A9A9A9",
+      textShadow: "2px"
+  };
     return (
       <div>
-        <Jumbotron>
+        <Jumbotron style= { divStyle }>
           <h1 className="display-3">Hello, CSI Employee!</h1>
           <p className="lead">Welcome to CSI Leave Management System.</p>
           <hr className="my-2" />
