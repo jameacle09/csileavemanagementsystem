@@ -6,24 +6,30 @@ class MyProfile extends Component {
     constructor(props) {
         super(props);
     }
-    
+
     render() {
+        const divStyle = {
+            boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
+        };
         return (
-            <div className="container">
-                <ListGroup>
-                    <ListGroupItem color="primary">My Profile</ListGroupItem>
-                    <ListGroupItem>CSI Staff ID: <p></p></ListGroupItem>
-                    <ListGroupItem>Name: <p>Shahrul Ridzuan Aliyas</p></ListGroupItem>
-                    <ListGroupItem>Email: </ListGroupItem>
-                    <ListGroupItem>IC No./ Passport No.: </ListGroupItem>
-                    <ListGroupItem>Job Title: </ListGroupItem>
-                    <ListGroupItem>Mobile No.: </ListGroupItem>
-                    <ListGroupItem>Business Unit: </ListGroupItem>
-                    <ListGroupItem>Line Manager: </ListGroupItem>
-                    <ListGroupItem>Join Date: </ListGroupItem>
-                </ListGroup>
+            <div>
+                <div className="container">
+                    <ListGroup style={ divStyle }>
+                        <ListGroupItem color="primary">My Profile</ListGroupItem>
+                        <ListGroupItem>CSI Staff ID: <p></p></ListGroupItem>
+                        <ListGroupItem>Name: <p>Shahrul Ridzuan Aliyas</p></ListGroupItem>
+                        <ListGroupItem>Email: </ListGroupItem>
+                        <ListGroupItem>IC No./ Passport No.: </ListGroupItem>
+                        <ListGroupItem>Job Title: </ListGroupItem>
+                        <ListGroupItem>Mobile No.: </ListGroupItem>
+                        <ListGroupItem>Business Unit: </ListGroupItem>
+                        <ListGroupItem>Line Manager: </ListGroupItem>
+                        <ListGroupItem>Join Date: </ListGroupItem>
+                    </ListGroup>
+                    <br />
+                    <Button color="primary" tag={Link} to="/changepassword" activeclassname="active">Change Password</Button>
+                </div>
                 <br />
-                <Button color="primary" tag={Link} to="/changepassword" activeclassname="active">Change Password</Button>
             </div>
         );
 
