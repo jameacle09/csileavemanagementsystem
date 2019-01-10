@@ -26,7 +26,7 @@ class PublicHoliday extends Component {
                             Please attach your document.
                         </FormText>
                     </FormGroup>
-                        <Button color="primary">Submit</Button>
+                        <Button color="primary">Save</Button>
                 </Form>
             </div>
         );
