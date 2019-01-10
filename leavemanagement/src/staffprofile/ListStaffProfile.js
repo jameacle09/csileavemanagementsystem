@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table } from 'reactstrap';
+import { Table, Button } from 'reactstrap';
 import { Link } from "react-router-dom";
 
 class ListStaffProfile extends Component {
@@ -16,7 +16,7 @@ class ListStaffProfile extends Component {
         return (
             <div className="container">
                 <div style={spacing}>
-                    <button className="btn btn-primary" tag={Link} to="/newstaffprofile" activeclassname="active">Add New Employee</button>
+                    <Button className="btn btn-primary" color="primary" tag={Link} to="/newstaffprofile" activeclassname="active">Add New Employee</Button>
                 </div>
                 <Table responsive>
                     <thead>
