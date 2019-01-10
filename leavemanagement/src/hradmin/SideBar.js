@@ -24,7 +24,7 @@ class SideBar extends Component {
                         <NavLink tag={Link} to="/liststaffprofile" activeclassname="active" style={{color:'white'}}>Leave Entitlement</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink tag={Link} to="/liststaffprofile" activeclassname="active" style={{color:'white'}}>Public Holiday</NavLink>
+                        <NavLink tag={Link} to="/publicholiday" activeclassname="active" style={{color:'white'}}>Public Holiday</NavLink>
                     </NavItem>
                     <NavItem>
                         <NavLink tag={Link} to="/liststaffprofile" activeclassname="active" style={{color:'white'}}>Leave Category</NavLink>
