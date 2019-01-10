@@ -12,7 +12,8 @@ class SideBar extends Component {
             height: "100vh",
             width: "300px",
             fontSize: "1.2rem",
-            background: "#2b73fa"
+            background: "#2b73fa",
+            marginTop: "-16px"
         }
         return (
             <div style={SideBarStyle}>

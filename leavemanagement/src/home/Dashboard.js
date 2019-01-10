@@ -56,6 +56,7 @@ class Dashboard extends Component {
                     </Col>
                     <br />
                 </Row>
+                <br />
             </div>
 
         );
