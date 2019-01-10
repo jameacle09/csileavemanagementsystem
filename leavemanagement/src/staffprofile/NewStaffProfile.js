@@ -3,8 +3,13 @@ import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 
 class NewStaffProfile extends Component {
     render() {
+        const divStyle = {
+            background: "#eee",
+            padding: "20px",
+            boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
+          };
         return (
-            <div className="container">
+            <div className="container" style={ divStyle }>
                 <Form>
                     <FormGroup>
                         <Label for="csiStaffId">CSI Staff ID</Label>
@@ -19,8 +24,26 @@ class NewStaffProfile extends Component {
                         <Input type="email" name="email" id="email" placeholder="Email" />
                     </FormGroup>
                     <FormGroup>
-                        <Label for="icNumber">IC No./ Passport No.</Label>
-                        <Input type="text" name="icNumber" id="icNumber" placeholder="IC No./ Passport No." />
+                        <Label for="icNumber">NRIC/ Passport No.</Label>
+                        <Input type="text" name="icNumber" id="icNumber" placeholder="NRIC/ Passport No." />
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="gender">Gender</Label>
+                        <Input type="select" name="gender" id="gender">
+                            <option>Male</option>
+                            <option>Female</option>
+                        </Input>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="marriageStatus">Marriage Status</Label>
+                        <Input type="select" name="marriageStatus" id="marriageStatus">
+                            <option>Single</option>
+                            <option>Married</option>
+                        </Input>
+                    </FormGroup>
+                    <FormGroup>
+                        <Label for="marriageDate">Marriage Date</Label>
+                        <Input type="date" name="marriageDate" id="marriageDate" placeholder="Marriage Date" />
                     </FormGroup>
                     <FormGroup>
                         <Label for="Job Title">Job Title</Label>

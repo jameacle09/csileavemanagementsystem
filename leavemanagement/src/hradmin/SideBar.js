@@ -21,13 +21,16 @@ class SideBar extends Component {
                         <NavLink tag={Link} to="/liststaffprofile" activeclassname="active" style={{color:'white'}}>Staff Profile</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink tag={Link} to="/liststaffprofile" activeclassname="active" style={{color:'white'}}>Staff Leave</NavLink>
+                        <NavLink tag={Link} to="/liststaffprofile" activeclassname="active" style={{color:'white'}}>Leave Entitlement</NavLink>
                     </NavItem>
                     <NavItem>
                         <NavLink tag={Link} to="/liststaffprofile" activeclassname="active" style={{color:'white'}}>Public Holiday</NavLink>
                     </NavItem>
                     <NavItem>
                         <NavLink tag={Link} to="/liststaffprofile" activeclassname="active" style={{color:'white'}}>Leave Category</NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink tag={Link} to="/liststaffprofile" activeclassname="active" style={{color:'white'}}>Report</NavLink>
                     </NavItem>
                 </Nav>
             </div>
