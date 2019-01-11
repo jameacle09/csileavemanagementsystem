@@ -11,8 +11,8 @@ class HomePage extends Component {
       backgroundImage: "url('http://www.chinasofti.com/en/styles/extends/about/images/header.jpg')",
       backgroundSize: "cover",
       marginTop: "-16px",
-      color: "#A9A9A9",
-      textShadow: "2px"
+      color: "#FFFFFF",
+      textShadow: "1px 1px #7A7974"
   };
     return (
       <div>
