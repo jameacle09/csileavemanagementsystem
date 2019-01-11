@@ -16,8 +16,8 @@ class MyProfile extends Component {
                 <div className="container">
                     <ListGroup style={ divStyle }>
                         <ListGroupItem color="primary">My Profile</ListGroupItem>
-                        <ListGroupItem>CSI Staff ID: <p></p></ListGroupItem>
-                        <ListGroupItem>Name: <p>Shahrul Ridzuan Aliyas</p></ListGroupItem>
+                        <ListGroupItem>CSI Staff ID: </ListGroupItem>
+                        <ListGroupItem>Name: Shahrul Ridzuan Aliyas</ListGroupItem>
                         <ListGroupItem>Email: </ListGroupItem>
                         <ListGroupItem>IC No./ Passport No.: </ListGroupItem>
                         <ListGroupItem>Job Title: </ListGroupItem>
