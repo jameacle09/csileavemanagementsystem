@@ -5,12 +5,11 @@ import { Link } from "react-router-dom";
 
 class ListStaffProfile extends Component {
     constructor(props) {
-        super(props); 
+        super(props);
 
     }
-    
-    render() {
 
+    render() {
         const spacing = {
             padding: "10px",
             textAlign: "right"

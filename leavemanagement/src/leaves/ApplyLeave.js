@@ -11,6 +11,7 @@ class ApplyLeave extends Component {
         };
         return (
             <div>
+                <br />
                 <MyLeaveSummary />
                 <br />
                 <div className="container" style={divStyle}>
