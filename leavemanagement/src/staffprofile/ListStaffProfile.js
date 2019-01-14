@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 class ListStaffProfile extends Component {
     constructor(props) {
-        super(props); 
+        super(props);
 
         this.state = {
             userData: null
@@ -14,27 +14,26 @@ class ListStaffProfile extends Component {
     componentDidMount() {
         // fetch data from API    
         fetch('http://localhost/api/staffprofile/1')
-        .then(response => response.json())
-        .then(data => this.setState({userData: data}))
-        .catch(err => {
-            // if unable to fetch data, assign default (spaces) to values
-            let userData = {
-                'csiStaffId': '',
-                'staffName': '',
-                'email': '',
-                'icNumber': '',
-                'jobTitle': '',
-                'mobileNo': '',
-                'businessUnit': '',
-                'managerName': '',
-                'joinDate': ''
-            }
-            this.setState({userData: userData})
-        })             
+            .then(response => response.json())
+            .then(data => this.setState({ userData: data }))
+            .catch(err => {
+                // if unable to fetch data, assign default (spaces) to values
+                let userData = {
+                    'csiStaffId': '',
+                    'staffName': '',
+                    'email': '',
+                    'icNumber': '',
+                    'jobTitle': '',
+                    'mobileNo': '',
+                    'businessUnit': '',
+                    'managerName': '',
+                    'joinDate': ''
+                }
+                this.setState({ userData: userData })
+            })
     }
-    
-    render() {
 
+    render() {
         const spacing = {
             padding: "10px",
             textAlign: "right"
@@ -44,19 +43,20 @@ class ListStaffProfile extends Component {
             boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
         };
 
-        const loadingText = {color: "blue", textAlign: "center", fontFamily: "Arial Black"};
-        const dataText = {color: "blue"};
+        const loadingText = { color: "blue", textAlign: "center", fontFamily: "Arial Black" };
+        const dataText = { color: "blue" };
 
 
-        if(this.state.userData == null) {   
+        if (this.state.userData == null) {
             // display loading screen until data is available
-            
+
             return (
                 <div>
-                    <div className="container"> 
-                        <ListGroup style={ divStyle }>
+                    <br />
+                    <div className="container">
+                        <ListGroup style={divStyle}>
                             <ListGroupItem color="primary">Staff Profile</ListGroupItem>
-                            <ListGroupItem><h2 style={ loadingText }> Loading </h2></ListGroupItem>
+                            <ListGroupItem><h2 style={loadingText}> Loading </h2></ListGroupItem>
                         </ListGroup>
                         <br />
                         <Button color="primary" tag={Link} to="/changepassword" activeclassname="active">Change Password</Button>
@@ -65,17 +65,16 @@ class ListStaffProfile extends Component {
                 </div>
             );
         }
-          
-        
+
         let userData = this.state.userData;
 
         // reformat dates and retrive manager name ONLY when data fetch successfully
-        if( userData['csiStaffId'] != '') {
+        if (userData['csiStaffId'] != '') {
             let joinDate = new Date(this.state.userData['joinDate']);
-            userData['joinDate'] = joinDate.getFullYear() + "-" + (joinDate.getMonth() +1) + "-" + joinDate.getDate();          
+            userData['joinDate'] = joinDate.getFullYear() + "-" + (joinDate.getMonth() + 1) + "-" + joinDate.getDate();
             userData['managerName'] = this.state.userData['lineManager']['staffName'];
         }
-        
+
         return (
             <div className="container">
                 <div style={spacing}>

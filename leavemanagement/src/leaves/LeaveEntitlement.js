@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Table } from 'reactstrap';
+import { Table, Button, ListGroup, ListGroupItem } from 'reactstrap';
 import { Link } from "react-router-dom";
 
-class PublicHoliday extends Component {
+class LeaveEntitlement extends Component {
     constructor(props) {
         super(props);
 
@@ -21,22 +21,31 @@ class PublicHoliday extends Component {
         return (
             <div className="container">
                 <div style={spacing}>
-                    <Button className="btn btn-primary" color="primary" tag={Link} to="/addpublicholiday" activeclassname="active">Add New</Button>
+                    <Button className="btn btn-primary" color="primary" tag={Link} to="/addnewleave" activeclassname="active">Add New</Button>
                 </div>
-
                 <Table responsive>
                     <thead>
                         <tr>
-                            <th>Date</th>
-                            <th>Day</th>
-                            <th>Holiday</th>
-                            <th>State</th>
+                            <th>CSI Staff ID</th>
+                            <th>Staff Name</th>
+                            <th>Leave Year</th>
+                            <th>Leave Code</th>
+                            <th>Carried Forward</th>
+                            <th>Entitlement</th>
+                            <th>Available Leave</th>
+                            <th>Taken Leave</th>
+                            <th>Balance Leave</th>
                             <th>Edit</th>
                             <th>Delete</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
+                            <td></td>
                             <td></td>
                             <td></td>
                             <td></td>
@@ -51,4 +60,4 @@ class PublicHoliday extends Component {
     }
 }
 
-export default PublicHoliday;
+export default LeaveEntitlement;

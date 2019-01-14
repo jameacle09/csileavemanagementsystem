@@ -17,12 +17,13 @@ class SideBar extends Component {
         }
         return (
             <div style={SideBarStyle}>
+            <br />
                 <Nav vertical>
                     <NavItem>
                         <NavLink tag={Link} to="/liststaffprofile" activeclassname="active" style={{color:'white'}}>Staff Profile</NavLink>
                     </NavItem>
                     <NavItem>
-                        <NavLink tag={Link} to="/liststaffprofile" activeclassname="active" style={{color:'white'}}>Leave Entitlement</NavLink>
+                        <NavLink tag={Link} to="/leaveentitlement" activeclassname="active" style={{color:'white'}}>Leave Entitlement</NavLink>
                     </NavItem>
                     <NavItem>
                         <NavLink tag={Link} to="/publicholiday" activeclassname="active" style={{color:'white'}}>Public Holiday</NavLink>
