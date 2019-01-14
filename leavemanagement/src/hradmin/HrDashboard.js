@@ -4,10 +4,10 @@ import SideBar from './SideBar';
 class HrDashboard extends Component {
     render() {
         return (
-            <div>  
+            <div>
                 <SideBar />
             </div>
-            
+
         );
     }
 }

@@ -16,10 +16,7 @@ import {
 } from "react-router-dom";
 import HrDashboard from './hradmin/HrDashboard';
 import ManagerApproval from './manager/ManagerApproval';
-import ListStaffProfile from './staffprofile/ListStaffProfile';
-import NewStaffProfile from './staffprofile/NewStaffProfile';
-import PublicHoliday from './hradmin/PublicHoliday';
-import LeaveCategory from './hradmin/LeaveCategory';
+import StaffProfileComponent from './staffprofile/StaffProfileComponent';
 
 class App extends Component {
   render() {
@@ -38,10 +35,7 @@ class App extends Component {
               <Route path="/changepassword" title="Change Password" component={ChangePassword} />
               <Route path="/managerapproval" title="Manager Approval" component={ManagerApproval} />
               <Route path="/hrdashboard" title="HR Dashboard" component={HrDashboard} />
-              <Route path="/liststaffprofile" title="List Staff Profile" component={ListStaffProfile} />
-              <Route path="/newstaffprofile" title="New Staff Profile" component={NewStaffProfile} />
-              <Route path="/publicholiday" title="Public Holiday" component={PublicHoliday} />
-              <Route path="/leavecategory" title="Leave Category" component={LeaveCategory} />
+              <Route path="/liststaffprofile" title="List Staff Profile" component={StaffProfileComponent} />
             </Switch>
           </div>
           <Footer />
