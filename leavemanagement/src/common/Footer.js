@@ -11,7 +11,7 @@ class Footer extends Component {
     const footerStyle = {
       textAlign: "center",
       fontSize: "1rem",
-      color: "white",
+      color: "#8AADD4",
       background: "#004A9B",
       fontFamily: 'Helvetica',
       borderRadius: 0
