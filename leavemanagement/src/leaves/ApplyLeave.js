@@ -77,7 +77,7 @@ class ApplyLeave extends Component {
                                 leaveDuration: (this.state.isHalfDay ? 0.5 : 1)
                             })
                         } else if (newStartDateStr < endDateStr) {
-                            let newLeaveDuration = (this.state.endDate - newStartDate) / milliseconds +1;
+                            let newLeaveDuration = Math.ceil((this.state.endDate - newStartDate) / milliseconds) +1;
                             this.setState({
                                 startDate: newStartDate,
                                 leaveDuration: newLeaveDuration,
@@ -109,7 +109,7 @@ class ApplyLeave extends Component {
                                 leaveDuration: (this.state.isHalfDay ? 0.5 : 1)
                             })
                         } else if (newEndDateStr > startDateStr) {
-                            let newLeaveDuration = (newEndDate- this.state.startDate) / milliseconds +1;
+                            let newLeaveDuration = Math.ceil((newEndDate- this.state.startDate) / milliseconds) +1;
                             this.setState({
                                 endDate: newEndDate,
                                 leaveDuration: newLeaveDuration,
