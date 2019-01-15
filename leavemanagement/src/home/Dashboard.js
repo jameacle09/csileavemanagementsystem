@@ -7,25 +7,29 @@ class Dashboard extends Component {
         super(props);
     }
     render() {
+        const cardStyle = {
+            background: "#357BB6",
+            fontFamily: 'Helvetica'
+          };
         return (
             <div className="container">
                 <Row>
                     <Col>
-                        <Card body inverse color="primary">
+                        <Card body inverse style={cardStyle}>
                             <CardTitle>Apply Leave</CardTitle>
                             <Button color="secondary" tag={Link} to="/applyleave">Submit</Button>
                         </Card>
                     </Col>
                     <br />
                     <Col>
-                        <Card body inverse color="success">
+                        <Card body inverse style={cardStyle}>
                             <CardTitle>My Leave History</CardTitle>
                             <Button color="secondary" tag={Link} to="/myleavehistory">View</Button>
                         </Card>
                     </Col>
                     <br />
                     <Col>
-                        <Card body inverse color="info">
+                        <Card body inverse style={cardStyle}>
                             <CardTitle>My Leave Details</CardTitle>
                             <Button color="secondary" tag={Link} to="/myleavedetails">View</Button>
                         </Card>
@@ -35,21 +39,21 @@ class Dashboard extends Component {
                 <br />
                 <Row>
                     <Col>
-                        <Card body inverse color="danger">
+                        <Card body inverse style={cardStyle}>
                             <CardTitle>My Profile</CardTitle>
                             <Button color="secondary" tag={Link} to="/myprofile">View</Button>
                         </Card>
                     </Col>
                     <br />
                     <Col>
-                        <Card body inverse color="warning">
+                        <Card body inverse style={cardStyle}>
                             <CardTitle>Manager Approval</CardTitle>
                             <Button color="secondary" tag={Link} to="/managerapproval">View</Button>
                         </Card>
                     </Col>
                     <br />
                     <Col>
-                        <Card body inverse color="dark">
+                        <Card body inverse style={cardStyle}>
                             <CardTitle>HR Dashboard</CardTitle>
                             <Button color="secondary" tag={Link} to="/hrdashboard">View</Button>
                         </Card>
