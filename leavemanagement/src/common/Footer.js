@@ -10,11 +10,13 @@ class Footer extends Component {
   render() {
     const footerStyle = {
       textAlign: "center",
-      color: "white"
+      color: "white",
+      background: "#004A9B",
+      fontFamily: 'Helvetica'
     };
 
     return (
-      <div className="card bg-primary" style={footerStyle}>
+      <div className="card" style={footerStyle}>
         <div className="card-header">
           Copyright &copy; {new Date().getFullYear()} {this.footerMessage}
         </div>
