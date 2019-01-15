@@ -11,8 +11,9 @@ class SideBar extends Component {
         const SideBarStyle = {
             height: "100vh",
             width: "300px",
-            fontSize: "1.2rem",
-            background: "#2b73fa",
+            fontSize: "1rem",
+            background: "#357BB6",
+            fontFamily: 'Helvetica',
             marginTop: "-16px"
         }
         return (

@@ -33,9 +33,13 @@ class Menu extends Component {
     });
   }
   render() {
+    const menuStyle = {
+      background: "#004A9B",
+      fontFamily: 'Helvetica'
+  };
     return (
       <div>
-        <Navbar className="navbar navbar-dark bg-primary" expand="md">
+        <Navbar className="navbar navbar-dark" expand="md" style={menuStyle}>
           <NavbarBrand href="/"><Badge color="light">CSI Interfusion Sdn. Bhd.</Badge><span> | </span>Leave Management System</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
