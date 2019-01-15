@@ -72,6 +72,7 @@ class MyProfile extends Component {
         
         return (
             <div>
+                <br />
                 <div className="container">
                     <ListGroup style={ divStyle }>
                         <ListGroupItem color="primary">My Profile</ListGroupItem>

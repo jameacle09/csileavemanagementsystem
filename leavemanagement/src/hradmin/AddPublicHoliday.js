@@ -13,7 +13,7 @@ class AddPublicHoliday extends Component {
                 <br />
                 <div className="container" style={divStyle}>
                     <Row>
-                        <Col><h3>ADD PUBLIC HOLIDAY</h3></Col>
+                        <Col><h3>Add Public Holiday</h3></Col>
                     </Row>
                 </div>
                 <br />

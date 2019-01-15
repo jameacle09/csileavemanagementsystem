@@ -86,11 +86,13 @@ class NewStaffProfile extends Component {
         };
         return (
             <div>
+                <br />
                 <div className="container" style={divStyle}>
                     <Row>
-                        <Col><h3>ADD STAFF PROFILE</h3></Col>
+                        <Col><h3>Add Staff Profile</h3></Col>
                     </Row>
                 </div>
+                <br />
                 <div className="container" style={divStyle}>
                     <Form onSubmit={this.handleFormSubmit}>
                         <FormGroup>
