@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input, FormText } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, FormText, Row, Col } from 'reactstrap';
 import MyLeaveSummary from './MyLeaveSummary';
 
 class ApplyLeave extends Component {
@@ -11,6 +11,12 @@ class ApplyLeave extends Component {
         };
         return (
             <div>
+                <br />
+                <div className="container" style={divStyle}>
+                    <Row>
+                        <Col><h3>Apply Leave</h3></Col>
+                    </Row>
+                </div>
                 <br />
                 <MyLeaveSummary />
                 <br />

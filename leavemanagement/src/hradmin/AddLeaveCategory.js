@@ -14,7 +14,7 @@ class AddLeaveCategory extends Component {
                 <br />
                 <div className="container" style={divStyle}>
                     <Row>
-                        <Col><h3>ADD LEAVE CATEGORY</h3></Col>
+                        <Col><h3>Add Leave Category</h3></Col>
                     </Row>
                 </div>
                 <br />

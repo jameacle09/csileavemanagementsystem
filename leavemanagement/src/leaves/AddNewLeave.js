@@ -20,7 +20,7 @@ class AddNewLeave extends Component {
                 <br />
                 <div className="container" style={divStyle}>
                     <Row>
-                        <Col><h3>ADD LEAVE ENTITLEMENT</h3></Col>
+                        <Col><h3>Add Leave Entitlement</h3></Col>
                     </Row>
                 </div>
                 <br />
