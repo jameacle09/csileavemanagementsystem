@@ -9,12 +9,11 @@ class SideBar extends Component {
     
     render() {
         const SideBarStyle = {
-            height: "100vh",
-            width: "300px",
+            height: "100%",
+            width: "200px",
             fontSize: "1.3rem",
             background: "#357BB6",
-            fontFamily: 'Helvetica',
-            marginTop: "-16px"
+            fontFamily: 'Helvetica'
         }
 
         return (
