@@ -26,6 +26,12 @@ public class StaffLeave {
 	@JoinColumn(name="leave_category_id")
 	private LeaveCategory leaveCategoryId;
 	
+	@Column(name="entitlement")
+	private float entitlement;
+	
+	@Column(name="carry_forward")
+	private float carryForward;
+	
 	@Column(name="available_leave")
 	private float availableLeave;
 	
@@ -38,9 +44,11 @@ public class StaffLeave {
 	}
 
 
-	public StaffLeave(StaffProfile staffId, LeaveCategory leaveCategoryId, float availableLeave, float takenLeave) {
+	public StaffLeave(StaffProfile staffId, LeaveCategory leaveCategoryId, float entitlement, float carryForward, float availableLeave, float takenLeave) {
 		this.staffId = staffId;
 		this.leaveCategoryId = leaveCategoryId;
+		this.entitlement = entitlement;
+		this.carryForward = carryForward;
 		this.availableLeave = availableLeave;
 		this.takenLeave = takenLeave;
 	}
@@ -75,6 +83,26 @@ public class StaffLeave {
 		this.leaveCategoryId = leaveCategoryId;
 	}
 
+	
+	public float getEntitlement() {
+		return entitlement;
+	}
+
+
+	public void setEntitlement(float entitlement) {
+		this.entitlement = entitlement;
+	}
+
+
+	public float getCarryForward() {
+		return carryForward;
+	}
+
+
+	public void setCarryForward(float carryForward) {
+		this.carryForward = carryForward;
+	}
+
 
 	public float getAvailableLeave() {
 		return availableLeave;
@@ -99,9 +127,8 @@ public class StaffLeave {
 	@Override
 	public String toString() {
 		return "StaffLeave [id=" + id + ", staffId=" + staffId + ", leaveCategoryId=" + leaveCategoryId
-				+ ", availableLeave=" + availableLeave + ", takenLeave=" + takenLeave + "]";
+				+ ", entitlement=" + entitlement + ", carryForward=" + carryForward + ", availableLeave="
+				+ availableLeave + ", takenLeave=" + takenLeave + "]";
 	}
-	
-	
 
 }
