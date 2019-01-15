@@ -17,7 +17,6 @@ import {
   Link
 } from "react-router-dom";
 
-
 class Menu extends Component {
   constructor(props) {
     super(props);
@@ -34,13 +33,17 @@ class Menu extends Component {
   }
   render() {
     const menuStyle = {
+      fontSize: "1rem",
       background: "#004A9B",
       fontFamily: 'Helvetica'
-  };
+    };
+    const fontStyle = {
+      fontFamily: 'Helvetica'
+    };
     return (
       <div>
         <Navbar className="navbar navbar-dark" expand="md" style={menuStyle}>
-          <NavbarBrand href="/"><Badge color="light">CSI Interfusion Sdn. Bhd.</Badge><span> | </span>Leave Management System</NavbarBrand>
+          <NavbarBrand href="/" style={fontStyle}><Badge color="light">CSI Interfusion Sdn. Bhd.</Badge><span> | </span>Leave Management System</NavbarBrand>
           <NavbarToggler onClick={this.toggle} />
           <Collapse isOpen={this.state.isOpen} navbar>
             <Nav className="ml-auto" navbar>
