@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Button, ListGroup, ListGroupItem } from 'reactstrap';
 import { Link } from "react-router-dom";
+import "./MyProfile.css";
 
 class MyProfile extends Component {
     constructor(props) {
@@ -34,23 +35,37 @@ class MyProfile extends Component {
     }
     
     render() {
-
+        /*
         const divStyle = {
-            boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
+            boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+        };
+
+        const divStyleFlex = {
+            boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+            margin: "10px",
+            width: "40%",
+            height: "40%"
         };
 
         const loadingText = {color: "blue", textAlign: "center", fontFamily: "Arial Black"};
         const dataText = {color: "blue"};
 
+        const containerFlex = {
+            boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+            display: "flex",
+            flexFlow: "row" || "wrap",
+            justifyContent: "flexStart"
+        };
+        */
 
         if(this.state.userData == null) {   
             // display loading screen until data is available
             return (
                 <div>
                     <div className="container">
-                        <ListGroup style={ divStyle }>
+                        <ListGroup className="divStyle">
                             <ListGroupItem color="primary">My Profile</ListGroupItem>
-                            <ListGroupItem><h2 style={ loadingText }> Loading </h2></ListGroupItem>
+                            <ListGroupItem><h2 className="loadingText"> Loading </h2></ListGroupItem>
                         </ListGroup>
                         <br />
                         <Button color="primary" tag={Link} to="/changepassword" activeclassname="active">Change Password</Button>
@@ -73,21 +88,29 @@ class MyProfile extends Component {
         return (
             <div>
                 <br />
-                <div className="container">
-                    <ListGroup style={ divStyle }>
+                <div className="containerFlex">
+                    <ListGroup className="divStyleFlex">
                         <ListGroupItem color="primary">My Profile</ListGroupItem>
-                        <ListGroupItem>CSI Staff ID: <p style={ dataText }>{userData['csiStaffId']}</p></ListGroupItem>
-                        <ListGroupItem>Name: <p style={ dataText }>{userData['staffName']}</p></ListGroupItem>
-                        <ListGroupItem>Email: <p style={ dataText }>{userData['email']}</p></ListGroupItem>
-                        <ListGroupItem>NRIC/ Passport No.: <p style={ dataText }>{userData['icNumber']}</p></ListGroupItem>
-                        <ListGroupItem>Job Title: <p style={ dataText }>{userData['jobTitle']}</p></ListGroupItem>
-                        <ListGroupItem>Mobile No.: <p style={ dataText }>{userData['mobileNo']}</p></ListGroupItem>
-                        <ListGroupItem>Business Unit: <p style={ dataText }>{userData['businessUnit']}</p></ListGroupItem>
-                        <ListGroupItem>Line Manager: <p style={ dataText }>{userData['managerName']}</p></ListGroupItem>
-                        <ListGroupItem>Join Date: <p style={ dataText }>{userData['joinDate']}</p></ListGroupItem>
+                        <ListGroupItem>CSI Staff ID: <p className="dataText">{userData['csiStaffId']}</p></ListGroupItem>
+                        <ListGroupItem>Name: <p className="dataText">{userData['staffName']}</p></ListGroupItem>
+                        <ListGroupItem>NRIC/ Passport No: <p className="dataText">{userData['icNumber']}</p></ListGroupItem>
                     </ListGroup>
-                    <br />
-                    <Button color="primary" tag={Link} to="/changepassword" activeclassname="active">Change Password</Button>
+                    <ListGroup className="divStyleFlex">
+                        <ListGroupItem color="primary">Contact</ListGroupItem>
+                        <ListGroupItem>Email: <p className="dataText">{userData['email']}</p></ListGroupItem>
+                        <ListGroupItem>Mobile No.: <p className="dataText">{userData['mobileNo']}</p></ListGroupItem>
+                    </ListGroup>
+                    <ListGroup className="divStyleFlex">
+                        <ListGroupItem color="primary">Business</ListGroupItem>
+                        <ListGroupItem>Job Title: <p className="dataText">{userData['jobTitle']}</p></ListGroupItem>
+                        <ListGroupItem>Business Unit: <p className="dataText">{userData['businessUnit']}</p></ListGroupItem>
+                        <ListGroupItem>Line Manager: <p className="dataText">{userData['managerName']}</p></ListGroupItem>
+                        <ListGroupItem>Join Date: <p className="dataText">{userData['joinDate']}</p></ListGroupItem>
+                    </ListGroup>
+                </div>
+                <br />
+                <div className="buttonChngPwd">
+                    <Button color="primary" tag={Link} to="/changepassword" activeclassname="active">Change Password</Button>    
                 </div>
                 <br />
             </div>
