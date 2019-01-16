@@ -27,7 +27,7 @@ class LeaveEntitlement extends Component {
                 <br />
                 <div className="container">
                     <div style={spacing}>
-                        <Button className="btn btn-primary" color="primary" tag={Link} to="/addnewleave" activeclassname="active">Add New</Button>
+                        <Button className="btn btn-primary" color="primary">Upload Entitlement</Button>
                     </div>
                     <Table responsive>
                         <thead>
@@ -35,14 +35,13 @@ class LeaveEntitlement extends Component {
                                 <th>CSI Staff ID</th>
                                 <th>Staff Name</th>
                                 <th>Leave Year</th>
-                                <th>Leave Code</th>
+                                <th>Leave Type</th>
                                 <th>Carried Forward</th>
                                 <th>Entitlement</th>
                                 <th>Available Leave</th>
                                 <th>Taken Leave</th>
                                 <th>Balance Leave</th>
                                 <th>Edit</th>
-                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -56,8 +55,7 @@ class LeaveEntitlement extends Component {
                                 <td></td>
                                 <td></td>
                                 <td></td>
-                                <td><Button color="primary"><span>Edit</span></Button></td>
-                                <td><Button color="primary"><span>Delete</span></Button></td>
+                                <td><Button color="primary" tag={Link} to="/editentitlement" activeclassname="active"><span>Edit</span></Button></td>
                             </tr>
                         </tbody>
                     </Table>

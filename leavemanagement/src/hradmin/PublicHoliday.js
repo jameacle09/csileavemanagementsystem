@@ -27,7 +27,8 @@ class PublicHoliday extends Component {
                 <br />
                 <div className="container">
                     <div style={spacing}>
-                        <Button className="btn btn-primary" color="primary" tag={Link} to="/addpublicholiday" activeclassname="active">Add New</Button>
+                        <Button className="btn btn-primary" color="primary" tag={Link} to="/addpublicholiday" activeclassname="active">Add New</Button><span> </span>
+                        <Button className="btn btn-primary" color="primary">Upload Holiday</Button>
                     </div>
 
                     <Table responsive>
