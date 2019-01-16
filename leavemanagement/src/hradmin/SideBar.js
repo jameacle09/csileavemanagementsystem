@@ -3,9 +3,6 @@ import { Link } from "react-router-dom";
 import { Nav, NavItem, NavLink } from 'reactstrap';
 
 class SideBar extends Component {
-    constructor(props) {
-        super(props);
-    }
     
     render() {
         const SideBarStyle = {

@@ -3,11 +3,7 @@ import { Table, Button, Row, Col } from 'reactstrap';
 import { Link } from "react-router-dom";
 
 class LeaveEntitlement extends Component {
-    constructor(props) {
-        super(props);
-
-    }
-
+ 
     render() {
         const spacing = {
             padding: "10px",

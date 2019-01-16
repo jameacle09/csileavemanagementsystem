@@ -3,10 +3,6 @@ import { Button, Table, Row, Col } from 'reactstrap';
 import { Link } from "react-router-dom";
 
 class PublicHoliday extends Component {
-    constructor(props) {
-        super(props);
-
-    }
 
     render() {
         const spacing = {

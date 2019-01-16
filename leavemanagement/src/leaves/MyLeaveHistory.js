@@ -1,11 +1,7 @@
 import React, { Component } from 'react';
-import { Table, Button, Row, Col } from 'reactstrap';
-import { Link } from "react-router-dom";
+import { Table, Row, Col } from 'reactstrap';
 
 class MyLeaveHistory extends Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     const divStyle = {
       background: "#eee",

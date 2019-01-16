@@ -3,9 +3,7 @@ import { Card, Button, CardTitle, Row, Col } from 'reactstrap';
 import { Link } from "react-router-dom";
 
 class Dashboard extends Component {
-    constructor(props) {
-        super(props);
-    }
+
     render() {
         const cardStyle = {
             background: "#357BB6",

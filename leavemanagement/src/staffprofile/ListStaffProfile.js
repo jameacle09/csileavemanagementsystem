@@ -3,11 +3,7 @@ import { Table, Button, Row, Col } from 'reactstrap';
 import StaffTableRow from './StaffTableRow';
 
 class ListStaffProfile extends Component {
-    constructor(props) {
-        super(props);
-
-    }
-
+    
     render() {
         const spacing = {
             padding: "10px",

@@ -68,10 +68,10 @@ class ApplyLeave extends Component {
                     let newStartDateStr = newStartDate.toISOString().substr(0,10);
 
                     // only process if date actually changed
-                    if(newStartDateStr != startDateStr) {
+                    if(newStartDateStr !== startDateStr) {
 
                         // if new end date and start date are same date
-                        if(newStartDateStr == endDateStr) {
+                        if(newStartDateStr === endDateStr) {
                             this.setState({
                                 startDate: newStartDate,
                                 leaveDuration: (this.state.isHalfDay ? 0.5 : 1)
@@ -100,10 +100,10 @@ class ApplyLeave extends Component {
                     let newEndDateStr = newEndDate.toISOString().substr(0,10);
     
                     // only process if date actually changed
-                    if(newEndDateStr != endDateStr) {
+                    if(newEndDateStr !== endDateStr) {
     
                         // if new end date and start date are same date
-                        if(newEndDateStr == startDateStr) {
+                        if(newEndDateStr === startDateStr) {
                             this.setState({
                                 endDate: newEndDate,
                                 leaveDuration: (this.state.isHalfDay ? 0.5 : 1)
@@ -128,7 +128,7 @@ class ApplyLeave extends Component {
                     break;
     
                 case "isHalfDay" : 
-                    if(startDateStr == endDateStr) {
+                    if(startDateStr === endDateStr) {
                         let newIsHalfDay = ! this.state.isHalfDay;
                         this.setState({
                             isHalfDay: newIsHalfDay,
@@ -196,7 +196,7 @@ class ApplyLeave extends Component {
                         <FormGroup check>
                             <Label check>
                             <Input type="checkbox" name="isHalfDay" id="isHalfDay" 
-                                    disabled={startDate.toISOString().substr(0,10) == endDate.toISOString().substr(0,10) ? false : true}
+                                    disabled={startDate.toISOString().substr(0,10) === endDate.toISOString().substr(0,10) ? false : true}
                                     onChange={this.onDateChange} 
                                     checked={isHalfDay}/>{' '}
                                 Check the box if you are taking half day leave.

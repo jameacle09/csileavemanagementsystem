@@ -3,10 +3,6 @@ import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 
 
 class AddNewLeave extends Component {
-    constructor(props) {
-        super(props);
-
-    }
 
     render() {
         const divStyle = {

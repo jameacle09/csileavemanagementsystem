@@ -3,9 +3,7 @@ import { Jumbotron, Button } from 'reactstrap';
 import Dashboard from './Dashboard';
 
 class HomePage extends Component {
-  constructor(props) {
-    super(props);
-  }
+  
   render() {
     const divStyle = {
       backgroundImage: "url('http://www.chinasofti.com/en/styles/extends/about/images/header.jpg')",

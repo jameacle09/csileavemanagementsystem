@@ -64,7 +64,7 @@ class MyProfile extends Component {
         let userData = this.state.userData;
 
         // reformat dates and retrive manager name ONLY when data fetch successfully
-        if( userData['csiStaffId'] != '') {
+        if( userData['csiStaffId'] !== '') {
             let joinDate = new Date(this.state.userData['joinDate']);
             userData['joinDate'] = joinDate.getFullYear() + "-" + (joinDate.getMonth() +1) + "-" + joinDate.getDate();          
             userData['managerName'] = this.state.userData['lineManager']['staffName'];
