@@ -6,7 +6,7 @@ class SideBar extends Component {
     
     render() {
         const SideBarStyle = {
-            height: "100%",
+            height: "100vh",
             width: "200px",
             fontSize: "1.3rem",
             background: "#357BB6",
