@@ -35,13 +35,6 @@ class AddPublicHoliday extends Component {
                             <Label for="state">State</Label>
                             <Input type="text" name="state" id="state" placeholder="State" />
                         </FormGroup>
-                        <FormGroup>
-                            <Label for="attachment">Upload data from an Excel</Label>
-                            <Input type="file" name="attachment" id="attachment" />
-                            <FormText color="muted">
-                                Please attach your document.
-                        </FormText>
-                        </FormGroup>
                         <Button color="primary">Save</Button>
                     </Form>
                 </div>

@@ -6,6 +6,47 @@ class AddNewLeave extends Component {
     constructor(props) {
         super(props);
 
+        this.state = {
+            userData: {
+                'csiStaffId': '',
+                'staffName': ''
+            },
+
+            leaveCategory: [{
+                'id': '',
+                'leaveCode': '',
+                'leaveName': ''
+            }]
+        };
+    }
+
+    componentDidMount() {
+        // fetch CSI Staff ID and Name from API    
+        fetch('http://localhost/api/staffprofile/1')
+            .then(response => response.json())
+            .then(data => this.setState({ userData: data }))
+            .catch(err => {
+                // if unable to fetch data, assign default (spaces) to values
+                let userData = {
+                    'csiStaffId': '',
+                    'staffName': ''
+                }
+                this.setState({ userData: userData })
+            })
+
+        // fetch leave category from API    
+        fetch('http://localhost/api/leavecategories')
+            .then(response => response.json())
+            .then(data => this.setState({ leaveCategory: data }))
+            .catch(err => {
+                // if unable to fetch data, assign default (spaces) to values
+                let leaveCategoryData = [{
+                    'id': '',
+                    'leaveCode': '',
+                    'leaveName': ''
+                }]
+                this.setState({ leaveCategory: leaveCategoryData })
+            })
     }
 
     render() {
@@ -15,12 +56,14 @@ class AddNewLeave extends Component {
             boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
         };
 
+        const { userData, leaveCategory } = this.state;
+
         return (
             <div>
                 <br />
                 <div className="container" style={divStyle}>
                     <Row>
-                        <Col><h3>Add Leave Entitlement</h3></Col>
+                        <Col><h3>Edit Leave Entitlement</h3></Col>
                     </Row>
                 </div>
                 <br />
@@ -29,24 +72,27 @@ class AddNewLeave extends Component {
                     <Form onSubmit={this.handleFormSubmit}>
                         <FormGroup>
                             <Label for="csiStaffId">CSI Staff ID</Label>
-                            <Row>
-                                <Col><Input type="text" name="csiStaffId" id="csiStaffId" placeholder="Search" /></Col>
-                                <Button type="submit">Search</Button>                                
-                            </Row>
+                            <Input type="text" name="csiStaffId" id="csiStaffId" 
+                                placeholder={userData['csiStaffId']} disabled={true} />
+                        </FormGroup>
+                        <FormGroup>
+                            <Label for="staffName">Staff Name</Label>
+                            <Input type="text" name="staffName" id="staffName" 
+                                placeholder={userData['staffName']} disabled={true} />
                         </FormGroup>
                         <FormGroup>
                             <Label for="leaveYear">Leave Year</Label>
-                            <Input type="text" name="leaveYear" id="leaveYear" placeholder="Leave Year" />
+                            <Input type="text" name="leaveYear" id="leaveYear" 
+                                placeholder={new Date().getFullYear()} disabled={true}/>
                         </FormGroup>
                         <FormGroup>
-                            <Label for="leaveCode">Leave Code</Label>
-                            <Input type="select" name="leaveCode" id="leaveCode">
-                                <option>AL</option>
-                                <option>ML</option>
-                                <option>EL</option>
-                                <option>PL</option>
-                                <option>MRL</option>
-                                <option>MTL</option>
+                            <Label for="leaveCategory">Leave Category</Label>
+                            <Input type="select" name="leaveCategory" id="leaveCategory">
+                                {
+                                    leaveCategory.map((leaveCategory) => {
+                                        return (<option key={leaveCategory['id']} value={leaveCategory['leaveCode']}>{leaveCategory['leaveName']}</option>)
+                                    })
+                                }
                             </Input>
                         </FormGroup>
                         <FormGroup>

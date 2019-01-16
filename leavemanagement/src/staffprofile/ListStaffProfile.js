@@ -39,7 +39,7 @@ class ListStaffProfile extends Component {
                                 <th>CSI Staff ID</th>
                                 <th>Staff Name</th>
                                 <th>Email</th>
-                                <th>IC No./ Passport No.</th>
+                                <th>NRIC / Passport No.</th>
                                 <th>Job Title</th>
                                 <th>Mobile No.</th>
                                 <th>Business Unit</th>

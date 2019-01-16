@@ -41,7 +41,6 @@ class LeaveCategory extends Component {
                                 <th>Description</th>
                                 <th>Entitlement</th>
                                 <th>Edit</th>
-                                <th>Delete</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -50,7 +49,6 @@ class LeaveCategory extends Component {
                                 <td></td>
                                 <td></td>
                                 <td><Button color="primary"><span>Edit</span></Button></td>
-                                <td><Button color="primary"><span>Delete</span></Button></td>
                             </tr>
                         </tbody>
                     </Table>

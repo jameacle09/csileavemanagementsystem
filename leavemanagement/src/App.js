@@ -8,7 +8,7 @@ import ApplyLeave from './leaves/ApplyLeave';
 import MyLeaveDetails from './leaves/MyLeaveDetails';
 import MyLeaveHistory from './leaves/MyLeaveHistory';
 import LeaveEntitlement from './leaves/LeaveEntitlement';
-import AddNewLeave from './leaves/AddNewLeave';
+import EditEntitlement from './leaves/EditEntitlement';
 import MyProfile from './staffprofile/MyProfile';
 import ChangePassword from './staffprofile/ChangePassword';
 import './stickyfooter.css';
@@ -45,7 +45,7 @@ class App extends Component {
               <Route path="/publicholiday" title="Public Holiday" component={PublicHoliday} />
               <Route path="/leavecategory" title="Leave Category" component={LeaveCategory} />
               <Route path="/leaveentitlement" title="Leave Entitlement" component={LeaveEntitlement} />
-              <Route path="/addnewleave" title="Add New Leave" component={AddNewLeave} />
+              <Route path="/editentitlement" title="Edit Entitlement" component={EditEntitlement} />
               <Route path="/addpublicholiday" title="Add Public Holiday" component={AddPublicHoliday} />
               <Route path="/AddLeaveCategory" title="Add Leave Category" component={AddLeaveCategory} />
             </Switch>

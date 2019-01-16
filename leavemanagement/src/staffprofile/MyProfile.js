@@ -47,6 +47,7 @@ class MyProfile extends Component {
             // display loading screen until data is available
             return (
                 <div>
+                    <br />
                     <div className="container">
                         <ListGroup style={ divStyle }>
                             <ListGroupItem color="primary">My Profile</ListGroupItem>
@@ -79,7 +80,7 @@ class MyProfile extends Component {
                         <ListGroupItem>CSI Staff ID: <p style={ dataText }>{userData['csiStaffId']}</p></ListGroupItem>
                         <ListGroupItem>Name: <p style={ dataText }>{userData['staffName']}</p></ListGroupItem>
                         <ListGroupItem>Email: <p style={ dataText }>{userData['email']}</p></ListGroupItem>
-                        <ListGroupItem>NRIC/ Passport No.: <p style={ dataText }>{userData['icNumber']}</p></ListGroupItem>
+                        <ListGroupItem>NRIC / Passport No.: <p style={ dataText }>{userData['icNumber']}</p></ListGroupItem>
                         <ListGroupItem>Job Title: <p style={ dataText }>{userData['jobTitle']}</p></ListGroupItem>
                         <ListGroupItem>Mobile No.: <p style={ dataText }>{userData['mobileNo']}</p></ListGroupItem>
                         <ListGroupItem>Business Unit: <p style={ dataText }>{userData['businessUnit']}</p></ListGroupItem>
