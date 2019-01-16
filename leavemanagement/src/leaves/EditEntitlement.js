@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 
 
-class AddNewLeave extends Component {
+class EditEntitlement extends Component {
     constructor(props) {
         super(props);
 
@@ -124,4 +124,4 @@ class AddNewLeave extends Component {
     }
 }
 
-export default AddNewLeave;
+export default EditEntitlement;
