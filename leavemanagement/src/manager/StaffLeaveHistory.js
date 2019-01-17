@@ -2,7 +2,7 @@ import React, { Component } from 'react';
 import { Table, Row, Col } from 'reactstrap';
 import ManagerSideBar from './ManagerSideBar'
 
-class ManagerApproval extends Component {
+class StaffLeaveHistory extends Component {
     render() {
         const divStyle = {
             background: "#eee",
@@ -17,7 +17,7 @@ class ManagerApproval extends Component {
                 <br />
                 <div className="container" style={divStyle}>
                     <Row>
-                        <Col><h3>View Leave Request</h3></Col>
+                        <Col><h3>Leave History</h3></Col>
                     </Row>
                 </div>
                 <br />
@@ -28,7 +28,8 @@ class ManagerApproval extends Component {
                                 <th>Name</th>
                                 <th>Leave Type</th>
                                 <th>Status</th>
-                                <th>Action</th>
+                                <th>Start Date</th>
+                                <th>End Date</th>
                             </tr>
                         </thead>
                         <tbody>
@@ -36,6 +37,7 @@ class ManagerApproval extends Component {
                                 <td>-</td>
                                 <td>-</td>
                                 <td>-</td>
+                                <td>-</td>                                
                                 <td>-</td>
                             </tr>
                         </tbody>
@@ -48,4 +50,4 @@ class ManagerApproval extends Component {
     }
 }
 
-export default ManagerApproval;
+export default StaffLeaveHistory;

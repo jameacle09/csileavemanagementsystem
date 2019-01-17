@@ -53,7 +53,7 @@ class Dashboard extends Component {
                     <Col>
                         <Card body inverse style={cardStyle}>
                             <CardTitle>HR Dashboard</CardTitle>
-                            <Button color="secondary" tag={Link} to="/hrdashboard">View</Button>
+                            <Button color="secondary" tag={Link} to="/liststaffprofile">View</Button>
                         </Card>
                     </Col>
                     <br />

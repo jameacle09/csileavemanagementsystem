@@ -1,28 +1,25 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
 import { ListGroup, ListGroupItem } from 'reactstrap';
-import './SideBarStyle.css';
 
 class SideBar extends Component {
 
     render() {
-        const SideBarStyle = {
-            color: "#FFFFFF",
-            height: "100vh",
-            width: "200px",
-            fontSize: "1.3rem",
-            background: "#357BB6",
-            fontFamily: "Helvetica"
-        }
-
         return (
-            <div className="side-menu">
-                <ListGroup>
-                    <ListGroupItem tag={Link} to="/liststaffprofile" activeclassname="active">Staff Profile</ListGroupItem>
-                    <ListGroupItem tag={Link} to="/leaveentitlement" activeclassname="active">Leave Entitlement</ListGroupItem>
-                    <ListGroupItem tag={Link} to="/publicholiday" activeclassname="active">Public Holiday</ListGroupItem>
-                    <ListGroupItem tag={Link} to="/leavecategory" activeclassname="active">Leave Category</ListGroupItem>
-                    <ListGroupItem tag={Link} to="/hrdashboard" activeclassname="active">Report</ListGroupItem>
+            <div>
+                <ListGroup
+                    style={{
+                        backgroundColor: 'powderblue',
+                        width: 250,
+                        fontFamily: "Helvetica",
+                        fontSize: "1.1rem",
+                        height: '200vh'
+                    }}>
+                    <ListGroupItem tag={Link} to="/liststaffprofile" activeclassname="active" style={{ backgroundColor: 'powderblue' }} >Staff Profile</ListGroupItem>
+                    <ListGroupItem tag={Link} to="/leaveentitlement" activeclassname="active" style={{ backgroundColor: 'powderblue' }} >Leave Entitlement</ListGroupItem>
+                    <ListGroupItem tag={Link} to="/publicholiday" activeclassname="active" style={{ backgroundColor: 'powderblue' }} >Public Holiday</ListGroupItem>
+                    <ListGroupItem tag={Link} to="/leavecategory" activeclassname="active" style={{ backgroundColor: 'powderblue' }} >Leave Category</ListGroupItem>
+                    <ListGroupItem tag={Link} to="#" activeclassname="active" style={{ backgroundColor: 'powderblue' }} >Report</ListGroupItem>
                 </ListGroup>
             </div>
         )
