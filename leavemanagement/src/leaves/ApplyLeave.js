@@ -13,7 +13,7 @@ class ApplyLeave extends Component {
                 'csiStaffId': '',
                 'staffName': ''
             },
-            leaveCategory:  [{
+            leaveCategoryList:  [{
                 'id': '',
                 'leaveCode': '',
                 'leaveName': ''
@@ -21,11 +21,14 @@ class ApplyLeave extends Component {
             startDate: new Date(),
             endDate: new Date(),
             isHalfDay: false,
-            leaveDuration: 1
+            leaveDuration: 1,
+            leaveCategory: '',
+            leaveReason: '',
+            attachedFile: null
         };
 
         this.handleDateChange = this.handleDateChange.bind(this);
-        this.handleTextChange = this.handleTextChange.bind(this);
+        this.handleDetailsChange = this.handleDetailsChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
     }
 
@@ -48,7 +51,7 @@ class ApplyLeave extends Component {
         // fetch leave category from API    
         fetch('http://localhost/api/leavecategories')
         .then(response => response.json())
-        .then(data => this.setState({leaveCategory: data}))
+        .then(data => this.setState({leaveCategoryList: data, leaveCategory: data[0]['id']}))
         .catch(err => {
             // if unable to fetch data, assign default (spaces) to values
             let leaveCategoryData = [{
@@ -56,7 +59,7 @@ class ApplyLeave extends Component {
                 'leaveCode': '',
                 'leaveName': ''
             }]
-            this.setState({leaveCategory: leaveCategoryData})
+            this.setState({leaveCategoryList: leaveCategoryData})
         })             
     }
 
@@ -147,30 +150,48 @@ class ApplyLeave extends Component {
         }
     }
     
-    handleTextChange(event) {
-        
+    // this method process changes on non-date related fields 
+    handleDetailsChange(event) {
+        switch(event.target.name) {
+            case 'leaveCategory' :
+                this.setState({leaveCategory: event.target.value});
+                break;
+            case 'leaveReason' :
+                this.setState({leaveReason: event.target.value});
+                break;
+            case 'attachment' :
+                this.setState({attachedFile: event.target.files[0]})
+                break;
+            default :
+                break;
+        }
     }
 
+    // create JSON object with form data, and call API
     handleSubmit (event) {
         event.preventDefault();
-        const formData = new FormData(event.target);
 
         let newLeaveRequest = {
-                'staffId': '',
-                'leaveCategory': '',
-                'startDate': '',
-                'endDate': '',
-                'leaveDuration': '',
-                'leaveReason': '',
-                'leaveStatusId': ''
-            }
+            'staffId': this.state.userData['id'],
+            'leaveCategory': this.state.leaveCategory,
+            'startDate': this.state.startDate,
+            'endDate': this.state.endDate,
+            'leaveDuration': this.state.leaveDuration,
+            'leaveReason': this.state.leaveReason,
+            'leaveStatusId': 3      // All new leave has status of 3, Pending Approval
+        }
 
-            
-        for(var inputData of formData.entries()) {
-            newLeaveRequest[inputData[0]] = inputData[1]
-       }
-
-       console.log(newLeaveRequest)
+        fetch('/api/leavedetail', {
+            method: 'POST',
+            headers: {
+              'Accept': 'application/json',
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(newLeaveRequest),
+        }).then(this.props.history.push('/MyLeaveDetails'))  
+        .catch (err => {
+            console.log("!!! Error : " . err)
+        })       
     }
 
     render() {
@@ -180,7 +201,7 @@ class ApplyLeave extends Component {
             boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
         };
 
-        const {userData, leaveCategory, startDate, endDate, isHalfDay, leaveDuration} = this.state;
+        const {userData, leaveCategoryList, startDate, endDate, isHalfDay, leaveDuration, leaveCategory} = this.state;
 
         return (
             <div>
@@ -207,10 +228,11 @@ class ApplyLeave extends Component {
                         </FormGroup>
                         <FormGroup>
                             <Label for="leaveCategory">Leave Category</Label>
-                            <Input type="select" name="leaveCategory" id="leaveCategory">
+                            <Input type="select" name="leaveCategory" id="leaveCategory"
+                                onChange={this.handleDetailsChange} value={leaveCategory}>
                                 {
-                                    leaveCategory.map((leaveCategory) => {
-                                        return (<option key={leaveCategory['id']} value={leaveCategory['leaveCode']}>{leaveCategory['leaveName']}</option>)
+                                    leaveCategoryList.map((leaveCategory) => {
+                                        return (<option key={leaveCategory['leaveCode']} value={leaveCategory['id']}>{leaveCategory['leaveName']}</option>)
                                     })
                                 }
                             </Input>
@@ -236,17 +258,19 @@ class ApplyLeave extends Component {
                         </FormGroup>
                         <br/>
                         <FormGroup>
-                            <Label for="leaveDuration">Leave Duration:   
+                            <Label for="leaveDuration">Leave Duration: {'  '}  
                                 <strong>{leaveDuration <= 1 ? leaveDuration + " Day" : leaveDuration + " Days"}</strong> 
                             </Label>
                         </FormGroup>
                         <FormGroup>
                             <Label for="leaveReason">Leave Reason</Label>
-                            <Input type="textarea" name="leaveReason" id="leaveReason" />
+                            <Input type="textarea" name="leaveReason" id="leaveReason" 
+                                onChange={this.handleDetailsChange} />
                         </FormGroup>
                         <FormGroup>
                             <Label for="attachment">File</Label>
-                            <Input type="file" name="attachment" id="attachment" />
+                            <Input type="file" name="attachment" id="attachment"
+                                onChange={this.handleDetailsChange} />
                             <FormText color="muted">
                                 Please attach your document.
                         </FormText>
