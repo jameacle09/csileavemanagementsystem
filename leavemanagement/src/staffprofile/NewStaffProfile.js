@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
 import StaffProfile from './StaffProfile';
-import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Row, Col, ListGroup } from 'reactstrap';
 import SideBar from '../hradmin/SideBar';
+import "../hradmin/SideBarStyle.css";
 
 class NewStaffProfile extends Component {
     constructor(props) {
@@ -86,11 +87,13 @@ class NewStaffProfile extends Component {
             boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
         };
         return (
-            <div>
-                <Row>
-                    <Col><SideBar /></Col>
-                    <Col>
-                <br />
+            <div className="containerFlex">
+            <ListGroup className="Flex1">
+                <SideBar />
+            </ListGroup>
+            <ListGroup className="Flex2">
+                <div>
+                    <br /><br />
                 <div className="container" style={divStyle}>
                     <Row>
                         <Col><h3>Add Staff Profile</h3></Col>
@@ -141,8 +144,8 @@ class NewStaffProfile extends Component {
                     </Form>
                     <br />
                 </div>
-                </Col>
-                </Row>
+                </div>
+                </ListGroup>
             </div>
         );
 
