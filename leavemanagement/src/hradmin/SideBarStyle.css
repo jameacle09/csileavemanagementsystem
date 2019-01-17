@@ -1,0 +1,25 @@
+.containerFlex {
+    margin: -10px 0 0 -5px;
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: flex-start;
+    flex-basis: auto;
+    flex-wrap: wrap;
+}
+
+.Flex1 {    
+    margin: 10px 5px 15px 5px;
+    width: 14%;
+    height: 100%
+}
+
+.Flex2 {    
+    margin: 10px 5px 15px 5px;
+    width: 80%;
+    height: 100%
+}
+
+.sidebar {
+    height: 100%;
+    justify-content: stretch;
+}

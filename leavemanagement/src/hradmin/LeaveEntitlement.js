@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Table, Button, Row, Col } from 'reactstrap';
+import { Table, Button, Row, Col, ListGroup } from 'reactstrap';
 import { Link } from "react-router-dom";
 import SideBar from './SideBar';
+import "./SideBarStyle.css";
 
 class LeaveEntitlement extends Component {
 
@@ -18,54 +19,56 @@ class LeaveEntitlement extends Component {
         };
 
         return (
-            <div>
-                <Row>
-                    <Col><SideBar /></Col>
-                    <Col>
-                        <br />
-                        <div className="container" style={divStyle}>
-                            <Row>
-                                <Col><h3>Leave Entitlement</h3></Col>
-                            </Row>
+            <div className="containerFlex">
+                <ListGroup className="Flex1">
+                    <SideBar />
+                </ListGroup>
+                <ListGroup className="Flex2">
+                <div>
+                    <br /><br />
+                    <div className="container" style={divStyle}>
+                        <Row>
+                            <Col><h3>Leave Entitlement</h3></Col>
+                        </Row>
+                    </div>
+                    <br />
+                    <div className="container">
+                        <div style={spacing}>
+                            <Button className="btn btn-primary" color="primary">Upload Entitlement</Button>
                         </div>
-                        <br />
-                        <div className="container">
-                            <div style={spacing}>
-                                <Button className="btn btn-primary" color="primary">Upload Entitlement</Button>
-                            </div>
-                            <Table responsive>
-                                <thead>
-                                    <tr>
-                                        <th>CSI Staff ID</th>
-                                        <th>Staff Name</th>
-                                        <th>Leave Year</th>
-                                        <th>Leave Type</th>
-                                        <th>Carried Forward</th>
-                                        <th>Entitlement</th>
-                                        <th>Available Leave</th>
-                                        <th>Taken Leave</th>
-                                        <th>Balance Leave</th>
-                                        <th>Edit</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td><Button color="primary" tag={Link} to="/editentitlement" activeclassname="active"><span>Edit</span></Button></td>
-                                    </tr>
-                                </tbody>
-                            </Table>
-                        </div>
-                    </Col>
-                </Row>
+                        <Table responsive>
+                            <thead>
+                                <tr>
+                                    <th>CSI Staff ID</th>
+                                    <th>Staff Name</th>
+                                    <th>Leave Year</th>
+                                    <th>Leave Type</th>
+                                    <th>Carried Forward</th>
+                                    <th>Entitlement</th>
+                                    <th>Available Leave</th>
+                                    <th>Taken Leave</th>
+                                    <th>Balance Leave</th>
+                                    <th>Edit</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td></td>
+                                    <td><Button color="primary" tag={Link} to="/editentitlement" activeclassname="active"><span>Edit</span></Button></td>
+                                </tr>
+                            </tbody>
+                        </Table>
+                    </div>
+                </div>
+                </ListGroup>
             </div>
         );
     }
