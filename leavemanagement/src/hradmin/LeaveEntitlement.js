@@ -1,9 +1,9 @@
 import React, { Component } from 'react';
-import { Button, Table, Row, Col } from 'reactstrap';
+import { Table, Button, Row, Col } from 'reactstrap';
 import { Link } from "react-router-dom";
 import SideBar from './SideBar';
 
-class LeaveCategory extends Component {
+class LeaveEntitlement extends Component {
 
     render() {
         const spacing = {
@@ -25,21 +25,26 @@ class LeaveCategory extends Component {
                         <br />
                         <div className="container" style={divStyle}>
                             <Row>
-                                <Col><h3>List of Leave Category</h3></Col>
+                                <Col><h3>Leave Entitlement</h3></Col>
                             </Row>
                         </div>
                         <br />
                         <div className="container">
                             <div style={spacing}>
-                                <Button className="btn btn-primary" color="primary" tag={Link} to="/addleavecategory" activeclassname="active">Add New</Button>
+                                <Button className="btn btn-primary" color="primary">Upload Entitlement</Button>
                             </div>
-
                             <Table responsive>
                                 <thead>
                                     <tr>
-                                        <th>Leave Code</th>
-                                        <th>Description</th>
+                                        <th>CSI Staff ID</th>
+                                        <th>Staff Name</th>
+                                        <th>Leave Year</th>
+                                        <th>Leave Type</th>
+                                        <th>Carried Forward</th>
                                         <th>Entitlement</th>
+                                        <th>Available Leave</th>
+                                        <th>Taken Leave</th>
+                                        <th>Balance Leave</th>
                                         <th>Edit</th>
                                     </tr>
                                 </thead>
@@ -48,7 +53,13 @@ class LeaveCategory extends Component {
                                         <td></td>
                                         <td></td>
                                         <td></td>
-                                        <td><Button color="primary"><span>Edit</span></Button></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td></td>
+                                        <td><Button color="primary" tag={Link} to="/editentitlement" activeclassname="active"><span>Edit</span></Button></td>
                                     </tr>
                                 </tbody>
                             </Table>
@@ -56,9 +67,8 @@ class LeaveCategory extends Component {
                     </Col>
                 </Row>
             </div>
+        );
+    }
+}
 
-                );
-            }
-        }
-        
-export default LeaveCategory;
+export default LeaveEntitlement;

@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import { Table, Button, Row, Col } from 'reactstrap';
 import StaffTableRow from './StaffTableRow';
+import SideBar from '../hradmin/SideBar';
 
 class ListStaffProfile extends Component {
     
@@ -18,10 +19,13 @@ class ListStaffProfile extends Component {
 
         return (
             <div>
+                <Row>
+                    <Col><SideBar /></Col>
+                    <Col>
                 <br />
                 <div className="container" style={divStyle}>
                     <Row>
-                        <Col><h3>List of Staff Profile</h3></Col>
+                        <Col><h3>Staff Profile</h3></Col>
                     </Row>
                 </div>
                 <br />
@@ -53,6 +57,8 @@ class ListStaffProfile extends Component {
                         </tbody>
                     </Table>
                 </div>
+                </Col>
+                </Row>
             </div>
         );
     }

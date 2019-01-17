@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import StaffProfile from './StaffProfile';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
+import SideBar from '../hradmin/SideBar';
 
 class NewStaffProfile extends Component {
     constructor(props) {
@@ -86,6 +87,9 @@ class NewStaffProfile extends Component {
         };
         return (
             <div>
+                <Row>
+                    <Col><SideBar /></Col>
+                    <Col>
                 <br />
                 <div className="container" style={divStyle}>
                     <Row>
@@ -108,8 +112,8 @@ class NewStaffProfile extends Component {
                             <Input type="email" name="email" id="email" placeholder="Email" onChange={this.emailHandler} />
                         </FormGroup>
                         <FormGroup>
-                            <Label for="icNumber">NRIC/ Passport No.</Label>
-                            <Input type="text" name="icNumber" id="icNumber" placeholder="NRIC/ Passport No." onChange={this.icNumberHandler} />
+                            <Label for="icNumber">NRIC / Passport No.</Label>
+                            <Input type="text" name="icNumber" id="icNumber" placeholder="NRIC / Passport No." onChange={this.icNumberHandler} />
                         </FormGroup>
 
                         <FormGroup>
@@ -137,6 +141,8 @@ class NewStaffProfile extends Component {
                     </Form>
                     <br />
                 </div>
+                </Col>
+                </Row>
             </div>
         );
 
