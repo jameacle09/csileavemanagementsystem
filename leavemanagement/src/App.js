@@ -11,6 +11,7 @@ import MyProfile from './staffprofile/MyProfile';
 import ChangePassword from './staffprofile/ChangePassword';
 import './stickyfooter.css';
 import ManagerApproval from './manager/ManagerApproval';
+import StaffLeaveHistory from './manager/StaffLeaveHistory';
 import StaffProfileComponent from './staffprofile/StaffProfileComponent';
 import ListStaffProfile from './staffprofile/ListStaffProfile';
 import NewStaffProfile from './staffprofile/NewStaffProfile';
@@ -37,6 +38,7 @@ class App extends Component {
               <Route path="/myprofile" title="My Profile" component={MyProfile} />
               <Route path="/changepassword" title="Change Password" component={ChangePassword} />
               <Route path="/managerapproval" title="Manager Approval" component={ManagerApproval} />
+              <Route path="/staffleavehistory" title="Staff Leave History" component={StaffLeaveHistory} />
               <Route path="/liststaffprofile" title="List Staff Profile" component={StaffProfileComponent} />
               <Route path="/liststaffprofile" title="List Staff Profile" component={ListStaffProfile} />
               <Route path="/newstaffprofile" title="New Staff Profile" component={NewStaffProfile} />
