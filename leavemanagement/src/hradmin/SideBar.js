@@ -1,38 +1,29 @@
 import React, { Component } from 'react';
 import { Link } from "react-router-dom";
-import { Nav, NavItem, NavLink } from 'reactstrap';
+import { ListGroup, ListGroupItem } from 'reactstrap';
+import './SideBarStyle.css';
 
 class SideBar extends Component {
-    
+
     render() {
         const SideBarStyle = {
+            color: "#FFFFFF",
             height: "100vh",
             width: "200px",
             fontSize: "1.3rem",
             background: "#357BB6",
-            fontFamily: 'Helvetica'
+            fontFamily: "Helvetica"
         }
 
         return (
-            <div style={SideBarStyle}>
-                <br />
-                <Nav vertical>
-                    <NavItem>
-                        <NavLink tag={Link} to="/liststaffprofile" activeclassname="active">Staff Profile</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink tag={Link} to="/leaveentitlement" activeclassname="active">Leave Entitlement</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink tag={Link} to="/publicholiday" activeclassname="active" >Public Holiday</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink tag={Link} to="/leavecategory" activeclassname="active">Leave Category</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink tag={Link} to="/liststaffprofile" activeclassname="active">Report</NavLink>
-                    </NavItem>
-                </Nav>
+            <div className="side-menu">
+                <ListGroup>
+                    <ListGroupItem tag={Link} to="/liststaffprofile" activeclassname="active">Staff Profile</ListGroupItem>
+                    <ListGroupItem tag={Link} to="/leaveentitlement" activeclassname="active">Leave Entitlement</ListGroupItem>
+                    <ListGroupItem tag={Link} to="/publicholiday" activeclassname="active">Public Holiday</ListGroupItem>
+                    <ListGroupItem tag={Link} to="/leavecategory" activeclassname="active">Leave Category</ListGroupItem>
+                    <ListGroupItem tag={Link} to="/hrdashboard" activeclassname="active">Report</ListGroupItem>
+                </ListGroup>
             </div>
         )
     }

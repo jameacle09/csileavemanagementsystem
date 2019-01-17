@@ -7,20 +7,20 @@ import HomePage from './home/HomePage';
 import ApplyLeave from './leaves/ApplyLeave';
 import MyLeaveDetails from './leaves/MyLeaveDetails';
 import MyLeaveHistory from './leaves/MyLeaveHistory';
-import LeaveEntitlement from './leaves/LeaveEntitlement';
-import EditEntitlement from './leaves/EditEntitlement';
 import MyProfile from './staffprofile/MyProfile';
 import ChangePassword from './staffprofile/ChangePassword';
 import './stickyfooter.css';
-import HrDashboard from './hradmin/HrDashboard';
 import ManagerApproval from './manager/ManagerApproval';
 import StaffProfileComponent from './staffprofile/StaffProfileComponent';
 import ListStaffProfile from './staffprofile/ListStaffProfile';
 import NewStaffProfile from './staffprofile/NewStaffProfile';
+import HrDashboard from './hradmin/HrDashboard';
 import PublicHoliday from './hradmin/PublicHoliday';
 import LeaveCategory from './hradmin/LeaveCategory';
 import AddPublicHoliday from './hradmin/AddPublicHoliday';
 import AddLeaveCategory from './hradmin/AddLeaveCategory';
+import LeaveEntitlement from './hradmin/LeaveEntitlement';
+import EditEntitlement from './hradmin/EditEntitlement';
 
 
 class App extends Component {

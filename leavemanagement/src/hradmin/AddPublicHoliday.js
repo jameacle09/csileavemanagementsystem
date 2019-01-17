@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input, FormText, Row, Col } from 'reactstrap';
+import SideBar from './SideBar';
 
 class AddPublicHoliday extends Component {
     render() {
@@ -10,6 +11,9 @@ class AddPublicHoliday extends Component {
         };
         return (
             <div>
+                <Row>
+                    <Col><SideBar /></Col>
+                    <Col>
                 <br />
                 <div className="container" style={divStyle}>
                     <Row>
@@ -38,6 +42,8 @@ class AddPublicHoliday extends Component {
                         <Button color="primary">Save</Button>
                     </Form>
                 </div>
+                </Col>
+                </Row>
             </div>
         );
     }
