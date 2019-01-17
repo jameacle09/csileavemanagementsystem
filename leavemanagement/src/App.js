@@ -14,7 +14,6 @@ import ManagerApproval from './manager/ManagerApproval';
 import StaffProfileComponent from './staffprofile/StaffProfileComponent';
 import ListStaffProfile from './staffprofile/ListStaffProfile';
 import NewStaffProfile from './staffprofile/NewStaffProfile';
-import HrDashboard from './hradmin/HrDashboard';
 import PublicHoliday from './hradmin/PublicHoliday';
 import LeaveCategory from './hradmin/LeaveCategory';
 import AddPublicHoliday from './hradmin/AddPublicHoliday';
@@ -38,7 +37,6 @@ class App extends Component {
               <Route path="/myprofile" title="My Profile" component={MyProfile} />
               <Route path="/changepassword" title="Change Password" component={ChangePassword} />
               <Route path="/managerapproval" title="Manager Approval" component={ManagerApproval} />
-              <Route path="/hrdashboard" title="HR Dashboard" component={HrDashboard} />
               <Route path="/liststaffprofile" title="List Staff Profile" component={StaffProfileComponent} />
               <Route path="/liststaffprofile" title="List Staff Profile" component={ListStaffProfile} />
               <Route path="/newstaffprofile" title="New Staff Profile" component={NewStaffProfile} />
