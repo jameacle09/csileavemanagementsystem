@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input, FormText, Row, Col } from 'reactstrap';
+import SideBar from './SideBar';
 
 class AddPublicHoliday extends Component {
     render() {
@@ -10,6 +11,9 @@ class AddPublicHoliday extends Component {
         };
         return (
             <div>
+                <Row>
+                    <Col><SideBar /></Col>
+                    <Col>
                 <br />
                 <div className="container" style={divStyle}>
                     <Row>
@@ -35,16 +39,11 @@ class AddPublicHoliday extends Component {
                             <Label for="state">State</Label>
                             <Input type="text" name="state" id="state" placeholder="State" />
                         </FormGroup>
-                        <FormGroup>
-                            <Label for="attachment">Upload data from an Excel</Label>
-                            <Input type="file" name="attachment" id="attachment" />
-                            <FormText color="muted">
-                                Please attach your document.
-                        </FormText>
-                        </FormGroup>
                         <Button color="primary">Save</Button>
                     </Form>
                 </div>
+                </Col>
+                </Row>
             </div>
         );
     }

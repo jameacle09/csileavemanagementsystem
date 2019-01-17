@@ -26,23 +26,34 @@ public class StaffLeave {
 	@JoinColumn(name="leave_category_id")
 	private LeaveCategory leaveCategoryId;
 	
+	@Column(name="entitlement")
+	private float entitlement;
+	
+	@Column(name="carry_forward")
+	private float carryForward;
+	
 	@Column(name="available_leave")
 	private float availableLeave;
 	
 	@Column(name="taken_leave")
 	private float takenLeave;
 	
+	@Column(name="balance_leave")
+	private float balanceLeave;
 	
 	public StaffLeave() {
 		
 	}
 
 
-	public StaffLeave(StaffProfile staffId, LeaveCategory leaveCategoryId, float availableLeave, float takenLeave) {
+	public StaffLeave(StaffProfile staffId, LeaveCategory leaveCategoryId, float entitlement, float carryForward, float availableLeave, float takenLeave, float balanceLeave) {
 		this.staffId = staffId;
 		this.leaveCategoryId = leaveCategoryId;
+		this.entitlement = entitlement;
+		this.carryForward = carryForward;
 		this.availableLeave = availableLeave;
 		this.takenLeave = takenLeave;
+		this.balanceLeave = balanceLeave;
 	}
 
 
@@ -75,6 +86,26 @@ public class StaffLeave {
 		this.leaveCategoryId = leaveCategoryId;
 	}
 
+	
+	public float getEntitlement() {
+		return entitlement;
+	}
+
+
+	public void setEntitlement(float entitlement) {
+		this.entitlement = entitlement;
+	}
+
+
+	public float getCarryForward() {
+		return carryForward;
+	}
+
+
+	public void setCarryForward(float carryForward) {
+		this.carryForward = carryForward;
+	}
+
 
 	public float getAvailableLeave() {
 		return availableLeave;
@@ -95,13 +126,24 @@ public class StaffLeave {
 		this.takenLeave = takenLeave;
 	}
 
+	
+
+	public float getBalanceLeave() {
+		return balanceLeave;
+	}
+
+
+	public void setBalanceLeave(float balanceLeave) {
+		this.balanceLeave = balanceLeave;
+	}
+
 
 	@Override
 	public String toString() {
 		return "StaffLeave [id=" + id + ", staffId=" + staffId + ", leaveCategoryId=" + leaveCategoryId
-				+ ", availableLeave=" + availableLeave + ", takenLeave=" + takenLeave + "]";
+				+ ", entitlement=" + entitlement + ", carryForward=" + carryForward + ", availableLeave="
+				+ availableLeave + ", takenLeave=" + takenLeave + ", balanceLeave=" + balanceLeave + "]";
 	}
-	
-	
+
 
 }

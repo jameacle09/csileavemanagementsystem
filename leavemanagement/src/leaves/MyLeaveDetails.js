@@ -2,9 +2,6 @@ import React, { Component } from 'react';
 import { Table, Row, Col } from 'reactstrap';
 
 class MyLeaveDetails extends Component {
-  constructor(props) {
-    super(props);
-  }
   render() {
     const divStyle = {
       background: "#eee",

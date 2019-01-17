@@ -1,13 +1,10 @@
 import React, { Component } from 'react';
 import { Table, Button, Row, Col } from 'reactstrap';
 import StaffTableRow from './StaffTableRow';
+import SideBar from '../hradmin/SideBar';
 
 class ListStaffProfile extends Component {
-    constructor(props) {
-        super(props);
-
-    }
-
+    
     render() {
         const spacing = {
             padding: "10px",
@@ -22,10 +19,13 @@ class ListStaffProfile extends Component {
 
         return (
             <div>
+                <Row>
+                    <Col><SideBar /></Col>
+                    <Col>
                 <br />
                 <div className="container" style={divStyle}>
                     <Row>
-                        <Col><h3>List of Staff Profile</h3></Col>
+                        <Col><h3>Staff Profile</h3></Col>
                     </Row>
                 </div>
                 <br />
@@ -39,7 +39,7 @@ class ListStaffProfile extends Component {
                                 <th>CSI Staff ID</th>
                                 <th>Staff Name</th>
                                 <th>Email</th>
-                                <th>IC No./ Passport No.</th>
+                                <th>NRIC / Passport No.</th>
                                 <th>Job Title</th>
                                 <th>Mobile No.</th>
                                 <th>Business Unit</th>
@@ -57,6 +57,8 @@ class ListStaffProfile extends Component {
                         </tbody>
                     </Table>
                 </div>
+                </Col>
+                </Row>
             </div>
         );
     }
