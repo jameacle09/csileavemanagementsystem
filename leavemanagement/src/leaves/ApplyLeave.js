@@ -24,7 +24,8 @@ class ApplyLeave extends Component {
             leaveDuration: 1,
             leaveCategory: '',
             leaveReason: '',
-            attachedFile: null
+            attachedFile: null,
+            approverId: ''
         };
 
         this.handleDateChange = this.handleDateChange.bind(this);
@@ -162,6 +163,9 @@ class ApplyLeave extends Component {
             case 'attachment' :
                 this.setState({attachedFile: event.target.files[0]})
                 break;
+            case 'approver' :
+                this.setState({approverId: event.target.value})
+                break;
             default :
                 break;
         }
@@ -170,25 +174,30 @@ class ApplyLeave extends Component {
     // create JSON object with form data, and call API
     handleSubmit (event) {
         event.preventDefault();
-
+        
         let newLeaveRequest = {
-            'staffId': this.state.userData['id'],
-            'leaveCategory': this.state.leaveCategory,
+            'staffId': { 'id': this.state.userData['id']},
+            'leaveCategory': { 'leaveCategory': this.state.leaveCategory},
             'startDate': this.state.startDate,
             'endDate': this.state.endDate,
             'leaveDuration': this.state.leaveDuration,
             'leaveReason': this.state.leaveReason,
-            'leaveStatusId': 3      // All new leave has status of 3, Pending Approval
+            'leaveStatusId': {'leaveStatusId': 3}      // All new leave has status of 3, Pending Approval
         }
 
-        fetch('/api/leavedetail', {
+        console.log(JSON.stringify(newLeaveRequest));
+        
+        fetch('http://localhost/api/leavedetail', {
             method: 'POST',
             headers: {
               'Accept': 'application/json',
               'Content-Type': 'application/json'
             },
             body: JSON.stringify(newLeaveRequest),
-        }).then(this.props.history.push('/MyLeaveDetails'))  
+        })
+        .then(res=>res.json())
+        .then(res => console.log(res))
+//        .then(this.props.history.push('/MyLeaveDetails'))  
         .catch (err => {
             console.log("!!! Error : " . err)
         })       
@@ -201,7 +210,7 @@ class ApplyLeave extends Component {
             boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
         };
 
-        const {userData, leaveCategoryList, startDate, endDate, isHalfDay, leaveDuration, leaveCategory} = this.state;
+        const {userData, leaveCategoryList, startDate, endDate, isHalfDay, leaveDuration, leaveCategory, leaveReason, attachedFile , approverId} = this.state;
 
         return (
             <div>
@@ -273,7 +282,18 @@ class ApplyLeave extends Component {
                                 onChange={this.handleDetailsChange} />
                             <FormText color="muted">
                                 Please attach your document.
-                        </FormText>
+                            </FormText>
+                        </FormGroup>                        
+                        <FormGroup>
+                            <Label for="approverId">Approver</Label>
+                            <Input type="select" name="approverId" id="approverId"
+                                onChange={this.handleDetailsChange} value={approverId}>
+                                {
+                                //    approverList.map((approver) => {
+                                //        return (<option key={approver['id']} value={approver['id']}>{approver['staffName']}</option>)
+                                //    })
+                                }
+                            </Input>
                         </FormGroup>
                         <br />
                         <Button color="primary">Submit</Button>
