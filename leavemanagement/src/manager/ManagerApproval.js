@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
-import { Table, Row, Col } from 'reactstrap';
-import ManagerSideBar from './ManagerSideBar'
+import { Table, Row, Col, ListGroup, ListGroupItem } from 'reactstrap';
+import ManagerSideBar from './ManagerSideBar';
 
 class ManagerApproval extends Component {
     render() {
@@ -11,38 +11,42 @@ class ManagerApproval extends Component {
         };
         return (
             <div>
-                <Row>
-                    <Col><ManagerSideBar /></Col>
-                    <Col>
-                <br />
-                <div className="container" style={divStyle}>
-                    <Row>
-                        <Col><h3>View Leave Request</h3></Col>
-                    </Row>
+                <div className="containerFlex_">
+                    <ListGroup className="ListGroupSideBar">
+                            <ManagerSideBar />
+                    </ListGroup>
+                    <ListGroup className="ListGroupContent">
+                            <div>
+                                <br /><br />
+                                <div className="container" style={divStyle}>
+                                    <Row>
+                                        <Col><h3>View Leave Request</h3></Col>
+                                    </Row>
+                                </div>
+                                <br />
+                                <div className="container">
+                                    <Table bordered responsive>
+                                        <thead>
+                                            <tr>
+                                                <th>Name</th>
+                                                <th>Leave Type</th>
+                                                <th>Status</th>
+                                                <th>Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                                <td>-</td>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+                                </div>
+                            </div>
+                    </ListGroup>
                 </div>
-                <br />
-                <div className="container">
-                    <Table bordered responsive>
-                        <thead>
-                            <tr>
-                                <th>Name</th>
-                                <th>Leave Type</th>
-                                <th>Status</th>
-                                <th>Action</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                                <td>-</td>
-                            </tr>
-                        </tbody>
-                    </Table>
-                </div>
-                </Col>
-                </Row>
             </div>
         );
     }

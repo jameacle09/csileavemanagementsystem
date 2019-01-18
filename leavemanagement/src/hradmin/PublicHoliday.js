@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Table, Row, Col, ListGroup } from 'reactstrap';
+import { Button, Table, Row, Col, ListGroup, ListGroupItem } from 'reactstrap';
 import { Link } from "react-router-dom";
 import SideBar from './SideBar';
 import "./SideBarStyle.css";
@@ -19,50 +19,52 @@ class PublicHoliday extends Component {
         };
 
         return (
-            <div className="containerFlex">
-                <ListGroup className="Flex1">
-                    <SideBar />
-                </ListGroup>
-                <ListGroup className="Flex2">
-                    <div>
-                        <br /><br />
-                        <div className="container" style={divStyle}>
-                            <Row>
-                                <Col><h3>Public Holiday</h3></Col>
-                            </Row>
-                        </div>
-                        <br />
-                        <div className="container">
-                            <div style={spacing}>
-                                <Button className="btn btn-primary" color="primary" tag={Link} to="/addpublicholiday" activeclassname="active">Add New</Button><span> </span>
-                                <Button className="btn btn-primary" color="primary">Upload Holiday</Button>
-                            </div>
+            <div>
+                <div className="containerFlex_">
+                    <ListGroup className="ListGroupSideBar">
+                            <SideBar />
+                    </ListGroup>
+                    <ListGroup className="ListGroupContent">
+                            <div>
+                                <br /><br />
+                                <div className="container" style={divStyle}>
+                                    <Row>
+                                        <Col><h3>Public Holiday</h3></Col>
+                                    </Row>
+                                </div>
+                                <br />
+                                <div className="container">
+                                    <div style={spacing}>
+                                        <Button className="btn btn-primary" color="primary" tag={Link} to="/addpublicholiday" activeclassname="active">Add New</Button><span> </span>
+                                        <Button className="btn btn-primary" color="primary">Upload Holiday</Button>
+                                    </div>
 
-                            <Table responsive>
-                                <thead>
-                                    <tr>
-                                        <th>Date</th>
-                                        <th>Day</th>
-                                        <th>Holiday</th>
-                                        <th>State</th>
-                                        <th>Edit</th>
-                                        <th>Delete</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td><Button color="primary"><span>Edit</span></Button></td>
-                                        <td><Button color="primary"><span>Delete</span></Button></td>
-                                    </tr>
-                                </tbody>
-                            </Table>
-                        </div>
-                    </div>
-                </ListGroup>
+                                    <Table responsive>
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Day</th>
+                                                <th>Holiday</th>
+                                                <th>State</th>
+                                                <th>Edit</th>
+                                                <th>Delete</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><Button color="primary"><span>Edit</span></Button></td>
+                                                <td><Button color="primary"><span>Delete</span></Button></td>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+                                </div>
+                            </div>
+                    </ListGroup>
+                </div>
             </div>
         );
     }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Table, Row, Col, ListGroup } from 'reactstrap';
+import { Button, Table, Row, Col, ListGroup, ListGroupItem } from 'reactstrap';
 import { Link } from "react-router-dom";
 import SideBar from './SideBar';
 import "./SideBarStyle.css";
@@ -19,45 +19,47 @@ class LeaveCategory extends Component {
         };
 
         return (
-            <div className="containerFlex">
-                <ListGroup className="Flex1">
-                    <SideBar />
-                </ListGroup>
-                <ListGroup className="Flex2">
-                    <div>
-                        <br /><br />
-                        <div className="container" style={divStyle}>
-                            <Row>
-                                <Col><h3>List of Leave Category</h3></Col>
-                            </Row>
-                        </div>
-                        <br />
-                        <div className="container">
-                            <div style={spacing}>
-                                <Button className="btn btn-primary" color="primary" tag={Link} to="/addleavecategory" activeclassname="active">Add New</Button>
-                            </div>
+            <div>
+                <div className="containerFlex_">
+                    <ListGroup className="ListGroupSideBar">
+                            <SideBar />
+                    </ListGroup>
+                    <ListGroup className="ListGroupContent">
+                            <div>
+                                <br /><br />
+                                <div className="container" style={divStyle}>
+                                    <Row>
+                                        <Col><h3>List of Leave Category</h3></Col>
+                                    </Row>
+                                </div>
+                                <br />
+                                <div className="container">
+                                    <div style={spacing}>
+                                        <Button className="btn btn-primary" color="primary" tag={Link} to="/addleavecategory" activeclassname="active">Add New</Button>
+                                    </div>
 
-                            <Table responsive>
-                                <thead>
-                                    <tr>
-                                        <th>Leave Code</th>
-                                        <th>Description</th>
-                                        <th>Entitlement</th>
-                                        <th>Edit</th>
-                                    </tr>
-                                </thead>
-                                <tbody>
-                                    <tr>
-                                        <td></td>
-                                        <td></td>
-                                        <td></td>
-                                        <td><Button color="primary"><span>Edit</span></Button></td>
-                                    </tr>
-                                </tbody>
-                            </Table>
-                        </div>
-                    </div>
-                </ListGroup>
+                                    <Table responsive>
+                                        <thead>
+                                            <tr>
+                                                <th>Leave Code</th>
+                                                <th>Description</th>
+                                                <th>Entitlement</th>
+                                                <th>Edit</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            <tr>
+                                                <td></td>
+                                                <td></td>
+                                                <td></td>
+                                                <td><Button color="primary"><span>Edit</span></Button></td>
+                                            </tr>
+                                        </tbody>
+                                    </Table>
+                                </div>
+                            </div>
+                    </ListGroup>
+                </div>
             </div>
         );
     }

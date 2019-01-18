@@ -13,10 +13,6 @@ class MyLeaveSummary extends Component {
                 <Row>
                     <Col><h5>Annual Leave Balance: 23 Days</h5></Col>
                 </Row>
-                <br />
-                <Row>
-                    <Col><h5>Medical Leave Balance: 14 Days</h5></Col>
-                </Row>
             </div>
         );
     }

@@ -103,7 +103,7 @@ class MyProfile extends Component {
                         <ListGroupItem color="primary">My Profile</ListGroupItem>
                         <ListGroupItem>CSI Staff ID: <p className="dataText">{userData['csiStaffId']}</p></ListGroupItem>
                         <ListGroupItem>Name: <p className="dataText">{userData['staffName']}</p></ListGroupItem>
-                        <ListGroupItem>NRIC/ Passport No: <p className="dataText">{userData['icNumber']}</p></ListGroupItem>
+                        <ListGroupItem>NRIC / Passport No: <p className="dataText">{userData['icNumber']}</p></ListGroupItem>
                     </ListGroup>
                     <ListGroup className="ListGroupStyleFlex">
                         <ListGroupItem color="primary">Business</ListGroupItem>
