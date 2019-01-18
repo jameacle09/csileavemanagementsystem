@@ -11,12 +11,17 @@ class ApplyLeave extends Component {
             userData: {
                 'id': '',
                 'csiStaffId': '',
-                'staffName': ''
+                'staffName': '',
+                'lineManager': null
             },
             leaveCategoryList:  [{
                 'id': '',
                 'leaveCode': '',
                 'leaveName': ''
+            }],
+            approverList: [{
+                'id': '',
+                'staffName': ''
             }],
             startDate: new Date(),
             endDate: new Date(),
@@ -38,13 +43,18 @@ class ApplyLeave extends Component {
         // fetch CSI Staff ID and Name from API    
         fetch('http://localhost/api/staffprofile/1')
         .then(response => response.json())
-        .then(data => this.setState({userData: data}))
+        .then(data => {
+            this.setState({userData: data})
+            if(data['lineManager'] != null)
+                this.setState({approverId: data['lineManager']['id']})
+        })
         .catch(err => {
             // if unable to fetch data, assign default (spaces) to values
             let userData = {
                 'id': '',
                 'csiStaffId': '',
-                'staffName': ''
+                'staffName': '',
+                'lineManager': null
             }
             this.setState({userData: userData})
         })             
@@ -61,6 +71,20 @@ class ApplyLeave extends Component {
                 'leaveName': ''
             }]
             this.setState({leaveCategoryList: leaveCategoryData})
+        })    
+        
+        
+        // fetch approvers from API    
+        fetch('http://localhost/api/managers')
+        .then(response => response.json())
+        .then(data => this.setState({approverList: data}))
+        .catch(err => {
+            // if unable to fetch data, assign default (spaces) to values
+            let approverListData = [{
+                'id': '',
+                'staffName': ''
+            }]
+            this.setState({approverList: approverListData})
         })             
     }
 
@@ -177,12 +201,12 @@ class ApplyLeave extends Component {
         
         let newLeaveRequest = {
             'staffId': { 'id': this.state.userData['id']},
-            'leaveCategory': { 'leaveCategory': this.state.leaveCategory},
+            'leaveCategory': { 'id': this.state.leaveCategory},
             'startDate': this.state.startDate,
             'endDate': this.state.endDate,
             'leaveDuration': this.state.leaveDuration,
             'leaveReason': this.state.leaveReason,
-            'leaveStatusId': {'leaveStatusId': 3}      // All new leave has status of 3, Pending Approval
+            'leaveStatusId': {'id': 3}      // All new leave has status of 3, Pending Approval
         }
 
         console.log(JSON.stringify(newLeaveRequest));
@@ -200,7 +224,8 @@ class ApplyLeave extends Component {
 //        .then(this.props.history.push('/MyLeaveDetails'))  
         .catch (err => {
             console.log("!!! Error : " . err)
-        })       
+        })     
+        
     }
 
     render() {
@@ -210,7 +235,8 @@ class ApplyLeave extends Component {
             boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
         };
 
-        const {userData, leaveCategoryList, startDate, endDate, isHalfDay, leaveDuration, leaveCategory, leaveReason, attachedFile , approverId} = this.state;
+        const {userData, leaveCategoryList, approverList, startDate, endDate, isHalfDay, leaveDuration, 
+            leaveCategory, leaveReason, attachedFile , approverId} = this.state;
 
         return (
             <div>
@@ -289,9 +315,9 @@ class ApplyLeave extends Component {
                             <Input type="select" name="approverId" id="approverId"
                                 onChange={this.handleDetailsChange} value={approverId}>
                                 {
-                                //    approverList.map((approver) => {
-                                //        return (<option key={approver['id']} value={approver['id']}>{approver['staffName']}</option>)
-                                //    })
+                                    approverList.map((approver) => {
+                                        return (<option key={approver['id']} value={approver['id']}>{approver['staffName']}</option>)
+                                    })
                                 }
                             </Input>
                         </FormGroup>
