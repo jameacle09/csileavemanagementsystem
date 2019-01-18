@@ -27,7 +27,20 @@ class NewStaffProfile extends Component {
         this.lineManagerIdHandler = this.lineManagerIdHandler.bind(this);
         this.joinDateHandler = this.joinDateHandler.bind(this);
         this.save = this.save.bind(this);
+        this.state = {
+            selectedOption: "active"
+        };
     }
+
+    handleOptionChange = changeEvent => {
+        this.setState({
+            selectedOption: changeEvent.target.value
+        });
+    };
+
+    handleFormSubmit = formSubmitEvent => {
+        formSubmitEvent.preventDefault();
+    };
 
     csiStaffIdHandler(event) {
         this.csiStaffId = event.target.value;
@@ -152,6 +165,27 @@ class NewStaffProfile extends Component {
                                     <FormGroup>
                                         <Label for="joinDate">Join Date</Label>
                                         <Input type="date" name="joinDate" id="joinDate" placeholder="Join Date" onChange={this.joinDateHandler} />
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label for="status">Status</Label>
+                                        <div className="form-check">
+                                            <Input type="radio" name="active" value="active" checked={this.state.selectedOption === "active"} onChange={this.handleOptionChange} /> Active
+                                        </div>
+                                        <div className="form-check">
+                                            <Input type="radio" name="inactive" value="inactive" checked={this.state.selectedOption === "inactive"} onChange={this.handleOptionChange} /> Inactive
+                                        </div>
+                                    </FormGroup>
+                                    <FormGroup>
+                                        <Label for="role">Role</Label>
+                                        <div className="form-check">
+                                            <Input type="checkbox" name="employee" value="employee" /> Employee
+                                        </div>
+                                        <div className="form-check">
+                                            <Input type="checkbox" name="manager" value="manager" /> Manager
+                                        </div>
+                                        <div className="form-check">
+                                            <Input type="checkbox" name="admin" value="admin" /> Admin
+                                        </div>
                                     </FormGroup>
                                     <br />
                                     <Button color="primary" onClick={this.save}>Submit</Button>

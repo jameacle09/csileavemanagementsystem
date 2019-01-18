@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button, Row, Col, ListGroup, ListGroupItem } from 'reactstrap';
+import { Table, Button, Row, Col, ListGroup } from 'reactstrap';
 import StaffTableRow from './StaffTableRow';
 import { Link } from "react-router-dom";
 import SideBar from '../hradmin/SideBar';
@@ -64,7 +64,7 @@ class ListStaffProfile extends Component {
                                             <td>-</td>
                                             <td>-</td>
                                             <td>-</td>
-                                            <td><Button color="primary" tag={Link} to="#" activeclassname="active">Edit</Button></td>
+                                            <td><Button color="primary" tag={Link} to="/editstaffprofile" activeclassname="active">Edit</Button></td>
                                         </tr>
                                     </tbody>
                                 </Table>

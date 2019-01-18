@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 
 class ChangePassword extends Component {
     render() {
@@ -11,6 +11,12 @@ class ChangePassword extends Component {
         return (
             <div>
                 <br />
+                <div className="container" style={divStyle}>
+                    <Row>
+                        <Col><h3>Change Password</h3></Col>
+                    </Row>
+                </div>
+                <br />      
                 <div className="container" style={divStyle}>
                     <Form>
                         <FormGroup>

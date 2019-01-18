@@ -47,7 +47,6 @@ class MyLeaveHistory extends Component {
             </tbody>
           </Table>
         </div>
-
       </div>
 
     );
