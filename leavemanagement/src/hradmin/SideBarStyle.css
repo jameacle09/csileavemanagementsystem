@@ -1,12 +1,12 @@
 .sidebar{
-    font: large Helvetica;
+    font: 17px Helvetica;
     line-height: 50px;
     text-indent: 15px;
     width: 290px;
     background-color: lightskyblue;
 }
 .sidebar :hover {
-    font: bold x-large Helvetica;
+    font: bold 18px Helvetica;
     line-height: 50px;
     text-indent: 15px;
     color: darkblue;

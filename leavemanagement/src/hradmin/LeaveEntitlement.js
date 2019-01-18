@@ -63,7 +63,7 @@ class LeaveEntitlement extends Component {
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td><Button color="primary" tag={Link} to="/editentitlement" activeclassname="active"><span>Edit</span></Button></td>
+                                                <td><Button color="primary" tag={Link} to="/editentitlement" activeclassname="active">Edit</Button></td>
                                             </tr>
                                         </tbody>
                                     </Table>
