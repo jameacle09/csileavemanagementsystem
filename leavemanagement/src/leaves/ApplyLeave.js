@@ -1,12 +1,12 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input, FormText, Row, Col } from 'reactstrap';
-import MyLeaveSummary from './MyLeaveSummary';
+import { Button, Form, FormGroup, Label, Input, FormText, Row, Col, Progress } from 'reactstrap';
+//import MyLeaveSummary from './MyLeaveSummary';
 
 class ApplyLeave extends Component {
 
     constructor(props) {
         super(props);
-        
+
         this.state = {
             userData: {
                 'id': '',
@@ -14,7 +14,10 @@ class ApplyLeave extends Component {
                 'staffName': '',
                 'lineManager': null
             },
-            leaveCategoryList:  [{
+            staffLeave: {
+                'availableLeave': ''
+            },
+            leaveCategoryList: [{
                 'id': '',
                 'leaveCode': '',
                 'leaveName': ''
@@ -58,7 +61,7 @@ class ApplyLeave extends Component {
             }
             this.setState({userData: userData})
         })             
-        
+
         // fetch leave category from API    
         fetch('http://localhost/api/leavecategories')
         .then(response => response.json())
@@ -72,8 +75,19 @@ class ApplyLeave extends Component {
             }]
             this.setState({leaveCategoryList: leaveCategoryData})
         })    
-        
-        
+
+        // fetch leave balance from API 
+        fetch('http://localhost/api/staffleave/1')
+            .then(response => response.json())
+            .then(data => this.setState({ staffLeave: data }))
+            .catch(err => {
+                // if unable to fetch data, assign default (spaces) to values
+                let staffLeaveData = {
+                    'availableLeave': ''
+                }
+                this.setState({ staffLeave: staffLeaveData })
+        })
+                        
         // fetch approvers from API    
         fetch('http://localhost/api/managers')
         .then(response => response.json())
@@ -246,8 +260,15 @@ class ApplyLeave extends Component {
                         <Col><h3>Apply Leave</h3></Col>
                     </Row>
                 </div>
-                <br />
-                <MyLeaveSummary />
+                <br />               
+                <div className="container" style={divStyle}>
+                    <Row>
+                        <Col>
+                            <h5>Annual Leave Balance: {staffLeave['availableLeave']} Days</h5>
+                            <Progress value="75">25%</Progress>
+                        </Col>
+                    </Row>
+                </div>
                 <br />
                 <div className="container" style={divStyle}>
                     <Form onSubmit={this.handleSubmit}>
@@ -291,7 +312,7 @@ class ApplyLeave extends Component {
                                 Check the box if you are taking half day leave.
                         </Label>
                         </FormGroup>
-                        <br/>
+                        <br />
                         <FormGroup>
                             <Label for="leaveDuration">Leave Duration: {'  '}  
                                 <strong>{leaveDuration <= 1 ? leaveDuration + " Day" : leaveDuration + " Days"}</strong> 
