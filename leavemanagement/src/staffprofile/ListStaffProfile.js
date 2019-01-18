@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
-import { Table, Button, Row, Col } from 'reactstrap';
+import { Table, Button, Row, Col, ListGroup } from 'reactstrap';
 import StaffTableRow from './StaffTableRow';
+import { Link } from "react-router-dom";
 import SideBar from '../hradmin/SideBar';
+import "../hradmin/SideBarStyle.css";
 
 class ListStaffProfile extends Component {
     
@@ -18,11 +20,13 @@ class ListStaffProfile extends Component {
         };
 
         return (
-            <div>
-                <Row>
-                    <Col><SideBar /></Col>
-                    <Col>
-                <br />
+            <div className="containerFlex">
+                <ListGroup className="Flex1">
+                    <SideBar />
+                </ListGroup>
+                <ListGroup className="Flex2">
+                    <div>
+                        <br /><br />
                 <div className="container" style={divStyle}>
                     <Row>
                         <Col><h3>Staff Profile</h3></Col>
@@ -31,7 +35,7 @@ class ListStaffProfile extends Component {
                 <br />
                 <div className="container">
                     <div style={spacing}>
-                        <Button className="btn btn-primary" color="primary" onClick={this.props.showNewStaffProfile} activeclassname="active">Add New Employee</Button>
+                        <Button className="btn btn-primary" color="primary" tag={Link} to="/newstaffprofile" activeclassname="active">Add New Employee</Button>
                     </div>
                     <Table responsive>
                         <thead>
@@ -57,8 +61,8 @@ class ListStaffProfile extends Component {
                         </tbody>
                     </Table>
                 </div>
-                </Col>
-                </Row>
+                </div>
+                </ListGroup>
             </div>
         );
     }

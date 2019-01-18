@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Table, Row, Col } from 'reactstrap';
+import { Button, Table, Row, Col, ListGroup } from 'reactstrap';
 import { Link } from "react-router-dom";
 import SideBar from './SideBar';
+import "./SideBarStyle.css";
 
 class LeaveCategory extends Component {
 
@@ -18,11 +19,13 @@ class LeaveCategory extends Component {
         };
 
         return (
-            <div>
-                <Row>
-                    <Col><SideBar /></Col>
-                    <Col>
-                        <br />
+            <div className="containerFlex">
+                <ListGroup className="Flex1">
+                    <SideBar />
+                </ListGroup>
+                <ListGroup className="Flex2">
+                    <div>
+                        <br /><br />
                         <div className="container" style={divStyle}>
                             <Row>
                                 <Col><h3>List of Leave Category</h3></Col>
@@ -53,12 +56,11 @@ class LeaveCategory extends Component {
                                 </tbody>
                             </Table>
                         </div>
-                    </Col>
-                </Row>
+                    </div>
+                </ListGroup>
             </div>
+        );
+    }
+}
 
-                );
-            }
-        }
-        
 export default LeaveCategory;

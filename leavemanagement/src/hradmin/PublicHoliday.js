@@ -1,7 +1,8 @@
 import React, { Component } from 'react';
-import { Button, Table, Row, Col } from 'reactstrap';
+import { Button, Table, Row, Col, ListGroup } from 'reactstrap';
 import { Link } from "react-router-dom";
 import SideBar from './SideBar';
+import "./SideBarStyle.css";
 
 class PublicHoliday extends Component {
 
@@ -18,11 +19,13 @@ class PublicHoliday extends Component {
         };
 
         return (
-            <div>
-                <Row>
-                    <Col><SideBar /></Col>
-                    <Col>
-                        <br />
+            <div className="containerFlex">
+                <ListGroup className="Flex1">
+                    <SideBar />
+                </ListGroup>
+                <ListGroup className="Flex2">
+                    <div>
+                        <br /><br />
                         <div className="container" style={divStyle}>
                             <Row>
                                 <Col><h3>Public Holiday</h3></Col>
@@ -58,8 +61,8 @@ class PublicHoliday extends Component {
                                 </tbody>
                             </Table>
                         </div>
-                    </Col>
-                </Row>
+                    </div>
+                </ListGroup>
             </div>
         );
     }
