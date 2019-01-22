@@ -250,7 +250,7 @@ class ApplyLeave extends Component {
         };
 
         const {userData, leaveCategoryList, approverList, startDate, endDate, isHalfDay, leaveDuration, 
-            leaveCategory, leaveReason, attachedFile , approverId} = this.state;
+            leaveCategory, leaveReason, attachedFile , approverId, staffLeave} = this.state;
 
         return (
             <div>
@@ -265,7 +265,6 @@ class ApplyLeave extends Component {
                     <Row>
                         <Col>
                             <h5>Annual Leave Balance: {staffLeave['availableLeave']} Days</h5>
-                            <Progress value="75">25%</Progress>
                         </Col>
                     </Row>
                 </div>
