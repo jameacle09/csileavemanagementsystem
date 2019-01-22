@@ -52,7 +52,7 @@ class LeaveCategory extends Component {
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td><Button color="primary"><span>Edit</span></Button></td>
+                                                <td><Button color="primary" tag={Link} to="/editleavecategory" activeclassname="active"><span>Edit</span></Button></td>
                                             </tr>
                                         </tbody>
                                     </Table>

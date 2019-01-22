@@ -1,35 +1,31 @@
 .sidebar{
-    font: large Helvetica;
+    font: 17px Helvetica;
+    width: 250px;
     line-height: 50px;
     text-indent: 15px;
-    width: 290px;
     background-color: lightskyblue;
 }
 .sidebar :hover {
-    font: bold x-large Helvetica;
+    font: bold 18px Helvetica;
     line-height: 50px;
     text-indent: 15px;
     color: darkblue;
   }
 
 .containerFlex_ {
-    margin: 0 0 0 0;    
     display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    flex-basis: auto;
+    flex-wrap: row wrap;
+    
 }
 
 .ListGroupSideBar {    
-    margin: 0 0 0 0;
-    width: 15%;
-    display: flex;
     background-color: lightskyblue;
+    flex-grow: 0;
 }
 
 .ListGroupContent {    
-    margin: 0 0 0 0;
-    width: 85%;
-    display: flex;
+    justify-content: flex-start;
+    flex-grow: 1;
 }
 
+    
