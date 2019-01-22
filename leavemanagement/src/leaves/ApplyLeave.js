@@ -269,7 +269,6 @@ class ApplyLeave extends Component {
                     <Row>
                         <Col>
                             <h5>Annual Leave Balance: {staffLeave['availableLeave']} Days</h5>
-                            <Progress value="75">25%</Progress>
                         </Col>
                     </Row>
                 </div>
