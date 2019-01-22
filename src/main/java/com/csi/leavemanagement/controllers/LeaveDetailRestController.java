@@ -21,8 +21,12 @@ import com.csi.leavemanagement.models.LeaveDetail;
 @CrossOrigin
 public class LeaveDetailRestController {
 
-	@Autowired
 	private LeaveDetailService leaveDetailService;
+	
+	@Autowired
+	public LeaveDetailRestController(LeaveDetailService leaveDetailService) {
+		this.leaveDetailService = leaveDetailService;
+	}
 	
 	@RequestMapping(value="/leavedetails", method=RequestMethod.GET)
 	public List<LeaveDetail> doListLeaveCategories() {

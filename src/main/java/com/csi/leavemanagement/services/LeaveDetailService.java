@@ -11,8 +11,13 @@ import com.csi.leavemanagement.repositories.LeaveDetailRepository;
 @Service
 public class LeaveDetailService {
 
-	@Autowired
 	private LeaveDetailRepository leaveDetailRepository;
+		
+	@Autowired
+	public LeaveDetailService(LeaveDetailRepository leaveDetailRepository) {
+		this.leaveDetailRepository = leaveDetailRepository;
+	}
+
 	public List<LeaveDetail> findAll() {
 		List<LeaveDetail> leaveDetails = (List<LeaveDetail>)this.leaveDetailRepository.findAll();
 		return leaveDetails;

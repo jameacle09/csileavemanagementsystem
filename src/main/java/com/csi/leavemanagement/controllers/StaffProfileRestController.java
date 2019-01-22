@@ -23,9 +23,13 @@ import com.csi.leavemanagement.models.StaffProfile ;
 @CrossOrigin
 public class StaffProfileRestController {
 
-	@Autowired
 	private StaffProfileService staffProfileService;
 	
+	@Autowired	
+	public StaffProfileRestController(StaffProfileService staffProfileService) {
+		this.staffProfileService = staffProfileService;
+	}
+
 	@RequestMapping(value="/staffprofiles", method=RequestMethod.GET)
 	public List<StaffProfile> doListStaffProfiles() {
 		List<StaffProfile> staffProfiles = this.staffProfileService.findAll();
@@ -36,6 +40,12 @@ public class StaffProfileRestController {
 	public StaffProfile doGetStaffProfileById(@PathVariable("id") int id) {
 		StaffProfile staffProfile = this.staffProfileService.findById(id);
 		return staffProfile;
+	}
+	
+	@RequestMapping(value="/managers", method=RequestMethod.GET)
+	public List<StaffProfile> doListManagerProfiles() {
+		List<StaffProfile> staffProfiles = this.staffProfileService.findAllManager();
+		return staffProfiles;
 	}
 	
 	@RequestMapping(value="/staffprofile", method=RequestMethod.POST)
