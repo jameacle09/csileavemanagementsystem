@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input, FormText, Row, Col, Progress } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, FormText, Row, Col, Progress, Alert } from 'reactstrap';
 //import MyLeaveSummary from './MyLeaveSummary';
 
 class ApplyLeave extends Component {
@@ -107,8 +107,7 @@ class ApplyLeave extends Component {
         const fieldName = event.target.name;
         const startDateStr = this.state.startDate.toISOString().substr(0,10);
         const endDateStr = this.state.endDate.toISOString().substr(0,10);
-        const milliseconds = 86400000;
-
+        
         switch(fieldName) {
 
             case "startDate" : 
@@ -121,22 +120,17 @@ class ApplyLeave extends Component {
                     // if new end date and start date are same date
                     if(newStartDateStr === endDateStr) {
                         this.setState({
-                            startDate: newStartDate,
-                            leaveDuration: (this.state.isHalfDay ? 0.5 : 1)
+                            startDate: newStartDate
                         })
                     } else if (newStartDateStr < endDateStr) {
-                        let newLeaveDuration = Math.ceil((this.state.endDate - newStartDate) / milliseconds) +1;
                         this.setState({
                             startDate: newStartDate,
-                            leaveDuration: newLeaveDuration,
                             isHalfDay: false
                         })
                     } else {
-                        // If Start Date is greater than End Date, reset End Date to Start Date
                         this.setState({
                             startDate: newStartDate,
                             endDate: newStartDate,
-                            leaveDuration: 1,
                             isHalfDay: false
                         })
                     }
@@ -153,14 +147,11 @@ class ApplyLeave extends Component {
                     // if new end date and start date are same date
                     if(newEndDateStr === startDateStr) {
                         this.setState({
-                            endDate: newEndDate,
-                            leaveDuration: (this.state.isHalfDay ? 0.5 : 1)
+                            endDate: newEndDate
                         })
                     } else if (newEndDateStr > startDateStr) {
-                        let newLeaveDuration = Math.ceil((newEndDate- this.state.startDate) / milliseconds) +1;
                         this.setState({
                             endDate: newEndDate,
-                            leaveDuration: newLeaveDuration,
                             isHalfDay: false
                         })
                     } else {
@@ -168,7 +159,6 @@ class ApplyLeave extends Component {
                         this.setState({
                             startDate: newEndDate,
                             endDate: newEndDate,
-                            leaveDuration: 1,
                             isHalfDay: false
                         })
                     }
@@ -184,6 +174,11 @@ class ApplyLeave extends Component {
                     })
                 }
                 break;
+
+            case 'leaveDuration' :
+                this.setState({leaveDuration: event.target.value});                
+                break;
+
             default :
                 break;
         }
@@ -255,7 +250,20 @@ class ApplyLeave extends Component {
 
         const {userData, staffLeave, leaveCategoryList, approverList, startDate, endDate, isHalfDay, leaveDuration, 
             leaveCategory, leaveReason, attachedFile , approverId} = this.state;
-
+        
+        // revalidate Leave Duration after each date change
+        const milliseconds = 86400000;
+        const newLeaveDuration = this.state.leaveDuration;
+        const dayDiff = Math.ceil((this.state.endDate- this.state.startDate) / milliseconds) +1;
+        
+        let durationErrorMsg = "";
+        if(newLeaveDuration > dayDiff) 
+            durationErrorMsg = (
+                <Alert color="danger"> 
+                Duration entered exceeded maximum duration between Start Date and End Date 
+                </Alert>
+            );       
+        
         return (
             <div>
                 <br />
@@ -316,10 +324,16 @@ class ApplyLeave extends Component {
                         </Label>
                         </FormGroup>
                         <br />
-                        <FormGroup>
-                            <Label for="leaveDuration">Leave Duration: {'  '}  
-                                <strong>{leaveDuration <= 1 ? leaveDuration + " Day" : leaveDuration + " Days"}</strong> 
-                            </Label>
+                        <FormGroup row>
+                            <Label xs={2} for="leaveDuration">Leave Duration: </Label>
+                            <Col xs={2}>
+                                <Input type="text" name="leaveDuration" id="leaveDuration"
+                                    value={leaveDuration} placeholder="Days" 
+                                    onChange={this.handleDateChange} />
+                            </Col>
+                            <Col xs={8}>
+                                { durationErrorMsg }                                
+                            </Col>
                         </FormGroup>
                         <FormGroup>
                             <Label for="leaveReason">Leave Reason</Label>
