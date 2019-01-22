@@ -177,7 +177,7 @@ class ApplyLeave extends Component {
                 break;
 
             case 'leaveDuration' :
-                this.setState({leaveDuration: event.target.value});                
+                this.setState({leaveDuration: event.target.value});              
                 break;
 
             default :
@@ -213,38 +213,86 @@ class ApplyLeave extends Component {
     // create JSON object with form data, and call API
     handleSubmit (event) {
         event.preventDefault();
-        
-        let newLeaveRequest = {
-            'staffId': { 'id': this.state.userData['id']},
-            'leaveCategory': { 'id': this.state.leaveCategory},
-            'startDate': this.state.startDate,
-            'endDate': this.state.endDate,
-            'leaveDuration': this.state.leaveDuration,
-            'leaveReason': this.state.leaveReason,
-            'leaveStatusId': {'id': 3}      // All new leave has status of 3, Pending Approval
-        }
-        
-        console.log(JSON.stringify(newLeaveRequest));
+        let validForm = true;
 
-        fetch('http://localhost/api/leavedetail', {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newLeaveRequest),
-        })
-        .then(res=>res.json())
-        .then(res => {
-            console.log(JSON.stringify(res));
-            if(res.hasOwnProperty("id") && res["id"] != null)
-                alert("Leave request is submitted." )
-        })
-//        .then(this.props.history.push('/MyLeaveHistory'))  
-        .catch (err => {
-            console.log("!!! Error : ".err)
-        })     
-        
+        // validate form data
+        let durationError = this.validateLeaveDuration(this.state.leaveDuration);
+        if(durationError != "")
+            validForm = false;
+
+        if(validForm) {
+            // create JSON Object for new Leave Request
+            let newLeaveRequest = {
+                'staffId': { 'id': this.state.userData['id']},
+                'leaveCategory': { 'id': this.state.leaveCategory},
+                'startDate': this.state.startDate,
+                'endDate': this.state.endDate,
+                'leaveDuration': this.state.leaveDuration,
+                'leaveReason': this.state.leaveReason,
+                'leaveStatusId': {'id': 3}      // All new leave has status of 3, Pending Approval
+            }
+            
+            console.log(JSON.stringify(newLeaveRequest));
+
+            fetch('http://localhost/api/leavedetail', {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newLeaveRequest),
+            })
+            .then(res=>res.json())
+            .then(res => {
+                console.log(JSON.stringify(res));
+                if(res.hasOwnProperty("id") && res["id"] != null)
+                    alert("Leave request is submitted." )
+            })
+    //        .then(this.props.history.push('/MyLeaveHistory'))  
+            .catch (err => {
+                console.log("!!! Error : ".err)
+            })     
+        }
+    }
+
+
+    validateLeaveDuration(newLeaveDuration) {        
+
+        // Validate if input is a number
+        if(isNaN(newLeaveDuration)) {
+            return (
+                <Alert color="danger"> 
+                Invalid number 
+                </Alert>
+            ); 
+        }
+
+        // Validate if input exceedes maximum duration
+        const milliseconds = 86400000;
+        const dayDiff = Math.ceil((this.state.endDate- this.state.startDate) / milliseconds) +1;
+
+        if(newLeaveDuration > dayDiff) {
+            return (
+                <Alert color="danger"> 
+                Duration exceeds maximum duration between Start Date and End Date 
+                </Alert>
+            );   
+        }
+
+        // Validate if input is integer, if start date and end date are different
+        const startDateStr = this.state.startDate.toISOString().substr(0,10);
+        const endDateStr = this.state.endDate.toISOString().substr(0,10);
+                
+        if(startDateStr !== endDateStr && ! Number.isInteger(Number(newLeaveDuration))) {
+            return (
+                <Alert color="danger"> 
+                Please apply half day leave separately 
+                </Alert>
+            );  
+        }
+
+        // If pass all validation, return empty string
+        return "";
     }
 
     render() {
@@ -257,19 +305,8 @@ class ApplyLeave extends Component {
         const {userData, staffLeave, leaveCategoryList, approverList, startDate, endDate, isHalfDay, leaveDuration, 
             leaveCategory, leaveReason, attachedFile , approverId} = this.state;
         
-        // revalidate Leave Duration after each date change
-        const milliseconds = 86400000;
-        const newLeaveDuration = this.state.leaveDuration;
-        const dayDiff = Math.ceil((this.state.endDate- this.state.startDate) / milliseconds) +1;
-        
-        let durationErrorMsg = "";
-        if(newLeaveDuration > dayDiff) 
-            durationErrorMsg = (
-                <Alert color="danger"> 
-                Duration entered exceeded maximum duration between Start Date and End Date 
-                </Alert>
-            );       
-        
+        let durationErrorMsg = this.validateLeaveDuration(leaveDuration);
+                
         return (
             <div>
                 <br />
