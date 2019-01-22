@@ -39,6 +39,7 @@ class ApplyLeave extends Component {
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handleDetailsChange = this.handleDetailsChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.doNotSubmit = this.doNotSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -204,6 +205,11 @@ class ApplyLeave extends Component {
         }
     }
 
+    // Do not submit form, unless user clicked on submit button
+    doNotSubmit (event) {
+        event.preventDefault();
+    }
+
     // create JSON object with form data, and call API
     handleSubmit (event) {
         event.preventDefault();
@@ -282,7 +288,7 @@ class ApplyLeave extends Component {
                 </div>
                 <br />
                 <div className="container" style={divStyle}>
-                    <Form onSubmit={this.handleSubmit}>
+                    <Form onSubmit={this.doNotSubmit}>
                         <FormGroup>
                             <Label for="csiStaffId">CSI Staff ID</Label>
                             <Input type="text" name="csiStaffId" id="csiStaffId" 
@@ -360,7 +366,7 @@ class ApplyLeave extends Component {
                             </Input>
                         </FormGroup>
                         <br />
-                        <Button color="primary">Submit</Button>
+                        <Button color="primary" onClick={this.handleSubmit}>Submit</Button>
                         <span>   </span>
                         <Button color="danger">Discard</Button>
                     </Form>
