@@ -201,7 +201,7 @@ class ApplyLeave extends Component {
             case 'attachment' :
                 this.setState({attachedFile: event.target.files[0]})
                 break;
-            case 'approver' :
+            case 'approverId' :
                 this.setState({approverId: event.target.value})
                 break;
             default :
@@ -222,9 +222,9 @@ class ApplyLeave extends Component {
             'leaveReason': this.state.leaveReason,
             'leaveStatusId': {'id': 3}      // All new leave has status of 3, Pending Approval
         }
-
-        console.log(JSON.stringify(newLeaveRequest));
         
+        console.log(JSON.stringify(newLeaveRequest));
+
         fetch('http://localhost/api/leavedetail', {
             method: 'POST',
             headers: {
@@ -234,10 +234,14 @@ class ApplyLeave extends Component {
             body: JSON.stringify(newLeaveRequest),
         })
         .then(res=>res.json())
-        .then(res => console.log(res))
-//        .then(this.props.history.push('/MyLeaveDetails'))  
+        .then(res => {
+            console.log(JSON.stringify(res));
+            if(res.hasOwnProperty("id") && res["id"] != null)
+                alert("Leave request is submitted." )
+        })
+//        .then(this.props.history.push('/MyLeaveHistory'))  
         .catch (err => {
-            console.log("!!! Error : " . err)
+            console.log("!!! Error : ".err)
         })     
         
     }
@@ -249,7 +253,7 @@ class ApplyLeave extends Component {
             boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
         };
 
-        const {userData, leaveCategoryList, approverList, startDate, endDate, isHalfDay, leaveDuration, 
+        const {userData, staffLeave, leaveCategoryList, approverList, startDate, endDate, isHalfDay, leaveDuration, 
             leaveCategory, leaveReason, attachedFile , approverId} = this.state;
 
         return (
