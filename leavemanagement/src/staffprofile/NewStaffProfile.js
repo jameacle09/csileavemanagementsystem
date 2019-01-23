@@ -1,8 +1,8 @@
 import React, { Component } from 'react';
 import StaffProfile from './StaffProfile';
-import { Button, Form, FormGroup, Label, Input, Row, Col, ListGroup, ListGroupItem } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
 import SideBar from '../hradmin/SideBar';
-import "../hradmin/SideBarStyle.css";
+import "../common/Styles.css"
 
 class NewStaffProfile extends Component {
     constructor(props) {
@@ -81,78 +81,77 @@ class NewStaffProfile extends Component {
     }
 
     render() {
+        const headerStyle = {
+            margin: "0 0 0 10px"
+        };
+
         const divStyle = {
-            background: "#eee",
-            padding: "20px",
+            background: "#B8E2FC",
+            width: "auto",
+            margin: "0 0 0 0",
+            padding: "25px 0 25px 20px",
+            borderRadius: "5px",
             boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
         };
-        return (
-            <div>
-                <div className="containerFlex_">
-                    <ListGroup className="ListGroupSideBar">
-                            <SideBar />
-                    </ListGroup>
-                    <ListGroup className="ListGroupContent">
-                            <div>
-                                <br /><br />
-                                <div className="container" style={divStyle}>
-                                    <Row>
-                                        <Col><h3>Add Staff Profile</h3></Col>
-                                    </Row>
-                                </div>
-                                <br />
-                                <div className="container" style={divStyle}>
-                                    <Form onSubmit={this.handleFormSubmit}>
-                                        <FormGroup>
-                                            <Label for="csiStaffId">CSI Staff ID</Label>
-                                            <Input type="text" name="csiStaffId" id="csiStaffId" placeholder="CSI Staff ID" onChange={this.csiStaffIdHandler} />
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <Label for="staffName">Staff Name</Label>
-                                            <Input type="text" name="staffName" id="staffName" placeholder="Staff Name" onChange={this.staffNameHandler} />
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <Label for="email">Email</Label>
-                                            <Input type="email" name="email" id="email" placeholder="Email" onChange={this.emailHandler} />
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <Label for="icNumber">NRIC / Passport No.</Label>
-                                            <Input type="text" name="icNumber" id="icNumber" placeholder="NRIC / Passport No." onChange={this.icNumberHandler} />
-                                        </FormGroup>
 
-                                        <FormGroup>
-                                            <Label for="jobTitle">Job Title</Label>
-                                            <Input type="text" name="jobTitle" id="jobTitle" placeholder="Job Title" onChange={this.jobTitleHandler} />
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <Label for="mobileNo">Mobile No.</Label>
-                                            <Input type="text" name="mobileNo" id="mobileNo" placeholder="Mobile No." onChange={this.mobileNoHandler} />
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <Label for="businessUnit">Business Unit</Label>
-                                            <Input type="text" name="businessUnit" id="businessUnit" placeholder="Business Unit" onChange={this.businessUnitHandler} />
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <Label for="lineManagerId">Line Manager</Label>
-                                            <Input type="text" name="lineManagerId" id="lineManagerId" placeholder="Line Manager" onChange={this.lineManagerIdHandler} />
-                                        </FormGroup>
-                                        <FormGroup>
-                                            <Label for="joinDate">Join Date</Label>
-                                            <Input type="date" name="joinDate" id="joinDate" placeholder="Join Date" onChange={this.joinDateHandler} />
-                                        </FormGroup>
-                                        <br />
-                                        <Button color="primary" onClick={this.save}>Submit</Button>
-                                    </Form>
-                                    <br />
-                                </div>
-                            </div>
-                    </ListGroup>
+        return (
+            <div className="menuContainer">
+                <div className="menu">
+                    <div>
+                        <SideBar />
+                    </div>
+                    <div className="content">
+                        <div style={divStyle}>
+                            <span className="header"><h3 style={headerStyle}>Add Staff Profile</h3></span>
+                        </div><br />
+                        <div >
+                            <Form onSubmit={this.handleFormSubmit}>
+                                <FormGroup>
+                                    <Label for="csiStaffId">CSI Staff ID</Label>
+                                    <Input type="text" name="csiStaffId" id="csiStaffId" placeholder="CSI Staff ID" onChange={this.csiStaffIdHandler} />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="staffName">Staff Name</Label>
+                                    <Input type="text" name="staffName" id="staffName" placeholder="Staff Name" onChange={this.staffNameHandler} />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="email">Email</Label>
+                                    <Input type="email" name="email" id="email" placeholder="Email" onChange={this.emailHandler} />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="icNumber">NRIC / Passport No.</Label>
+                                    <Input type="text" name="icNumber" id="icNumber" placeholder="NRIC / Passport No." onChange={this.icNumberHandler} />
+                                </FormGroup>
+
+                                <FormGroup>
+                                    <Label for="jobTitle">Job Title</Label>
+                                    <Input type="text" name="jobTitle" id="jobTitle" placeholder="Job Title" onChange={this.jobTitleHandler} />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="mobileNo">Mobile No.</Label>
+                                    <Input type="text" name="mobileNo" id="mobileNo" placeholder="Mobile No." onChange={this.mobileNoHandler} />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="businessUnit">Business Unit</Label>
+                                    <Input type="text" name="businessUnit" id="businessUnit" placeholder="Business Unit" onChange={this.businessUnitHandler} />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="lineManagerId">Line Manager</Label>
+                                    <Input type="text" name="lineManagerId" id="lineManagerId" placeholder="Line Manager" onChange={this.lineManagerIdHandler} />
+                                </FormGroup>
+                                <FormGroup>
+                                    <Label for="joinDate">Join Date</Label>
+                                    <Input type="date" name="joinDate" id="joinDate" placeholder="Join Date" onChange={this.joinDateHandler} />
+                                </FormGroup>
+                                <br />
+                                <Button color="primary" onClick={this.save}>Submit</Button>
+                            </Form>
+                        </div>
+                    </div>
                 </div>
             </div>
         );
-
     }
-
 }
 
 

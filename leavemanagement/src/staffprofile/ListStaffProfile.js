@@ -3,7 +3,6 @@ import { Table, Button, Input } from 'reactstrap';
 import StaffTableRow from './StaffTableRow';
 import { Link } from "react-router-dom";
 import SideBar from '../hradmin/SideBar';
-import "../hradmin/SideBarStyle.css";
 import "../common/Styles.css"
 
 class ListStaffProfile extends Component {
@@ -14,10 +13,10 @@ class ListStaffProfile extends Component {
         };
 
         const divStyle = {
-            background: "#87CEFA",
+            background: "#B8E2FC",
             width: "auto",
             margin: "0 0 0 0",
-            padding: "30px 0 30px 20px",
+            padding: "25px 0 25px 20px",
             borderRadius: "5px",
             boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
         };
@@ -25,12 +24,12 @@ class ListStaffProfile extends Component {
         return (
             <div className="menuContainer">
                 <div className="menu">
-                    <div className="sidebar">
+                    <div>
                         <SideBar />
                     </div>
                     <div className="content">
                         <div style={divStyle}>
-                          <span className="header"><h3 style={headerStyle}>Staff Profile</h3></span>
+                            <span className="header"><h3 style={headerStyle}>Staff Profile</h3></span>
                         </div><br />
                         <div className="search">
                             <Input type="text" maxlength="50" placeholder="Search Employee" style={{ width: "25%" }} />
