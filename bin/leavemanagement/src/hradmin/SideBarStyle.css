@@ -1,0 +1,35 @@
+.sidebar{
+    font: large Helvetica;
+    line-height: 50px;
+    text-indent: 15px;
+    width: 290px;
+    background-color: lightskyblue;
+}
+.sidebar :hover {
+    font: bold x-large Helvetica;
+    line-height: 50px;
+    text-indent: 15px;
+    color: darkblue;
+  }
+
+.containerFlex_ {
+    margin: 0 0 0 0;    
+    display: flex;
+    flex-flow: row wrap;
+    justify-content: center;
+    flex-basis: auto;
+}
+
+.ListGroupSideBar {    
+    margin: 0 0 0 0;
+    width: 15%;
+    display: flex;
+    background-color: lightskyblue;
+}
+
+.ListGroupContent {    
+    margin: 0 0 0 0;
+    width: 85%;
+    display: flex;
+}
+
