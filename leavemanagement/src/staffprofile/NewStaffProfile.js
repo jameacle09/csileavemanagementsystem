@@ -1,6 +1,6 @@
 import React, { Component } from 'react';
 import StaffProfile from './StaffProfile';
-import { Button, Form, FormGroup, Label, Input } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
 import SideBar from '../hradmin/SideBar';
 import "../common/Styles.css"
 
@@ -109,11 +109,11 @@ class NewStaffProfile extends Component {
 
         return (
             <div className="menuContainer">
-                <div className="menu">
-                    <div>
+                <Row className="menu">
+                    <Col md="2">
                         <SideBar />
-                    </div>
-                    <div className="content">
+                    </Col>
+                    <Col md="10" className="content">
                         <div style={divStyle}>
                             <span className="header"><h3 style={headerStyle}>Add Staff Profile</h3></span>
                         </div><br />
@@ -181,8 +181,8 @@ class NewStaffProfile extends Component {
                                 <Button color="primary" onClick={this.save}>Submit</Button>
                             </Form>
                         </div>
-                    </div>
-                </div>
+                    </Col>
+                </Row>
             </div>
         );
     }

@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Table } from 'reactstrap';
+import { Button, Table, Row, Col } from 'reactstrap';
 import { Link } from "react-router-dom";
 import SideBar from './SideBar';
 import "../common/Styles.css"
@@ -22,16 +22,16 @@ class LeaveCategory extends Component {
 
         return (
             <div className="menuContainer">
-                <div className="menu">
-                    <div>
+                <Row className="menu">
+                    <Col md="2">
                         <SideBar />
-                    </div>
-                    <div className="content">
+                    </Col>
+                    <Col md="10" className="content">
                         <div style={divStyle}>
                             <span className="header"><h3 style={headerStyle}>List of Leave Category</h3></span>
                         </div><br />
-                        <div className="container">
-                            <div style={{ marginLeft: "90%" }}>
+                        <div className="content">
+                            <div style={{ textAlign: "right" }}>
                                 <Button className="btn btn-primary" color="primary" tag={Link} to="/addleavecategory" activeclassname="active">Add New</Button><br /><br />
                             </div>
                             <Table responsive>
@@ -53,8 +53,8 @@ class LeaveCategory extends Component {
                                 </tbody>
                             </Table>
                         </div>
-                    </div>
-                </div>
+                    </Col>
+                </Row>
             </div>
         );
     }

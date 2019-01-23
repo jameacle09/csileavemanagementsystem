@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button, Input } from 'reactstrap';
+import { Table, Button, Input, Row, Col } from 'reactstrap';
 import StaffTableRow from './StaffTableRow';
 import { Link } from "react-router-dom";
 import SideBar from '../hradmin/SideBar';
@@ -23,21 +23,23 @@ class ListStaffProfile extends Component {
 
         return (
             <div className="menuContainer">
-                <div className="menu">
-                    <div>
+                <Row className="menu">
+                    <Col md="2">
                         <SideBar />
-                    </div>
-                    <div className="content">
+                    </Col>
+                    <Col md="10" className="content">
                         <div style={divStyle}>
                             <span className="header"><h3 style={headerStyle}>Staff Profile</h3></span>
                         </div><br />
-                        <div className="search">
-                            <Input type="text" maxlength="50" placeholder="Search Employee" style={{ width: "25%" }} />
-                            <Button className="btn btn-primary" color="primary" type="submit">Search</Button>
-                            <div style={{ marginLeft: "57%" }}>
+                        <Row>
+                            <Col md="6" className="search">
+                                <Input type="text" maxlength="50" placeholder="Search Employee" style={{ width: "25%" }} />
+                                <Button className="btn btn-primary" color="primary" type="submit">Search</Button>
+                            </Col>
+                            <Col md="6" style={{ textAlign: "right" }}>
                                 <Button className="btn btn-primary" color="primary" tag={Link} to="/newstaffprofile" activeclassname="active">Add New Employee</Button>
-                            </div>
-                        </div>
+                            </Col>
+                        </Row>
                         <div>
                             <Table responsive>
                                 <thead>
@@ -63,8 +65,8 @@ class ListStaffProfile extends Component {
                                 </tbody>
                             </Table>
                         </div>
-                    </div>
-                </div>
+                    </Col>
+                </Row>
             </div>
         );
     }

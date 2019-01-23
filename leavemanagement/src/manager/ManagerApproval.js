@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Row, Col, ListGroup, ListGroupItem } from 'reactstrap';
+import { Table, Row, Col } from 'reactstrap';
 import ManagerSideBar from './ManagerSideBar';
 import "../common/Styles.css"
 
@@ -20,16 +20,16 @@ class ManagerApproval extends Component {
 
         return (
             <div className="menuContainer">
-                <div className="menu">
-                    <div>
+                <Row className="menu">
+                    <Col md="2">
                         <ManagerSideBar />
-                    </div>
-                    <div className="content">
+                    </Col>
+                    <Col md="10" className="content">
                         <div style={divStyle}>
                             <span className="header"><h3 style={headerStyle}>View Leave Request</h3></span>
                         </div><br />
-                        <div className="container">
-                            <Table bordered responsive>
+                        <div className="content">
+                            <Table responsive>
                                 <thead>
                                     <tr>
                                         <th>Name</th>
@@ -48,8 +48,8 @@ class ManagerApproval extends Component {
                                 </tbody>
                             </Table>
                         </div>
-                    </div>
-                </div>
+                    </Col>
+                </Row>
             </div>
         );
     }

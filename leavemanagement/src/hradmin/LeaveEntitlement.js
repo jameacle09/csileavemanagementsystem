@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button } from 'reactstrap';
+import { Table, Button, Row, Col } from 'reactstrap';
 import { Link } from "react-router-dom";
 import SideBar from '../hradmin/SideBar';
 import "../common/Styles.css"
@@ -22,16 +22,16 @@ class LeaveEntitlement extends Component {
 
         return (
             <div className="menuContainer">
-                <div className="menu">
-                    <div>
+                <Row className="menu">
+                    <Col md="2">
                         <SideBar />
-                    </div>
-                    <div className="content">
+                    </Col>
+                    <Col md="10" className="content">
                         <div style={divStyle}>
                             <span className="header"><h3 style={headerStyle}>Leave Entitlement</h3></span>
                         </div><br />
-                        <div className="container">
-                            <div style={{ marginLeft: "85%" }}>
+                        <div className="content">
+                            <div style={{ textAlign: "right" }}>
                                 <Button className="btn btn-primary" color="primary">Upload Entitlement</Button><br /><br />
                             </div>
                             <Table responsive>
@@ -65,8 +65,8 @@ class LeaveEntitlement extends Component {
                                 </tbody>
                             </Table>
                         </div>
-                    </div>
-                </div>
+                    </Col>
+                </Row>
             </div>
         );
     }

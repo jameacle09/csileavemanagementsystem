@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
-import { Link } from "react-router-dom";
+import { Link, NavLink } from "react-router-dom";
+import { Nav } from 'reactstrap';
 import "../common/Styles.css"
 
 class SideBar extends Component {
@@ -7,13 +8,13 @@ class SideBar extends Component {
     render() {
         return (
             <div className="main_sidebar" style={{ height: '150vh' }}>
-                <ul>
-                    <li><Link to="/liststaffprofile">Staff Profile</Link></li>
-                    <li><Link to="/leaveentitlement">Leave Entitlement</Link></li>
-                    <li><Link to="/publicholiday">Public Holiday</Link></li>
-                    <li><Link to="/leavecategory">Leave Category</Link></li>
-                    <li><Link to="#">Report</Link></li>
-                </ul>
+                <Nav navbar>
+                    <NavLink to="/liststaffprofile" className="inactive" activeClassName="active">Staff Profile</NavLink>
+                    <NavLink to="/leaveentitlement" className="inactive" activeClassName="active">Leave Entitlement</NavLink>
+                    <NavLink to="/publicholiday" className="inactive" activeClassName="active">Public Holiday</NavLink>
+                    <NavLink to="/leavecategory" className="inactive" activeClassName="active">Leave Category</NavLink>
+                    <NavLink to="#" className="inactive" activeClassName="active">Report</NavLink>
+                </Nav>
             </div>
         )
     }
