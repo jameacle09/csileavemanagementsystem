@@ -3,24 +3,26 @@ import { Table, Row, Col } from 'reactstrap';
 
 class MyLeaveDetails extends Component {
   render() {
+
     const divStyle = {
-      background: "#eee",
-      padding: "20px",
-      boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
+        background: "#B8E2FC",
+        width: "auto",
+        margin: "auto",
+        padding: "15px 0 15px 0",
+        borderRadius: "5px",
+        align: "center",
+        boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
     };
 
-    const divHeaderStyle = {
-      background: "#87CEFA",
-      padding: "20px",
-      boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
+    const headerStyle = {
+      margin: "0 0 0 10px"
     };
+
     return (
       <div>
         <br />
-        <div className="container" style={divHeaderStyle}>
-          <Row>
-            <Col><h3>My Leave Details</h3></Col>
-          </Row>
+        <div className="container" style={divStyle}>
+        <span><h3 style={headerStyle}>My Leave Details</h3></span>
         </div>
         <br />
         <div className="container">

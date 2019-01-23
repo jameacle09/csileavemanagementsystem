@@ -5,48 +5,54 @@ import ManagerSideBar from './ManagerSideBar';
 class StaffLeaveHistory extends Component {
     render() {
         const divStyle = {
-            background: "#eee",
-            padding: "20px",
+            background: "#B8E2FC",
+            width: "auto",
+            margin: "0 0 0 10px",
+            padding: "15px 0 15px 0",
+            borderRadius: "5px",
             boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
         };
+
+        const headerStyle = {
+            margin: "0 0 0 10px"
+        };
+
         return (
             <div>
                 <div className="containerFlex_">
                     <ListGroup className="ListGroupSideBar">
-                            <ManagerSideBar />
+                        <ManagerSideBar />
                     </ListGroup>
                     <ListGroup className="ListGroupContent">
-                            <div>
-                                <br /><br />
-                                <div className="container" style={divStyle}>
-                                    <Row>
-                                        <Col><h3>Leave History</h3></Col>
-                                    </Row>
-                                </div>
-                                <br />
-                                <div className="container">
-                                    <Table bordered responsive>
-                                        <thead>
-                                            <tr>
-                                                <th>Name</th>
-                                                <th>Leave Type</th>
-                                                <th>Status</th>
-                                                <th>Start Date</th>
-                                                <th>End Date</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            <tr>
-                                                <td>-</td>
-                                                <td>-</td>
-                                                <td>-</td>
-                                                <td>-</td>
-                                                <td>-</td>
-                                            </tr>
-                                        </tbody>
-                                    </Table>
-                                </div>
+                        <div>
+                            <br /><br />
+                            <div className="container" style={divStyle}>
+                                <span><h3 style={headerStyle}>Leave History</h3></span>
                             </div>
+                            <br />
+                            <div className="container">
+                                <Table bordered responsive>
+                                    <thead>
+                                        <tr>
+                                            <th>Name</th>
+                                            <th>Leave Type</th>
+                                            <th>Status</th>
+                                            <th>Start Date</th>
+                                            <th>End Date</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                            <td>-</td>
+                                        </tr>
+                                    </tbody>
+                                </Table>
+                            </div>
+                        </div>
                     </ListGroup>
                 </div>
             </div>
