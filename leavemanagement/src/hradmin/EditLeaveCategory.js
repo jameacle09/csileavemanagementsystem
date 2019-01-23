@@ -3,7 +3,7 @@ import { Button, Form, FormGroup, Label, Input, Row, Col, ListGroup } from 'reac
 import SideBar from './SideBar';
 import "./SideBarStyle.css";
 
-class AddLeaveCategory extends Component {
+class EditLeaveCategory extends Component {
     render() {
         const divStyle = {
             background: "#eee",
@@ -22,7 +22,7 @@ class AddLeaveCategory extends Component {
                                 <br /><br />
                                 <div className="container" style={divStyle}>
                                     <Row>
-                                        <Col><h3>Add Leave Category</h3></Col>
+                                        <Col><h3>Edit Leave Category</h3></Col>
                                     </Row>
                                 </div>
                                 <br />
@@ -51,4 +51,4 @@ class AddLeaveCategory extends Component {
     }
 }
 
-export default AddLeaveCategory;
+export default EditLeaveCategory;

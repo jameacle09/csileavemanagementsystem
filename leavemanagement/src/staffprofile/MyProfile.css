@@ -81,4 +81,21 @@
     padding: 10px 0 0 55px
 }
 
-
+.password__show {
+    cursor: pointer;
+    /* position: absolute; */
+    align-items: flex-end;
+    bottom: 12px;
+    height: 18px;
+    right: 0;
+    background: #727272;
+    color: white;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-weight: 600;
+    font-size: 0.8em;
+  }
+  .container_password_show {
+    text-align: right;
+    padding: 2px 2px;
+  }
