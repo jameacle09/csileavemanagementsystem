@@ -7,9 +7,28 @@ class ChangePassword extends React.Component {
         this.state = {
             currentPasswordType: "password",
             passwordType: "password",
-            confirmPasswordType: "password"
+            confirmPasswordType: "password",
+            password: "",
+            confirmPassword: ""
         };
+        this.validatePassword = this.validatePassword.bind(this);
     }
+
+    validatePassword(event) {
+        if (event.target.name == 'password') {
+            this.setState({ password: event.target.value });
+        }
+
+        if (event.target.name == 'confirmPassword') {
+            this.setState({ confirmPassword: event.target.value });
+            if (event.target.value != this.state.password) {
+                event.target.setCustomValidity("Password not match")
+            } else {
+                event.target.setCustomValidity("")
+            }
+        }
+    }
+
     showHide(e, controlName) {
         e.preventDefault();
         e.stopPropagation();
@@ -32,78 +51,129 @@ class ChangePassword extends React.Component {
         }
     }
     render() {
+
         const divStyle = {
-            background: "#eee",
-            padding: "20px",
-            boxShadow:
-                "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
+            width: "30%",
+            position: "relative",
+            left: "auto",
+            right: "auto",
+            background: "white",
+            padding: "20px 30px 60px 30px",
+            boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
+            borderRadius: "2%"
         };
+
+        const inputStyle = {
+            borderLeft: "none",
+            borderRight: "none",
+            borderTop: "none",
+            borderRadius: "0",
+            fontSize: "15px",
+            height: "20px"
+        };
+
+        const pTextStyle = {
+            fontWeight: "bold",
+            fontSize: "20px",
+            textAlign: "center",
+            width: "119%",
+            margin: "0 0 20px -30px",
+            padding: "0 0 5px 0"
+        };
+
+        const submitButtonStyle = {
+            textAlign: "center",
+            display: "inline-block",
+            width: "150px",
+            float: "right"
+        };
+
         const {
             currentPasswordType,
             passwordType,
-            confirmPasswordType
+            confirmPasswordType,
+            password,
+            confirmPassword
         } = this.state;
+
         return (
             <div>
                 <br />
                 <div className="container" style={divStyle}>
+                    <p style={pTextStyle}>Change Password</p>
                     <Form>
                         <FormGroup>
                             <Label for="currentPassword">Current Password</Label>
+                            <div className="input-group mb-3">
                             <Input
+                                style={inputStyle}
                                 type={currentPasswordType}
                                 name="currentpassword"
                                 id="passcurrentpassword"
-                                placeholder="Current Password"
+                                aria-label="passcurrentpassword" 
+                                aria-describedby="basic-addon2"
                             />
-                            <div className="container_password_show">
+                            <div className="container_password_show input-group-append">
                                 <span
-                                    className="password__show"
+                                    className="password__show input-group-text"
+                                    id="basic-addon2"
                                     onClick={event => this.showHide(event, "currentPasswordType")}
-                                    color="primary"
-                                >
+                                    color="primary">
                                     {currentPasswordType === "input" ? "Hide" : "Show"}
                                 </span>
+                            </div>
                             </div>
                         </FormGroup>
                         <FormGroup>
                             <Label for="password">Change Password</Label>
+                            <div className="input-group mb-3">
                             <Input
+                                style={inputStyle}
                                 type={passwordType}
                                 name="password"
                                 id="password"
-                                placeholder="Change Password"
+                                onChange={this.validatePassword}
+                                value={password}
+                                aria-label="password" 
+                                aria-describedby="basic-addon2"
                             />
-                            <div className="container_password_show">
+                            <div className="container_password_show input-group-append">
                                 <span
-                                    className="password__show"
+                                    className="password__show input-group-text"
+                                    id="basic-addon2"
                                     onClick={event => this.showHide(event, "passwordType")}
-                                    color="primary"
-                                >
+                                    color="primary">
                                     {passwordType === "input" ? "Hide" : "Show"}
                                 </span>
+                            </div>
                             </div>
                         </FormGroup>
                         <FormGroup>
                             <Label for="confirmPassword">Confirm Password</Label>
+                            <div className="input-group mb-3">
                             <Input
+                                style={inputStyle}
                                 type={confirmPasswordType}
                                 name="confirmPassword"
                                 id="confirmPassword"
-                                placeholder="Confirm Password"
+                                onChange={this.validatePassword}
+                                value={confirmPassword}
+                                aria-label="confirmPassword" 
+                                aria-describedby="basic-addon2"
                             />
-                            <div className="container_password_show">
+                            <div className="container_password_show input-group-append">
                                 <span
-                                    className="password__show"
+                                    className="password__show input-group-text"
+                                    id="basic-addon2"
                                     onClick={event => this.showHide(event, "confirmPasswordType")}
-                                    color="primary"
-                                >
+                                    color="primary">
                                     {confirmPasswordType === "input" ? "Hide" : "Show"}
                                 </span>
                             </div>
+                            </div>
                         </FormGroup>
                         <br />
-                        <Button color="primary">Submit</Button>
+                        <Button color="primary" style={submitButtonStyle} onSubmit={this.validatePassword}>Submit</Button>
                     </Form>
                 </div>
             </div>

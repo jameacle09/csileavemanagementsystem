@@ -243,6 +243,12 @@ class ApplyLeave extends Component {
     }
 
     render() {
+        const divHeaderStyle = {
+            background: "#87CEFA",
+            padding: "20px",
+            boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
+        };
+
         const divStyle = {
             background: "#eee",
             padding: "20px",
@@ -255,7 +261,7 @@ class ApplyLeave extends Component {
         return (
             <div>
                 <br />
-                <div className="container" style={divStyle}>
+                <div className="container" style={divHeaderStyle}>
                     <Row>
                         <Col><h3>Apply Leave</h3></Col>
                     </Row>
