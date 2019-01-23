@@ -31,10 +31,9 @@ class LeaveCategory extends Component {
                             <span className="header"><h3 style={headerStyle}>List of Leave Category</h3></span>
                         </div><br />
                         <div className="container">
-                            <div>
-                                <Button className="btn btn-primary" color="primary" tag={Link} to="/addleavecategory" activeclassname="active">Add New</Button>
+                            <div style={{ marginLeft: "90%" }}>
+                                <Button className="btn btn-primary" color="primary" tag={Link} to="/addleavecategory" activeclassname="active">Add New</Button><br /><br />
                             </div>
-
                             <Table responsive>
                                 <thead>
                                     <tr>

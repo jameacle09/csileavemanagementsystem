@@ -6,7 +6,7 @@ class SideBar extends Component {
 
     render() {
         return (
-            <div className="main_sidebar">
+            <div className="main_sidebar" style={{ height: '150vh' }}>
                 <ul>
                     <li><Link to="/liststaffprofile">Staff Profile</Link></li>
                     <li><Link to="/leaveentitlement">Leave Entitlement</Link></li>

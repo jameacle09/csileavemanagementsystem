@@ -31,8 +31,8 @@ class LeaveEntitlement extends Component {
                             <span className="header"><h3 style={headerStyle}>Leave Entitlement</h3></span>
                         </div><br />
                         <div className="container">
-                            <div>
-                                <Button className="btn btn-primary" color="primary">Upload Entitlement</Button>
+                            <div style={{ marginLeft: "85%" }}>
+                                <Button className="btn btn-primary" color="primary">Upload Entitlement</Button><br /><br />
                             </div>
                             <Table responsive>
                                 <thead>
