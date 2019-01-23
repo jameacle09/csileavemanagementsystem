@@ -16,9 +16,11 @@ import StaffProfileComponent from './staffprofile/StaffProfileComponent';
 import ListStaffProfile from './staffprofile/ListStaffProfile';
 import NewStaffProfile from './staffprofile/NewStaffProfile';
 import PublicHoliday from './hradmin/PublicHoliday';
-import LeaveCategory from './hradmin/LeaveCategory';
 import AddPublicHoliday from './hradmin/AddPublicHoliday';
+import EditPublicHoliday from './hradmin/EditPublicHoliday';
+import LeaveCategory from './hradmin/LeaveCategory';
 import AddLeaveCategory from './hradmin/AddLeaveCategory';
+import EditLeaveCategory from './hradmin/EditLeaveCategory';
 import LeaveEntitlement from './hradmin/LeaveEntitlement';
 import EditEntitlement from './hradmin/EditEntitlement';
 
@@ -47,7 +49,9 @@ class App extends Component {
               <Route path="/leaveentitlement" title="Leave Entitlement" component={LeaveEntitlement} />
               <Route path="/editentitlement" title="Edit Entitlement" component={EditEntitlement} />
               <Route path="/addpublicholiday" title="Add Public Holiday" component={AddPublicHoliday} />
-              <Route path="/AddLeaveCategory" title="Add Leave Category" component={AddLeaveCategory} />
+              <Route path="/editpublicholiday" title="Edit Public Holiday" component={EditPublicHoliday} />
+              <Route path="/addleavecategory" title="Add Leave Category" component={AddLeaveCategory} />
+              <Route path="/editleavecategory" title="Edit Leave Category" component={EditLeaveCategory} />
             </Switch>
           </div>
           <Footer />

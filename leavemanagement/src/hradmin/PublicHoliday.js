@@ -56,7 +56,7 @@ class PublicHoliday extends Component {
                                                 <td></td>
                                                 <td></td>
                                                 <td></td>
-                                                <td><Button color="primary"><span>Edit</span></Button></td>
+                                                <td><Button className="btn btn-primary" color="primary" tag={Link} to="/editpublicholiday" activeclassname="active"><span>Edit</span></Button></td>
                                                 <td><Button color="primary"><span>Delete</span></Button></td>
                                             </tr>
                                         </tbody>

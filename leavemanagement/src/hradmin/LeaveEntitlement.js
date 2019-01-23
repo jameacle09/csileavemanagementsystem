@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Table, Button, Row, Col, ListGroup, ListGroupItem } from 'reactstrap';
+import { Table, Button, Row, Col, ListGroup } from 'reactstrap';
 import { Link } from "react-router-dom";
 import SideBar from './SideBar';
 import "./SideBarStyle.css";
