@@ -1,5 +1,5 @@
 import React, { Component } from 'react';
-import { Button, Form, FormGroup, Label, Input, FormText, Row, Col, Progress } from 'reactstrap';
+import { Button, Form, FormGroup, Label, Input, FormText, Row, Col, Progress, Alert } from 'reactstrap';
 //import MyLeaveSummary from './MyLeaveSummary';
 
 class ApplyLeave extends Component {
@@ -39,6 +39,7 @@ class ApplyLeave extends Component {
         this.handleDateChange = this.handleDateChange.bind(this);
         this.handleDetailsChange = this.handleDetailsChange.bind(this);
         this.handleSubmit = this.handleSubmit.bind(this);
+        this.doNotSubmit = this.doNotSubmit.bind(this);
     }
 
     componentDidMount() {
@@ -107,8 +108,7 @@ class ApplyLeave extends Component {
         const fieldName = event.target.name;
         const startDateStr = this.state.startDate.toISOString().substr(0,10);
         const endDateStr = this.state.endDate.toISOString().substr(0,10);
-        const milliseconds = 86400000;
-
+        
         switch(fieldName) {
 
             case "startDate" : 
@@ -121,22 +121,17 @@ class ApplyLeave extends Component {
                     // if new end date and start date are same date
                     if(newStartDateStr === endDateStr) {
                         this.setState({
-                            startDate: newStartDate,
-                            leaveDuration: (this.state.isHalfDay ? 0.5 : 1)
+                            startDate: newStartDate
                         })
                     } else if (newStartDateStr < endDateStr) {
-                        let newLeaveDuration = Math.ceil((this.state.endDate - newStartDate) / milliseconds) +1;
                         this.setState({
                             startDate: newStartDate,
-                            leaveDuration: newLeaveDuration,
                             isHalfDay: false
                         })
                     } else {
-                        // If Start Date is greater than End Date, reset End Date to Start Date
                         this.setState({
                             startDate: newStartDate,
                             endDate: newStartDate,
-                            leaveDuration: 1,
                             isHalfDay: false
                         })
                     }
@@ -153,14 +148,11 @@ class ApplyLeave extends Component {
                     // if new end date and start date are same date
                     if(newEndDateStr === startDateStr) {
                         this.setState({
-                            endDate: newEndDate,
-                            leaveDuration: (this.state.isHalfDay ? 0.5 : 1)
+                            endDate: newEndDate
                         })
                     } else if (newEndDateStr > startDateStr) {
-                        let newLeaveDuration = Math.ceil((newEndDate- this.state.startDate) / milliseconds) +1;
                         this.setState({
                             endDate: newEndDate,
-                            leaveDuration: newLeaveDuration,
                             isHalfDay: false
                         })
                     } else {
@@ -168,7 +160,6 @@ class ApplyLeave extends Component {
                         this.setState({
                             startDate: newEndDate,
                             endDate: newEndDate,
-                            leaveDuration: 1,
                             isHalfDay: false
                         })
                     }
@@ -184,6 +175,11 @@ class ApplyLeave extends Component {
                     })
                 }
                 break;
+
+            case 'leaveDuration' :
+                this.setState({leaveDuration: event.target.value});              
+                break;
+
             default :
                 break;
         }
@@ -201,7 +197,7 @@ class ApplyLeave extends Component {
             case 'attachment' :
                 this.setState({attachedFile: event.target.files[0]})
                 break;
-            case 'approver' :
+            case 'approverId' :
                 this.setState({approverId: event.target.value})
                 break;
             default :
@@ -209,37 +205,94 @@ class ApplyLeave extends Component {
         }
     }
 
+    // Do not submit form, unless user clicked on submit button
+    doNotSubmit (event) {
+        event.preventDefault();
+    }
+
     // create JSON object with form data, and call API
     handleSubmit (event) {
         event.preventDefault();
-        
-        let newLeaveRequest = {
-            'staffId': { 'id': this.state.userData['id']},
-            'leaveCategory': { 'id': this.state.leaveCategory},
-            'startDate': this.state.startDate,
-            'endDate': this.state.endDate,
-            'leaveDuration': this.state.leaveDuration,
-            'leaveReason': this.state.leaveReason,
-            'leaveStatusId': {'id': 3}      // All new leave has status of 3, Pending Approval
+        let validForm = true;
+
+        // validate form data
+        let durationError = this.validateLeaveDuration(this.state.leaveDuration);
+        if(durationError != "")
+            validForm = false;
+
+        if(validForm) {
+            // create JSON Object for new Leave Request
+            let newLeaveRequest = {
+                'staffId': { 'id': this.state.userData['id']},
+                'leaveCategory': { 'id': this.state.leaveCategory},
+                'startDate': this.state.startDate,
+                'endDate': this.state.endDate,
+                'leaveDuration': this.state.leaveDuration,
+                'leaveReason': this.state.leaveReason,
+                'leaveStatusId': {'id': 3}      // All new leave has status of 3, Pending Approval
+            }
+            
+            console.log(JSON.stringify(newLeaveRequest));
+
+            fetch('http://localhost/api/leavedetail', {
+                method: 'POST',
+                headers: {
+                'Accept': 'application/json',
+                'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(newLeaveRequest),
+            })
+            .then(res=>res.json())
+            .then(res => {
+                console.log(JSON.stringify(res));
+                if(res.hasOwnProperty("id") && res["id"] != null)
+                    alert("Leave request is submitted." )
+            })
+    //        .then(this.props.history.push('/MyLeaveHistory'))  
+            .catch (err => {
+                console.log("!!! Error : ".err)
+            })     
+        }
+    }
+
+
+    validateLeaveDuration(newLeaveDuration) {        
+
+        // Validate if input is a number
+        if(isNaN(newLeaveDuration)) {
+            return (
+                <Alert color="danger"> 
+                Invalid number 
+                </Alert>
+            ); 
         }
 
-        console.log(JSON.stringify(newLeaveRequest));
-        
-        fetch('http://localhost/api/leavedetail', {
-            method: 'POST',
-            headers: {
-              'Accept': 'application/json',
-              'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(newLeaveRequest),
-        })
-        .then(res=>res.json())
-        .then(res => console.log(res))
-//        .then(this.props.history.push('/MyLeaveDetails'))  
-        .catch (err => {
-            console.log("!!! Error : " . err)
-        })     
-        
+        // Validate if input exceedes maximum duration
+        const milliseconds = 86400000;
+        const dayDiff = Math.ceil((this.state.endDate- this.state.startDate) / milliseconds) +1;
+
+        if(newLeaveDuration > dayDiff) {
+            return (
+                <Alert color="danger"> 
+                Duration exceeds maximum duration between Start Date and End Date 
+                </Alert>
+            );   
+        }
+
+        // Validate if input is integer, if start date and end date are different
+        const startDateStr = this.state.startDate.toISOString().substr(0,10);
+        const endDateStr = this.state.endDate.toISOString().substr(0,10);
+                
+        if(startDateStr !== endDateStr && ! Number.isInteger(Number(newLeaveDuration))) {
+            return (
+                <Alert color="danger"> 
+                Please apply half day leave separately 
+                </Alert>
+            );  
+        }
+
+        // If pass all validation, return empty string
+        return "";
     }
 
     render() {
@@ -255,9 +308,11 @@ class ApplyLeave extends Component {
             boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
         };
 
-        const {userData, leaveCategoryList, approverList, startDate, endDate, isHalfDay, leaveDuration, 
-            leaveCategory, leaveReason, attachedFile , approverId, staffLeave} = this.state;
-
+        const {userData, staffLeave, leaveCategoryList, approverList, startDate, endDate, isHalfDay, leaveDuration, 
+            leaveCategory, leaveReason, attachedFile , approverId} = this.state;
+        
+        let durationErrorMsg = this.validateLeaveDuration(leaveDuration);
+                
         return (
             <div>
                 <br />
@@ -276,7 +331,7 @@ class ApplyLeave extends Component {
                 </div>
                 <br />
                 <div className="container" style={divStyle}>
-                    <Form onSubmit={this.handleSubmit}>
+                    <Form onSubmit={this.doNotSubmit}>
                         <FormGroup>
                             <Label for="csiStaffId">CSI Staff ID</Label>
                             <Input type="text" name="csiStaffId" id="csiStaffId" 
@@ -318,10 +373,16 @@ class ApplyLeave extends Component {
                         </Label>
                         </FormGroup>
                         <br />
-                        <FormGroup>
-                            <Label for="leaveDuration">Leave Duration: {'  '}  
-                                <strong>{leaveDuration <= 1 ? leaveDuration + " Day" : leaveDuration + " Days"}</strong> 
-                            </Label>
+                        <FormGroup row>
+                            <Label xs={2} for="leaveDuration">Leave Duration: </Label>
+                            <Col xs={2}>
+                                <Input type="text" name="leaveDuration" id="leaveDuration"
+                                    value={leaveDuration} placeholder="Days" 
+                                    onChange={this.handleDateChange} />
+                            </Col>
+                            <Col xs={8}>
+                                { durationErrorMsg }                                
+                            </Col>
                         </FormGroup>
                         <FormGroup>
                             <Label for="leaveReason">Leave Reason</Label>
@@ -348,7 +409,7 @@ class ApplyLeave extends Component {
                             </Input>
                         </FormGroup>
                         <br />
-                        <Button color="primary">Submit</Button>
+                        <Button color="primary" onClick={this.handleSubmit}>Submit</Button>
                         <span>   </span>
                         <Button color="danger">Discard</Button>
                     </Form>
