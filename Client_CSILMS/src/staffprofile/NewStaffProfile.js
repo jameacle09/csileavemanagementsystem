@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import StaffProfile from './StaffProfile';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
+import { Link } from "react-router-dom";
 import SideBar from '../hradmin/SideBar';
 import "../common/Styles.css"
 
@@ -108,17 +109,19 @@ class NewStaffProfile extends Component {
         };
 
         return (
-            <div className="menuContainer">
-                <Row className="menu">
-                    <Col md="2">
+            <Col >
+                <Row>
+                    <Col md="1.5">
                         <SideBar />
                     </Col>
-                    <Col md="10" className="content">
+                    <Col md="10" xs="8" className="content">
+                        <br />
                         <div style={divStyle}>
                             <span className="header"><h3 style={headerStyle}>Add Staff Profile</h3></span>
                         </div><br />
-                        <div >
-                            <Form onSubmit={this.handleFormSubmit}>
+                        <Button className="btn btn-primary" color="primary" tag={Link} to="/resetpassword" activeclassname="active">Reset Password</Button>
+                        <div style={{ marginTop: "20px"}}>
+                            <Form className="ContainerFlex" onSubmit={this.handleFormSubmit}>
                                 <FormGroup>
                                     <Label for="csiStaffId">CSI Staff ID</Label>
                                     <Input type="text" name="csiStaffId" id="csiStaffId" placeholder="CSI Staff ID" onChange={this.csiStaffIdHandler} />
@@ -183,7 +186,7 @@ class NewStaffProfile extends Component {
                         </div>
                     </Col>
                 </Row>
-            </div>
+            </Col>
         );
     }
 }

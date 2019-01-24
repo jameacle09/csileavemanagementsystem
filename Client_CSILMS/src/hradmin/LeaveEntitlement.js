@@ -21,16 +21,17 @@ class LeaveEntitlement extends Component {
         };
 
         return (
-            <div className="menuContainer">
-                <Row className="menu">
-                    <Col md="2">
+            <Col >
+                <Row>
+                    <Col md="1.5">
                         <SideBar />
                     </Col>
-                    <Col md="10" className="content">
+                    <Col md="10" xs="8" className="content">
+                        <br />
                         <div style={divStyle}>
                             <span className="header"><h3 style={headerStyle}>Leave Entitlement</h3></span>
                         </div><br />
-                        <div className="content">
+                        <div className="ContainerFlex">
                             <div style={{ textAlign: "right" }}>
                                 <Button className="btn btn-primary" color="primary">Upload Entitlement</Button><br /><br />
                             </div>
@@ -67,7 +68,7 @@ class LeaveEntitlement extends Component {
                         </div>
                     </Col>
                 </Row>
-            </div>
+            </Col>
         );
     }
 }

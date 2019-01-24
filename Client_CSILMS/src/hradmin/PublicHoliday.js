@@ -21,22 +21,22 @@ class PublicHoliday extends Component {
         };
 
         return (
-            <div className="menuContainer">
-                <Row className="menu">
-                    <Col md="2">
+            <Col >
+                <Row>
+                    <Col md="1.5">
                         <SideBar />
                     </Col>
-                    <Col md="10" className="content">
+                    <Col md="10" xs="8" className="content">
+                        <br />
                         <div style={divStyle}>
                             <span className="header"><h3 style={headerStyle}>Public Holiday</h3></span>
                         </div><br />
-                        <div className="content">
+                        <div className="ContainerFlex">
                             <div style={{ textAlign: "right" }}>
                                 <Button className="btn btn-primary" color="primary" tag={Link} to="/addpublicholiday" activeclassname="active">Add New</Button><span> </span>
                                 <Button className="btn btn-primary" color="primary">Upload Holiday</Button>
                                 <br /><br />
                             </div>
-                        </div>
                         <Table responsive>
                             <thead>
                                 <tr>
@@ -58,10 +58,11 @@ class PublicHoliday extends Component {
                                     <td><Button color="primary"><span>Delete</span></Button></td>
                                 </tr>
                             </tbody>
-                        </Table>
+                        </Table>                        
+                        </div>
                     </Col>
                 </Row>
-            </div>
+            </Col>
         );
     }
 }

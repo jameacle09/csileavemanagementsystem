@@ -1,13 +1,12 @@
 import React, { Component } from 'react';
 import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
-import SideBar from './SideBar';
+import SideBar from '../hradmin/SideBar';
 import "../common/Styles.css"
 
-class EditPublicHoliday extends Component {
-
+class ResetPassword extends Component {
     render() {
         const headerStyle = {
-            margin: "0 0 0 10px"
+            margin: "0 0 0 0"
         };
 
         const divStyle = {
@@ -28,25 +27,17 @@ class EditPublicHoliday extends Component {
                 <Col md="10" xs="8" className="content">
                     <br />
                     <div style={divStyle}>
-                        <span className="header"><h3 style={headerStyle}>Edit Public Holiday</h3></span>
+                        <span className="header"><h3 style={headerStyle}>Reset Password</h3></span>
                         </div><br />
                         <div className="ContainerFlex">
                             <Form>
                                 <FormGroup>
-                                    <Label for="phDate">Date</Label>
-                                    <Input type="date" name="phDate" id="phDate" placeholder="Public Holiday Date" />
+                                    <Label for="newPassword">New Password</Label>
+                                    <Input type="text" name="newPassword" id="newPassword" placeholder="New Password" />
                                 </FormGroup>
                                 <FormGroup>
-                                    <Label for="phDay">Day</Label>
-                                    <Input type="text" name="phDay" id="phDay" placeholder="Day" />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="holiday">Holiday</Label>
-                                    <Input type="text" name="holiday" id="holiday" placeholder="Description" />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="state">State</Label>
-                                    <Input type="text" name="state" id="state" placeholder="State" />
+                                    <Label for="confirmPassword">Confirm Password</Label>
+                                    <Input type="text" name="confirmPassword" id="confirmPassword" placeholder="Confirm Password" />
                                 </FormGroup>
                                 <Button color="primary">Save</Button>
                             </Form>
@@ -58,4 +49,4 @@ class EditPublicHoliday extends Component {
     }
 }
 
-export default EditPublicHoliday;
+export default ResetPassword;

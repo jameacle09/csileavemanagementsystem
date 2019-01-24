@@ -19,16 +19,17 @@ class ManagerApproval extends Component {
         };
 
         return (
-            <div className="menuContainer">
-                <Row className="menu">
-                    <Col md="2">
-                        <ManagerSideBar />
-                    </Col>
-                    <Col md="10" className="content">
-                        <div style={divStyle}>
-                            <span className="header"><h3 style={headerStyle}>View Leave Request</h3></span>
+            <Col >
+            <Row>
+                <Col md="1.5">
+                    <ManagerSideBar />
+                </Col>
+                <Col md="10" xs="8" className="content">
+                    <br />
+                    <div style={divStyle}>
+                        <span className="header"><h3 style={headerStyle}>View Leave Request</h3></span>
                         </div><br />
-                        <div className="content">
+                        <div className="ContainerFlex">
                             <Table responsive>
                                 <thead>
                                     <tr>
@@ -50,7 +51,7 @@ class ManagerApproval extends Component {
                         </div>
                     </Col>
                 </Row>
-            </div>
+            </Col>
         );
     }
 }
