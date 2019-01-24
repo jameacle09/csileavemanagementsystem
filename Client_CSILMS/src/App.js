@@ -7,14 +7,15 @@ import HomePage from './home/HomePage';
 import ApplyLeave from './leaves/ApplyLeave';
 import MyLeaveDetails from './leaves/MyLeaveDetails';
 import MyLeaveHistory from './leaves/MyLeaveHistory';
-import MyProfile from './staffprofile/MyProfile';
-import ChangePassword from './staffprofile/ChangePassword';
 import './stickyfooter.css';
 import ManagerApproval from './manager/ManagerApproval';
 import StaffLeaveHistory from './manager/StaffLeaveHistory';
+import MyProfile from './staffprofile/MyProfile';
+import ChangePassword from './staffprofile/ChangePassword';
 import StaffProfileComponent from './staffprofile/StaffProfileComponent';
 import ListStaffProfile from './staffprofile/ListStaffProfile';
 import NewStaffProfile from './staffprofile/NewStaffProfile';
+import ResetPassword from './staffprofile/ResetPassword';
 import PublicHoliday from './hradmin/PublicHoliday';
 import AddPublicHoliday from './hradmin/AddPublicHoliday';
 import EditPublicHoliday from './hradmin/EditPublicHoliday';
@@ -52,6 +53,7 @@ class App extends Component {
               <Route path="/editpublicholiday" title="Edit Public Holiday" component={EditPublicHoliday} />
               <Route path="/addleavecategory" title="Add Leave Category" component={AddLeaveCategory} />
               <Route path="/editleavecategory" title="Edit Leave Category" component={EditLeaveCategory} />
+              <Route path="/resetpassword" title="Reset Password" component={ResetPassword} />
             </Switch>
           </div>
           <Footer />

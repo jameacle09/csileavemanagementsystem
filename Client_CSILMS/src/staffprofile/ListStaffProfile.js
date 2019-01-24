@@ -9,7 +9,7 @@ class ListStaffProfile extends Component {
 
     render() {
         const headerStyle = {
-            margin: "0 0 0 10px"
+            margin: "0 0 0 0"
         };
 
         const divStyle = {
@@ -22,25 +22,26 @@ class ListStaffProfile extends Component {
         };
 
         return (
-            <div className="menuContainer">
-                <Row className="menu">
-                    <Col md="2">
+            <Col >
+                <Row>
+                    <Col md="1.5">
                         <SideBar />
                     </Col>
-                    <Col md="10" className="content">
+                    <Col md="10" xs="8" className="content">
+                        <br />
                         <div style={divStyle}>
                             <span className="header"><h3 style={headerStyle}>Staff Profile</h3></span>
                         </div><br />
-                        <Row>
-                            <Col md="6" className="search">
-                                <Input type="text" maxlength="50" placeholder="Search Employee" style={{ width: "25%" }} />
-                                <Button className="btn btn-primary" color="primary" type="submit">Search</Button>
-                            </Col>
-                            <Col md="6" style={{ textAlign: "right" }}>
-                                <Button className="btn btn-primary" color="primary" tag={Link} to="/newstaffprofile" activeclassname="active">Add New Employee</Button>
-                            </Col>
-                        </Row>
-                        <div>
+                        <div className="ContainerFlex">
+                            <Row>
+                                <Col md="6" xs="6" className="search">
+                                    <Input type="text" maxlength="50" placeholder="Search Employee" style={{ width: "35%" }} />
+                                    <Button className="btn btn-primary" color="primary" type="submit">Search</Button>
+                                </Col>
+                                <Col md="6" xs="6" style={{ textAlign: "right" }}>
+                                    <Button className="btn btn-primary" color="primary" tag={Link} to="/newstaffprofile" activeclassname="active">Add New Employee</Button>
+                                </Col>
+                            </Row>
                             <Table responsive>
                                 <thead>
                                     <tr>
@@ -67,7 +68,7 @@ class ListStaffProfile extends Component {
                         </div>
                     </Col>
                 </Row>
-            </div>
+            </Col>
         );
     }
 }

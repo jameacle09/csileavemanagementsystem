@@ -21,16 +21,17 @@ class LeaveCategory extends Component {
         };
 
         return (
-            <div className="menuContainer">
-                <Row className="menu">
-                    <Col md="2">
-                        <SideBar />
-                    </Col>
-                    <Col md="10" className="content">
-                        <div style={divStyle}>
-                            <span className="header"><h3 style={headerStyle}>List of Leave Category</h3></span>
+            <Col >
+            <Row>
+                <Col md="1.5">
+                    <SideBar />
+                </Col>
+                <Col md="10" xs="8" className="content">
+                    <br />
+                    <div style={divStyle}>
+                        <span className="header"><h3 style={headerStyle}>List of Leave Category</h3></span>
                         </div><br />
-                        <div className="content">
+                        <div className="ContainerFlex">
                             <div style={{ textAlign: "right" }}>
                                 <Button className="btn btn-primary" color="primary" tag={Link} to="/addleavecategory" activeclassname="active">Add New</Button><br /><br />
                             </div>
@@ -55,7 +56,7 @@ class LeaveCategory extends Component {
                         </div>
                     </Col>
                 </Row>
-            </div>
+            </Col>
         );
     }
 }

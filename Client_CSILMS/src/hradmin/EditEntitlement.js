@@ -67,16 +67,17 @@ class EditEntitlement extends Component {
         const { userData, leaveCategory } = this.state;
 
         return (
-            <div className="menuContainer">
-                <Row className="menu">
-                    <Col md="2">
+            <Col >
+                <Row>
+                    <Col md="1.5">
                         <SideBar />
                     </Col>
-                    <Col md="10" className="content">
+                    <Col md="10" xs="8" className="content">
+                        <br />
                         <div style={divStyle}>
                             <span className="header"><h3 style={headerStyle}>Edit Leave Entitlement</h3></span>
-                        </div><br />
-                        <div className="content">
+                            </div><br />
+                        <div className="ContainerFlex">
                             <Form onSubmit={this.handleFormSubmit}>
                                 <FormGroup>
                                     <Label for="csiStaffId">CSI Staff ID</Label>
@@ -128,7 +129,7 @@ class EditEntitlement extends Component {
                         </div>
                     </Col>
                 </Row>
-            </div>
+            </Col>
         );
     }
 }

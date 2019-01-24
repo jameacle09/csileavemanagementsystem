@@ -7,7 +7,7 @@ class SideBar extends Component {
 
     render() {
         return (
-            <div className="main_sidebar" style={{ height: '150vh' }}>
+            <div className="main_sidebar" style={{ height: '200vh' }}>
                 <Nav navbar>
                     <NavLink to="/liststaffprofile" className="inactive" activeClassName="active">Staff Profile</NavLink>
                     <NavLink to="/leaveentitlement" className="inactive" activeClassName="active">Leave Entitlement</NavLink>
