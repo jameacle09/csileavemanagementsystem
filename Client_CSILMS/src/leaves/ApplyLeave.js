@@ -266,7 +266,7 @@ class ApplyLeave extends Component {
         .then(res => {
           console.log(JSON.stringify(res));
           if (res.hasOwnProperty("id") && res["id"] != null)
-            confirmAlert({ message: 'Your leave request is submitted.', buttons: [{ label: 'Ok', onClick: () => this.props.history.push('/') }] });
+            confirmAlert({ message: 'Your leave request is submitted.', buttons: [{ label: 'Ok', onClick: () => this.props.history.push('/myleavehistory') }] });
         })
         //        .then(this.props.history.push('/MyLeaveHistory'))
         .catch(err => {
