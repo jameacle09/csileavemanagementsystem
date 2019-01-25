@@ -1,16 +1,7 @@
 import React, { Component } from "react";
-import {
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText,
-  Row,
-  Col,
-  Alert
-} from "reactstrap";
-import { Link } from "react-router-dom";
+import { Button, Form, FormGroup, Label, Input, FormText, Row, Col, Alert} from "reactstrap";
+import { confirmAlert } from 'react-confirm-alert'; 
+import 'react-confirm-alert/src/react-confirm-alert.css' 
 
 class ApplyLeave extends Component {
   constructor(props) {
@@ -54,6 +45,21 @@ class ApplyLeave extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.doNotSubmit = this.doNotSubmit.bind(this);
   }
+
+  clickdiscard = () => {
+    confirmAlert({
+      message: 'Do you want to cancel this request?',
+      buttons: [
+        {
+          label: 'Yes',
+          onClick: () => this.props.history.push('/')
+        },
+        {
+          label: 'No'
+        }
+      ]
+    })
+  };
 
   componentDidMount() {
     // fetch CSI Staff ID and Name from API
@@ -260,7 +266,7 @@ class ApplyLeave extends Component {
         .then(res => {
           console.log(JSON.stringify(res));
           if (res.hasOwnProperty("id") && res["id"] != null)
-            alert("Leave request is submitted.");
+          confirmAlert({ message: 'Your leave request is submitted.', buttons: [{ label: 'Ok', onClick: () => this.props.history.push('/') }] });
         })
         //        .then(this.props.history.push('/MyLeaveHistory'))
         .catch(err => {
@@ -484,7 +490,7 @@ class ApplyLeave extends Component {
                 Submit
               </Button>
               <span> </span>
-              <Button color="danger" tag={Link} to="/" activeclassname="active">Discard</Button>
+              <Button color="danger" onClick={this.clickdiscard}>Discard</Button>
             </Form>
           </div>
           <br />
