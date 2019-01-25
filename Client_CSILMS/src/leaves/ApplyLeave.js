@@ -8,7 +8,6 @@ import {
   FormText,
   Row,
   Col,
-  Progress,
   Alert
 } from "reactstrap";
 //import MyLeaveSummary from './MyLeaveSummary';
@@ -416,7 +415,7 @@ class ApplyLeave extends Component {
                     id="isHalfDay"
                     disabled={
                       startDate.toISOString().substr(0, 10) ===
-                      endDate.toISOString().substr(0, 10)
+                        endDate.toISOString().substr(0, 10)
                         ? false
                         : true
                     }

@@ -32,25 +32,6 @@ class MyProfile extends Component {
             });
     }
     render() {
-        /*
-            const divStyle = {
-                boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-            };
-            const divStyleFlex = {
-                boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-                margin: "10px",
-                width: "40%",
-                height: "40%"
-            };
-            const loadingText = {color: "blue", textAlign: "center", fontFamily: "Arial Black"};
-            const dataText = {color: "blue"};
-            const containerFlex = {
-                boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)",
-                display: "flex",
-                flexFlow: "row" || "wrap",
-                justifyContent: "flexStart"
-            };
-            */
         if (this.state.userData == null) {
             // display loading screen until data is available
             return (
@@ -104,7 +85,7 @@ class MyProfile extends Component {
                 </div>
                 <div className="containerFlex">
                     <ListGroup className="ListGroupStyleFlex">
-                        <ListGroupItem color="primary">My Profile</ListGroupItem>
+                        <ListGroupItem color="primary"><b>My Profile</b></ListGroupItem>
                         <ListGroupItem>
                             CSI Staff ID: <p className="dataText">{userData["csiStaffId"]}</p>
                         </ListGroupItem>
@@ -117,7 +98,7 @@ class MyProfile extends Component {
                         </ListGroupItem>
                     </ListGroup>
                     <ListGroup className="ListGroupStyleFlex">
-                        <ListGroupItem color="primary">Business</ListGroupItem>
+                        <ListGroupItem color="primary"><b>Business</b></ListGroupItem>
                         <ListGroupItem>
                             Business Unit:{" "}
                             <p className="dataText">{userData["businessUnit"]}</p>
@@ -131,7 +112,7 @@ class MyProfile extends Component {
                         </ListGroupItem>
                     </ListGroup>
                     <ListGroup className="ListGroupStyleFlex">
-                        <ListGroupItem color="primary">Contact</ListGroupItem>
+                        <ListGroupItem color="primary"><b>Contact</b></ListGroupItem>
                         <ListGroupItem>
                             Email: <p className="dataText">{userData["email"]}</p>
                         </ListGroupItem>

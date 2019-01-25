@@ -13,7 +13,7 @@ class MyLeaveHistory extends Component {
           </div>
           <br />
           <div className="tableContainerFlex">
-            <Table bordered responsive>
+            <Table responsive>
               <thead>
                 <tr>
                   <th>No.</th>
@@ -29,15 +29,15 @@ class MyLeaveHistory extends Component {
               </thead>
               <tbody>
                 <tr>
-                  <td>Table cell</td>
-                  <td>Table cell</td>
-                  <td>Table cell</td>
-                  <td>Table cell</td>
-                  <td>Table cell</td>
-                  <td>Table cell</td>
-                  <td>Table cell</td>
-                  <td>Table cell</td>
-                  <td>Table cell</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
+                  <td>-</td>
                 </tr>
               </tbody>
             </Table>
