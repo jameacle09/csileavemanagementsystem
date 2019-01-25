@@ -10,7 +10,7 @@ import {
   Col,
   Alert
 } from "reactstrap";
-//import MyLeaveSummary from './MyLeaveSummary';
+import { Link } from "react-router-dom";
 
 class ApplyLeave extends Component {
   constructor(props) {
@@ -484,7 +484,7 @@ class ApplyLeave extends Component {
                 Submit
               </Button>
               <span> </span>
-              <Button color="danger">Discard</Button>
+              <Button color="danger" tag={Link} to="/" activeclassname="active">Discard</Button>
             </Form>
           </div>
           <br />

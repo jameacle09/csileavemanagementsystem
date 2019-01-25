@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Row, Col } from "reactstrap";
+import { Table } from "reactstrap";
 
 class MyLeaveDetails extends Component {
   render() {
