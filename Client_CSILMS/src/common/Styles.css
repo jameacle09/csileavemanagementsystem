@@ -1,49 +1,84 @@
 .main_sidebar {
-    box-shadow: inset 5px 0 5px rgba(63, 43, 148, 0.4);
-    background-color: rgb(27, 151, 228);
-    height: 100%;    
-    font: 17px Helvetica;    
-    line-height: 30px;
-    text-indent: 25px;
-    width: 200px;
-    margin-left: -20px;
+  box-shadow: inset 5px 0 5px rgba(63, 43, 148, 0.4);
+  background-color: rgb(27, 151, 228);
+  height: 100%;
+  min-height: 100%;
+  font: 17px Helvetica;
+  line-height: 30px;
+  text-indent: 25px;
+  width: 200px;
+  margin-left: -20px;
 }
 .inactive {
-    color: #fff;
-    text-decoration: none;
-    display: block;
-    padding:10px;
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  padding: 10px;
 }
-.inactive:hover{
-    color:#fff;
-    background: SteelBlue;
-    text-decoration:none;
-    line-height: 30px;
-    text-indent: 25px;
+.inactive:hover {
+  color: #fff;
+  background: SteelBlue;
+  text-decoration: none;
+  line-height: 30px;
+  text-indent: 25px;
 }
 .active {
-    text-decoration: none;
-    background: rgb(53, 108, 153);
-    font: bold 17px Helvetica;
-    line-height: 30px;
-    text-indent: 25px;
-  }
-.content{
-    margin-left: 30px;
-    margin-top: 20px;
+  text-decoration: none;
+  background: rgb(53, 108, 153);
+  font: bold 17px Helvetica;
+  line-height: 30px;
+  text-indent: 25px;
+}
+.content {
+  margin-left: 0px;
+  margin-top: 0px;
+  margin-bottom: 20px;
 }
 .search {
-    display: flex;
-    margin-bottom: 25px;
-    flex-direction: row; 
+  display: flex;
+  margin-bottom: 25px;
+  flex-direction: row;
 }
-
+.headerContainerFlex {
+  margin: 10px 0px 0px 0px;
+  width: 100%;
+  padding: 20px;
+  display: flex;
+  justify-content: flex-start;
+  background: #b8e2fc;
+  flex-basis: auto;
+  box-shadow: 5px 5px 5px rgb(63, 84, 105);
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+.headerStyle {
+  margin: 0px 0px 0px 0px;
+}
 .ContainerFlex {
-    margin: 0 0 0 0;
-    width: auto;
-    padding: 20px;
-    flex-basis: auto;
-    box-shadow: 5px 5px 5px rgb(95, 116, 136);
-    border: 1px solid gray;
-    border-radius: 4px;
-  }
+  margin: 0 0 0 0;
+  width: 100%;
+  padding: 20px;
+  flex-basis: auto;
+  box-shadow: 5px 5px 5px rgb(95, 116, 136);
+  border: 1px solid gray;
+  border-radius: 4px;
+}
+.tableContainerFlex {
+  margin: 0 0 0 0;
+  width: 100%;
+  padding: 20px;
+  flex-basis: auto;
+  box-shadow: 5px 5px 5px rgb(95, 116, 136);
+  border: 1px solid gray;
+  border-radius: 5px;
+  justify-content: flex-start;
+  text-align: left;
+}
+.mainContainerLeavePages {
+  width: 100%;
+  text-align: center;
+}
+.subContainerLeavePages {
+  width: 80%;
+  display: inline-block;
+}
