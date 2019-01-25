@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Button, Form, FormGroup, Label, Input, FormText, Row, Col, Alert} from "reactstrap";
-import { confirmAlert } from 'react-confirm-alert'; 
-import 'react-confirm-alert/src/react-confirm-alert.css' 
+import { Button, Form, FormGroup, Label, Input, FormText, Row, Col, Alert } from "reactstrap";
+import { confirmAlert } from 'react-confirm-alert';
+import 'react-confirm-alert/src/react-confirm-alert.css'
 
 class ApplyLeave extends Component {
   constructor(props) {
@@ -266,7 +266,7 @@ class ApplyLeave extends Component {
         .then(res => {
           console.log(JSON.stringify(res));
           if (res.hasOwnProperty("id") && res["id"] != null)
-          confirmAlert({ message: 'Your leave request is submitted.', buttons: [{ label: 'Ok', onClick: () => this.props.history.push('/') }] });
+            confirmAlert({ message: 'Your leave request is submitted.', buttons: [{ label: 'Ok', onClick: () => this.props.history.push('/') }] });
         })
         //        .then(this.props.history.push('/MyLeaveHistory'))
         .catch(err => {
@@ -333,21 +333,15 @@ class ApplyLeave extends Component {
       <div className="mainContainerLeavePages">
         <div className="subContainerLeavePages">
           <div className="headerContainerFlex">
-            <Row>
-              <Col>
-                <h3>Apply Leave</h3>
-              </Col>
-            </Row>
+            <span>
+              <h3 className="headerStyle">Apply Leave</h3>
+            </span>
           </div>
           <br />
           <div className="tableContainerFlex">
-            <Row>
-              <Col>
-                <h5>
-                  Annual Leave Balance: {staffLeave["availableLeave"]} Days
+            <h5>
+              Annual Leave Balance: {staffLeave["availableLeave"]} Days
                 </h5>
-              </Col>
-            </Row>
           </div>
           <br />
           <div className="tableContainerFlex">
