@@ -12,6 +12,9 @@ import javax.persistence.Table;
 public class JobDetails {
 
 	@Id
+	@Column(name = "emplid")
+	private String emplId;
+	
 	@Column(name = "effdate")
 	private Date effDate;
 	
@@ -45,8 +48,9 @@ public class JobDetails {
 	public JobDetails() {
 	}
 
-	public JobDetails(Date effDate, Date joinDate, String status, String businessUnit, String deptId, String jobTitle,
+	public JobDetails(String emplId, Date effDate, Date joinDate, String status, String businessUnit, String deptId, String jobTitle,
 			String reportsTo, String reportDottedLine, int lastUpddTtm, int lastUpdoprId) {
+		this.emplId = emplId;
 		this.effDate = effDate;
 		this.joinDate = joinDate;
 		this.status = status;
@@ -57,6 +61,16 @@ public class JobDetails {
 		this.reportDottedLine = reportDottedLine;
 		this.lastUpddTtm = lastUpddTtm;
 		this.lastUpdoprId = lastUpdoprId;
+	}
+
+	
+	
+	public String getEmplId() {
+		return emplId;
+	}
+
+	public void setEmplId(String emplId) {
+		this.emplId = emplId;
 	}
 
 	public Date getEffDate() {
@@ -141,12 +155,13 @@ public class JobDetails {
 
 	@Override
 	public String toString() {
-		return "JobDetails [effDate=" + effDate + ", joinDate=" + joinDate + ", status=" + status + ", businessUnit="
-				+ businessUnit + ", deptId=" + deptId + ", jobTitle=" + jobTitle + ", reportsTo=" + reportsTo
-				+ ", reportDottedLine=" + reportDottedLine + ", lastUpddTtm=" + lastUpddTtm + ", lastUpdoprId="
-				+ lastUpdoprId + "]";
+		return "JobDetails [emplId=" + emplId + ", effDate=" + effDate + ", joinDate=" + joinDate + ", status=" + status
+				+ ", businessUnit=" + businessUnit + ", deptId=" + deptId + ", jobTitle=" + jobTitle + ", reportsTo="
+				+ reportsTo + ", reportDottedLine=" + reportDottedLine + ", lastUpddTtm=" + lastUpddTtm
+				+ ", lastUpdoprId=" + lastUpdoprId + "]";
 	}
 
+	
 	
 	
 }
