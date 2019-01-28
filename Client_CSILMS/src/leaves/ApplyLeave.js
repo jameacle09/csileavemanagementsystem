@@ -1,7 +1,17 @@
 import React, { Component } from "react";
-import { Button, Form, FormGroup, Label, Input, FormText, Row, Col, Alert } from "reactstrap";
-import { confirmAlert } from 'react-confirm-alert';
-import 'react-confirm-alert/src/react-confirm-alert.css'
+import {
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  FormText,
+  Row,
+  Col,
+  Alert
+} from "reactstrap";
+import { confirmAlert } from "react-confirm-alert";
+import "react-confirm-alert/src/react-confirm-alert.css";
 
 class ApplyLeave extends Component {
   constructor(props) {
@@ -48,17 +58,17 @@ class ApplyLeave extends Component {
 
   clickdiscard = () => {
     confirmAlert({
-      message: 'Do you want to cancel this request?',
+      message: "Do you want to cancel this request?",
       buttons: [
         {
-          label: 'Yes',
-          onClick: () => this.props.history.push('/')
+          label: "Yes",
+          onClick: () => this.props.history.push("/")
         },
         {
-          label: 'No'
+          label: "No"
         }
       ]
-    })
+    });
   };
 
   componentDidMount() {
@@ -266,7 +276,15 @@ class ApplyLeave extends Component {
         .then(res => {
           console.log(JSON.stringify(res));
           if (res.hasOwnProperty("id") && res["id"] != null)
-            confirmAlert({ message: 'Your leave request is submitted.', buttons: [{ label: 'Ok', onClick: () => this.props.history.push('/myleavehistory') }] });
+            confirmAlert({
+              message: "Your leave request is submitted.",
+              buttons: [
+                {
+                  label: "Ok",
+                  onClick: () => this.props.history.push("/myleavehistory")
+                }
+              ]
+            });
         })
         //        .then(this.props.history.push('/MyLeaveHistory'))
         .catch(err => {
@@ -331,164 +349,162 @@ class ApplyLeave extends Component {
 
     return (
       <div className="mainContainerLeavePages">
-        <div className="subContainerLeavePages">
-          <div className="headerContainerFlex">
-            <span>
-              <h3 className="headerStyle">Apply Leave</h3>
-            </span>
-          </div>
-          <br />
-          <div className="tableContainerFlex">
-            <h5>
-              Annual Leave Balance: {staffLeave["availableLeave"]} Days
-                </h5>
-          </div>
-          <br />
-          <div className="tableContainerFlex">
-            <Form onSubmit={this.doNotSubmit}>
-              <FormGroup>
-                <Label for="csiStaffId">CSI Staff ID</Label>
-                <Input
-                  type="text"
-                  name="csiStaffId"
-                  id="csiStaffId"
-                  value={userData["csiStaffId"]}
-                  disabled={true}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label for="staffName">Staff Name</Label>
-                <Input
-                  type="text"
-                  name="staffName"
-                  id="staffName"
-                  value={userData["staffName"]}
-                  disabled={true}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label for="leaveCategory">Leave Category</Label>
-                <Input
-                  type="select"
-                  name="leaveCategory"
-                  id="leaveCategory"
-                  onChange={this.handleDetailsChange}
-                  value={leaveCategory}
-                >
-                  {leaveCategoryList.map(leaveCategory => {
-                    return (
-                      <option
-                        key={leaveCategory["leaveCode"]}
-                        value={leaveCategory["id"]}
-                      >
-                        {leaveCategory["leaveName"]}
-                      </option>
-                    );
-                  })}
-                </Input>
-              </FormGroup>
-              <FormGroup>
-                <Label for="startDate">Start Date</Label>
-                <Input
-                  type="date"
-                  name="startDate"
-                  id="startDate"
-                  value={startDate.toISOString().substr(0, 10)}
-                  onChange={this.handleDateChange}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label for="endDate">End Date</Label>
-                <Input
-                  type="date"
-                  name="endDate"
-                  id="endDate"
-                  value={endDate.toISOString().substr(0, 10)}
-                  onChange={this.handleDateChange}
-                />
-              </FormGroup>
-              <FormGroup check>
-                <Label check>
-                  <Input
-                    type="checkbox"
-                    name="isHalfDay"
-                    id="isHalfDay"
-                    disabled={
-                      startDate.toISOString().substr(0, 10) ===
-                        endDate.toISOString().substr(0, 10)
-                        ? false
-                        : true
-                    }
-                    onChange={this.handleDateChange}
-                    checked={isHalfDay}
-                  />{" "}
-                  Check the box if you are taking half day leave.
-                </Label>
-              </FormGroup>
-              <br />
-              <FormGroup row>
-                <Label xs={2} for="leaveDuration">
-                  Leave Duration:{" "}
-                </Label>
-                <Col xs={2}>
-                  <Input
-                    type="text"
-                    name="leaveDuration"
-                    id="leaveDuration"
-                    value={leaveDuration}
-                    placeholder="Days"
-                    onChange={this.handleDateChange}
-                  />
-                </Col>
-                <Col xs={8}>{durationErrorMsg}</Col>
-              </FormGroup>
-              <FormGroup>
-                <Label for="leaveReason">Leave Reason</Label>
-                <Input
-                  type="textarea"
-                  name="leaveReason"
-                  id="leaveReason"
-                  onChange={this.handleDetailsChange}
-                />
-              </FormGroup>
-              <FormGroup>
-                <Label for="attachment">File</Label>
-                <Input
-                  type="file"
-                  name="attachment"
-                  id="attachment"
-                  onChange={this.handleDetailsChange}
-                />
-                <FormText color="muted">Please attach your document.</FormText>
-              </FormGroup>
-              <FormGroup>
-                <Label for="approverId">Approver</Label>
-                <Input
-                  type="select"
-                  name="approverId"
-                  id="approverId"
-                  onChange={this.handleDetailsChange}
-                  value={approverId}
-                >
-                  {approverList.map(approver => {
-                    return (
-                      <option key={approver["id"]} value={approver["id"]}>
-                        {approver["staffName"]}
-                      </option>
-                    );
-                  })}
-                </Input>
-              </FormGroup>
-              <br />
-              <Button color="primary" onClick={this.handleSubmit}>
-                Submit
-              </Button>
-              <span> </span>
-              <Button color="danger" onClick={this.clickdiscard}>Discard</Button>
-            </Form>
-          </div>
-          <br />
+        <div className="headerContainerFlex">
+          <span>
+            <h3 className="headerStyle">Apply Leave</h3>
+          </span>
         </div>
+        <br />
+        <div className="tableContainerFlex">
+          <h5>Annual Leave Balance: {staffLeave["availableLeave"]} Days</h5>
+        </div>
+        <br />
+        <div className="tableContainerFlex">
+          <Form onSubmit={this.doNotSubmit}>
+            <FormGroup>
+              <Label for="csiStaffId">CSI Staff ID</Label>
+              <Input
+                type="text"
+                name="csiStaffId"
+                id="csiStaffId"
+                value={userData["csiStaffId"]}
+                disabled={true}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="staffName">Staff Name</Label>
+              <Input
+                type="text"
+                name="staffName"
+                id="staffName"
+                value={userData["staffName"]}
+                disabled={true}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="leaveCategory">Leave Category</Label>
+              <Input
+                type="select"
+                name="leaveCategory"
+                id="leaveCategory"
+                onChange={this.handleDetailsChange}
+                value={leaveCategory}
+              >
+                {leaveCategoryList.map(leaveCategory => {
+                  return (
+                    <option
+                      key={leaveCategory["leaveCode"]}
+                      value={leaveCategory["id"]}
+                    >
+                      {leaveCategory["leaveName"]}
+                    </option>
+                  );
+                })}
+              </Input>
+            </FormGroup>
+            <FormGroup>
+              <Label for="startDate">Start Date</Label>
+              <Input
+                type="date"
+                name="startDate"
+                id="startDate"
+                value={startDate.toISOString().substr(0, 10)}
+                onChange={this.handleDateChange}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="endDate">End Date</Label>
+              <Input
+                type="date"
+                name="endDate"
+                id="endDate"
+                value={endDate.toISOString().substr(0, 10)}
+                onChange={this.handleDateChange}
+              />
+            </FormGroup>
+            <FormGroup check>
+              <Label check>
+                <Input
+                  type="checkbox"
+                  name="isHalfDay"
+                  id="isHalfDay"
+                  disabled={
+                    startDate.toISOString().substr(0, 10) ===
+                    endDate.toISOString().substr(0, 10)
+                      ? false
+                      : true
+                  }
+                  onChange={this.handleDateChange}
+                  checked={isHalfDay}
+                />{" "}
+                Check the box if you are taking half day leave.
+              </Label>
+            </FormGroup>
+            <br />
+            <FormGroup row>
+              <Label xs={2} for="leaveDuration">
+                Leave Duration:{" "}
+              </Label>
+              <Col xs={2}>
+                <Input
+                  type="text"
+                  name="leaveDuration"
+                  id="leaveDuration"
+                  value={leaveDuration}
+                  placeholder="Days"
+                  onChange={this.handleDateChange}
+                />
+              </Col>
+              <Col xs={8}>{durationErrorMsg}</Col>
+            </FormGroup>
+            <FormGroup>
+              <Label for="leaveReason">Leave Reason</Label>
+              <Input
+                type="textarea"
+                name="leaveReason"
+                id="leaveReason"
+                onChange={this.handleDetailsChange}
+              />
+            </FormGroup>
+            <FormGroup>
+              <Label for="attachment">File</Label>
+              <Input
+                type="file"
+                name="attachment"
+                id="attachment"
+                onChange={this.handleDetailsChange}
+              />
+              <FormText color="muted">Please attach your document.</FormText>
+            </FormGroup>
+            <FormGroup>
+              <Label for="approverId">Approver</Label>
+              <Input
+                type="select"
+                name="approverId"
+                id="approverId"
+                onChange={this.handleDetailsChange}
+                value={approverId}
+              >
+                {approverList.map(approver => {
+                  return (
+                    <option key={approver["id"]} value={approver["id"]}>
+                      {approver["staffName"]}
+                    </option>
+                  );
+                })}
+              </Input>
+            </FormGroup>
+            <br />
+            <Button color="primary" onClick={this.handleSubmit}>
+              Submit
+            </Button>
+            <span> </span>
+            <Button color="danger" onClick={this.clickdiscard}>
+              Discard
+            </Button>
+          </Form>
+        </div>
+        <br />
       </div>
     );
   }
