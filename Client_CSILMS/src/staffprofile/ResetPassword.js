@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Button, Form, FormGroup, Label, Input, Row, Col } from "reactstrap";
-import SideBar from "./SideBar";
+import SideBar from "../hradmin/SideBar";
 import "../common/Styles.css";
 
-class AddLeaveCategory extends Component {
+class ResetPassword extends Component {
   render() {
     return (
       <Col>
@@ -14,37 +14,28 @@ class AddLeaveCategory extends Component {
           <Col xs className="content">
             <div className="headerContainerFlex">
               <span className="header">
-                <h3 className="headerStyle">Add Leave Category</h3>
+                <h3 className="headerStyle">Reset Password</h3>
               </span>
             </div>
             <br />
             <div className="tableContainerFlex">
               <Form>
                 <FormGroup>
-                  <Label for="leaveCode">Leave Code</Label>
+                  <Label for="newPassword">New Password</Label>
                   <Input
                     type="text"
-                    name="leaveCode"
-                    id="leaveCode"
-                    placeholder="Leave Code"
+                    name="newPassword"
+                    id="newPassword"
+                    placeholder="New Password"
                   />
                 </FormGroup>
                 <FormGroup>
-                  <Label for="leaveDescription">Leave Description</Label>
+                  <Label for="confirmPassword">Confirm Password</Label>
                   <Input
                     type="text"
-                    name="leaveDescription"
-                    id="leaveDescription"
-                    placeholder="Leave Description"
-                  />
-                </FormGroup>
-                <FormGroup>
-                  <Label for="leaveEntitlement">Leave Entitlement</Label>
-                  <Input
-                    type="text"
-                    name="leaveEntitlement"
-                    id="leaveEntitlement"
-                    placeholder="Leave Entitlement"
+                    name="confirmPassword"
+                    id="confirmPassword"
+                    placeholder="Confirm Password"
                   />
                 </FormGroup>
                 <Button color="primary">Save</Button>
@@ -57,4 +48,4 @@ class AddLeaveCategory extends Component {
   }
 }
 
-export default AddLeaveCategory;
+export default ResetPassword;

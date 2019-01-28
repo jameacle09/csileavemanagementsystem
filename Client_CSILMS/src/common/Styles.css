@@ -1,75 +1,274 @@
-.main_sidebar {
-    box-shadow: inset 5px 0 5px rgba(63, 43, 148, 0.4);
-    background-color: rgb(27, 151, 228);
-    height: 100%;    
-    font: 18px Helvetica;    
-    line-height: 30px;
-    text-indent: 25px;
+/*** Begin Sidebar Styles ***/
+.wrapper {
+  display: flex;
+  align-items: stretch;
+  /* border: 2px solid black; */
 }
 /* 
-.main_sidebar ul {
-    list-style:none;
-    padding: 0;
-    margin: 10;
-}
-.main_sidebar ul li {
-    padding:10px;
-}
-.main_sidebar ul li a {
-    color:rgb(255, 255, 255);
-    display:block;
-}
-.main_sidebar ul li:hover {
-    background: SteelBlue;
-}
-.main_sidebar ul li a:hover {
-    color:#fff;
-    text-decoration:none;
-}
-.main_sidebar ul li.active {
-    background:#0f4698;
-}
-.main_sidebar ul li.active:hover {
-    background:#167696;
+#sidebar {
+  min-width: 250px;
+  max-width: 250px;
+  min-height: 100vh;
 } */
-.menuContainer {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: left; 
-    width: 100%;
+#sidebar.active {
+  margin-left: -250px;
 }
-.menu {
-    display: flex;
-    width: 100%;
+a[data-toggle="collapse"] {
+  position: relative;
 }
-.content {
-    margin-top: 30px;
-    margin-left: 0px;
+
+.dropdown-toggle::after {
+  display: block;
+  position: absolute;
+  top: 50%;
+  right: 20px;
+  transform: translateY(-50%);
 }
-.search {
-    display: flex;
-    margin-bottom: 50px;
-    flex-direction: row; 
+@media (max-width: 100%) {
+  #sidebar {
+    margin-left: -250px;
+  }
+  #sidebar.active {
+    margin-left: 0;
+  }
+}
+/*
+    ADDITIONAL DEMO STYLE, NOT IMPORTANT TO MAKE THINGS WORK BUT TO MAKE IT A BIT NICER :)
+*/
+@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
+*/ body {
+  font-family: Helvetica;
+  background: #fafafa;
+}
+
+p {
+  font-family: Helvetica;
+  /* font-size: 1.1em; */
+  font-size: 17px;
+  font-weight: 300;
+  line-height: 1.7em;
+  color: #999;
+}
+
+a,
+a:hover,
+a:focus {
+  color: inherit;
+  text-decoration: none;
+  transition: all 0.3s;
+}
+
+#sidebar {
+  /* don't forget to add all the previously mentioned styles here too */
+  /* background: #7386d5; */
+  background-color: #032a53;
+  color: #fff;
+  transition: all 0.3s;
+  min-width: 250px;
+  max-width: 250px;
+  /* min-height: 100vh; */
+  min-height: 93.2vh;
+}
+
+#sidebar .sidebar-header {
+  padding: 20px;
+  background: #004a9b;
+}
+
+#sidebar ul.components {
+  padding: 20px 0;
+  border-bottom: 1px solid #475f8b;
+}
+
+#sidebar ul p {
+  color: #fff;
+  padding: 10px;
+}
+
+#sidebar ul li a {
+  padding: 10px;
+  /* font-size: 1.1em; */
+  font: 17px Helvetica;
+  display: block;
+}
+#sidebar ul li a:hover {
+  /* color: #7386d5; */
+  color: #004a9b;
+  background: #fff;
+}
+
+#sidebar ul li.active > a,
+a[aria-expanded="true"] {
+  color: #fff;
+  background: #004a9b;
+}
+ul ul a {
+  /* font-size: 0.9em !important; */
+  font-size: 14px;
+  padding-left: 30px !important;
+  background: rgb(176, 230, 248);
+}
+/*** End Sidebar Styles ***/
+
+.main_sidebar {
+  box-shadow: inset 5px 0 5px rgba(63, 43, 148, 0.4);
+  background-color: rgb(27, 151, 228);
+  height: 100%;
+  min-height: 100%;
+  font: 17px Helvetica;
+  line-height: 30px;
+  text-indent: 25px;
+  width: 200px;
+  margin-left: -20px;
+  position: relative;
 }
 .inactive {
-    color: #fff;
-    text-decoration: none;
-    display: block;
-    padding:10px;
+  color: #fff;
+  text-decoration: none;
+  display: block;
+  padding: 10px;
 }
-
-.inactive:hover{
-    color:#fff;
-    background: SteelBlue;
-    text-decoration:none;
-    line-height: 30px;
-    text-indent: 25px;
+.inactive:hover {
+  color: #fff;
+  background: SteelBlue;
+  text-decoration: none;
+  line-height: 30px;
+  text-indent: 25px;
 }
-
 .active {
-    text-decoration: none;
-    background: rgb(53, 108, 153);
-    font: bold 18px Helvetica;
-    line-height: 30px;
-    text-indent: 25px;
-  }
+  text-decoration: none;
+  background: rgb(53, 108, 153);
+  font: bold 17px Helvetica;
+  line-height: 30px;
+  text-indent: 25px;
+}
+.content {
+  margin-left: 0px;
+  margin-top: 0px;
+  margin-bottom: 20px;
+}
+.search {
+  display: flex;
+  margin-bottom: 25px;
+  flex-direction: row;
+}
+.headerContainerFlex {
+  margin: 10px 10px 0px 10px;
+  width: 96%;
+  padding: 20px;
+  display: flex;
+  justify-content: flex-start;
+  background: #b8e2fc;
+  flex-basis: auto;
+  box-shadow: 5px 5px 5px rgb(63, 84, 105);
+  border: 1px solid gray;
+  border-radius: 5px;
+}
+.headerStyle {
+  margin: 0px 0px 0px 0px;
+}
+.mainContainerFlex {
+  margin: 0 0 0 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+.tableContainerFlex {
+  margin: 0px 10px 10px 10px;
+  width: 96%;
+  padding: 20px;
+  flex-basis: auto;
+  box-shadow: 5px 5px 5px rgb(95, 116, 136);
+  border: 1px solid gray;
+  border-radius: 5px;
+  justify-content: flex-start;
+  text-align: left;
+}
+.mainContainerLeavePages {
+  width: 100%;
+  text-align: center;
+}
+.subContainerLeavePages {
+  width: 96%;
+  display: inline-block;
+}
+.containerFlex {
+  display: flex;
+  justify-content: center;
+  flex-direction: row;
+  flex-basis: auto;
+  width: 100%;
+}
+.nameContainerFlex {
+  width: 97%;
+  background: #b8e2fc;
+}
+.staffNameContainer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 30%;
+}
+.listStaffName {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: left;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  display: flex;
+  justify-content: flex-start;
+}
+.mainListContainer {
+  display: flex;
+  justify-content: flex-start;
+  margin: 0;
+  width: 60%;
+}
+.mainList {
+  display: flex;
+  align-items: left;
+  justify-content: left;
+  align-content: left;
+  text-align-last: left;
+  width: 100%;
+  margin: 0;
+  padding: 0;
+  border: 2px solid gray;
+}
+.mainDataText {
+  color: blue;
+  height: 0rem;
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+}
+.containerProfileFlex {
+  justify-content: flex-start;
+  width: 96%;
+  padding: 20px;
+  margin: 10px 10px auto;
+  height: 48%;
+  overflow: auto;
+}
+.ListGroupStyleFlex {
+  text-align: left;
+  width: 100%;
+  height: 35%;
+  box-shadow: 5px 5px 5px rgb(95, 116, 136);
+  margin: 10px 10px 0px 10px;
+  border-radius: 5px;
+  font: Helvetica;
+  overflow: auto;
+}
+.menu_a {
+  font: 16px Helvetica;
+  display: block;
+  color: rgb(11, 211, 247);
+  text-decoration: none;
+  display: inline-block;
+  padding: 5px 5px;
+}
+.menu_a:hover {
+  font: 16px Helvetica;
+  color: rgb(11, 211, 247);
+  text-decoration: underline;
+}

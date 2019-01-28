@@ -1,101 +1,92 @@
 .divStyle {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin: 20px 0 0 0
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: 20px 0 0 0;
 }
-
-.loadingText {color: blue; 
-    text-align: center;
-    font-family: Arial Black
+.loadingText {
+  color: blue;
+  text-align: center;
+  font-family: Arial Black;
 }
-
 .nameContainerFlex {
-    margin: 20px 0 30px 55px;
-    width: 91.5%;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: flex-start;
-    background: lightskyblue;
-    flex-basis: auto;
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)
+  margin: 20px 15px 25px 0px;
+  width: 1200px;
+  display: flex;
+  justify-content: flex-start;
+  background: #B8E2FC;
+  flex-basis: auto;
+  box-shadow: 5px 5px 5px rgb(63, 84, 105);
+  border-radius: 4px;
 }
-
 .staffNameContainer {
-    display: flex;
-    justify-content: space-between;
-    align-items: center
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
-
 .listStaffName {
-    font-size: 30px;
-    font-weight: bold;
-    margin: 0 0 0 10px
+  font-size: 30px;
+  font-weight: bold;
+  margin: 0 0 0 10px;
 }
-
 .mainListContainer {
-    display: flex;
-    justify-content: flex-start;
-    margin: 0;
+  display: flex;
+  justify-content: flex-start;
+  margin: 0;
 }
-
 .mainList {
-    display: flex;
-    justify-content: flex-end;
-    margin: 0 0 0 80px;
-    padding: 0 0 0 0
+  display: flex;
+  justify-content: left;
+  margin: 0 0 0 80px;
+  padding: 0 0 0 0;
 }
-
 .mainList li {
-    display: inline-block;
-    list-style: none;
-    width:150px;
-    margin: 15px 0 0 0
+  display: inline-block;
+  list-style: none;
+  width: 150px;
+  margin: 15px 0 0 0;
 }
-
 .mainDataText {
-    color: blue;
-    height: 0rem;
-    padding: 0 0 20px 0
+  color: blue;
+  height: 0rem;
+  padding: 0 0 20px 0;
 }
-
 .containerFlex {
-    margin: -20px  0 0 0;
-    display: flex;
-    flex-flow: row wrap;
-    justify-content: center;
-    flex-basis: auto
+  display: flex;
+  justify-content: center;
+  flex-basis: auto;
+  width: 100%;
 }
-
 .ListGroupStyleFlex {
-    box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
-    margin: 10px 5px 15px 5px;
-    width: 30%;
-    height: 30%
+  box-shadow: 5px 5px 5px rgb(95, 116, 136);
+  margin: 15px 15px 0px 0px;
+  width: 390px;
+  height: 245px;
+  border-radius: 4px;
+  font: Helvetica;
 }
-
 .dataText {
-    color: blue;
-    height: 0rem
+  color: blue;
+  height: 0rem;
 }
-
 .buttonChngPwd {
-    padding: 10px 0 0 55px
+  display: flex;
+  justify-content: center;
+  flex-basis: auto;
+  width: 100%;
 }
-
 .password__show {
-    cursor: pointer;
-    /* position: absolute; */
-    align-items: flex-end;
-    bottom: 12px;
-    height: 18px;
-    right: 0;
-    background: #727272;
-    color: white;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-weight: 600;
-    font-size: 0.8em;
-  }
-  .container_password_show {
-    text-align: right;
-    padding: 2px 2px;
-  }
+  cursor: pointer;
+  align-items: flex-end;
+  bottom: 12px;
+  height: 18px;
+  right: 0;
+  background: #727272;
+  color: white;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.8em;
+}
+.container_password_show {
+  text-align: right;
+  padding: 2px 2px;
+} 

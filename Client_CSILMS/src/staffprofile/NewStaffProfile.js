@@ -1,192 +1,277 @@
-import React, { Component } from 'react';
-import StaffProfile from './StaffProfile';
-import { Button, Form, FormGroup, Label, Input, Row, Col } from 'reactstrap';
-import SideBar from '../hradmin/SideBar';
-import "../common/Styles.css"
+import React, { Component } from "react";
+import StaffProfile from "./StaffProfile";
+import { Button, Form, FormGroup, Label, Input, Row, Col } from "reactstrap";
+import { Link } from "react-router-dom";
+import SideBar from "../hradmin/SideBar";
+import "../common/Styles.css";
 
 class NewStaffProfile extends Component {
-    constructor(props) {
-        super(props);
-        this.id = "";
-        this.csiStaffId = "";
-        this.staffName = "";
-        this.email = "";
-        this.icNumber = "";
-        this.jobTitle = "";
-        this.mobileNo = "";
-        this.businessUnit = "";
-        this.lineManagerId = "";
-        this.joinDate = "";
-        this.csiStaffIdHandler = this.csiStaffIdHandler.bind(this);
-        this.staffNameHandler = this.staffNameHandler.bind(this);
-        this.emailHandler = this.emailHandler.bind(this);
-        this.icNumberHandler = this.icNumberHandler.bind(this);
-        this.jobTitleHandler = this.jobTitleHandler.bind(this);
-        this.mobileNoHandler = this.mobileNoHandler.bind(this);
-        this.businessUnitHandler = this.businessUnitHandler.bind(this);
-        this.lineManagerIdHandler = this.lineManagerIdHandler.bind(this);
-        this.joinDateHandler = this.joinDateHandler.bind(this);
-        this.save = this.save.bind(this);
-        this.state = {
-            selectedOption: "active"
-        };
-    }
-
-    handleOptionChange = changeEvent => {
-        this.setState({
-            selectedOption: changeEvent.target.value
-        });
+  constructor(props) {
+    super(props);
+    this.id = "";
+    this.csiStaffId = "";
+    this.staffName = "";
+    this.email = "";
+    this.icNumber = "";
+    this.jobTitle = "";
+    this.mobileNo = "";
+    this.businessUnit = "";
+    this.lineManagerId = "";
+    this.joinDate = "";
+    this.csiStaffIdHandler = this.csiStaffIdHandler.bind(this);
+    this.staffNameHandler = this.staffNameHandler.bind(this);
+    this.emailHandler = this.emailHandler.bind(this);
+    this.icNumberHandler = this.icNumberHandler.bind(this);
+    this.jobTitleHandler = this.jobTitleHandler.bind(this);
+    this.mobileNoHandler = this.mobileNoHandler.bind(this);
+    this.businessUnitHandler = this.businessUnitHandler.bind(this);
+    this.lineManagerIdHandler = this.lineManagerIdHandler.bind(this);
+    this.joinDateHandler = this.joinDateHandler.bind(this);
+    this.save = this.save.bind(this);
+    this.state = {
+      selectedOption: "active"
     };
+  }
 
-    handleFormSubmit = formSubmitEvent => {
-        formSubmitEvent.preventDefault();
-    };
+  handleOptionChange = changeEvent => {
+    this.setState({
+      selectedOption: changeEvent.target.value
+    });
+  };
 
-    csiStaffIdHandler(event) {
-        this.csiStaffId = event.target.value;
-    }
+  handleFormSubmit = formSubmitEvent => {
+    formSubmitEvent.preventDefault();
+  };
 
-    staffNameHandler(event) {
-        this.staffName = event.target.value;
-    }
+  csiStaffIdHandler(event) {
+    this.csiStaffId = event.target.value;
+  }
 
-    emailHandler(event) {
-        this.email = event.target.value;
-    }
+  staffNameHandler(event) {
+    this.staffName = event.target.value;
+  }
 
-    icNumberHandler(event) {
-        this.icNumber = event.target.value;
-    }
+  emailHandler(event) {
+    this.email = event.target.value;
+  }
 
-    jobTitleHandler(event) {
-        this.jobTitle = event.target.value;
-    }
+  icNumberHandler(event) {
+    this.icNumber = event.target.value;
+  }
 
-    mobileNoHandler(event) {
-        this.mobileNo = event.target.value;
-    }
+  jobTitleHandler(event) {
+    this.jobTitle = event.target.value;
+  }
 
-    businessUnitHandler(event) {
-        this.businessUnit = event.target.value;
-    }
+  mobileNoHandler(event) {
+    this.mobileNo = event.target.value;
+  }
 
-    lineManagerIdHandler(event) {
-        this.lineManagerId = event.target.value;
-    }
+  businessUnitHandler(event) {
+    this.businessUnit = event.target.value;
+  }
 
-    joinDateHandler(event) {
-        this.joinDate = event.target.value;
-    }
+  lineManagerIdHandler(event) {
+    this.lineManagerId = event.target.value;
+  }
 
-    save() {
-        let staffProfile = new StaffProfile(0, this.csiStaffId, this.staffName, this.email, this.icNumber, this.jobTitle, this.mobileNo, this.businessUnit, this.lineManagerId, this.joinDate);
-        console.log(JSON.stringify(staffProfile));
-        fetch('http://localhost/api/staffprofile', {
-            method: 'post',
-            body: JSON.stringify(staffProfile),
-            headers: {
-                'Accept': 'application/json',
-                'Content-Type': 'application/json'
-            }
-        }).then((response) => {
-            this.props.showStaffProfiles();
-        })
-    }
+  joinDateHandler(event) {
+    this.joinDate = event.target.value;
+  }
 
-    render() {
-        const headerStyle = {
-            margin: "0 0 0 10px"
-        };
+  save() {
+    let staffProfile = new StaffProfile(
+      0,
+      this.csiStaffId,
+      this.staffName,
+      this.email,
+      this.icNumber,
+      this.jobTitle,
+      this.mobileNo,
+      this.businessUnit,
+      this.lineManagerId,
+      this.joinDate
+    );
+    console.log(JSON.stringify(staffProfile));
+    fetch("http://localhost/api/staffprofile", {
+      method: "post",
+      body: JSON.stringify(staffProfile),
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json"
+      }
+    }).then(response => {
+      this.props.showStaffProfiles();
+    });
+  }
 
-        const divStyle = {
-            background: "#B8E2FC",
-            width: "auto",
-            margin: "0 0 0 0",
-            padding: "25px 0 25px 20px",
-            borderRadius: "5px",
-            boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
-        };
-
-        return (
-            <div className="menuContainer">
-                <Row className="menu">
-                    <Col md="2">
-                        <SideBar />
-                    </Col>
-                    <Col md="10" className="content">
-                        <div style={divStyle}>
-                            <span className="header"><h3 style={headerStyle}>Add Staff Profile</h3></span>
-                        </div><br />
-                        <div >
-                            <Form onSubmit={this.handleFormSubmit}>
-                                <FormGroup>
-                                    <Label for="csiStaffId">CSI Staff ID</Label>
-                                    <Input type="text" name="csiStaffId" id="csiStaffId" placeholder="CSI Staff ID" onChange={this.csiStaffIdHandler} />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="staffName">Staff Name</Label>
-                                    <Input type="text" name="staffName" id="staffName" placeholder="Staff Name" onChange={this.staffNameHandler} />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="email">Email</Label>
-                                    <Input type="email" name="email" id="email" placeholder="Email" onChange={this.emailHandler} />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="icNumber">NRIC / Passport No.</Label>
-                                    <Input type="text" name="icNumber" id="icNumber" placeholder="NRIC / Passport No." onChange={this.icNumberHandler} />
-                                </FormGroup>
-
-                                <FormGroup>
-                                    <Label for="jobTitle">Job Title</Label>
-                                    <Input type="text" name="jobTitle" id="jobTitle" placeholder="Job Title" onChange={this.jobTitleHandler} />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="mobileNo">Mobile No.</Label>
-                                    <Input type="text" name="mobileNo" id="mobileNo" placeholder="Mobile No." onChange={this.mobileNoHandler} />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="businessUnit">Business Unit</Label>
-                                    <Input type="text" name="businessUnit" id="businessUnit" placeholder="Business Unit" onChange={this.businessUnitHandler} />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="lineManagerId">Line Manager</Label>
-                                    <Input type="text" name="lineManagerId" id="lineManagerId" placeholder="Line Manager" onChange={this.lineManagerIdHandler} />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="joinDate">Join Date</Label>
-                                    <Input type="date" name="joinDate" id="joinDate" placeholder="Join Date" onChange={this.joinDateHandler} />
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="status">Status</Label>
-                                    <div className="form-check">
-                                        <Input type="radio" name="active" value="active" checked={this.state.selectedOption === "active"} onChange={this.handleOptionChange} /> Active
-                                        </div>
-                                    <div className="form-check">
-                                        <Input type="radio" name="inactive" value="inactive" checked={this.state.selectedOption === "inactive"} onChange={this.handleOptionChange} /> Inactive
-                                        </div>
-                                </FormGroup>
-                                <FormGroup>
-                                    <Label for="role">Role</Label>
-                                    <div className="form-check">
-                                        <Input type="checkbox" name="employee" value="employee" /> Employee
-                                        </div>
-                                    <div className="form-check">
-                                        <Input type="checkbox" name="manager" value="manager" /> Manager
-                                        </div>
-                                    <div className="form-check">
-                                        <Input type="checkbox" name="admin" value="admin" /> Admin
-                                        </div>
-                                </FormGroup>
-                                <br />
-                                <Button color="primary" onClick={this.save}>Submit</Button>
-                            </Form>
-                        </div>
-                    </Col>
-                </Row>
+  render() {
+    return (
+      <Col>
+        <Row>
+          <Col md="1.5">
+            <SideBar />
+          </Col>
+          <Col xs className="content">
+            <div className="headerContainerFlex">
+              <span className="header">
+                <h3 className="headerStyle">Add Staff Profile</h3>
+              </span>
             </div>
-        );
-    }
+            <br />
+            <Button
+              className="btn btn-primary"
+              color="primary"
+              tag={Link}
+              to="/resetpassword"
+              activeclassname="active"
+            >
+              Reset Password
+            </Button>
+            <div style={{ marginTop: "20px" }}>
+              <Form
+                className="tableContainerFlex"
+                onSubmit={this.handleFormSubmit}
+              >
+                <FormGroup>
+                  <Label for="csiStaffId">CSI Staff ID</Label>
+                  <Input
+                    type="text"
+                    name="csiStaffId"
+                    id="csiStaffId"
+                    placeholder="CSI Staff ID"
+                    onChange={this.csiStaffIdHandler}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="staffName">Staff Name</Label>
+                  <Input
+                    type="text"
+                    name="staffName"
+                    id="staffName"
+                    placeholder="Staff Name"
+                    onChange={this.staffNameHandler}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="email">Email</Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    id="email"
+                    placeholder="Email"
+                    onChange={this.emailHandler}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="icNumber">NRIC / Passport No.</Label>
+                  <Input
+                    type="text"
+                    name="icNumber"
+                    id="icNumber"
+                    placeholder="NRIC / Passport No."
+                    onChange={this.icNumberHandler}
+                  />
+                </FormGroup>
+
+                <FormGroup>
+                  <Label for="jobTitle">Job Title</Label>
+                  <Input
+                    type="text"
+                    name="jobTitle"
+                    id="jobTitle"
+                    placeholder="Job Title"
+                    onChange={this.jobTitleHandler}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="mobileNo">Mobile No.</Label>
+                  <Input
+                    type="text"
+                    name="mobileNo"
+                    id="mobileNo"
+                    placeholder="Mobile No."
+                    onChange={this.mobileNoHandler}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="businessUnit">Business Unit</Label>
+                  <Input
+                    type="text"
+                    name="businessUnit"
+                    id="businessUnit"
+                    placeholder="Business Unit"
+                    onChange={this.businessUnitHandler}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="lineManagerId">Line Manager</Label>
+                  <Input
+                    type="text"
+                    name="lineManagerId"
+                    id="lineManagerId"
+                    placeholder="Line Manager"
+                    onChange={this.lineManagerIdHandler}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="joinDate">Join Date</Label>
+                  <Input
+                    type="date"
+                    name="joinDate"
+                    id="joinDate"
+                    placeholder="Join Date"
+                    onChange={this.joinDateHandler}
+                  />
+                </FormGroup>
+                <FormGroup>
+                  <Label for="status">Status</Label>
+                  <div className="form-check">
+                    <Input
+                      type="radio"
+                      name="active"
+                      value="active"
+                      checked={this.state.selectedOption === "active"}
+                      onChange={this.handleOptionChange}
+                    />{" "}
+                    Active
+                  </div>
+                  <div className="form-check">
+                    <Input
+                      type="radio"
+                      name="inactive"
+                      value="inactive"
+                      checked={this.state.selectedOption === "inactive"}
+                      onChange={this.handleOptionChange}
+                    />{" "}
+                    Inactive
+                  </div>
+                </FormGroup>
+                <FormGroup>
+                  <Label for="role">Role</Label>
+                  <div className="form-check">
+                    <Input type="checkbox" name="employee" value="employee" />{" "}
+                    Employee
+                  </div>
+                  <div className="form-check">
+                    <Input type="checkbox" name="manager" value="manager" />{" "}
+                    Manager
+                  </div>
+                  <div className="form-check">
+                    <Input type="checkbox" name="admin" value="admin" /> Admin
+                  </div>
+                </FormGroup>
+                <br />
+                <Button color="primary" onClick={this.save}>
+                  Submit
+                </Button>
+              </Form>
+            </div>
+          </Col>
+        </Row>
+      </Col>
+    );
+  }
 }
 
-
-export default NewStaffProfile;;
+export default NewStaffProfile;

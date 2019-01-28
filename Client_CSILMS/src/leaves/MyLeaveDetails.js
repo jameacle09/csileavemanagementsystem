@@ -1,30 +1,18 @@
-import React, { Component } from 'react';
-import { Table, Row, Col } from 'reactstrap';
+import React, { Component } from "react";
+import { Table } from "reactstrap";
 
 class MyLeaveDetails extends Component {
   render() {
-    const divStyle = {
-      background: "#eee",
-      padding: "20px",
-      boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
-    };
-
-    const divHeaderStyle = {
-      background: "#87CEFA",
-      padding: "20px",
-      boxShadow: "0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19)"
-    };
     return (
-      <div>
-        <br />
-        <div className="container" style={divHeaderStyle}>
-          <Row>
-            <Col><h3>My Leave Details</h3></Col>
-          </Row>
+      <div className="mainContainerLeavePages">
+        <div className="headerContainerFlex">
+          <span>
+            <h3 className="headerStyle">My Leave Details</h3>
+          </span>
         </div>
         <br />
-        <div className="container">
-          <Table bordered responsive>
+        <div className="tableContainerFlex">
+          <Table responsive>
             <thead>
               <tr>
                 <th>No.</th>
@@ -38,13 +26,13 @@ class MyLeaveDetails extends Component {
             </thead>
             <tbody>
               <tr>
-                <td>Table cell</td>
-                <td>Table cell</td>
-                <td>Table cell</td>
-                <td>Table cell</td>
-                <td>Table cell</td>
-                <td>Table cell</td>
-                <td>Table cell</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
+                <td>-</td>
               </tr>
             </tbody>
           </Table>
