@@ -3,20 +3,19 @@ package com.csi.leavemanagement.models;
 import java.util.Date;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 @Entity
 @Table(name = "job_details")
 public class JobDetails {
-
-	@Id
-	@Column(name = "emplid")
-	private String emplId;
 	
-	@Column(name = "effdate")
-	private Date effDate;
+	@EmbeddedId 
+	private JobDetailsId id;
 	
 	@Column(name = "join_date")
 	private Date joinDate;
@@ -24,11 +23,15 @@ public class JobDetails {
 	@Column(name = "status")
 	private String status;
 	
-	@Column(name = "business_unit")
-	private String businessUnit;
+	@MapsId("businessUnit")
+	@ManyToOne
+	@JoinColumn(name="business_unit")
+	private BusinessUnit businessUnit;
 	
-	@Column(name = "dept_id")
-	private String deptId;
+	@MapsId("deptId")
+	@ManyToOne
+	@JoinColumn(name="dept_id")
+	private Department deptId;
 	
 	@Column(name = "job_title")
 	private String jobTitle;
@@ -48,10 +51,9 @@ public class JobDetails {
 	public JobDetails() {
 	}
 
-	public JobDetails(String emplId, Date effDate, Date joinDate, String status, String businessUnit, String deptId, String jobTitle,
-			String reportsTo, String reportDottedLine, int lastUpddTtm, int lastUpdoprId) {
-		this.emplId = emplId;
-		this.effDate = effDate;
+	public JobDetails(JobDetailsId id, Date joinDate, String status, BusinessUnit businessUnit, Department deptId,
+			String jobTitle, String reportsTo, String reportDottedLine, int lastUpddTtm, int lastUpdoprId) {
+		this.id = id;
 		this.joinDate = joinDate;
 		this.status = status;
 		this.businessUnit = businessUnit;
@@ -63,22 +65,12 @@ public class JobDetails {
 		this.lastUpdoprId = lastUpdoprId;
 	}
 
-	
-	
-	public String getEmplId() {
-		return emplId;
+	public JobDetailsId getId() {
+		return id;
 	}
 
-	public void setEmplId(String emplId) {
-		this.emplId = emplId;
-	}
-
-	public Date getEffDate() {
-		return effDate;
-	}
-
-	public void setEffDate(Date effDate) {
-		this.effDate = effDate;
+	public void setId(JobDetailsId id) {
+		this.id = id;
 	}
 
 	public Date getJoinDate() {
@@ -97,19 +89,19 @@ public class JobDetails {
 		this.status = status;
 	}
 
-	public String getBusinessUnit() {
+	public BusinessUnit getBusinessUnit() {
 		return businessUnit;
 	}
 
-	public void setBusinessUnit(String businessUnit) {
+	public void setBusinessUnit(BusinessUnit businessUnit) {
 		this.businessUnit = businessUnit;
 	}
 
-	public String getDeptId() {
+	public Department getDeptId() {
 		return deptId;
 	}
 
-	public void setDeptId(String deptId) {
+	public void setDeptId(Department deptId) {
 		this.deptId = deptId;
 	}
 
@@ -155,13 +147,11 @@ public class JobDetails {
 
 	@Override
 	public String toString() {
-		return "JobDetails [emplId=" + emplId + ", effDate=" + effDate + ", joinDate=" + joinDate + ", status=" + status
-				+ ", businessUnit=" + businessUnit + ", deptId=" + deptId + ", jobTitle=" + jobTitle + ", reportsTo="
-				+ reportsTo + ", reportDottedLine=" + reportDottedLine + ", lastUpddTtm=" + lastUpddTtm
-				+ ", lastUpdoprId=" + lastUpdoprId + "]";
+		return "JobDetails [id=" + id + ", joinDate=" + joinDate + ", status=" + status + ", businessUnit="
+				+ businessUnit + ", deptId=" + deptId + ", jobTitle=" + jobTitle + ", reportsTo=" + reportsTo
+				+ ", reportDottedLine=" + reportDottedLine + ", lastUpddTtm=" + lastUpddTtm + ", lastUpdoprId="
+				+ lastUpdoprId + "]";
 	}
 
-	
-	
 	
 }
