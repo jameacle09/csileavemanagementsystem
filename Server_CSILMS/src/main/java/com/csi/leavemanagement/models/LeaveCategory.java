@@ -2,14 +2,12 @@ package com.csi.leavemanagement.models;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.Table;
 
 
 @Entity
-@Table(name="leavecategory")
+@Table(name="leave_category")
 public class LeaveCategory {
 
 	@Id
@@ -23,12 +21,12 @@ public class LeaveCategory {
 	private int entitlement;
 	
 	@Column(name="status")
-	private char status;
+	private String status;
 	
 	public LeaveCategory() {		
 	}
 
-	public LeaveCategory(String leaveCode, String leaveDescr, int entitlement, char status) {
+	public LeaveCategory(String leaveCode, String leaveDescr, int entitlement, String status) {
 		this.leaveCode = leaveCode;
 		this.leaveDescr = leaveDescr;
 		this.entitlement = entitlement;
@@ -59,11 +57,11 @@ public class LeaveCategory {
 		this.entitlement = entitlement;
 	}
 
-	public char getStatus() {
+	public String getStatus() {
 		return status;
 	}
 
-	public void setStatus(char status) {
+	public void setStatus(String status) {
 		this.status = status;
 	}
 

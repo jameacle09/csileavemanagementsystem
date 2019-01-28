@@ -1,25 +1,24 @@
 package com.csi.leavemanagement.models;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
+import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
+import javax.persistence.MapsId;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="leave_entitlement")
 public class LeaveEntitlement {
 
-	@Id
-	@Column(name="emplid")
-	private String employeeId;
+	@EmbeddedId
+	private LeaveEntitlementId id;
 	
-	@Column(name="year")
-	private int year;
-	
+	@MapsId("leaveCode")
 	@ManyToOne
-	@Column(name="leave_code")
-	private LeaveCategory leaveCode;
+	@JoinColumn(name="leave_code")
+	private LeaveCategory leaveCategory;
 	
 	@Column(name="carry_forward")
 	private float carryForward;
@@ -37,14 +36,13 @@ public class LeaveEntitlement {
 	private float balanceLeave;
 
 	public LeaveEntitlement() {
-		
+		this.id = new LeaveEntitlementId();
 	}
 	
-	public LeaveEntitlement(String employeeId, int year, LeaveCategory leaveCode, float carryForward, float entitlement,
-			float availableLeave, float takenLeave, float balanceLeave) {
-		this.employeeId = employeeId;
-		this.year = year;
-		this.leaveCode = leaveCode;
+	public LeaveEntitlement(LeaveEntitlementId id, LeaveCategory leaveCategory, float carryForward, float entitlement, float availableLeave,
+			float takenLeave, float balanceLeave) {
+		this.id = id;
+		this.leaveCategory = leaveCategory;
 		this.carryForward = carryForward;
 		this.entitlement = entitlement;
 		this.availableLeave = availableLeave;
@@ -52,28 +50,20 @@ public class LeaveEntitlement {
 		this.balanceLeave = balanceLeave;
 	}
 
-	public String getEmployeeId() {
-		return employeeId;
+	public LeaveEntitlementId getId() {
+		return id;
 	}
 
-	public void setEmployeeId(String employeeId) {
-		this.employeeId = employeeId;
+	public void setId(LeaveEntitlementId id) {
+		this.id = id;
+	}
+	
+	public LeaveCategory getLeaveCategory() {
+		return leaveCategory;
 	}
 
-	public int getYear() {
-		return year;
-	}
-
-	public void setYear(int year) {
-		this.year = year;
-	}
-
-	public LeaveCategory getLeaveCode() {
-		return leaveCode;
-	}
-
-	public void setLeaveCode(LeaveCategory leaveCode) {
-		this.leaveCode = leaveCode;
+	public void setLeaveCategory(LeaveCategory leaveCategory) {
+		this.leaveCategory = leaveCategory;
 	}
 
 	public float getCarryForward() {
@@ -114,5 +104,12 @@ public class LeaveEntitlement {
 
 	public void setBalanceLeave(float balanceLeave) {
 		this.balanceLeave = balanceLeave;
+	}
+
+	@Override
+	public String toString() {
+		return "LeaveEntitlement [id=" + id + ", leaveCategory=" + leaveCategory + ", carryForward=" + carryForward
+				+ ", entitlement=" + entitlement + ", availableLeave=" + availableLeave + ", takenLeave=" + takenLeave
+				+ ", balanceLeave=" + balanceLeave + "]";
 	}
 }
