@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.csi.leavemanagement.models.AppliedLeave;
@@ -15,6 +16,7 @@ public class AppliedLeaveService {
 
 	private AppliedLeaveRepository appliedLeaveRepository;
 
+	@Autowired
 	public AppliedLeaveService(AppliedLeaveRepository appliedLeaveRepository) {
 		this.appliedLeaveRepository = appliedLeaveRepository;
 	}
@@ -29,9 +31,17 @@ public class AppliedLeaveService {
 	}
 	
 	public AppliedLeave findById(AppliedLeaveId id) {		
-		return appliedLeaveRepository.findById(id).orElse(null);
+		return this.appliedLeaveRepository.findById(id).orElse(null);
 	}
 
+	public boolean deleteById(String emplid, Date effDate, Date startDate, String leaveCode) {		
+		AppliedLeaveId id = new AppliedLeaveId(emplid, effDate, startDate, leaveCode);
+		this.appliedLeaveRepository.deleteById(id);
+		
+		// Check if the ID is deleted, return true if ID NOT found.
+		return !(this.appliedLeaveRepository.existsById(id));
+	}
+	
 	public List<AppliedLeave> findByEmplid(String emplid) {		
 		return appliedLeaveRepository.findByIdEmplid(emplid);
 	}

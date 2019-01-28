@@ -8,6 +8,7 @@ import java.util.TimeZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -33,7 +34,57 @@ public class AppliedLeaveRestController {
 		List<AppliedLeave> appliedLeave = this.appliedLeaveService.findAll();
 		return appliedLeave;
 	}
+
+	@RequestMapping(value="/appliedleave", method=RequestMethod.POST)
+	public AppliedLeave doSaveAppliedLeave(@RequestBody AppliedLeave appliedLeave) {
+		AppliedLeave newAppliedLeave = this.appliedLeaveService.save(appliedLeave);
+		return newAppliedLeave;
+	}
 	
+	@RequestMapping(value="/appliedleave/{emplid}", method=RequestMethod.DELETE)
+	public String doDeleteAppliedLeaveById(@PathVariable("emplid") String emplid,  
+											   @RequestParam("effDate") String effDateStr, 
+											   @RequestParam("startDate") String startDateStr,
+											   @RequestParam("leavecode") String leaveCode) {
+				
+		// If both dates are not null, parse and create Date objects
+		Date startDate = null, effDate = null;
+		boolean dateValid = false;
+		
+		if(startDateStr != null && effDateStr != null) {
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+				
+				startDate = sdf.parse(startDateStr);
+				effDate = sdf.parse(effDateStr);
+				dateValid = true;				
+			} catch (Exception e) {
+				dateValid = false;
+			}
+		}
+		
+		if(!dateValid)
+			return "Unabled to Delete Applied leave";
+		
+		boolean result = this.appliedLeaveService.deleteById(emplid, effDate, startDate, leaveCode);
+		if(!result)
+			return "Unable to Delete Applied leave";
+		
+		return "Successfully Deleted Applied leave";
+	}
+
+	@RequestMapping(value="/appliedleave/{emplid}", method=RequestMethod.PATCH)
+	public AppliedLeave doUpdateAppliedLeaveById(@PathVariable("emplid") String emplid,  
+													     @RequestParam("effDate") String effDateStr, 
+													     @RequestParam("startDate") String startDateStr,
+													     @RequestParam("leavecode") String leaveCode,
+													     @RequestBody AppliedLeave appliedLeave) {
+		
+		AppliedLeave newAppliedLeave = this.appliedLeaveService.save(appliedLeave);
+		return newAppliedLeave;
+	}
+
 	@RequestMapping(value="/appliedleave/{emplid}", method=RequestMethod.GET)
 	public List<AppliedLeave> doListAppliedLeaveByEmplid(@PathVariable("emplid") String emplid, 
 													 	 @RequestParam(value="leaveCode", required=false) String leaveCode,
