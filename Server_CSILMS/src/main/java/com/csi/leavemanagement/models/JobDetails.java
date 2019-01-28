@@ -13,7 +13,7 @@ public class JobDetails {
 
 	@Id
 	@Column(name = "effdate")
-	private String effDate;
+	private Date effDate;
 	
 	@Column(name = "join_date")
 	private Date joinDate;
@@ -28,7 +28,7 @@ public class JobDetails {
 	private String deptId;
 	
 	@Column(name = "job_title")
-	private Date jobTitle;
+	private String jobTitle;
 	
 	@Column(name = "reports_to")
 	private String reportsTo;
@@ -45,7 +45,7 @@ public class JobDetails {
 	public JobDetails() {
 	}
 
-	public JobDetails(String effDate, Date joinDate, String status, String businessUnit, String deptId, Date jobTitle,
+	public JobDetails(Date effDate, Date joinDate, String status, String businessUnit, String deptId, String jobTitle,
 			String reportsTo, String reportDottedLine, int lastUpddTtm, int lastUpdoprId) {
 		this.effDate = effDate;
 		this.joinDate = joinDate;
@@ -59,11 +59,11 @@ public class JobDetails {
 		this.lastUpdoprId = lastUpdoprId;
 	}
 
-	public String getEffDate() {
+	public Date getEffDate() {
 		return effDate;
 	}
 
-	public void setEffDate(String effDate) {
+	public void setEffDate(Date effDate) {
 		this.effDate = effDate;
 	}
 
@@ -99,11 +99,11 @@ public class JobDetails {
 		this.deptId = deptId;
 	}
 
-	public Date getJobTitle() {
+	public String getJobTitle() {
 		return jobTitle;
 	}
 
-	public void setJobTitle(Date jobTitle) {
+	public void setJobTitle(String jobTitle) {
 		this.jobTitle = jobTitle;
 	}
 
