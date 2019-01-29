@@ -1,5 +1,6 @@
 import React from "react";
-import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import { Form, FormGroup, Label, Input } from "reactstrap";
+import Button from '@material-ui/core/Button';
 import "./MyProfile.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
@@ -73,22 +74,6 @@ class ChangePassword extends React.Component {
       borderRadius: "0",
       fontSize: "15px",
       height: "20px"
-    };
-
-    // const pTextStyle = {
-    //   fontWeight: "bold",
-    //   fontSize: "20px",
-    //   textAlign: "center",
-    //   width: "119%",
-    //   margin: "0 0 20px -30px",
-    //   padding: "0 0 5px 0"
-    // };
-
-    const submitButtonStyle = {
-      textAlign: "center",
-      display: "inline-block",
-      width: "150px",
-      float: "right"
     };
 
     const {
@@ -196,8 +181,9 @@ class ChangePassword extends React.Component {
             </FormGroup>
             <br />
             <Button
-              color="primary"
-              style={submitButtonStyle}
+              variant="contained"
+              color="primary"              
+              style={{ textTransform: 'none', float: 'right' }}
               onSubmit={this.validatePassword}
             >
               Submit

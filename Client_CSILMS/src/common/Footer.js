@@ -10,7 +10,7 @@ class Footer extends Component {
   render() {
     const footerStyle = {
       textAlign: "center",
-      fontSize: "12px",
+      fontSize: "13px",
       color: "#8AADD4",
       background: "#004A9B",
       fontFamily: 'Helvetica',
