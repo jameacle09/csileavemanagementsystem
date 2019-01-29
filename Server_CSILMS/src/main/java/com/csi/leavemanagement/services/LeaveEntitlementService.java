@@ -44,6 +44,14 @@ public class LeaveEntitlementService {
 	public List<LeaveEntitlement> findByEmplidYear(String emplid, int year) {		
 		return leaveEntitlementRepository.findByIdEmplidAndIdYear(emplid, year);
 	}
+
+	public List<LeaveEntitlement> findByEmplidLeaveCode(String emplid, String leaveCode) {		
+		return leaveEntitlementRepository.findByIdEmplidAndIdLeaveCode(emplid, leaveCode);
+	}
+
+	public List<LeaveEntitlement> findByEmplid(String emplid) {		
+		return leaveEntitlementRepository.findByIdEmplid(emplid);
+	}
 	
 	public List<LeaveEntitlement> findByYear(int year) {	
 		return leaveEntitlementRepository.findByIdYear(year);
