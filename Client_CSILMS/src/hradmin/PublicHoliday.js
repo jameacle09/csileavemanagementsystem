@@ -23,11 +23,11 @@ class PublicHoliday extends Component {
               to="/addpublicholiday"
               activeclassname="active"
             >
-              Add New
+              <span className="fa fa-plus"></span> New
             </Button>
             <span> </span>
             <Button className="btn btn-primary" color="primary">
-              Upload Holiday
+              <span className="fa fa-upload"></span>Upload Holiday
             </Button>
             <br />
             <br />
@@ -57,12 +57,12 @@ class PublicHoliday extends Component {
                     to="/editpublicholiday"
                     activeclassname="active"
                   >
-                    <span>Edit</span>
+                    <span className="fa fa-edit"></span>
                   </Button>
                 </td>
                 <td>
                   <Button color="primary">
-                    <span>Delete</span>
+                    <span className="fa fa-trash"></span>
                   </Button>
                 </td>
               </tr>

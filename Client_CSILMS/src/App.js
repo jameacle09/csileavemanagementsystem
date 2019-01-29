@@ -26,6 +26,9 @@ import EditLeaveCategory from "./hradmin/EditLeaveCategory";
 import LeaveEntitlement from "./hradmin/LeaveEntitlement";
 import EditEntitlement from "./hradmin/EditEntitlement";
 import "./common/Styles.css";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faIgloo } from '@fortawesome/free-solid-svg-icons';
 
 class App extends Component {
   render() {
