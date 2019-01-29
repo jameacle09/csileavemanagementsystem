@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Table, Button } from "reactstrap";
+import { Table } from "reactstrap";
+import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
-// import SideBar from "../hradmin/SideBar";
 import "../common/Styles.css";
 
 class LeaveEntitlement extends Component {
@@ -16,8 +16,8 @@ class LeaveEntitlement extends Component {
         <br />
         <div className="tableContainerFlex">
           <div style={{ textAlign: "right" }}>
-            <Button className="btn btn-primary" color="primary">
-              <span className="fa fa-upload"></span> Upload Entitlement
+            <Button variant="contained" color="primary" style={{ textTransform: 'none' }}>
+              <span className="fa fa-upload" style={{ margin: '0px 10px 0px 0px' }}></span> Upload Entitlement
             </Button>
             <br />
             <br />
@@ -50,10 +50,11 @@ class LeaveEntitlement extends Component {
                 <td />
                 <td>
                   <Button
+                    component={Link}
+                    to="editentitlement"
+                    variant="contained"
                     color="primary"
-                    tag={Link}
-                    to="/editentitlement"
-                    activeclassname="active"
+                    style={{ textTransform: 'none' }}
                   >
                     <span className="fa fa-edit"></span>
                   </Button>

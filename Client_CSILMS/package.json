@@ -6,6 +6,8 @@
     "@fortawesome/fontawesome-svg-core": "^1.2.13",
     "@fortawesome/free-solid-svg-icons": "^5.7.0",
     "@fortawesome/react-fontawesome": "^0.1.4",
+    "@material-ui/core": "^3.9.1",
+    "@material-ui/icons": "^3.0.2",
     "bootstrap": "^4.2.1",
     "font-awesome": "^4.7.0",
     "history": "^4.7.2",

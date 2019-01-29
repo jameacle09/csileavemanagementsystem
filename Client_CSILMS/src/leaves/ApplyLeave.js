@@ -1,14 +1,6 @@
 import React, { Component } from "react";
-import {
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText,
-  Col,
-  Alert
-} from "reactstrap";
+import { Form, FormGroup, Label, Input, FormText, Col, Alert } from "reactstrap";
+import Button from '@material-ui/core/Button';
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
@@ -494,11 +486,11 @@ class ApplyLeave extends Component {
               </Input>
             </FormGroup>
             <br />
-            <Button color="primary" onClick={this.handleSubmit}>
+            <Button variant="contained" color="primary" onClick={this.handleSubmit} style={{ textTransform: 'none' }}>
               Submit
             </Button>
             <span> </span>
-            <Button color="danger" onClick={this.clickdiscard}>
+            <Button variant="contained" onClick={this.clickdiscard} style={{ textTransform: 'none' }}>
               Discard
             </Button>
           </Form>
