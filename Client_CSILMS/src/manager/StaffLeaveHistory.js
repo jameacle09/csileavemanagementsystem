@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Table, Row, Col } from "reactstrap";
-import ManagerSideBar from "./ManagerSideBar";
+import { Table } from "reactstrap";
+// import ManagerSideBar from "./ManagerSideBar";
 import "../common/Styles.css";
 
 class StaffLeaveHistory extends Component {

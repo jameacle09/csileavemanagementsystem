@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Button, Table, Row, Col } from "reactstrap";
+import { Button, Table } from "reactstrap";
 import { Link } from "react-router-dom";
-import SideBar from "./SideBar";
+// import SideBar from "./SideBar";
 import "../common/Styles.css";
 
 class PublicHoliday extends Component {
