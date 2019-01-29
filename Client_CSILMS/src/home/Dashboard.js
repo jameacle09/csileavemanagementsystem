@@ -61,14 +61,14 @@ class Dashboard extends Component {
             <div className="thumbNail_DashboardLabel">Manager Approval</div>
           </div>
         </a>
-        <a href="/liststaffprofile" title="HR's Staff Profiling">
+        <a href="/liststaffprofile" title="HR Dashboard">
           <div className="thumbNail_DashboardMenu">
             <img
               src={HRDashboard}
-              alt="HR Staff Profiling"
+              alt="HR Dashboard"
               className="thumbNail_DashboardImage"
             />
-            <div className="thumbNail_DashboardLabel">Staff Profiling</div>
+            <div className="thumbNail_DashboardLabel">HR Dashboard</div>
           </div>
         </a>
       </div>
