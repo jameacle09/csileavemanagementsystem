@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import { Table, Button, Input, Row, Col } from "reactstrap";
 import StaffTableRow from "./StaffTableRow";
 import { Link } from "react-router-dom";
-import SideBar from "../hradmin/SideBar";
+// import SideBar from "../hradmin/SideBar";
 import "../common/Styles.css";
 
 class ListStaffProfile extends Component {

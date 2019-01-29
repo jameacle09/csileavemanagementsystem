@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-import {
-  Table,
-  Button,
-  Input,
-  Row,
-  Col,
-  ListGroup,
-  ListGroupItem
-} from "reactstrap";
+import { Button, ListGroup, ListGroupItem } from "reactstrap";
 import { Link } from "react-router-dom";
 //import "./MyProfile.css";
 import "../common/Styles.css";
@@ -106,7 +98,6 @@ class MyProfile extends Component {
             style={{
               width: "100%",
               height: "100%",
-              //   border: "2px solid black",
               margin: "0 auto",
               padding: "0"
             }}

@@ -1,78 +1,76 @@
 import React, { Component } from "react";
-import { Card, Button, CardTitle, Row, Col } from "reactstrap";
-import { Link } from "react-router-dom";
+
+import ApplyLeave from "../img/applyleave.png";
+import MyLeaveHistory from "../img/myleavehistory.png";
+import MyLeaveDetails from "../img/leavedetails.png";
+import MyProfile from "../img/myprofile.png";
+import ManagerDashboard from "../img/managerapproval.png";
+import HRDashboard from "../img/hrdashboard.png";
 
 class Dashboard extends Component {
   render() {
-    const cardStyle = {
-      background: "#004A9B",
-      fontFamily: "Helvetica",
-      height: "90%",
-      margin: "10px 10px 10px 10px",
-      boxShadow: "5px 5px 5px rgb(95, 116, 136)"
-    };
     return (
-      <div className="container">
-        <Row>
-          <Col>
-            <Card body inverse style={cardStyle}>
-              <CardTitle>Apply Leave</CardTitle>
-              <Button color="secondary" tag={Link} to="/applyleave">
-                Submit
-              </Button>
-            </Card>
-          </Col>
-          <br />
-          <Col>
-            <Card body inverse style={cardStyle}>
-              <CardTitle>My Leave History</CardTitle>
-              <Button color="secondary" tag={Link} to="/myleavehistory">
-                View
-              </Button>
-            </Card>
-          </Col>
-          <br />
-          <Col>
-            <Card body inverse style={cardStyle}>
-              <CardTitle>My Leave Details</CardTitle>
-              <Button color="secondary" tag={Link} to="/myleavedetails">
-                View
-              </Button>
-            </Card>
-          </Col>
-          <br />
-        </Row>
-        <br />
-        <Row>
-          <Col>
-            <Card body inverse style={cardStyle}>
-              <CardTitle>My Profile</CardTitle>
-              <Button color="secondary" tag={Link} to="/myprofile">
-                View
-              </Button>
-            </Card>
-          </Col>
-          <br />
-          <Col>
-            <Card body inverse style={cardStyle}>
-              <CardTitle>Manager Approval</CardTitle>
-              <Button color="secondary" tag={Link} to="/managerapproval">
-                View
-              </Button>
-            </Card>
-          </Col>
-          <br />
-          <Col>
-            <Card body inverse style={cardStyle}>
-              <CardTitle>HR Dashboard</CardTitle>
-              <Button color="secondary" tag={Link} to="/liststaffprofile">
-                View
-              </Button>
-            </Card>
-          </Col>
-          <br />
-        </Row>
-        <br />
+      <div className="containerDashboard">
+        <a href="/applyleave" title="Apply Leave">
+          <div className="thumbNail_DashboardMenu">
+            <img
+              src={ApplyLeave}
+              alt="Apply Leave"
+              className="thumbNail_DashboardImage"
+            />
+            <div className="thumbNail_DashboardLabel">Apply Leave</div>
+          </div>
+        </a>
+        <a href="/myleavehistory" title="View Leave History">
+          <div className="thumbNail_DashboardMenu">
+            <img
+              src={MyLeaveHistory}
+              alt="View Leave History"
+              className="thumbNail_DashboardImage"
+            />
+            <div className="thumbNail_DashboardLabel">My Leave History</div>
+          </div>
+        </a>
+        <a href="/myleavedetails" title="View Leave Details">
+          <div className="thumbNail_DashboardMenu">
+            <img
+              src={MyLeaveDetails}
+              alt="View Leave Details"
+              className="thumbNail_DashboardImage"
+            />
+            <div className="thumbNail_DashboardLabel">My Leave Details</div>
+          </div>
+        </a>
+        <a href="/myprofile" title="View Profile">
+          <div className="thumbNail_DashboardMenu">
+            <img
+              src={MyProfile}
+              alt="View Profile"
+              className="thumbNail_DashboardImage"
+            />
+            <div className="thumbNail_DashboardLabel">My Profile</div>
+          </div>
+        </a>
+        <a href="/managerapproval" title="Manager Dashboard">
+          <div className="thumbNail_DashboardMenu">
+            <img
+              src={ManagerDashboard}
+              alt="Manager Dashboard"
+              className="thumbNail_DashboardImage"
+            />
+            <div className="thumbNail_DashboardLabel">Manager Dashboard</div>
+          </div>
+        </a>
+        <a href="/liststaffprofile" title="HR Dashboard">
+          <div className="thumbNail_DashboardMenu">
+            <img
+              src={HRDashboard}
+              alt="HR Dashboard"
+              className="thumbNail_DashboardImage"
+            />
+            <div className="thumbNail_DashboardLabel">HR Dashboard</div>
+          </div>
+        </a>
       </div>
     );
   }

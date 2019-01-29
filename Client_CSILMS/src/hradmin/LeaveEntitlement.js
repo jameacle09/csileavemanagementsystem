@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Table, Button, Row, Col } from "reactstrap";
+import { Table, Button } from "reactstrap";
 import { Link } from "react-router-dom";
-import SideBar from "../hradmin/SideBar";
+// import SideBar from "../hradmin/SideBar";
 import "../common/Styles.css";
 
 class LeaveEntitlement extends Component {
