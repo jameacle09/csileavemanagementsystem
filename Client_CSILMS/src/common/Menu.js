@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import Button from '@material-ui/core/Button';
 import "./Styles.css";
 
 class Menu extends Component {
@@ -28,8 +27,8 @@ class Menu extends Component {
     const menuTitle = {
       fontFamily: "Helvetica",
       fontSize: "18px",
-      color: "white",
-      margin: "0px 5px 0 0"
+      color: "#8AADD4",
+      margin: "0px 20px 0 0"
     };
     return (
       <nav
@@ -38,11 +37,10 @@ class Menu extends Component {
       >
         <div className="container-fluid" style={menuContainer}>
           <button
-            variant="contained"
-            className="hamburger hamburger--collapse is-active"
+            type="button"
             id="sidebarCollapse"
             className="btn btn-info"
-            style={{ background: "#032a53", border: "0px solid gray" }}
+            style={{ background: "#032a53", border: "1px solid gray" }}
           >
             <i className="fas fa-align-left" />
             <span />

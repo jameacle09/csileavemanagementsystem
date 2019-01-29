@@ -256,7 +256,7 @@ class NewStaffProfile extends Component {
               </div>
             </FormGroup>
             <br />
-            <Button variant="contained" color="primary" onClick={this.save}>
+            <Button variant="contained" color="primary" onClick={this.save} style={{ textTransform: 'none' }}>
               Submit
             </Button>
           </Form>
