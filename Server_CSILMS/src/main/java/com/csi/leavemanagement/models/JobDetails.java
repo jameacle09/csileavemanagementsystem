@@ -23,13 +23,13 @@ public class JobDetails {
 	@Column(name = "status")
 	private String status;
 	
-//	@ManyToOne
-//	@JoinColumn(name="business_unit")
-//	private BusinessUnit businessUnit;
+	@ManyToOne
+	@JoinColumn(name="business_unit")
+	private BusinessUnit businessUnit;
 	
-//	@ManyToOne
-//	@JoinColumn(name="dept_id")
-//	private Department deptId;
+	@ManyToOne
+	@JoinColumn(name="dept_id")
+	private Department deptId;
 	
 	@Column(name = "job_title")
 	private String jobTitle;
@@ -41,22 +41,22 @@ public class JobDetails {
 	private String reportDottedLine;
 	
 	@Column(name = "lastupddttm")
-	private int lastUpddTtm;
+	private Date lastUpddTtm;
 	
 	@Column(name = "lastupdoprid")
-	private int lastUpdoprId;
+	private String lastUpdoprId;
 
 	public JobDetails() {
 	}
 
-//	BusinessUnit businessUnit, Department deptId,
-	public JobDetails(JobDetailsId id, Date joinDate, String status, 
-			String jobTitle, String reportsTo, String reportDottedLine, int lastUpddTtm, int lastUpdoprId) {
+	
+	public JobDetails(JobDetailsId id, Date joinDate, String status, BusinessUnit businessUnit, Department deptId,
+			String jobTitle, String reportsTo, String reportDottedLine, Date lastUpddTtm, String lastUpdoprId) {
 		this.id = id;
 		this.joinDate = joinDate;
 		this.status = status;
-//		this.businessUnit = businessUnit;
-//		this.deptId = deptId;
+		this.businessUnit = businessUnit;
+		this.deptId = deptId;
 		this.jobTitle = jobTitle;
 		this.reportsTo = reportsTo;
 		this.reportDottedLine = reportDottedLine;
@@ -88,7 +88,7 @@ public class JobDetails {
 		this.status = status;
 	}
 
-/*	public BusinessUnit getBusinessUnit() {
+	public BusinessUnit getBusinessUnit() {
 		return businessUnit;
 	}
 
@@ -103,7 +103,7 @@ public class JobDetails {
 	public void setDeptId(Department deptId) {
 		this.deptId = deptId;
 	}
-*/
+
 	public String getJobTitle() {
 		return jobTitle;
 	}
@@ -128,29 +128,29 @@ public class JobDetails {
 		this.reportDottedLine = reportDottedLine;
 	}
 
-	public int getLastUpddTtm() {
+	public Date getLastUpddTtm() {
 		return lastUpddTtm;
 	}
 
-	public void setLastUpddTtm(int lastUpddTtm) {
+	public void setLastUpddTtm(Date lastUpddTtm) {
 		this.lastUpddTtm = lastUpddTtm;
 	}
 
-	public int getLastUpdoprId() {
+	public String getLastUpdoprId() {
 		return lastUpdoprId;
 	}
 
-	public void setLastUpdoprId(int lastUpdoprId) {
+	public void setLastUpdoprId(String lastUpdoprId) {
 		this.lastUpdoprId = lastUpdoprId;
 	}
 
 	@Override
 	public String toString() {
-		return "JobDetails [id=" + id + ", joinDate=" + joinDate + ", status=" + status + ", jobTitle=" + jobTitle + ", reportsTo=" + reportsTo
+		return "JobDetails [id=" + id + ", joinDate=" + joinDate + ", status=" + status + ", "
+				+ "businessUnit=" + businessUnit + ", deptId=" + deptId + ",  jobTitle=" + jobTitle + ", reportsTo=" + reportsTo
 				+ ", reportDottedLine=" + reportDottedLine + ", lastUpddTtm=" + lastUpddTtm + ", lastUpdoprId="
 				+ lastUpdoprId + "]";
 	}
 
-/*, businessUnit="
-	+ businessUnit + ", deptId=" + deptId + " */
+	
 }
