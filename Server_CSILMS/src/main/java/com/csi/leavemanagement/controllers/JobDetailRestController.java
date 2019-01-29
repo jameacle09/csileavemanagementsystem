@@ -35,8 +35,8 @@ public class JobDetailRestController {
 		return jobDetails;
 	}
 	
-	@RequestMapping(value="/jobdetail/{id}", method=RequestMethod.GET)
-	public JobDetails doGetJobDetailsById(@PathVariable("id") JobDetailsId id) {
+	@RequestMapping(value="/jobdetail/{emplid}", method=RequestMethod.GET)
+	public JobDetails doGetJobDetailsById(@PathVariable("emplid") JobDetailsId id) {
 		JobDetails jobDetail = this.jobDetailService.findById(id);
 		return jobDetail;
 	}
@@ -48,16 +48,16 @@ public class JobDetailRestController {
 		return newJobDetails;
 	}
 	
-	@RequestMapping(value="/jobdetail/{id}", method=RequestMethod.DELETE)
-	public String doDeleteJobDetails(@PathVariable("id") JobDetailsId id) {
-		this.jobDetailService.deleteByID(id);
+/*	@RequestMapping(value="/jobdetail/{emplid}", method=RequestMethod.DELETE)
+	public String doDeleteJobDetails(@PathVariable("emplid") JobDetailsId id) {
+		this.jobDetailService.deleteById(id);
 		return "Successfully Deleted";
 	}
 	
-	@RequestMapping(value="/jobdetail/{id}", method=RequestMethod.PATCH)
-	public JobDetails doUpdateJobDetails(@PathVariable("id") JobDetailsId id, @RequestBody JobDetails jobDetail) {
+	@RequestMapping(value="/jobdetail/{emplid}", method=RequestMethod.PATCH)
+	public JobDetails doUpdateJobDetails(@PathVariable("emplid") JobDetailsId id, @RequestBody JobDetails jobDetail) {
 		jobDetail.setId(id);
 		JobDetails newJobDetails = this.jobDetailService.save(jobDetail);
-		return newJobDetails;
-	}
+		return newJobDetails; 
+	} */
 }

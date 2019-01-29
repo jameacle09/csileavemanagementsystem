@@ -1,10 +1,13 @@
 package com.csi.leavemanagement.services;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.csi.leavemanagement.models.AppliedLeave;
+import com.csi.leavemanagement.models.AppliedLeaveId;
 import com.csi.leavemanagement.models.JobDetails;
 import com.csi.leavemanagement.models.JobDetailsId;
 import com.csi.leavemanagement.repositories.JobDetailsRepository;
@@ -12,10 +15,10 @@ import com.csi.leavemanagement.repositories.JobDetailsRepository;
 @Service
 public class JobDetailService {
 	
-	@Autowired
+	
 	private JobDetailsRepository jobDetailsRepository;
 	
-	
+	@Autowired
 	public JobDetailService(JobDetailsRepository jobDetailsRepository) {
 		this.jobDetailsRepository = jobDetailsRepository;
 	}
@@ -30,13 +33,18 @@ public class JobDetailService {
 	}
 	
 	public JobDetails findById(JobDetailsId id) {
-		JobDetails jobDetail = this.jobDetailsRepository.findById(id).orElse(null);
-		return jobDetail;
+		return this.jobDetailsRepository.findById(id).orElse(null);
 		
 	}
 	
-	public void deleteByID(JobDetailsId id) {
+	public boolean deleteByID(String emplid, Date effDate) {
+		JobDetailsId id = new JobDetailsId(emplid, effDate);
 		this.jobDetailsRepository.deleteById(id);
+		return !(this.jobDetailsRepository.existsById(id));
 		
+	}
+	
+	public List<JobDetails> findByEmplid(String emplid) {		
+		return jobDetailsRepository.findByIdEmplid(emplid);
 	}
 }
