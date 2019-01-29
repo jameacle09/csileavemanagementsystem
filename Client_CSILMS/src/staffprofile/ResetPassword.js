@@ -18,7 +18,7 @@ class ResetPassword extends Component {
             <FormGroup>
               <Label for="newPassword">New Password</Label>
               <Input
-                type="text"
+                type="password"
                 name="newPassword"
                 id="newPassword"
                 placeholder="New Password"
@@ -27,7 +27,7 @@ class ResetPassword extends Component {
             <FormGroup>
               <Label for="confirmPassword">Confirm Password</Label>
               <Input
-                type="text"
+                type="password"
                 name="confirmPassword"
                 id="confirmPassword"
                 placeholder="Confirm Password"
