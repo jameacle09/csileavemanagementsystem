@@ -25,7 +25,7 @@ class ListStaffProfile extends Component {
                 style={{ width: "35%" }}
               />
               <Button className="btn btn-primary" color="primary" type="submit">
-                Search
+                <span className="fa fa-search"></span>
               </Button>
             </Col>
             <Col md="6" xs="6" style={{ textAlign: "right" }}>
@@ -36,7 +36,7 @@ class ListStaffProfile extends Component {
                 to="/newstaffprofile"
                 activeclassname="active"
               >
-                Add New Employee
+                <span className="fa fa-plus"></span> New Employee
               </Button>
             </Col>
           </Row>

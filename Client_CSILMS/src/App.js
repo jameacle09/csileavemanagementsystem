@@ -25,6 +25,10 @@ import LeaveEntitlement from "./hradmin/LeaveEntitlement";
 import EditEntitlement from "./hradmin/EditEntitlement";
 import "./common/Styles.css";
 import "./stickyfooter.css";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+
+library.add(fas);
 
 class App extends Component {
   render() {
