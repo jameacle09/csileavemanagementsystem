@@ -4,10 +4,12 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.data.repository.CrudRepository;
+import org.springframework.stereotype.Repository;
 
 import com.csi.leavemanagement.models.AppliedLeave;
 import com.csi.leavemanagement.models.AppliedLeaveId;
 
+@Repository
 public interface AppliedLeaveRepository extends CrudRepository<AppliedLeave, AppliedLeaveId> {
 
 	// Retrieve all applied leave of an Employee

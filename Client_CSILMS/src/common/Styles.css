@@ -47,13 +47,15 @@ p {
   font-size: 17px;
   font-weight: 300;
   line-height: 1.7em;
-  color: #999;
+  /* color: #999; */
+  color: rgb(214, 209, 209);
 }
 
 a,
 a:hover,
 a:focus {
-  color: inherit;
+  /* color: inherit; */
+  color: white;
   text-decoration: none;
   transition: all 0.3s;
 }
@@ -77,7 +79,7 @@ a:focus {
 
 #sidebar ul.components {
   padding: 20px 0;
-  border-bottom: 1px solid #475f8b;
+  border-bottom: 0px solid #475f8b;
 }
 
 #sidebar ul p {
@@ -88,13 +90,15 @@ a:focus {
 #sidebar ul li a {
   padding: 10px;
   /* font-size: 1.1em; */
+  color: white;
   font: 17px Helvetica;
   display: block;
 }
 #sidebar ul li a:hover {
   /* color: #7386d5; */
-  color: #004a9b;
-  background: #fff;
+  /* color: #004a9b; */
+  color: white;
+  background: #004a9b;
 }
 
 #sidebar ul li.active > a,
@@ -106,7 +110,8 @@ ul ul a {
   /* font-size: 0.9em !important; */
   font-size: 14px;
   padding-left: 30px !important;
-  background: rgb(176, 230, 248);
+  background: rgb(39, 129, 247);
+  color: white;
 }
 /*** End Sidebar Styles ***/
 
@@ -172,6 +177,7 @@ ul ul a {
   width: 100%;
   height: 100%;
   overflow: auto;
+  /* border: 2px solid gray; */
 }
 .tableContainerFlex {
   margin: 0px 10px 10px 10px;
@@ -272,3 +278,43 @@ ul ul a {
   color: rgb(11, 211, 247);
   text-decoration: underline;
 }
+
+/*** Begin Dashboard Styles ***/
+.containerDashboard {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+.thumbNail_DashboardMenu {
+  background: white;
+  display: inline-block;
+  text-align: center;
+  font-family: Helvetica;
+  height: 100%;
+  width: 140px;
+  border: 4px solid #032a53;
+  vertical-align: top;
+  text-align: center;
+  margin: 0px 10px 15px 5px;
+  box-shadow: 5px 5px 5px rgb(95, 116, 136);
+  border-radius: 5px;
+  transition: box-shadow 0.2s;
+}
+.thumbNail_DashboardMenu:hover {
+  /* background: rgb(39, 129, 247); */
+  /* transform: rotate(7deg); */
+  box-shadow: 8px 8px 5px #004a9b;
+}
+.thumbNail_DashboardImage {
+  height: 110px;
+  margin: 10px 10px auto;
+}
+.thumbNail_DashboardLabel {
+  height: 60px;
+  vertical-align: middle;
+  margin: 14px 0px 0px 0px;
+  background: #032a53;
+  color: white;
+  padding: 6px;
+}
+/*** End Dashboard Styles ***/
