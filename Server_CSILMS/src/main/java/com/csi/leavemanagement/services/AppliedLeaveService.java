@@ -33,6 +33,11 @@ public class AppliedLeaveService {
 	public AppliedLeave findById(AppliedLeaveId id) {		
 		return this.appliedLeaveRepository.findById(id).orElse(null);
 	}
+	
+	public AppliedLeave findById(String emplid, Date effDate, Date startDate, String leaveCode) {
+		AppliedLeaveId id = new AppliedLeaveId(emplid, effDate, startDate, leaveCode);
+		return this.appliedLeaveRepository.findById(id).orElse(null);
+	}
 
 	public boolean deleteById(String emplid, Date effDate, Date startDate, String leaveCode) {		
 		AppliedLeaveId id = new AppliedLeaveId(emplid, effDate, startDate, leaveCode);
