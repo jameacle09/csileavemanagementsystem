@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Button, Form, FormGroup, Label, Input } from "reactstrap";
-// import SideBar from "../hradmin/SideBar";
+import { Form, FormGroup, Label, Input } from "reactstrap";
+import Button from '@material-ui/core/Button';
 import "../common/Styles.css";
 
 class ResetPassword extends Component {
@@ -18,7 +18,7 @@ class ResetPassword extends Component {
             <FormGroup>
               <Label for="newPassword">New Password</Label>
               <Input
-                type="text"
+                type="password"
                 name="newPassword"
                 id="newPassword"
                 placeholder="New Password"
@@ -27,13 +27,13 @@ class ResetPassword extends Component {
             <FormGroup>
               <Label for="confirmPassword">Confirm Password</Label>
               <Input
-                type="text"
+                type="password"
                 name="confirmPassword"
                 id="confirmPassword"
                 placeholder="Confirm Password"
               />
             </FormGroup>
-            <Button color="primary">Save</Button>
+            <Button variant="contained" color="primary" style={{ textTransform: 'none' }}>Save</Button>
           </Form>
         </div>
       </div>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Button, Form, FormGroup, Label, Input } from "reactstrap";
-// import SideBar from "./SideBar";
+import { Form, FormGroup, Label, Input } from "reactstrap";
+import Button from '@material-ui/core/Button';
 import "../common/Styles.css";
 
 class AddPublicHoliday extends Component {
@@ -41,7 +41,7 @@ class AddPublicHoliday extends Component {
               <Label for="state">State</Label>
               <Input type="text" name="state" id="state" placeholder="State" />
             </FormGroup>
-            <Button color="primary">Save</Button>
+            <Button variant="contained" color="primary" style={{ textTransform: 'none' }}>Save</Button>
           </Form>
         </div>
       </div>

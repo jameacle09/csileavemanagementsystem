@@ -4,7 +4,7 @@ import ApplyLeave from "../img/applyleave.png";
 import MyLeaveHistory from "../img/myleavehistory.png";
 import MyLeaveDetails from "../img/leavedetails.png";
 import MyProfile from "../img/myprofile.png";
-import ManagerDashboard from "../img/managerapproval.png";
+import ManagerApproval from "../img/managerapproval.png";
 import HRDashboard from "../img/hrdashboard.png";
 
 class Dashboard extends Component {
@@ -51,14 +51,14 @@ class Dashboard extends Component {
             <div className="thumbNail_DashboardLabel">My Profile</div>
           </div>
         </a>
-        <a href="/managerapproval" title="Manager Dashboard">
+        <a href="/managerapproval" title="Manager Approval">
           <div className="thumbNail_DashboardMenu">
             <img
-              src={ManagerDashboard}
-              alt="Manager Dashboard"
+              src={ManagerApproval}
+              alt="Manager Approval"
               className="thumbNail_DashboardImage"
             />
-            <div className="thumbNail_DashboardLabel">Manager Dashboard</div>
+            <div className="thumbNail_DashboardLabel">Manager Approval</div>
           </div>
         </a>
         <a href="/liststaffprofile" title="HR Dashboard">

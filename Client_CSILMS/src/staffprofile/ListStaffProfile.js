@@ -1,8 +1,8 @@
 import React, { Component } from "react";
-import { Table, Button, Input, Row, Col } from "reactstrap";
+import { Table, Input, Row, Col } from "reactstrap";
+import Button from '@material-ui/core/Button';
 import StaffTableRow from "./StaffTableRow";
 import { Link } from "react-router-dom";
-// import SideBar from "../hradmin/SideBar";
 import "../common/Styles.css";
 
 class ListStaffProfile extends Component {
@@ -24,19 +24,19 @@ class ListStaffProfile extends Component {
                 placeholder="Search Employee"
                 style={{ width: "35%" }}
               />
-              <Button className="btn btn-primary" color="primary" type="submit">
+              <Button variant="contained" color="primary" type="submit">
                 <span className="fa fa-search"></span>
               </Button>
             </Col>
             <Col md="6" xs="6" style={{ textAlign: "right" }}>
               <Button
-                className="btn btn-primary"
+                component={Link}
+                to="newstaffprofile"
+                variant="contained"
                 color="primary"
-                tag={Link}
-                to="/newstaffprofile"
-                activeclassname="active"
+                style={{ textTransform: 'none' }}
               >
-                <span className="fa fa-plus"></span> New Employee
+                <span className="fa fa-plus" style={{ margin: '0px 10px 0px 0px' }}></span> New Employee
               </Button>
             </Col>
           </Row>
