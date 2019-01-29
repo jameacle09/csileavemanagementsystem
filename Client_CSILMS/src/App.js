@@ -26,20 +26,98 @@ import EditLeaveCategory from "./hradmin/EditLeaveCategory";
 import LeaveEntitlement from "./hradmin/LeaveEntitlement";
 import EditEntitlement from "./hradmin/EditEntitlement";
 import "./common/Styles.css";
+import { getCurrentUser } from './util/APIUtils';
+import Login from './login/Login';
+import { ACCESS_TOKEN } from './constants';
 
 class App extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      currentUser: null,
+      isAuthenticated: false,
+      isLoading: false
+    }
+
+    this.loadCurrentUser = this.loadCurrentUser.bind(this);
+    this.handleLogin = this.handleLogin.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  loadCurrentUser() {
+    console.log('begin loadCurrentUser() => ' + this.state.isAuthenticated);
+    this.setState({ isLoading: true});
+    getCurrentUser()
+      .then(response => {
+        this.setState({
+          currentUser: response,
+          isAuthenticated: true,
+          isLoading: false
+        });
+      }).catch(error => {
+        console.log(error);
+        this.setState({
+          isLoading: false,
+        });  
+      });
+
+      console.log('end loadCurrentUser() => ' + this.state.isAuthenticated);
+      console.log('end loadCurrentUser() => ' + this.state.currentUser);
+  }
+
+  handleLogout(redirectTo="/", notificationType="success", description="You're successfully logged out.") {
+    localStorage.removeItem(ACCESS_TOKEN);
+
+    this.setState({
+      currentUser: null,
+      isAuthenticated: false
+    });
+
+    console.log(redirectTo);
+    this.props.history.push(redirectTo);
+  }
+
+  handleLogin() {
+    console.log('handleLogin');
+    this.loadCurrentUser();
+    console.log('this.state.isAuthenticated : ' + this.state.isAuthenticated);
+    this.props.history.push("/");
+
+    //history.push("/");
+    //browserHistory.push("/");
+  }
+
+  componentDidMount() {
+    this.loadCurrentUser();
+  }
+
   render() {
+    let menu, sideBar;
+    if(this.state.isAuthenticated){
+      menu = <Menu handleLogout={this.handleLogout} />;
+      sideBar = <SideBar />;
+    }
+     
     return (
       <Router>
         <div className="Site">
           <div className="Site-content">
             <div className="wrapper">
-              <SideBar />
+              {sideBar}
+              {/*<SideBar />*/}
               <div id="content" style={{ width: "100%" }}>
-                <Menu />
+                {menu}
+                {/*<Menu handleLogout={this.handleLogout} />*/}
                 <div className="mainContainerFlex">
                   <Switch>
-                    <Route exact path="/" title="Home" component={HomePage} />
+                    {/*<Route exact path="/" title="Home" component={HomePage} />*/}
+
+                    <Route exact path="/" render={(props) => <HomePage isAuthenticated={this.state.isAuthenticated}  
+                        currentUser={this.state.currentUser} handleLogout={this.handleLogout} {...props} />} />
+
+                    <Route path="/login" 
+                  render={(props) => <Login onLogin={this.handleLogin} {...props} />} />
                     <Route
                       path="/applyleave"
                       title="Apply Leave"

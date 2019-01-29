@@ -22,6 +22,7 @@ class Menu extends Component {
     super(props);
 
     this.toggle = this.toggle.bind(this);
+    this.handleLogout = this.handleLogout.bind(this);
     this.state = {
       isOpen: false
     };
@@ -31,6 +32,14 @@ class Menu extends Component {
       isOpen: !this.state.isOpen
     });
   }
+
+  handleLogout = (e) => {
+    e.preventDefault();
+    alert('The link was clicked.');
+
+    this.props.handleLogout('/login');
+  }
+
   render() {
     const menuStyle = {
       fontSize: "1rem",
@@ -118,7 +127,7 @@ class Menu extends Component {
                 </a>
               </li>
               <li className="nav-item">
-                <a className="menu_a" href="#">
+                <a className="menu_a" href="#" onClick={this.handleLogout}>
                   Logout
                 </a>
               </li>
