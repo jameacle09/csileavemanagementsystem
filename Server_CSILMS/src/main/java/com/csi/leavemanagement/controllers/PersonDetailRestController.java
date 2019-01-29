@@ -19,7 +19,8 @@ import com.csi.leavemanagement.models.PersonDetails ;
 @RequestMapping("/api")
 @CrossOrigin
 public class PersonDetailRestController {
-
+	
+	
 	private PersonDetailService personDetailService;
 	
 	@Autowired	
@@ -33,7 +34,7 @@ public class PersonDetailRestController {
 		return personDetails;
 	}
 	
-	@RequestMapping(value="/persondetail/{emplid}", method=RequestMethod.GET)
+	@RequestMapping(value="/persondetail/{id}", method=RequestMethod.GET)
 	public PersonDetails doGetPersonDetailsById(@PathVariable("id") String emplid) {
 		PersonDetails personDetail = this.personDetailService.findById(emplid);
 		return personDetail;
@@ -46,13 +47,13 @@ public class PersonDetailRestController {
 		return newPersonDetails;
 	}
 	
-	@RequestMapping(value="/persondetail/{emplid}", method=RequestMethod.DELETE)
+	@RequestMapping(value="/persondetail/{id}", method=RequestMethod.DELETE)
 	public String doDeletePersonDetails(@PathVariable("id") String emplid) {
 		this.personDetailService.deleteByID(emplid);
 		return "Successfully Deleted";
 	}
 	
-	@RequestMapping(value="/persondetail/{emplid}", method=RequestMethod.PATCH)
+	@RequestMapping(value="/persondetail/{id}", method=RequestMethod.PATCH)
 	public PersonDetails doUpdatePersonDetails(@PathVariable("id") String emplid, @RequestBody PersonDetails personDetail) {
 		personDetail.setEmplId(emplid);
 		PersonDetails newPersonDetails = this.personDetailService.save(personDetail);

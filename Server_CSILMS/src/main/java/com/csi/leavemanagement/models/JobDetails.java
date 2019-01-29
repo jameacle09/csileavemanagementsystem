@@ -23,15 +23,13 @@ public class JobDetails {
 	@Column(name = "status")
 	private String status;
 	
-	@MapsId("businessUnit")
-	@ManyToOne
-	@JoinColumn(name="business_unit")
-	private BusinessUnit businessUnit;
+//	@ManyToOne
+//	@JoinColumn(name="business_unit")
+//	private BusinessUnit businessUnit;
 	
-	@MapsId("deptId")
-	@ManyToOne
-	@JoinColumn(name="dept_id")
-	private Department deptId;
+//	@ManyToOne
+//	@JoinColumn(name="dept_id")
+//	private Department deptId;
 	
 	@Column(name = "job_title")
 	private String jobTitle;
@@ -51,13 +49,14 @@ public class JobDetails {
 	public JobDetails() {
 	}
 
-	public JobDetails(JobDetailsId id, Date joinDate, String status, BusinessUnit businessUnit, Department deptId,
+//	BusinessUnit businessUnit, Department deptId,
+	public JobDetails(JobDetailsId id, Date joinDate, String status, 
 			String jobTitle, String reportsTo, String reportDottedLine, int lastUpddTtm, int lastUpdoprId) {
 		this.id = id;
 		this.joinDate = joinDate;
 		this.status = status;
-		this.businessUnit = businessUnit;
-		this.deptId = deptId;
+//		this.businessUnit = businessUnit;
+//		this.deptId = deptId;
 		this.jobTitle = jobTitle;
 		this.reportsTo = reportsTo;
 		this.reportDottedLine = reportDottedLine;
@@ -89,7 +88,7 @@ public class JobDetails {
 		this.status = status;
 	}
 
-	public BusinessUnit getBusinessUnit() {
+/*	public BusinessUnit getBusinessUnit() {
 		return businessUnit;
 	}
 
@@ -104,7 +103,7 @@ public class JobDetails {
 	public void setDeptId(Department deptId) {
 		this.deptId = deptId;
 	}
-
+*/
 	public String getJobTitle() {
 		return jobTitle;
 	}
@@ -147,11 +146,11 @@ public class JobDetails {
 
 	@Override
 	public String toString() {
-		return "JobDetails [id=" + id + ", joinDate=" + joinDate + ", status=" + status + ", businessUnit="
-				+ businessUnit + ", deptId=" + deptId + ", jobTitle=" + jobTitle + ", reportsTo=" + reportsTo
+		return "JobDetails [id=" + id + ", joinDate=" + joinDate + ", status=" + status + ", jobTitle=" + jobTitle + ", reportsTo=" + reportsTo
 				+ ", reportDottedLine=" + reportDottedLine + ", lastUpddTtm=" + lastUpddTtm + ", lastUpdoprId="
 				+ lastUpdoprId + "]";
 	}
 
-	
+/*, businessUnit="
+	+ businessUnit + ", deptId=" + deptId + " */
 }
