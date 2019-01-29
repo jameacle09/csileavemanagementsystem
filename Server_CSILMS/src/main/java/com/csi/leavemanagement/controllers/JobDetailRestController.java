@@ -1,5 +1,6 @@
 package com.csi.leavemanagement.controllers;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -8,6 +9,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.csi.leavemanagement.services.JobDetailService;
@@ -36,8 +38,8 @@ public class JobDetailRestController {
 	}
 	
 	@RequestMapping(value="/jobdetail/{emplid}", method=RequestMethod.GET)
-	public JobDetails doGetJobDetailsById(@PathVariable("emplid") JobDetailsId id) {
-		JobDetails jobDetail = this.jobDetailService.findById(id);
+	public List<JobDetails> doGetJobDetailsById(@PathVariable("emplid") String emplid) {
+		List<JobDetails> jobDetail = this.jobDetailService.findByEmplid(emplid);
 		return jobDetail;
 	}
 	
@@ -48,16 +50,18 @@ public class JobDetailRestController {
 		return newJobDetails;
 	}
 	
-/*	@RequestMapping(value="/jobdetail/{emplid}", method=RequestMethod.DELETE)
-	public String doDeleteJobDetails(@PathVariable("emplid") JobDetailsId id) {
-		this.jobDetailService.deleteById(id);
+	@RequestMapping(value="/jobdetail/{emplid}", method=RequestMethod.DELETE)
+	public String doDeleteJobDetails(@PathVariable("emplid") String emplid,
+									 @RequestParam("effdate") Date effDate) {
+		this.jobDetailService.deleteByID(emplid, effDate);
 		return "Successfully Deleted";
 	}
+	
 	
 	@RequestMapping(value="/jobdetail/{emplid}", method=RequestMethod.PATCH)
 	public JobDetails doUpdateJobDetails(@PathVariable("emplid") JobDetailsId id, @RequestBody JobDetails jobDetail) {
 		jobDetail.setId(id);
 		JobDetails newJobDetails = this.jobDetailService.save(jobDetail);
 		return newJobDetails; 
-	} */
+	} 
 }
