@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Button, Table, Row, Col } from "reactstrap";
+import { Button, Table } from "reactstrap";
 import { Link } from "react-router-dom";
-import SideBar from "./SideBar";
+// import SideBar from "./SideBar";
 import "../common/Styles.css";
 
 class LeaveCategory extends Component {
@@ -23,7 +23,7 @@ class LeaveCategory extends Component {
               to="/addleavecategory"
               activeclassname="active"
             >
-              Add New
+              <span className="fa fa-plus"></span> New
             </Button>
             <br />
             <br />
@@ -49,7 +49,7 @@ class LeaveCategory extends Component {
                     to="/editleavecategory"
                     activeclassname="active"
                   >
-                    <span>Edit</span>
+                    <span className="fa fa-edit"></span>
                   </Button>
                 </td>
               </tr>

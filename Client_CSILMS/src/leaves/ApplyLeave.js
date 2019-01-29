@@ -6,7 +6,6 @@ import {
   Label,
   Input,
   FormText,
-  Row,
   Col,
   Alert
 } from "reactstrap";
@@ -77,7 +76,7 @@ class ApplyLeave extends Component {
       .then(response => response.json())
       .then(data => {
         this.setState({ userData: data });
-        if (data["lineManager"] != null)
+        if (data["lineManager"] !== null)
           this.setState({ approverId: data["lineManager"]["id"] });
       })
       .catch(err => {
@@ -248,7 +247,7 @@ class ApplyLeave extends Component {
 
     // validate form data
     let durationError = this.validateLeaveDuration(this.state.leaveDuration);
-    if (durationError != "") validForm = false;
+    if (durationError !== "") validForm = false;
 
     if (validForm) {
       // create JSON Object for new Leave Request

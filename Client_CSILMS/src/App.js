@@ -8,7 +8,6 @@ import HomePage from "./home/HomePage";
 import ApplyLeave from "./leaves/ApplyLeave";
 import MyLeaveDetails from "./leaves/MyLeaveDetails";
 import MyLeaveHistory from "./leaves/MyLeaveHistory";
-import "./stickyfooter.css";
 import ManagerApproval from "./manager/ManagerApproval";
 import StaffLeaveHistory from "./manager/StaffLeaveHistory";
 import MyProfile from "./staffprofile/MyProfile";
