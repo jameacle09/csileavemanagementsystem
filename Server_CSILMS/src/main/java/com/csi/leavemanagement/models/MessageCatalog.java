@@ -4,12 +4,14 @@ import java.sql.Timestamp;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="message_catalog")
 public class MessageCatalog {
 
+	@Id
 	@Column(name="message_set_nbr")
 	private int messageSetNbr;
 	

@@ -4,13 +4,14 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="public_holiday")
-
 public class PublicHoliday {
 	
+	@Id
 	@Column(name="date")
 	private Date holidayDate;
 	
