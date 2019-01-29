@@ -1,21 +1,5 @@
 import React, { Component } from "react";
-import {
-  Collapse,
-  Navbar,
-  NavbarToggler,
-  NavbarBrand,
-  Nav,
-  NavItem,
-  NavLink,
-  Badge,
-  UncontrolledDropdown,
-  DropdownToggle,
-  DropdownMenu,
-  DropdownItem
-} from "reactstrap";
-import { Link } from "react-router-dom";
 import "./Styles.css";
-import CSILogo from "../img/CSI_Logo.png";
 
 class Menu extends Component {
   constructor(props) {
@@ -32,20 +16,7 @@ class Menu extends Component {
     });
   }
   render() {
-    const menuStyle = {
-      fontSize: "1rem",
-      background: "#004A9B",
-      fontFamily: "Helvetica",
-      margin: "0 0 0 0",
-      width: "100%",
-      display: "flex",
-      justifyContent: "flex-start",
-      alignItems: "flex-start",
-      align: "left",
-      padding: "5px",
-      border: "2px solid black"
-    };
-    const menuStyle2 = {
+    const menuContainer = {
       fontSize: "1rem",
       background: "#004A9B",
       fontFamily: "Helvetica",
@@ -53,77 +24,28 @@ class Menu extends Component {
       padding: "0",
       width: "100%"
     };
-    const menuStyle3 = {
-      fontSize: "1rem",
-      background: "#004A9B",
+    const menuTitle = {
       fontFamily: "Helvetica",
-      margin: "0 0 0 0",
-      padding: "0",
-      height: "66px"
-    };
-    const fontStyle = {
-      fontFamily: "Helvetica",
-      fontSize: "20px",
-      padding: "10px",
-      color: "white"
+      fontSize: "18px",
+      color: "white",
+      margin: "0px 5px 0 0"
     };
     return (
       <nav
         className="navbar navbar-expand-lg navbar-light bg-light"
-        style={menuStyle2}
+        style={menuContainer}
       >
-        <div className="container-fluid" style={menuStyle2}>
-          <button type="button" id="sidebarCollapse" className="btn btn-info">
-            <i className="fas fa-align-left" />
-            <span>Toggle Sidebar</span>
-          </button>
+        <div className="container-fluid" style={menuContainer}>
           <button
-            className="btn btn-dark d-inline-block d-lg-none ml-auto"
             type="button"
-            data-toggle="collapse"
-            data-target="#navbarSupportedContent"
-            aria-controls="navbarSupportedContent"
-            aria-expanded="false"
-            aria-label="Toggle navigation"
+            id="sidebarCollapse"
+            className="btn btn-info"
+            style={{ background: "#032a53", border: "1px solid gray" }}
           >
-            <i className="fas fa-align-justify" />
+            <i className="fas fa-align-left" />
+            <span />
           </button>
-
-          <div className="collapse navbar-collapse" id="navbarSupportedContent">
-            <span style={fontStyle}>Leave Management System</span>
-            <ul className="nav navbar-nav ml-auto">
-              <li className="nav-item">
-                <a className="menu_a" href="/">
-                  Home
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="menu_a" href="/applyleave">
-                  Apply Leave
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="menu_a" href="/myleavehistory">
-                  My Leave History
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="menu_a" href="/myleavedetails">
-                  My Leave Details
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="menu_a" href="/myprofile">
-                  My Profile
-                </a>
-              </li>
-              <li className="nav-item">
-                <a className="menu_a" href="#">
-                  Logout
-                </a>
-              </li>
-            </ul>
-          </div>
+          <span style={menuTitle}>Leave Management System</span>
         </div>
       </nav>
     );

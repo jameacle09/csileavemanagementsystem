@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Jumbotron, Button } from "reactstrap";
+import { Jumbotron } from "reactstrap";
 import Dashboard from "./Dashboard";
 
 class HomePage extends Component {
@@ -39,17 +39,19 @@ class HomePage extends Component {
 
     return (
       <div>
-        <Jumbotron style={divStyle}>
-          <h1 className="display-3">Hello, {userData["staffName"]}! </h1>
-          <p className="lead">Welcome to CSI Leave Management System.</p>
-          {
-            // <hr className="my-2" />
-            // <p>Leave Management System for employees of CSI Interfusion Sdn. Bhd.</p>
-            // <p className="lead">
-            //   <Button color="primary">Apply Leave</Button>
-            // </p>
-          }
-        </Jumbotron>
+        <div>
+          <Jumbotron style={divStyle}>
+            <h1 className="display-3">Hello, {userData["staffName"]}! </h1>
+            <p className="lead">Welcome to CSI Leave Management System.</p>
+            {
+              // <hr className="my-2" />
+              // <p>Leave Management System for employees of CSI Interfusion Sdn. Bhd.</p>
+              // <p className="lead">
+              //   <Button color="primary">Apply Leave</Button>
+              // </p>
+            }
+          </Jumbotron>
+        </div>
         <Dashboard />
       </div>
     );

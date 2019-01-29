@@ -1,6 +1,7 @@
-import React, { Component } from "react";
+import React from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import "./MyProfile.css";
+
 class ChangePassword extends React.Component {
   constructor(props) {
     super(props);
@@ -15,13 +16,13 @@ class ChangePassword extends React.Component {
   }
 
   validatePassword(event) {
-    if (event.target.name == "password") {
+    if (event.target.name === "password") {
       this.setState({ password: event.target.value });
     }
 
-    if (event.target.name == "confirmPassword") {
+    if (event.target.name === "confirmPassword") {
       this.setState({ confirmPassword: event.target.value });
-      if (event.target.value != this.state.password) {
+      if (event.target.value !== this.state.password) {
         event.target.setCustomValidity("Password not match");
       } else {
         event.target.setCustomValidity("");
@@ -73,14 +74,14 @@ class ChangePassword extends React.Component {
       height: "20px"
     };
 
-    const pTextStyle = {
-      fontWeight: "bold",
-      fontSize: "20px",
-      textAlign: "center",
-      width: "119%",
-      margin: "0 0 20px -30px",
-      padding: "0 0 5px 0"
-    };
+    // const pTextStyle = {
+    //   fontWeight: "bold",
+    //   fontSize: "20px",
+    //   textAlign: "center",
+    //   width: "119%",
+    //   margin: "0 0 20px -30px",
+    //   padding: "0 0 5px 0"
+    // };
 
     const submitButtonStyle = {
       textAlign: "center",

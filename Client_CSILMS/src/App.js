@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import "./stickyfooter.css";
 import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
 import SideBar from "./common/SideBar";
 import Menu from "./common/Menu";
@@ -8,7 +7,6 @@ import HomePage from "./home/HomePage";
 import ApplyLeave from "./leaves/ApplyLeave";
 import MyLeaveDetails from "./leaves/MyLeaveDetails";
 import MyLeaveHistory from "./leaves/MyLeaveHistory";
-import "./stickyfooter.css";
 import ManagerApproval from "./manager/ManagerApproval";
 import StaffLeaveHistory from "./manager/StaffLeaveHistory";
 import MyProfile from "./staffprofile/MyProfile";
@@ -26,6 +24,7 @@ import EditLeaveCategory from "./hradmin/EditLeaveCategory";
 import LeaveEntitlement from "./hradmin/LeaveEntitlement";
 import EditEntitlement from "./hradmin/EditEntitlement";
 import "./common/Styles.css";
+import "./stickyfooter.css";
 
 class App extends Component {
   render() {
