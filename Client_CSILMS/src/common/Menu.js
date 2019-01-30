@@ -28,7 +28,7 @@ class Menu extends Component {
     const menuTitle = {
       fontFamily: "Helvetica",
       fontSize: "18px",
-      color: "#8AADD4",
+      color: "rgb(214, 209, 209)",
       margin: "0px 20px 0 0",
       textDecoration: "none"
     };
@@ -47,7 +47,11 @@ class Menu extends Component {
             <i className="fas fa-align-left" />
             <span />
           </button>
-          <span><a href="/" style={menuTitle}>Leave Management System</a></span>
+          <span>
+            <Link to="/" title="Navigate back to Home" style={menuTitle}>
+              Leave Management System
+            </Link>
+          </span>
         </div>
       </nav>
     );

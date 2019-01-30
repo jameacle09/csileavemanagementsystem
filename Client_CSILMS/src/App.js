@@ -1,5 +1,10 @@
 import React, { Component } from "react";
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import {
+  Route,
+  BrowserRouter as Router,
+  Redirect,
+  Switch
+} from "react-router-dom";
 import SideBar from "./common/SideBar";
 import Menu from "./common/Menu";
 import Footer from "./common/Footer";
@@ -12,8 +17,9 @@ import StaffLeaveHistory from "./manager/StaffLeaveHistory";
 import MyProfile from "./staffprofile/MyProfile";
 import ChangePassword from "./staffprofile/ChangePassword";
 import StaffProfileComponent from "./staffprofile/StaffProfileComponent";
-import ListStaffProfile from "./staffprofile/ListStaffProfile";
+// import ListStaffProfile from "./staffprofile/ListStaffProfile";
 import NewStaffProfile from "./staffprofile/NewStaffProfile";
+import EditStaffProfile from "./staffprofile/EditStaffProfile";
 import ResetPassword from "./staffprofile/ResetPassword";
 import PublicHoliday from "./hradmin/PublicHoliday";
 import AddPublicHoliday from "./hradmin/AddPublicHoliday";
@@ -25,8 +31,8 @@ import LeaveEntitlement from "./hradmin/LeaveEntitlement";
 import EditEntitlement from "./hradmin/EditEntitlement";
 import "./common/Styles.css";
 import "./stickyfooter.css";
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/free-solid-svg-icons';
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
 
 library.add(fas);
 
@@ -42,7 +48,7 @@ class App extends Component {
                 <Menu />
                 <div className="mainContainerFlex">
                   <Switch>
-                    <Route exact path="/" title="Home" component={HomePage} />
+                    <Route path="/" exact title="Home" component={HomePage} />
                     <Route
                       path="/applyleave"
                       title="Apply Leave"
@@ -80,56 +86,65 @@ class App extends Component {
                     />
                     <Route
                       path="/liststaffprofile"
+                      exact
                       title="List Staff Profile"
                       component={StaffProfileComponent}
                     />
-                    <Route
+                    {/* <Route
                       path="/liststaffprofile"
                       title="List Staff Profile"
                       component={ListStaffProfile}
-                    />
+                    /> */}
                     <Route
-                      path="/newstaffprofile"
+                      path="/liststaffprofile/add"
                       title="New Staff Profile"
                       component={NewStaffProfile}
                     />
                     <Route
+                      path="/liststaffprofile/edit/:csiStaffId"
+                      title="Edit Staff Profile"
+                      component={EditStaffProfile}
+                    />
+                    <Route
                       path="/publicholiday"
+                      exact
                       title="Public Holiday"
                       component={PublicHoliday}
                     />
                     <Route
                       path="/leavecategory"
+                      exact
                       title="Leave Category"
                       component={LeaveCategory}
                     />
                     <Route
                       path="/leaveentitlement"
+                      exact
                       title="Leave Entitlement"
                       component={LeaveEntitlement}
                     />
                     <Route
-                      path="/editentitlement"
+                      path="/leaveentitlement/edit/:csiStaffId"
                       title="Edit Entitlement"
                       component={EditEntitlement}
                     />
                     <Route
-                      path="/addpublicholiday"
+                      path="/publicholiday/add"
                       title="Add Public Holiday"
                       component={AddPublicHoliday}
                     />
                     <Route
-                      path="/editpublicholiday"
+                      path="/publicholiday/edit/:holidayId"
                       title="Edit Public Holiday"
                       component={EditPublicHoliday}
                     />
                     <Route
-                      path="/addleavecategory"
+                      path="/leavecategory/add"
                       title="Add Leave Category"
                       component={AddLeaveCategory}
                     />
                     <Route
-                      path="/editleavecategory"
+                      path="/leavecategory/edit/:categoryId"
                       title="Edit Leave Category"
                       component={EditLeaveCategory}
                     />
@@ -138,6 +153,7 @@ class App extends Component {
                       title="Reset Password"
                       component={ResetPassword}
                     />
+                    <Redirect to="/" />
                   </Switch>
                 </div>
               </div>
