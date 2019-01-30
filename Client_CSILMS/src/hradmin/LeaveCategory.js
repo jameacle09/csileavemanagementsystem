@@ -21,7 +21,7 @@ class LeaveCategory extends Component {
               to="/leavecategory/add"
               variant="contained"
               color="primary"
-              style={{ textTransform: "none" }}
+              style={{ textTransform: "none", color: "white" }}
             >
               <span
                 className="fa fa-plus"
@@ -52,7 +52,7 @@ class LeaveCategory extends Component {
                     to={`/leavecategory/edit/${"categoryId"}`}
                     variant="contained"
                     color="primary"
-                    style={{ textTransform: "none" }}
+                    style={{ textTransform: "none", color: "white" }}
                   >
                     <span className="fa fa-edit" />
                   </Button>

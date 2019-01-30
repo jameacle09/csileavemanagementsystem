@@ -1,7 +1,6 @@
 import React from "react";
-import { Form, FormGroup, Label, Input } from "reactstrap";
-import Button from '@material-ui/core/Button';
-import "./MyProfile.css";
+import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import "../common/Styles.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class ChangePassword extends React.Component {
@@ -181,9 +180,8 @@ class ChangePassword extends React.Component {
             </FormGroup>
             <br />
             <Button
-              variant="contained"
               color="primary"              
-              style={{ textTransform: 'none', float: 'right' }}
+              style={{ textTransform: 'none', float: 'right', backgroundColor: '#3F51B5', color: 'white' }}
               onSubmit={this.validatePassword}
             >
               Submit
