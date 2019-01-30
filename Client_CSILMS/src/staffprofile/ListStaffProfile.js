@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Table, Input, Row, Col } from "reactstrap";
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
 import StaffTableRow from "./StaffTableRow";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
@@ -25,18 +25,22 @@ class ListStaffProfile extends Component {
                 style={{ width: "35%" }}
               />
               <Button variant="contained" color="primary" type="submit">
-                <span className="fa fa-search"></span>
+                <span className="fa fa-search" />
               </Button>
             </Col>
             <Col md="6" xs="6" style={{ textAlign: "right" }}>
               <Button
                 component={Link}
-                to="newstaffprofile"
+                to="/liststaffprofile/add"
                 variant="contained"
                 color="primary"
-                style={{ textTransform: 'none' }}
+                style={{ textTransform: "none" }}
               >
-                <span className="fa fa-plus" style={{ margin: '0px 10px 0px 0px' }}></span> New Employee
+                <span
+                  className="fa fa-plus"
+                  style={{ margin: "0px 10px 0px 0px" }}
+                />
+                New Staff
               </Button>
             </Col>
           </Row>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Table } from "reactstrap";
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
 
@@ -18,16 +18,28 @@ class PublicHoliday extends Component {
           <div style={{ textAlign: "right" }}>
             <Button
               component={Link}
-              to="addpublicholiday"
+              to="/publicholiday/add"
               variant="contained"
               color="primary"
-              style={{ textTransform: 'none' }}
+              style={{ textTransform: "none" }}
             >
-              <span className="fa fa-plus" style={{ margin: '0px 10px 0px 0px' }}></span> New
+              <span
+                className="fa fa-plus"
+                style={{ margin: "0px 10px 0px 0px" }}
+              />{" "}
+              New
             </Button>
             <span> </span>
-            <Button variant="contained" color="primary" style={{ textTransform: 'none' }}>
-              <span className="fa fa-upload" style={{ margin: '0px 10px 0px 0px' }}></span>Upload Holiday
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ textTransform: "none" }}
+            >
+              <span
+                className="fa fa-upload"
+                style={{ margin: "0px 10px 0px 0px" }}
+              />
+              Upload Holiday
             </Button>
             <br />
             <br />
@@ -52,16 +64,16 @@ class PublicHoliday extends Component {
                 <td>
                   <Button
                     component={Link}
-                    to="/editpublicholiday"
+                    to={`/publicholiday/edit/${"holidayId"}`}
                     variant="contained"
                     color="primary"
                   >
-                    <span className="fa fa-edit"></span>
+                    <span className="fa fa-edit" />
                   </Button>
                 </td>
                 <td>
                   <Button variant="contained" color="primary">
-                    <span className="fa fa-trash"></span>
+                    <span className="fa fa-trash" />
                   </Button>
                 </td>
               </tr>
