@@ -3,6 +3,7 @@ import { Button, ListGroup, ListGroupItem } from "reactstrap";
 import { Link } from "react-router-dom";
 //import "./MyProfile.css";
 import "../common/Styles.css";
+import Loading from "../img/Spinner-1s-200px.gif";
 
 class MyProfile extends Component {
   constructor(props) {
@@ -11,24 +12,25 @@ class MyProfile extends Component {
       userData: null
     };
   }
+
   componentDidMount() {
     // fetch data from API
-    fetch("http://localhost/api/staffprofile/1")
+    fetch("http://localhost/api/employeedetails/E000000001")
       .then(response => response.json())
       .then(data => this.setState({ userData: data }))
       .catch(err => {
         // if unable to fetch data, assign default (spaces) to values
         let userData = {
-          csiStaffId: "",
-          staffName: "",
-          email: "",
-          icNumber: "",
+          emplId: "",
+          name: "",
+          businessEmail: "",
+          nricPassport: "",
           jobTitle: "",
           mobileNo: "",
           businessUnit: "",
           managerName: "",
           joinDate: "",
-          lineManager: ""
+          reportsTo: ""
         };
         this.setState({ userData: userData });
       });
@@ -37,24 +39,14 @@ class MyProfile extends Component {
     if (this.state.userData == null) {
       // display loading screen until data is available
       return (
-        <div>
-          <br />
-          <div className="container">
-            <ListGroup className="loadingTextContainer">
-              <ListGroupItem color="primary">My Profile</ListGroupItem>
-              <ListGroupItem>
-                <h2 className="loadingText"> Loading </h2>
-              </ListGroupItem>
-            </ListGroup>
-            <br />
-          </div>
-          <br />
+        <div className="containerFlex">
+          <img src={ Loading } alt="Loading" style={{padding: "300px"}} />
         </div>
       );
     }
     let userData = this.state.userData;
     // reformat dates and retrive manager name ONLY when data fetch successfully
-    if (userData["csiStaffId"] !== "") {
+    if (userData["emplId"] !== "") {
       let joinDate = new Date(this.state.userData["joinDate"]);
       userData["joinDate"] =
         joinDate.getFullYear() +
@@ -62,7 +54,7 @@ class MyProfile extends Component {
         (joinDate.getMonth() + 1) +
         "-" +
         joinDate.getDate();
-      userData["managerName"] = this.state.userData["lineManager"]["staffName"];
+      userData["managerName"] = this.state.userData["reportsTo"]["name"];
     }
     return (
       <div className="mainContainerFlex">
@@ -80,11 +72,11 @@ class MyProfile extends Component {
                 className="listStaffName"
                 style={{ width: "35%", verticalAlign: "top" }}
               >
-                {userData["staffName"]}
+                {userData["name"]}
               </td>
               <td style={{ width: "15%", verticalAlign: "top" }}>
                 CSI Staff ID
-                <p className="profileText">{userData["csiStaffId"]}</p>
+                <p className="profileText">{userData["emplId"]}</p>
               </td>
               <td style={{ width: "25%", verticalAlign: "top" }}>
                 Job Title <p className="profileText">{userData["jobTitle"]}</p>
@@ -101,14 +93,14 @@ class MyProfile extends Component {
               </ListGroupItem>
               <ListGroupItem>
                 CSI Staff ID:
-                <p className="profileDataText">{userData["csiStaffId"]}</p>
+                <p className="profileDataText">{userData["emplId"]}</p>
               </ListGroupItem>
               <ListGroupItem>
-                Name: <p className="profileDataText">{userData["staffName"]}</p>
+                Name: <p className="profileDataText">{userData["name"]}</p>
               </ListGroupItem>
               <ListGroupItem>
                 NRIC / Passport No:
-                <p className="profileDataText">{userData["icNumber"]}</p>
+                <p className="profileDataText">{userData["nricPassport"]}</p>
               </ListGroupItem>
             </ListGroup>
           </div>
@@ -137,7 +129,7 @@ class MyProfile extends Component {
                 <b>Contact</b>
               </ListGroupItem>
               <ListGroupItem>
-                Email: <p className="profileDataText">{userData["email"]}</p>
+                Email: <p className="profileDataText">{userData["businessEmail"]}</p>
               </ListGroupItem>
               <ListGroupItem>
                 Mobile No.:{" "}
