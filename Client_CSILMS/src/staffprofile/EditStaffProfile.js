@@ -110,7 +110,7 @@ class EditStaffProfile extends Component {
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Add Staff Profile</h3>
+            <h3 className="headerStyle">Edit Staff Profile</h3>
           </span>
         </div>
         <br />
@@ -120,10 +120,10 @@ class EditStaffProfile extends Component {
             <div width="100%" align="right">
               <Button
                 component={Link}
-                to="resetpassword"
+                to="/resetpassword"
                 variant="contained"
                 color="primary"
-                style={{ textTransform: "none" }}
+                style={{ textTransform: "none", color: "white" }}
               >
                 Reset Password
               </Button>
