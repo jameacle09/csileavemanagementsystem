@@ -117,17 +117,6 @@ class NewStaffProfile extends Component {
 
         <div className="tableContainerFlex">
           <Form onSubmit={this.handleFormSubmit}>
-            <div width="100%" align="right">
-              <Button
-                component={Link}
-                to="/resetpassword/add"
-                variant="contained"
-                color="primary"
-                style={{ textTransform: 'none', color: "white" }}
-              >
-                Reset Password
-              </Button>
-            </div>
             <FormGroup>
               <Label for="csiStaffId">CSI Staff ID</Label>
               <Input
