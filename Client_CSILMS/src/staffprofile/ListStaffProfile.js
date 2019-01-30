@@ -24,7 +24,7 @@ class ListStaffProfile extends Component {
                 placeholder="Search Employee"
                 style={{ width: "35%" }}
               />
-              <Button variant="contained" color="primary" type="submit">
+              <Button variant="contained" color="primary" type="submit" >
                 <span className="fa fa-search" />
               </Button>
             </Col>

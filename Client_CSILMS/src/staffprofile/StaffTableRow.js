@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "reactstrap";
+import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 
 class StaffTableRow extends Component {
@@ -17,24 +17,26 @@ class StaffTableRow extends Component {
         <td>{this.props.staffprofile.joinDate}</td>
         <td>
           <Button
-            className="btn btn-primary"
+            //to={`/liststaffprofile/edit/${this.props.staffprofile.csiStaffId}`}
+
+
+
+            component={Link}
+            to="/liststaffprofile/edit/add"
+            variant="contained"
             color="primary"
-            tag={Link}
-            to={`/liststaffprofile/edit/${this.props.staffprofile.csiStaffId}`}
-            activeclassname="active"
+            style={{ textTransform: "none", color: "white" }}
           >
-            <span className="fa fa-edit" />
+            <span className="fa fa-edit" style={{ textTransform: "none", color: "white" }} />
           </Button>
         </td>
         <td>
           <Button
-            className="btn btn-primary"
+            variant="contained"
             color="primary"
-            tag={Link}
-            to="/liststaffprofile"
-            activeclassname="active"
+            style={{ textTransform: "none", color: "white" }}
           >
-            <span className="fa fa-trash" />
+            <span className="fa fa-trash" style={{ textTransform: "none", color: "white" }} />
           </Button>
         </td>
       </tr>
