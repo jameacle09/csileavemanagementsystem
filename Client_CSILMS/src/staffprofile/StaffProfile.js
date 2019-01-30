@@ -1,14 +1,13 @@
 class StaffProfile {
-    constructor(id, csiStaffId, staffName, email, icNumber, jobTitle, mobileNo, businessUnit, lineManagerId, joinDate) {
-        this.id =id;
-        this.csiStaffId = csiStaffId;
-        this.staffName = staffName;
-        this.email = email;
-        this.icNumber = icNumber;
+    constructor(emplId, name, businessEmail, nricPassport, jobTitle, mobileNo, businessUnit, managerName, joinDate) {
+        this.emplId = emplId;
+        this.name = name;
+        this.businessEmail = businessEmail;
+        this.nricPassport = nricPassport;
         this.jobTitle = jobTitle;
         this.mobileNo = mobileNo;
         this.businessUnit = businessUnit;
-        this.lineManagerId = lineManagerId;
+        this.managerName = managerName;
         this.joinDate = joinDate;
     }
 }
