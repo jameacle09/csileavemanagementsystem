@@ -34,11 +34,11 @@ class ListStaffProfile extends Component {
                 to="/liststaffprofile/add"
                 variant="contained"
                 color="primary"
-                style={{ textTransform: "none" }}
+                style={{ textTransform: "none", color: "white" }}
               >
                 <span
                   className="fa fa-plus"
-                  style={{ margin: "0px 10px 0px 0px" }}
+                  style={{ margin: "0px 10px 0px 0px"}}
                 />
                 New Staff
               </Button>
