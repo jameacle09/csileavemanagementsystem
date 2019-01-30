@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Form, FormGroup, Label, Input } from "reactstrap";
-// import Button from '@material-ui/core/Button';
 import Button from "@material-ui/core/Button";
 import "../common/Styles.css";
 
@@ -45,7 +44,7 @@ class AddPublicHoliday extends Component {
             <Button
               variant="contained"
               color="primary"
-              style={{ textTransform: "none" }}
+              style={{ textTransform: "none", color: "white" }}
             >
               Save
             </Button>

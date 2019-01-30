@@ -156,7 +156,7 @@ class EditEntitlement extends Component {
                 placeholder="Balance Leave"
               />
             </FormGroup>
-            <Button variant="contained" color="primary" style={{ textTransform: 'none' }}>Save</Button>
+            <Button variant="contained" color="primary" style={{ textTransform: 'none', color: "white" }}>Save</Button>
           </Form>
         </div>
       </div>

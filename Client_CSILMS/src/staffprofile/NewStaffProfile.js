@@ -120,10 +120,10 @@ class NewStaffProfile extends Component {
             <div width="100%" align="right">
               <Button
                 component={Link}
-                to="resetpassword"
+                to="/resetpassword/add"
                 variant="contained"
                 color="primary"
-                style={{ textTransform: 'none' }}
+                style={{ textTransform: 'none', color: "white" }}
               >
                 Reset Password
               </Button>
@@ -256,7 +256,7 @@ class NewStaffProfile extends Component {
               </div>
             </FormGroup>
             <br />
-            <Button variant="contained" color="primary" onClick={this.save} style={{ textTransform: 'none' }}>
+            <Button variant="contained" color="primary" onClick={this.save} style={{ textTransform: 'none', color: "white" }}>
               Submit
             </Button>
           </Form>

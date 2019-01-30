@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Button, ListGroup, ListGroupItem } from "reactstrap";
+import { ListGroup, ListGroupItem } from "reactstrap";
 import { Link } from "react-router-dom";
-//import "./MyProfile.css";
+import Button from "@material-ui/core/Button";
 import "../common/Styles.css";
 import Loading from "../img/Spinner-1s-200px.gif";
 
@@ -140,10 +140,12 @@ class MyProfile extends Component {
           <br />
           <div className="buttonChngPwd">
             <Button
+              component={Link}
+              to="/changepassword/add"
+              variant="contained"
               color="primary"
-              tag={Link}
-              to="/changepassword"
-              activeclassname="active"
+              style={{ textTransform: "none", color: "white" }}
+
             >
               Change Password
             </Button>
