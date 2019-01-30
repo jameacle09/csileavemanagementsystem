@@ -1,11 +1,12 @@
 import React, { Component } from "react";
-import { Form, FormGroup, Label, Input } from "reactstrap";
-import Button from '@material-ui/core/Button';
+import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+// import Button from '@material-ui/core/Button';
 import "../common/Styles.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class ResetPassword extends Component {
-  render() {
-    return (
+   render() {
+      return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
@@ -22,6 +23,7 @@ class ResetPassword extends Component {
                 name="newPassword"
                 id="newPassword"
                 placeholder="New Password"
+                required
               />
             </FormGroup>
             <FormGroup>
@@ -31,9 +33,10 @@ class ResetPassword extends Component {
                 name="confirmPassword"
                 id="confirmPassword"
                 placeholder="Confirm Password"
+                required
               />
             </FormGroup>
-            <Button variant="contained" color="primary" style={{ textTransform: 'none' }}>Save</Button>
+            <Button color="primary" style={{ backgroundColor: '#3F51B5', color: 'white' }} onSubmit={this.validatePassword}>Save</Button>
           </Form>
         </div>
       </div>

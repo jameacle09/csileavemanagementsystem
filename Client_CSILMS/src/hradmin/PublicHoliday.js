@@ -21,7 +21,7 @@ class PublicHoliday extends Component {
               to="/publicholiday/add"
               variant="contained"
               color="primary"
-              style={{ textTransform: "none" }}
+              style={{ textTransform: "none", color: "white" }}
             >
               <span
                 className="fa fa-plus"
@@ -33,7 +33,7 @@ class PublicHoliday extends Component {
             <Button
               variant="contained"
               color="primary"
-              style={{ textTransform: "none" }}
+              style={{ textTransform: "none", color: "white" }}
             >
               <span
                 className="fa fa-upload"
@@ -67,13 +67,14 @@ class PublicHoliday extends Component {
                     to={`/publicholiday/edit/${"holidayId"}`}
                     variant="contained"
                     color="primary"
+                    style={{ textTransform: "none", color: "white" }}
                   >
                     <span className="fa fa-edit" />
                   </Button>
                 </td>
                 <td>
                   <Button variant="contained" color="primary">
-                    <span className="fa fa-trash" />
+                    <span className="fa fa-trash" style={{ textTransform: "none", color: "white" }}/>
                   </Button>
                 </td>
               </tr>

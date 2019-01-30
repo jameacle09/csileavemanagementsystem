@@ -19,7 +19,7 @@ class LeaveEntitlement extends Component {
             <Button
               variant="contained"
               color="primary"
-              style={{ textTransform: "none" }}
+              style={{ textTransform: "none", color: "white" }}
             >
               <span
                 className="fa fa-upload"
@@ -62,7 +62,7 @@ class LeaveEntitlement extends Component {
                     to={`/leaveentitlement/edit/${"csiStaffId"}`}
                     variant="contained"
                     color="primary"
-                    style={{ textTransform: "none" }}
+                    style={{ textTransform: "none", color: "white" }}
                   >
                     <span className="fa fa-edit" />
                   </Button>
