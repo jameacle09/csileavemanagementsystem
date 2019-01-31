@@ -110,7 +110,7 @@ class EditStaffProfile extends Component {
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Edit Staff Profile</h3>
+            <h3 className="headerStyle">Edit Employee Profile</h3>
           </span>
         </div>
         <br />

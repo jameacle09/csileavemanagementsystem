@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import StaffProfile from "./StaffProfile";
 import { Form, FormGroup, Label, Input } from "reactstrap";
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
 
@@ -110,20 +110,18 @@ class NewStaffProfile extends Component {
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Add Staff Profile</h3>
+            <h3 className="headerStyle">Add Employee Profile</h3>
           </span>
         </div>
-        <br />
-
         <div className="tableContainerFlex">
           <Form onSubmit={this.handleFormSubmit}>
             <div width="100%" align="right">
               <Button
                 component={Link}
-                to="/resetpassword/add"
+                to="/resetpassword"
                 variant="contained"
                 color="primary"
-                style={{ textTransform: 'none', color: "white" }}
+                style={{ textTransform: "none", color: "white" }}
               >
                 Reset Password
               </Button>
@@ -256,7 +254,12 @@ class NewStaffProfile extends Component {
               </div>
             </FormGroup>
             <br />
-            <Button variant="contained" color="primary" onClick={this.save} style={{ textTransform: 'none', color: "white" }}>
+            <Button
+              variant="contained"
+              color="primary"
+              onClick={this.save}
+              style={{ textTransform: "none", color: "white" }}
+            >
               Submit
             </Button>
           </Form>

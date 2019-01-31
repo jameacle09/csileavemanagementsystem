@@ -20,7 +20,6 @@ import StaffProfileComponent from "./staffprofile/StaffProfileComponent";
 // import ListStaffProfile from "./staffprofile/ListStaffProfile";
 import NewStaffProfile from "./staffprofile/NewStaffProfile";
 import EditStaffProfile from "./staffprofile/EditStaffProfile";
-import ResetPassword from "./staffprofile/ResetPassword";
 import PublicHoliday from "./hradmin/PublicHoliday";
 import AddPublicHoliday from "./hradmin/AddPublicHoliday";
 import EditPublicHoliday from "./hradmin/EditPublicHoliday";
@@ -29,6 +28,9 @@ import AddLeaveCategory from "./hradmin/AddLeaveCategory";
 import EditLeaveCategory from "./hradmin/EditLeaveCategory";
 import LeaveEntitlement from "./hradmin/LeaveEntitlement";
 import EditEntitlement from "./hradmin/EditEntitlement";
+import LoginDetails from "./hradmin/LoginDetails";
+import AddLoginDetails from "./hradmin/AddLoginDetails";
+import EditLoginDetails from "./hradmin/EditLoginDetails";
 import "./common/Styles.css";
 import "./stickyfooter.css";
 import { library } from "@fortawesome/fontawesome-svg-core";
@@ -101,7 +103,7 @@ class App extends Component {
                       component={NewStaffProfile}
                     />
                     <Route
-                      path="/liststaffprofile/edit/:csiStaffId"
+                      path="/liststaffprofile/edit/:emplId"
                       title="Edit Staff Profile"
                       component={EditStaffProfile}
                     />
@@ -124,7 +126,7 @@ class App extends Component {
                       component={LeaveEntitlement}
                     />
                     <Route
-                      path="/leaveentitlement/edit/:csiStaffId"
+                      path="/leaveentitlement/edit/:emplId"
                       title="Edit Entitlement"
                       component={EditEntitlement}
                     />
@@ -149,9 +151,20 @@ class App extends Component {
                       component={EditLeaveCategory}
                     />
                     <Route
-                      path="/resetpassword"
-                      title="Reset Password"
-                      component={ResetPassword}
+                      path="/logindetails"
+                      exact
+                      title="Staff Login Details"
+                      component={LoginDetails}
+                    />
+                    <Route
+                      path="/logindetails/add"
+                      title="Add Employee Login Details"
+                      component={AddLoginDetails}
+                    />
+                    <Route
+                      path="/logindetails/edit/:userId"
+                      title="Edit Employee Login Details"
+                      component={EditLoginDetails}
                     />
                     <Redirect to="/" />
                   </Switch>
