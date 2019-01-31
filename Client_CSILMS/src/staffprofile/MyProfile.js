@@ -4,16 +4,30 @@ import { Link } from "react-router-dom";
 import Button from "@material-ui/core/Button";
 import "../common/Styles.css";
 import Loading from "../img/Spinner-1s-200px.gif";
+import { fetchData } from '../util/APIUtils';
+import { API_BASE_URL } from '../constants'; 
 
 class MyProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userData: null
+      userData: {
+        emplId: "",
+        name: "",
+        businessEmail: "",
+        nricPassport: "",
+        jobTitle: "",
+        mobileNo: "",
+        businessUnit: "",
+        managerName: "",
+        joinDate: "",
+        reportsTo: ""
+      }
     };
+    
   }
 
-  componentDidMount() {
+/*  componentDidMount() {
     // fetch data from API
     fetch("http://localhost/api/employeedetails/E000000001")
       .then(response => response.json())
@@ -34,7 +48,7 @@ class MyProfile extends Component {
         };
         this.setState({ userData: userData });
       });
-  }
+  } */
   render() {
     if (this.state.userData == null) {
       // display loading screen until data is available

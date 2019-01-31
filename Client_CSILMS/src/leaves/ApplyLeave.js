@@ -61,7 +61,7 @@ class ApplyLeave extends Component {
     });
   };
 
-  componentDidMount() {
+/*  componentDidMount() {
     // fetch CSI Staff ID and Name from API
     fetch("http://localhost/api/staffprofile/1")
       .then(response => response.json())
@@ -126,7 +126,7 @@ class ApplyLeave extends Component {
         this.setState({ approverList: approverListData });
       });
   }
-
+*/
   // this method process changes on all 3 date related fields
   handleDateChange(event) {
     const fieldName = event.target.name;
