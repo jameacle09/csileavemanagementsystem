@@ -3,29 +3,25 @@ package com.csi.leavemanagement.models;
 import java.sql.Timestamp;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="message_catalog")
 public class MessageCatalog {
 
-	@Id
-	@Column(name="message_set_nbr")
-	private int messageSetNbr;
-	
-	@Column(name="message_nbr")
-	private int messageNbr;
+	@EmbeddedId
+	private MessageCatalogId id;
 	
 	@Column(name="message_text")
 	private String messageText;
 	
-	@Column(name="message_saverity")
-	private String messageSaverity;
+	@Column(name="message_severity")
+	private String messageSeverity;
 	
-	@Column(name="long_decr")
-	private String longDecr;
+	@Column(name="long_descr")
+	private String longDescr;
 	
 	@Column(name="lastupddttm")
 	private Timestamp lastupddttm;
@@ -34,29 +30,20 @@ public class MessageCatalog {
 		
 	}
 	
-	public MessageCatalog(int messageSetNbr, int messageNbr, String messageText, String messageSaverity, String longDecr, Timestamp lastupddttm) {
-		this.messageSetNbr = messageSetNbr; 
-		this.messageNbr = messageNbr;
+	public MessageCatalog(MessageCatalogId id, String messageText, String messageSeverity, String longDescr, Timestamp lastupddttm) {
+		this.id = id; 
 		this.messageText = messageText;
-		this.messageSaverity = messageSaverity;
-		this.longDecr = longDecr;
+		this.messageSeverity = messageSeverity;
+		this.longDescr = longDescr;
 		this.lastupddttm = lastupddttm;
 	}
 
-	public int getMessageSetNbr() {
-		return messageSetNbr;
+	public MessageCatalogId getId() {
+		return id;
 	}
 
-	public void setMessageSetNbr(int messageSetNbr) {
-		this.messageSetNbr = messageSetNbr;
-	}
-
-	public int getMessageNbr() {
-		return messageNbr;
-	}
-
-	public void setMessageNbr(int messageNbr) {
-		this.messageNbr = messageNbr;
+	public void setId(MessageCatalogId id) {
+		this.id = id;
 	}
 
 	public String getMessageText() {
@@ -67,20 +54,20 @@ public class MessageCatalog {
 		this.messageText = messageText;
 	}
 
-	public String getMessageSaverity() {
-		return messageSaverity;
+	public String getMessageSeverity() {
+		return messageSeverity;
 	}
 
-	public void setMessageSaverity(String messageSaverity) {
-		this.messageSaverity = messageSaverity;
+	public void setMessageSeverity(String messageSeverity) {
+		this.messageSeverity = messageSeverity;
 	}
 
-	public String getLongDecr() {
-		return longDecr;
+	public String getLongDescr() {
+		return longDescr;
 	}
 
-	public void setLongDecr(String longDecr) {
-		this.longDecr = longDecr;
+	public void setLongDescr(String longDescr) {
+		this.longDescr = longDescr;
 	}
 
 	public Timestamp getLastupddttm() {
@@ -93,8 +80,9 @@ public class MessageCatalog {
 
 	@Override
 	public String toString() {
-		return "MessageCatalog [messageSetNbr=" + messageSetNbr + ", messageNbr=" + messageNbr + ", messageText="
-				+ messageText + ", messageSaverity=" + messageSaverity + ", longDecr=" + longDecr + ", lastupddttm="
-				+ lastupddttm + "]";
-	}	
+		return "MessageCatalog [id=" + id + ", messageText=" + messageText + ", messageSeverity=" + messageSeverity
+				+ ", longDescr=" + longDescr + ", lastupddttm=" + lastupddttm + "]";
+	}
+
+
 }

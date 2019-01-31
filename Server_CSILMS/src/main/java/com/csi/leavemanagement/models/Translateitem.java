@@ -1,20 +1,16 @@
 package com.csi.leavemanagement.models;
 
 import javax.persistence.Column;
+import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
-import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
 @Table(name="translateitem")
 public class Translateitem {
-
-	@Id
-	@Column(name="fieldname")
-	private String fieldname;
 	
-	@Column(name="fieldvalue")
-	private String fieldvalue;
+	@EmbeddedId
+	private TranslateitemId id;
 	
 	@Column(name="eff_status")
 	private String effStatus;
@@ -26,32 +22,23 @@ public class Translateitem {
 	private String xlatshortname;
 
 	public Translateitem() {
-		
+		this.id = new TranslateitemId();
 	}
 	
-	public Translateitem(String fieldname, String fieldvalue, String effStatus, String xlatlongname, String xlatshortname) {
-		this.fieldname = fieldname;
-		this.fieldvalue = fieldvalue;
+	public Translateitem(TranslateitemId id, String effStatus, String xlatlongname, String xlatshortname) {
+		this.id = id;
 		this.effStatus = effStatus;
 		this.xlatlongname = xlatlongname;
 		this.xlatshortname = xlatshortname;
 	
 	}
 
-	public String getFieldname() {
-		return fieldname;
+	public TranslateitemId getId() {
+		return id;
 	}
 
-	public void setFieldname(String fieldname) {
-		this.fieldname = fieldname;
-	}
-
-	public String getFieldvalue() {
-		return fieldvalue;
-	}
-
-	public void setFieldvalue(String fieldvalue) {
-		this.fieldvalue = fieldvalue;
+	public void setId(TranslateitemId id) {
+		this.id = id;
 	}
 
 	public String getEffStatus() {
@@ -80,9 +67,7 @@ public class Translateitem {
 
 	@Override
 	public String toString() {
-		return "Translateitem [fieldname=" + fieldname + ", fieldvalue=" + fieldvalue + ", effStatus=" + effStatus
-				+ ", xlatlongname=" + xlatlongname + ", xlatshortname=" + xlatshortname + "]";
-	}
-	
-	
+		return "Translateitem [id=" + id + ", effStatus=" + effStatus + ", xlatlongname=" + xlatlongname
+				+ ", xlatshortname=" + xlatshortname + "]";
+	}	
 }

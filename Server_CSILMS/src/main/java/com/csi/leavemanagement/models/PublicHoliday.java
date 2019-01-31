@@ -18,8 +18,8 @@ public class PublicHoliday {
 	@Column(name="day")
 	private String holidayDay;
 	
-	@Column(name="public_holiday_desc")
-	private String holidayDesc;
+	@Column(name="public_holiday_descr")
+	private String holidayDescr;
 	
 	@Column(name="public_holiday_state")
 	private String holidayState;
@@ -28,10 +28,10 @@ public class PublicHoliday {
 		
 	}
 	
-	public PublicHoliday(Date holidayDate, String holidayDay, String holidayDesc, String holidayState) {
+	public PublicHoliday(Date holidayDate, String holidayDay, String holidayDescr, String holidayState) {
 		this.holidayDate = holidayDate;
 		this.holidayDay = holidayDay;
-		this.holidayDesc = holidayDesc;
+		this.holidayDescr = holidayDescr;
 		this.holidayState = holidayState;		
 	}
 
@@ -51,12 +51,12 @@ public class PublicHoliday {
 		this.holidayDay = holidayDay;
 	}
 
-	public String getHolidayDesc() {
-		return holidayDesc;
+	public String getHolidayDescr() {
+		return holidayDescr;
 	}
 
-	public void setHolidayDesc(String holidayDesc) {
-		this.holidayDesc = holidayDesc;
+	public void setHolidayDescr(String holidayDescr) {
+		this.holidayDescr = holidayDescr;
 	}
 
 	public String getHolidayState() {
@@ -69,8 +69,8 @@ public class PublicHoliday {
 
 	@Override
 	public String toString() {
-		return "PublicHoliday [holidayDate=" + holidayDate + ", holidayDay=" + holidayDay + ", holidayDesc="
-				+ holidayDesc + ", holidayState=" + holidayState + "]";
+		return "PublicHoliday [holidayDate=" + holidayDate + ", holidayDay=" + holidayDay + ", holidayDescr="
+				+ holidayDescr + ", holidayState=" + holidayState + "]";
 	}
 	
 }
