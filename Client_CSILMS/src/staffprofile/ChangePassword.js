@@ -1,6 +1,7 @@
 import React from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
-import "./MyProfile.css";
+import "../common/Styles.css";
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 
 class ChangePassword extends React.Component {
   constructor(props) {
@@ -74,22 +75,6 @@ class ChangePassword extends React.Component {
       height: "20px"
     };
 
-    // const pTextStyle = {
-    //   fontWeight: "bold",
-    //   fontSize: "20px",
-    //   textAlign: "center",
-    //   width: "119%",
-    //   margin: "0 0 20px -30px",
-    //   padding: "0 0 5px 0"
-    // };
-
-    const submitButtonStyle = {
-      textAlign: "center",
-      display: "inline-block",
-      width: "150px",
-      float: "right"
-    };
-
     const {
       currentPasswordType,
       passwordType,
@@ -97,6 +82,9 @@ class ChangePassword extends React.Component {
       password,
       confirmPassword
     } = this.state;
+
+    let show = (<FontAwesomeIcon icon="eye" />);
+    let hide = (<FontAwesomeIcon icon="eye-slash" />);
 
     return (
       <div className="mainContainerLeavePages">
@@ -120,6 +108,7 @@ class ChangePassword extends React.Component {
                   id="passcurrentpassword"
                   aria-label="passcurrentpassword"
                   aria-describedby="basic-addon2"
+                  autoFocus required
                 />
                 <div className="container_password_show input-group-append">
                   <span
@@ -130,7 +119,7 @@ class ChangePassword extends React.Component {
                     }
                     color="primary"
                   >
-                    {currentPasswordType === "input" ? "Hide" : "Show"}
+                    {currentPasswordType === "input" ? show : hide}
                   </span>
                 </div>
               </div>
@@ -147,6 +136,7 @@ class ChangePassword extends React.Component {
                   value={password}
                   aria-label="password"
                   aria-describedby="basic-addon2"
+                  required
                 />
                 <div className="container_password_show input-group-append">
                   <span
@@ -155,7 +145,7 @@ class ChangePassword extends React.Component {
                     onClick={event => this.showHide(event, "passwordType")}
                     color="primary"
                   >
-                    {passwordType === "input" ? "Hide" : "Show"}
+                    {passwordType === "input" ? show : hide}
                   </span>
                 </div>
               </div>
@@ -172,6 +162,7 @@ class ChangePassword extends React.Component {
                   value={confirmPassword}
                   aria-label="confirmPassword"
                   aria-describedby="basic-addon2"
+                  required
                 />
                 <div className="container_password_show input-group-append">
                   <span
@@ -182,15 +173,15 @@ class ChangePassword extends React.Component {
                     }
                     color="primary"
                   >
-                    {confirmPasswordType === "input" ? "Hide" : "Show"}
+                    {confirmPasswordType === "input" ? show : hide}
                   </span>
                 </div>
               </div>
             </FormGroup>
             <br />
             <Button
-              color="primary"
-              style={submitButtonStyle}
+              color="primary"              
+              style={{ textTransform: 'none', float: 'right', backgroundColor: '#3F51B5', color: 'white' }}
               onSubmit={this.validatePassword}
             >
               Submit

@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import { Link } from "react-router-dom";
 import "./Styles.css";
 
 class Menu extends Component {
@@ -27,8 +28,9 @@ class Menu extends Component {
     const menuTitle = {
       fontFamily: "Helvetica",
       fontSize: "18px",
-      color: "white",
-      margin: "0px 5px 0 0"
+      color: "rgb(214, 209, 209)",
+      margin: "0px 20px 0 0",
+      textDecoration: "none"
     };
     return (
       <nav
@@ -45,7 +47,11 @@ class Menu extends Component {
             <i className="fas fa-align-left" />
             <span />
           </button>
-          <span style={menuTitle}>Leave Management System</span>
+          <span>
+            <Link to="/" title="Navigate back to Home" style={menuTitle}>
+              Leave Management System
+            </Link>
+          </span>
         </div>
       </nav>
     );

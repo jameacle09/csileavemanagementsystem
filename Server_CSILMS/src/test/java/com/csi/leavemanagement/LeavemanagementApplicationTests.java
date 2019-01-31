@@ -1,6 +1,7 @@
 package com.csi.leavemanagement;
 
 import java.util.List;
+import java.util.Optional;
 
 import javax.transaction.Transactional;
 
@@ -9,6 +10,8 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import com.csi.leavemanagement.models.EmployeeDetails;
@@ -30,6 +33,9 @@ public class LeavemanagementApplicationTests {
 	
 	@Autowired
 	EmployeeDetailsRepository employeeDetailsRepository;
+	
+	@Autowired
+    PasswordEncoder passwordEncoder;
 
 	@Test
 	public void contextLoads() {
@@ -37,12 +43,18 @@ public class LeavemanagementApplicationTests {
 	
 	@Transactional
 	@Test
+	@Rollback(false)
 	public void testLogin(){
 		String userId = "wai.leng@chinasofti.com";
-		LoginDetails login = loginDetailsRepository.findByUserIdAndLockAccount(userId, 0);
+		Optional<LoginDetails> login = loginDetailsRepository.findByUserIdAndLockAccount(userId, 0);
 		
-		Assert.assertEquals(login.getUserId(), userId);
-		Assert.assertTrue(login.getRoles().size() > 0);
+		Assert.assertEquals(login.get().getUserId(), userId);
+		Assert.assertTrue(login.get().getRoles().size() > 0);
+		
+		LoginDetails loginDetails = login.get();
+		loginDetails.setPassword(passwordEncoder.encode("123456"));
+		System.out.println(loginDetails.getPassword());
+		loginDetailsRepository.save(loginDetails);
 		
 		System.out.println(login);
 	}

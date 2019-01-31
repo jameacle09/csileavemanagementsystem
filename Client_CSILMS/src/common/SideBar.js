@@ -1,17 +1,31 @@
 import React, { Component } from "react";
+import { NavLink, Link } from "react-router-dom";
 import "./Styles.css";
 import CSILogo from "../img/CSI_Logo.png";
+import { displayByRole } from '../util/APIUtils';
 
 class SideBar extends Component {
+  
+  constructor(props) {
+    super(props);
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleLogout = (e) => {
+    e.preventDefault();
+    this.props.handleLogout("/login");
+  };
+
   render() {
     return (
       <nav id="sidebar">
-        <img
-          src={CSILogo}
-          alt="CSI Interfusion Logo"
-          style={{ margin: "10px auto 10px 60px" }}
-        />
-
+        <Link to="/" title="Home">
+          <img
+            src={CSILogo}
+            alt="CSI Interfusion Logo"
+            style={{ margin: "10px auto 10px 60px" }}
+          />
+        </Link>
         {
           // <NavbarBrand href="/" style={fontStyle}>
           //   <Badge color="light">CSI Interfusion Sdn Bhd</Badge>
@@ -22,18 +36,26 @@ class SideBar extends Component {
         <p align="center">Leave Management System</p>
         <ul className="list-unstyled components">
           <li>
-            <a href="/">Home</a>
+            <NavLink to="/" exact activeClassName="sidebarLinkActive">
+              Home
+            </NavLink>
           </li>
           <li>
-            <a href="/applyleave">Apply Leave</a>
+            <NavLink to="/applyleave" activeClassName="sidebarLinkActive">
+              Apply Leave
+            </NavLink>
           </li>
           <li>
-            <a href="/myleavehistory">My Leave History</a>
+            <NavLink to="/myleavehistory" activeClassName="sidebarLinkActive">
+              My Leave History
+            </NavLink>
           </li>
           <li>
-            <a href="/myleavedetails">My Leave Details</a>
+            <NavLink to="/myleavedetails" activeClassName="sidebarLinkActive">
+              My Leave Details
+            </NavLink>
           </li>
-          <li>
+          <li style={displayByRole(this.props.currentUser, "HR")}>
             <a
               href="#hRSubmenu"
               data-toggle="collapse"
@@ -44,23 +66,45 @@ class SideBar extends Component {
             </a>
             <ul className="collapse list-unstyled" id="hRSubmenu">
               <li>
-                <a href="/liststaffprofile">Staff Profile</a>
+                <NavLink
+                  to="/liststaffprofile"
+                  activeClassName="sidebarLinkActive"
+                >
+                  Staff Profile
+                </NavLink>
               </li>
               <li>
-                <a href="/leaveentitlement">Leave Entitlement</a>
+                <NavLink
+                  to="/leaveentitlement"
+                  activeClassName="sidebarLinkActive"
+                >
+                  Leave Entitlement
+                </NavLink>
               </li>
               <li>
-                <a href="/publicholiday">Public Holiday</a>
+                <NavLink
+                  to="/publicholiday"
+                  activeClassName="sidebarLinkActive"
+                >
+                  Public Holiday
+                </NavLink>
               </li>
               <li>
-                <a href="/leavecategory">Leave Category</a>
+                <NavLink
+                  to="/leavecategory"
+                  activeClassName="sidebarLinkActive"
+                >
+                  Leave Category
+                </NavLink>
               </li>
               <li>
-                <a href="/">Reports</a>
+                <NavLink to="#" activeClassName="sidebarLinkActive">
+                  Reports
+                </NavLink>
               </li>
             </ul>
           </li>
-          <li>
+          <li style={displayByRole(this.props.currentUser, "MANAGER")}>
             <a
               href="#mgrSubmenu"
               data-toggle="collapse"
@@ -71,13 +115,25 @@ class SideBar extends Component {
             </a>
             <ul className="collapse list-unstyled" id="mgrSubmenu">
               <li>
-                <a href="/managerapproval">Manager Approval</a>
+                <NavLink
+                  to="/managerapproval"
+                  activeClassName="sidebarLinkActive"
+                >
+                  Manager Approval
+                </NavLink>
               </li>
               <li>
-                <a href="/staffleavehistory">Leave History</a>
+                <NavLink
+                  to="/staffleavehistory"
+                  activeClassName="sidebarLinkActive"
+                >
+                  Leave History
+                </NavLink>
               </li>
               <li>
-                <a href="/">Reports</a>
+                <NavLink to="#" activeClassName="sidebarLinkActive">
+                  Reports
+                </NavLink>
               </li>
             </ul>
           </li>
@@ -92,13 +148,22 @@ class SideBar extends Component {
             </a>
             <ul className="collapse list-unstyled" id="profileSubmenu">
               <li>
-                <a href="/myprofile">View Profile</a>
+                <NavLink to="/myprofile" activeClassName="sidebarLinkActive">
+                  View Profile
+                </NavLink>
               </li>
               <li>
-                <a href="/changepassword">Change Password</a>
+                <NavLink
+                  to="/changepassword"
+                  activeClassName="sidebarLinkActive"
+                >
+                  Change Password
+                </NavLink>
               </li>
               <li>
-                <a href="/">Logout</a>
+                <NavLink to="#" activeClassName="sidebarLinkActive" onClick={this.handleLogout}>
+                  Logout
+                </NavLink>
               </li>
             </ul>
           </li>

@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import StaffProfile from "./StaffProfile";
-import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import { Form, FormGroup, Label, Input } from "reactstrap";
+import Button from '@material-ui/core/Button';
 import { Link } from "react-router-dom";
-// import SideBar from "../hradmin/SideBar";
 import "../common/Styles.css";
 
 class NewStaffProfile extends Component {
@@ -117,17 +117,6 @@ class NewStaffProfile extends Component {
 
         <div className="tableContainerFlex">
           <Form onSubmit={this.handleFormSubmit}>
-            <div width="100%" align="right">
-              <Button
-                className="btn btn-primary"
-                color="primary"
-                tag={Link}
-                to="/resetpassword"
-                activeclassname="active"
-              >
-                Reset Password
-              </Button>
-            </div>
             <FormGroup>
               <Label for="csiStaffId">CSI Staff ID</Label>
               <Input
@@ -256,7 +245,7 @@ class NewStaffProfile extends Component {
               </div>
             </FormGroup>
             <br />
-            <Button color="primary" onClick={this.save}>
+            <Button variant="contained" color="primary" onClick={this.save} style={{ textTransform: 'none', color: "white" }}>
               Submit
             </Button>
           </Form>

@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Button, ListGroup, ListGroupItem } from "reactstrap";
+import { ListGroup, ListGroupItem } from "reactstrap";
 import { Link } from "react-router-dom";
-//import "./MyProfile.css";
+import Button from "@material-ui/core/Button";
 import "../common/Styles.css";
 
 class MyProfile extends Component {
@@ -40,7 +40,7 @@ class MyProfile extends Component {
         <div>
           <br />
           <div className="container">
-            <ListGroup className="divStyle">
+            <ListGroup className="loadingTextContainer">
               <ListGroupItem color="primary">My Profile</ListGroupItem>
               <ListGroupItem>
                 <h2 className="loadingText"> Loading </h2>
@@ -84,90 +84,81 @@ class MyProfile extends Component {
               </td>
               <td style={{ width: "15%", verticalAlign: "top" }}>
                 CSI Staff ID
-                <p className="mainDataText">{userData["csiStaffId"]}</p>
+                <p className="profileText">{userData["csiStaffId"]}</p>
               </td>
               <td style={{ width: "25%", verticalAlign: "top" }}>
-                Job Title <p className="mainDataText">{userData["jobTitle"]}</p>
+                Job Title <p className="profileText">{userData["jobTitle"]}</p>
               </td>
             </tr>
           </table>
         </div>
 
         <div className="containerProfileFlex">
-          <table
-            style={{
-              width: "100%",
-              height: "100%",
-              margin: "0 auto",
-              padding: "0"
-            }}
-          >
-            <tr align="center" valign="top">
-              <td>
-                <ListGroup className="ListGroupStyleFlex">
-                  <ListGroupItem color="primary">
-                    <b>My Profile</b>
-                  </ListGroupItem>
-                  <ListGroupItem>
-                    CSI Staff ID:{" "}
-                    <p className="dataText">{userData["csiStaffId"]}</p>
-                  </ListGroupItem>
-                  <ListGroupItem>
-                    Name: <p className="dataText">{userData["staffName"]}</p>
-                  </ListGroupItem>
-                  <ListGroupItem>
-                    NRIC / Passport No:{" "}
-                    <p className="dataText">{userData["icNumber"]}</p>
-                  </ListGroupItem>
-                </ListGroup>
-              </td>
-              <td>
-                <ListGroup className="ListGroupStyleFlex">
-                  <ListGroupItem color="primary">
-                    <b>Business</b>
-                  </ListGroupItem>
-                  <ListGroupItem>
-                    Business Unit:{" "}
-                    <p className="dataText">{userData["businessUnit"]}</p>
-                  </ListGroupItem>
-                  <ListGroupItem>
-                    Line Manager:{" "}
-                    <p className="dataText">{userData["managerName"]}</p>
-                  </ListGroupItem>
-                  <ListGroupItem>
-                    Join Date:{" "}
-                    <p className="dataText">{userData["joinDate"]}</p>
-                  </ListGroupItem>
-                </ListGroup>
-              </td>
-              <td>
-                <ListGroup className="ListGroupStyleFlex">
-                  <ListGroupItem color="primary">
-                    <b>Contact</b>
-                  </ListGroupItem>
-                  <ListGroupItem>
-                    Email: <p className="dataText">{userData["email"]}</p>
-                  </ListGroupItem>
-                  <ListGroupItem>
-                    Mobile No.:{" "}
-                    <p className="dataText">{userData["mobileNo"]}</p>
-                  </ListGroupItem>
-                </ListGroup>
-              </td>
-            </tr>
-          </table>
-        </div>
+          <div className="myProfileSubContainer">
+            <ListGroup>
+              <ListGroupItem color="primary">
+                <b>My Profile</b>
+              </ListGroupItem>
+              <ListGroupItem>
+                CSI Staff ID:
+                <p className="profileDataText">{userData["csiStaffId"]}</p>
+              </ListGroupItem>
+              <ListGroupItem>
+                Name: <p className="profileDataText">{userData["staffName"]}</p>
+              </ListGroupItem>
+              <ListGroupItem>
+                NRIC / Passport No:
+                <p className="profileDataText">{userData["icNumber"]}</p>
+              </ListGroupItem>
+            </ListGroup>
+          </div>
+          <div className="myProfileSubContainer">
+            <ListGroup>
+              <ListGroupItem color="primary">
+                <b>Business</b>
+              </ListGroupItem>
+              <ListGroupItem>
+                Business Unit:
+                <p className="profileDataText">{userData["businessUnit"]}</p>
+              </ListGroupItem>
+              <ListGroupItem>
+                Line Manager:
+                <p className="profileDataText">{userData["managerName"]}</p>
+              </ListGroupItem>
+              <ListGroupItem>
+                Join Date:{" "}
+                <p className="profileDataText">{userData["joinDate"]}</p>
+              </ListGroupItem>
+            </ListGroup>
+          </div>
+          <div className="myProfileSubContainer">
+            <ListGroup>
+              <ListGroupItem color="primary">
+                <b>Contact</b>
+              </ListGroupItem>
+              <ListGroupItem>
+                Email: <p className="profileDataText">{userData["email"]}</p>
+              </ListGroupItem>
+              <ListGroupItem>
+                Mobile No.:{" "}
+                <p className="profileDataText">{userData["mobileNo"]}</p>
+              </ListGroupItem>
+            </ListGroup>
+          </div>
+          <br />
+          <div className="buttonChngPwd">
+            <Button
+              component={Link}
+              to="/changepassword/add"
+              variant="contained"
+              color="primary"
+              style={{ textTransform: "none", color: "white" }}
 
-        <br />
-        <div className="buttonChngPwd">
-          <Button
-            color="primary"
-            tag={Link}
-            to="/changepassword"
-            activeclassname="active"
-          >
-            Change Password
-          </Button>
+            >
+              Change Password
+            </Button>
+          </div>
+          <br />
         </div>
       </div>
     );

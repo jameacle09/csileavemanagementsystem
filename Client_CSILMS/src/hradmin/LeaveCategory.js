@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Button, Table } from "reactstrap";
+import { Table } from "reactstrap";
+import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
-// import SideBar from "./SideBar";
 import "../common/Styles.css";
 
 class LeaveCategory extends Component {
@@ -17,13 +17,17 @@ class LeaveCategory extends Component {
         <div className="tableContainerFlex">
           <div style={{ textAlign: "right" }}>
             <Button
-              className="btn btn-primary"
+              component={Link}
+              to="/leavecategory/add"
+              variant="contained"
               color="primary"
-              tag={Link}
-              to="/addleavecategory"
-              activeclassname="active"
+              style={{ textTransform: "none", color: "white" }}
             >
-              <span className="fa fa-plus"></span> New
+              <span
+                className="fa fa-plus"
+                style={{ margin: "0px 10px 0px 0px" }}
+              />{" "}
+              New
             </Button>
             <br />
             <br />
@@ -44,12 +48,13 @@ class LeaveCategory extends Component {
                 <td />
                 <td>
                   <Button
+                    component={Link}
+                    to={`/leavecategory/edit/${"categoryId"}`}
+                    variant="contained"
                     color="primary"
-                    tag={Link}
-                    to="/editleavecategory"
-                    activeclassname="active"
+                    style={{ textTransform: "none", color: "white" }}
                   >
-                    <span className="fa fa-edit"></span>
+                    <span className="fa fa-edit" />
                   </Button>
                 </td>
               </tr>

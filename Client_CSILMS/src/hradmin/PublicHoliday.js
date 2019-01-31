@@ -1,7 +1,7 @@
 import React, { Component } from "react";
-import { Button, Table } from "reactstrap";
+import { Table } from "reactstrap";
+import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
-// import SideBar from "./SideBar";
 import "../common/Styles.css";
 
 class PublicHoliday extends Component {
@@ -17,17 +17,29 @@ class PublicHoliday extends Component {
         <div className="tableContainerFlex">
           <div style={{ textAlign: "right" }}>
             <Button
-              className="btn btn-primary"
+              component={Link}
+              to="/publicholiday/add"
+              variant="contained"
               color="primary"
-              tag={Link}
-              to="/addpublicholiday"
-              activeclassname="active"
+              style={{ textTransform: "none", color: "white" }}
             >
-              <span className="fa fa-plus"></span> New
+              <span
+                className="fa fa-plus"
+                style={{ margin: "0px 10px 0px 0px" }}
+              />{" "}
+              New
             </Button>
             <span> </span>
-            <Button className="btn btn-primary" color="primary">
-              <span className="fa fa-upload"></span>Upload Holiday
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ textTransform: "none", color: "white" }}
+            >
+              <span
+                className="fa fa-upload"
+                style={{ margin: "0px 10px 0px 0px" }}
+              />
+              Upload Holiday
             </Button>
             <br />
             <br />
@@ -51,18 +63,18 @@ class PublicHoliday extends Component {
                 <td />
                 <td>
                   <Button
-                    className="btn btn-primary"
+                    component={Link}
+                    to={`/publicholiday/edit/${"holidayId"}`}
+                    variant="contained"
                     color="primary"
-                    tag={Link}
-                    to="/editpublicholiday"
-                    activeclassname="active"
+                    style={{ textTransform: "none", color: "white" }}
                   >
-                    <span className="fa fa-edit"></span>
+                    <span className="fa fa-edit" />
                   </Button>
                 </td>
                 <td>
-                  <Button color="primary">
-                    <span className="fa fa-trash"></span>
+                  <Button variant="contained" color="primary">
+                    <span className="fa fa-trash" style={{ textTransform: "none", color: "white" }}/>
                   </Button>
                 </td>
               </tr>

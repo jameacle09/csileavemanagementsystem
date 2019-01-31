@@ -2,21 +2,13 @@
 .wrapper {
   display: flex;
   align-items: stretch;
-  /* border: 2px solid black; */
 }
-/* 
-#sidebar {
-  min-width: 250px;
-  max-width: 250px;
-  min-height: 100vh;
-} */
 #sidebar.active {
   margin-left: -250px;
 }
 a[data-toggle="collapse"] {
   position: relative;
 }
-
 .dropdown-toggle::after {
   display: block;
   position: absolute;
@@ -35,85 +27,170 @@ a[data-toggle="collapse"] {
 /*
     ADDITIONAL DEMO STYLE, NOT IMPORTANT TO MAKE THINGS WORK BUT TO MAKE IT A BIT NICER :)
 */
-@import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700";
-*/ body {
+/* @import "https://fonts.googleapis.com/css?family=Poppins:300,400,500,600,700"; */
+
+body {
   font-family: Helvetica;
   background: #fafafa;
 }
-
 p {
   font-family: Helvetica;
-  /* font-size: 1.1em; */
   font-size: 17px;
   font-weight: 300;
   line-height: 1.7em;
-  /* color: #999; */
   color: rgb(214, 209, 209);
 }
-
 a,
 a:hover,
 a:focus {
-  /* color: inherit; */
   color: white;
   text-decoration: none;
   transition: all 0.3s;
 }
-
+a:visited {
+  color: black;
+  text-decoration: underline;
+}
 #sidebar {
-  /* don't forget to add all the previously mentioned styles here too */
-  /* background: #7386d5; */
   background-color: #032a53;
   color: #fff;
   transition: all 0.3s;
   min-width: 250px;
   max-width: 250px;
-  /* min-height: 100vh; */
-  min-height: 93.2vh;
+  min-height: 93.8vh;
 }
-
 #sidebar .sidebar-header {
   padding: 20px;
   background: #004a9b;
 }
-
 #sidebar ul.components {
   padding: 20px 0;
   border-bottom: 0px solid #475f8b;
 }
-
 #sidebar ul p {
   color: #fff;
   padding: 10px;
 }
-
 #sidebar ul li a {
   padding: 10px;
-  /* font-size: 1.1em; */
   color: white;
   font: 17px Helvetica;
   display: block;
 }
 #sidebar ul li a:hover {
-  /* color: #7386d5; */
-  /* color: #004a9b; */
   color: white;
   background: #004a9b;
 }
-
 #sidebar ul li.active > a,
 a[aria-expanded="true"] {
   color: #fff;
   background: #004a9b;
 }
 ul ul a {
-  /* font-size: 0.9em !important; */
   font-size: 14px;
   padding-left: 30px !important;
   background: rgb(39, 129, 247);
   color: white;
 }
+.sidebarLinkActive {
+  background: #004a9b;
+  text-indent: 15px;
+}
 /*** End Sidebar Styles ***/
+
+/***********************************************************************/
+
+/*** Begin Dashboard Styles ***/
+.containerDashboard {
+  width: 100%;
+  height: 100%;
+  text-align: center;
+}
+.thumbNail_DashboardMenu {
+  background: white;
+  display: inline-block;
+  text-align: center;
+  font-family: Helvetica;
+  height: 100%;
+  width: 145px;
+  border: 4px solid #032a53;
+  vertical-align: top;
+  text-align: center;
+  margin: 0px 10px 15px 5px;
+  box-shadow: 5px 5px 5px rgb(95, 116, 136);
+  border-radius: 5px;
+  transition: box-shadow 0.2s;
+}
+.thumbNail_DashboardMenu:hover {
+  box-shadow: 8px 8px 5px #004a9b;
+}
+.thumbNail_DashboardImage {
+  height: 110px;
+  margin: 10px 10px auto;
+}
+.thumbNail_DashboardLabel {
+  height: 60px;
+  vertical-align: middle;
+  margin: 14px 0px 0px 0px;
+  background: #032a53;
+  color: white;
+  padding: 6px;
+}
+/*** End Dashboard Styles ***/
+
+/***********************************************************************/
+
+/*** Begin View Profile Styles ***/
+.loadingTextContainer {
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  margin: 20px 0 0 0;
+}
+.loadingText {
+  color: blue;
+  text-align: center;
+  font-family: Arial Black;
+}
+.listStaffName {
+  font-size: 30px;
+  font-weight: bold;
+  text-align: left;
+  margin: 0 0 0 0;
+  padding: 0 0 0 0;
+  display: flex;
+  justify-content: flex-start;
+}
+.profileText {
+  color: blue;
+  height: 0rem;
+  padding: 0 0 0 0;
+  margin: 0 0 0 0;
+}
+.profileDataText {
+  color: blue;
+  height: 0rem;
+}
+.containerProfileFlex {
+  width: 100%;
+  height: 48%;
+  margin: 20px 0px auto;
+  text-align: center;
+}
+.myProfileSubContainer {
+  background: white;
+  display: inline-block;
+  text-align: left;
+  font-family: Helvetica;
+  height: 248px;
+  width: 350px;
+  border: 1px solid #032a53;
+  vertical-align: top;
+  margin: 0px 10px 15px 5px;
+  box-shadow: 5px 5px 5px rgb(95, 116, 136);
+  border-radius: 5px;
+}
+/*** End View Profile Styles ***/
+
+/***********************************************************************/
 
 .main_sidebar {
   box-shadow: inset 5px 0 5px rgba(63, 43, 148, 0.4);
@@ -158,7 +235,7 @@ ul ul a {
   flex-direction: row;
 }
 .headerContainerFlex {
-  margin: 10px 10px 0px 10px;
+  margin: 10px auto;
   width: 96%;
   padding: 20px;
   display: flex;
@@ -166,7 +243,7 @@ ul ul a {
   background: #b8e2fc;
   flex-basis: auto;
   box-shadow: 5px 5px 5px rgb(63, 84, 105);
-  border: 1px solid gray;
+  border: 1px solid #032a53;
   border-radius: 5px;
 }
 .headerStyle {
@@ -177,15 +254,15 @@ ul ul a {
   width: 100%;
   height: 100%;
   overflow: auto;
-  /* border: 2px solid gray; */
 }
 .tableContainerFlex {
-  margin: 0px 10px 10px 10px;
+  margin: 0px auto;
+  margin-bottom: 10px;
   width: 96%;
   padding: 20px;
   flex-basis: auto;
   box-shadow: 5px 5px 5px rgb(95, 116, 136);
-  border: 1px solid gray;
+  border: 1px solid #032a53;
   border-radius: 5px;
   justify-content: flex-start;
   text-align: left;
@@ -194,10 +271,6 @@ ul ul a {
   width: 100%;
   text-align: center;
 }
-.subContainerLeavePages {
-  width: 96%;
-  display: inline-block;
-}
 .containerFlex {
   display: flex;
   justify-content: center;
@@ -205,116 +278,28 @@ ul ul a {
   flex-basis: auto;
   width: 100%;
 }
-.nameContainerFlex {
-  width: 97%;
-  background: #b8e2fc;
-}
-.staffNameContainer {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  width: 30%;
-}
-.listStaffName {
-  font-size: 30px;
-  font-weight: bold;
-  text-align: left;
-  margin: 0 0 0 0;
-  padding: 0 0 0 0;
-  display: flex;
-  justify-content: flex-start;
-}
-.mainListContainer {
-  display: flex;
-  justify-content: flex-start;
-  margin: 0;
-  width: 60%;
-}
-.mainList {
-  display: flex;
-  align-items: left;
-  justify-content: left;
-  align-content: left;
-  text-align-last: left;
-  width: 100%;
-  margin: 0;
-  padding: 0;
-  border: 2px solid gray;
-}
-.mainDataText {
-  color: blue;
-  height: 0rem;
-  padding: 0 0 0 0;
-  margin: 0 0 0 0;
-}
-.containerProfileFlex {
-  justify-content: flex-start;
-  width: 96%;
-  padding: 20px;
-  margin: 10px 10px auto;
-  height: 48%;
-  overflow: auto;
-}
-.ListGroupStyleFlex {
-  text-align: left;
-  width: 100%;
-  height: 35%;
-  box-shadow: 5px 5px 5px rgb(95, 116, 136);
-  margin: 10px 10px 0px 10px;
-  border-radius: 5px;
-  font: Helvetica;
-  overflow: auto;
-}
-.menu_a {
-  font: 16px Helvetica;
-  display: block;
-  color: rgb(11, 211, 247);
-  text-decoration: none;
-  display: inline-block;
-  padding: 5px 5px;
-}
-.menu_a:hover {
-  font: 16px Helvetica;
-  color: rgb(11, 211, 247);
-  text-decoration: underline;
-}
 
-/*** Begin Dashboard Styles ***/
-.containerDashboard {
+
+.buttonChngPwd {
+  display: flex;
+  justify-content: center;
+  flex-basis: auto;
   width: 100%;
-  height: 100%;
-  text-align: center;
 }
-.thumbNail_DashboardMenu {
-  background: white;
-  display: inline-block;
-  text-align: center;
-  font-family: Helvetica;
-  height: 100%;
-  width: 140px;
-  border: 4px solid #032a53;
-  vertical-align: top;
-  text-align: center;
-  margin: 0px 10px 15px 5px;
-  box-shadow: 5px 5px 5px rgb(95, 116, 136);
-  border-radius: 5px;
-  transition: box-shadow 0.2s;
-}
-.thumbNail_DashboardMenu:hover {
-  /* background: rgb(39, 129, 247); */
-  /* transform: rotate(7deg); */
-  box-shadow: 8px 8px 5px #004a9b;
-}
-.thumbNail_DashboardImage {
-  height: 110px;
-  margin: 10px 10px auto;
-}
-.thumbNail_DashboardLabel {
-  height: 60px;
-  vertical-align: middle;
-  margin: 14px 0px 0px 0px;
-  background: #032a53;
+.password__show {
+  cursor: pointer;
+  align-items: flex-end;
+  bottom: 12px;
+  height: 18px;
+  right: 0;
+  background: #727272;
   color: white;
-  padding: 6px;
+  padding: 4px 8px;
+  border-radius: 4px;
+  font-weight: 600;
+  font-size: 0.8em;
 }
-/*** End Dashboard Styles ***/
+.container_password_show {
+  text-align: right;
+  padding: 2px 2px;
+} 
