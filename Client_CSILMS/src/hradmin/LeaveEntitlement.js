@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Table } from "reactstrap";
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
 
@@ -16,8 +16,16 @@ class LeaveEntitlement extends Component {
         <br />
         <div className="tableContainerFlex">
           <div style={{ textAlign: "right" }}>
-            <Button variant="contained" color="primary" style={{ textTransform: 'none' }}>
-              <span className="fa fa-upload" style={{ margin: '0px 10px 0px 0px' }}></span> Upload Entitlement
+            <Button
+              variant="contained"
+              color="primary"
+              style={{ textTransform: "none", color: "white" }}
+            >
+              <span
+                className="fa fa-upload"
+                style={{ margin: "0px 10px 0px 0px" }}
+              />{" "}
+              Upload Entitlement
             </Button>
             <br />
             <br />
@@ -51,12 +59,12 @@ class LeaveEntitlement extends Component {
                 <td>
                   <Button
                     component={Link}
-                    to="editentitlement"
+                    to={`/leaveentitlement/edit/${"csiStaffId"}`}
                     variant="contained"
                     color="primary"
-                    style={{ textTransform: 'none' }}
+                    style={{ textTransform: "none", color: "white" }}
                   >
-                    <span className="fa fa-edit"></span>
+                    <span className="fa fa-edit" />
                   </Button>
                 </td>
               </tr>

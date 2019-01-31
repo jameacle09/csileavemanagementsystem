@@ -41,7 +41,7 @@ class EditPublicHoliday extends Component {
               <Label for="state">State</Label>
               <Input type="text" name="state" id="state" placeholder="State" />
             </FormGroup>
-            <Button variant="contained" color="primary" style={{ textTransform: 'none' }}>Save</Button>
+            <Button variant="contained" color="primary" style={{ textTransform: "none", color: "white" }}>Save</Button>
           </Form>
         </div>
       </div>

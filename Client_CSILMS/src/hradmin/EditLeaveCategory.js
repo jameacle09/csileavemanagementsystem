@@ -42,7 +42,7 @@ class EditLeaveCategory extends Component {
                 placeholder="Leave Entitlement"
               />
             </FormGroup>
-            <Button variant="contained" color="primary" style={{ textTransform: 'none' }}>Save</Button>
+            <Button variant="contained" color="primary" style={{ textTransform: "none", color: "white" }}>Save</Button>
           </Form>
         </div>
       </div>

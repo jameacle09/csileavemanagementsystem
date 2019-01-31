@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Table } from "reactstrap";
-import Button from '@material-ui/core/Button';
+import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
 
@@ -18,12 +18,16 @@ class LeaveCategory extends Component {
           <div style={{ textAlign: "right" }}>
             <Button
               component={Link}
-              to="/addleavecategory"
+              to="/leavecategory/add"
               variant="contained"
               color="primary"
-              style={{ textTransform: 'none' }}
+              style={{ textTransform: "none", color: "white" }}
             >
-              <span className="fa fa-plus" style={{ margin: '0px 10px 0px 0px' }}></span> New
+              <span
+                className="fa fa-plus"
+                style={{ margin: "0px 10px 0px 0px" }}
+              />{" "}
+              New
             </Button>
             <br />
             <br />
@@ -45,12 +49,12 @@ class LeaveCategory extends Component {
                 <td>
                   <Button
                     component={Link}
-                    to="/editleavecategory"
+                    to={`/leavecategory/edit/${"categoryId"}`}
                     variant="contained"
                     color="primary"
-                    style={{ textTransform: 'none' }}
+                    style={{ textTransform: "none", color: "white" }}
                   >
-                    <span className="fa fa-edit"></span>
+                    <span className="fa fa-edit" />
                   </Button>
                 </td>
               </tr>
