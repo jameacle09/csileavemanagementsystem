@@ -1,8 +1,20 @@
 import React, { Component } from "react";
 import "./Styles.css";
 import CSILogo from "../img/CSI_Logo.png";
+import { displayByRole } from '../util/APIUtils';
 
 class SideBar extends Component {
+  
+  constructor(props) {
+    super(props);
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleLogout = (e) => {
+    e.preventDefault();
+    this.props.handleLogout("/login");
+  };
+
   render() {
     return (
       <nav id="sidebar">
@@ -33,7 +45,7 @@ class SideBar extends Component {
           <li>
             <a href="/myleavedetails">My Leave Details</a>
           </li>
-          <li>
+          <li style={displayByRole(this.props.currentUser, "HR")}>
             <a
               href="#hRSubmenu"
               data-toggle="collapse"
@@ -60,7 +72,7 @@ class SideBar extends Component {
               </li>
             </ul>
           </li>
-          <li>
+          <li style={displayByRole(this.props.currentUser, "MANAGER")}>
             <a
               href="#mgrSubmenu"
               data-toggle="collapse"
@@ -98,7 +110,7 @@ class SideBar extends Component {
                 <a href="/changepassword">Change Password</a>
               </li>
               <li>
-                <a href="/">Logout</a>
+                <a href="#" onClick={this.handleLogout}>Logout</a>
               </li>
             </ul>
           </li>

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import "./stickyfooter.css";
-import { Route, BrowserRouter as Router, Switch } from "react-router-dom";
+import { Route, BrowserRouter as Router, Switch, withRouter } from "react-router-dom";
 import SideBar from "./common/SideBar";
 import Menu from "./common/Menu";
 import Footer from "./common/Footer";
@@ -45,7 +45,6 @@ class App extends Component {
   }
 
   loadCurrentUser() {
-    console.log('begin loadCurrentUser() => ' + this.state.isAuthenticated);
     this.setState({ isLoading: true});
     getCurrentUser()
       .then(response => {
@@ -60,12 +59,9 @@ class App extends Component {
           isLoading: false,
         });  
       });
-
-      console.log('end loadCurrentUser() => ' + this.state.isAuthenticated);
-      console.log('end loadCurrentUser() => ' + this.state.currentUser);
   }
 
-  handleLogout(redirectTo="/", notificationType="success", description="You're successfully logged out.") {
+  handleLogout(redirectTo="/") {
     localStorage.removeItem(ACCESS_TOKEN);
 
     this.setState({
@@ -73,18 +69,12 @@ class App extends Component {
       isAuthenticated: false
     });
 
-    console.log(redirectTo);
     this.props.history.push(redirectTo);
   }
 
   handleLogin() {
-    console.log('handleLogin');
     this.loadCurrentUser();
-    console.log('this.state.isAuthenticated : ' + this.state.isAuthenticated);
     this.props.history.push("/");
-
-    //history.push("/");
-    //browserHistory.push("/");
   }
 
   componentDidMount() {
@@ -94,8 +84,8 @@ class App extends Component {
   render() {
     let menu, sideBar;
     if(this.state.isAuthenticated){
-      menu = <Menu handleLogout={this.handleLogout} />;
-      sideBar = <SideBar />;
+      menu = <Menu />;
+      sideBar = <SideBar currentUser={this.state.currentUser} handleLogout={this.handleLogout} />;
     }
      
     return (
@@ -107,16 +97,15 @@ class App extends Component {
               {/*<SideBar />*/}
               <div id="content" style={{ width: "100%" }}>
                 {menu}
-                {/*<Menu handleLogout={this.handleLogout} />*/}
+                {/*<Menu />*/}
                 <div className="mainContainerFlex">
                   <Switch>
                     {/*<Route exact path="/" title="Home" component={HomePage} />*/}
 
-                    <Route exact path="/" render={(props) => <HomePage isAuthenticated={this.state.isAuthenticated}  
+                    <Route exact path="/" title="Home" render={(props) => <HomePage isAuthenticated={this.state.isAuthenticated}  
                         currentUser={this.state.currentUser} handleLogout={this.handleLogout} {...props} />} />
 
-                    <Route path="/login" 
-                  render={(props) => <Login onLogin={this.handleLogin} {...props} />} />
+                    <Route path="/login" render={(props) => <Login onLogin={this.handleLogin} {...props} />} />
                     <Route
                       path="/applyleave"
                       title="Apply Leave"
@@ -224,4 +213,4 @@ class App extends Component {
   }
 }
 
-export default App;
+export default withRouter(App);

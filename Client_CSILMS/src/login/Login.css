@@ -1,14 +1,26 @@
-@media all and (min-width: 480px) {
-    .Login {
-      padding: 60px 0;
-    }
+.Login {
+  text-align: left;
+  padding: 1em;
+  margin: 1em;
+  border: 2px solid #d3d3d3;
+  border-radius: .5em;
+  vertical-align: middle;
+  margin-left: auto;
+  margin-right: auto;
+  margin-top: 50px;
+  width: 600px;
+}
 
-    .Login h2{
-        margin: 0 auto;
-    }
-  
-    .Login form {
-      margin: 0 auto;
-      max-width: 320px;
-    }
+.form {
+  width: 500px;
+  padding: 1em;
+}
+
+label {
+  display: flex;
+  font-weight: 600;
+}
+
+button {
+  justify-content: flex-end;
 }

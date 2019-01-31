@@ -1,14 +1,14 @@
 import React, { Component } from "react";
-
 import ApplyLeave from "../img/applyleave.png";
 import MyLeaveHistory from "../img/myleavehistory.png";
 import MyLeaveDetails from "../img/leavedetails.png";
 import MyProfile from "../img/myprofile.png";
 import ManagerDashboard from "../img/managerapproval.png";
 import HRDashboard from "../img/hrdashboard.png";
+import { displayByRole } from '../util/APIUtils';
 
 class Dashboard extends Component {
-  render() {
+  render() {    
     return (
       <div className="containerDashboard">
         <a href="/applyleave" title="Apply Leave">
@@ -51,7 +51,7 @@ class Dashboard extends Component {
             <div className="thumbNail_DashboardLabel">My Profile</div>
           </div>
         </a>
-        <a href="/managerapproval" title="Manager Dashboard">
+        <a href="/managerapproval" title="Manager Dashboard" style={displayByRole(this.props.currentUser, "MANAGER")}>
           <div className="thumbNail_DashboardMenu">
             <img
               src={ManagerDashboard}
@@ -61,7 +61,7 @@ class Dashboard extends Component {
             <div className="thumbNail_DashboardLabel">Manager Dashboard</div>
           </div>
         </a>
-        <a href="/liststaffprofile" title="HR Dashboard">
+        <a href="/liststaffprofile" title="HR Dashboard" style={displayByRole(this.props.currentUser, "HR")}>
           <div className="thumbNail_DashboardMenu">
             <img
               src={HRDashboard}

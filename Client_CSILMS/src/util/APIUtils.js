@@ -1,5 +1,4 @@
 import { API_BASE_URL, ACCESS_TOKEN } from '../constants'; 
-import { createHashHistory } from 'history';
 
 const request = (options) => {
     const headers = new Headers({
@@ -26,7 +25,6 @@ const request = (options) => {
 
 export function getCurrentUser() {
     if(!localStorage.getItem(ACCESS_TOKEN)) {
-        console.log('No access token set.');
         return Promise.reject("No access token set.");
     }
 
@@ -48,4 +46,16 @@ export function fetchData(options){
     return request(options);
 }
 
-export const history = createHashHistory();
+export function displayByRole(props, roleName){
+    if(!props) return;
+    const roles = props.roles;
+    const currRole = roles.filter(function(role){
+      return role.roleName === roleName;
+    });
+
+    if(currRole.length > 0) {
+      return {display:"block"};
+    } else {
+      return {display:"none"};
+    }
+}
