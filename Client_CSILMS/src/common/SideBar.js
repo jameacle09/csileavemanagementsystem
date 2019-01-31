@@ -2,8 +2,20 @@ import React, { Component } from "react";
 import { NavLink, Link } from "react-router-dom";
 import "./Styles.css";
 import CSILogo from "../img/CSI_Logo.png";
+import { displayByRole } from '../util/APIUtils';
 
 class SideBar extends Component {
+  
+  constructor(props) {
+    super(props);
+    this.handleLogout = this.handleLogout.bind(this);
+  }
+
+  handleLogout = (e) => {
+    e.preventDefault();
+    this.props.handleLogout("/login");
+  };
+
   render() {
     return (
       <nav id="sidebar">
@@ -43,7 +55,7 @@ class SideBar extends Component {
               My Leave Details
             </NavLink>
           </li>
-          <li>
+          <li style={displayByRole(this.props.currentUser, "HR")}>
             <a
               href="#hRSubmenu"
               data-toggle="collapse"
@@ -92,7 +104,7 @@ class SideBar extends Component {
               </li>
             </ul>
           </li>
-          <li>
+          <li style={displayByRole(this.props.currentUser, "MANAGER")}>
             <a
               href="#mgrSubmenu"
               data-toggle="collapse"
@@ -149,7 +161,7 @@ class SideBar extends Component {
                 </NavLink>
               </li>
               <li>
-                <NavLink to="#" activeClassName="sidebarLinkActive">
+                <NavLink to="#" activeClassName="sidebarLinkActive" onClick={this.handleLogout}>
                   Logout
                 </NavLink>
               </li>
