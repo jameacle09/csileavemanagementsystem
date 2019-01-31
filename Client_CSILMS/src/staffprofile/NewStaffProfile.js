@@ -2,30 +2,28 @@ import React, { Component } from "react";
 import StaffProfile from "./StaffProfile";
 import { Form, FormGroup, Label, Input } from "reactstrap";
 import Button from '@material-ui/core/Button';
-import { Link } from "react-router-dom";
 import "../common/Styles.css";
 
 class NewStaffProfile extends Component {
   constructor(props) {
     super(props);
-    this.id = "";
-    this.csiStaffId = "";
-    this.staffName = "";
-    this.email = "";
-    this.icNumber = "";
+    this.emplId = "";
+    this.name = "";
+    this.businessEmail = "";
+    this.nricPassport = "";
     this.jobTitle = "";
     this.mobileNo = "";
     this.businessUnit = "";
-    this.lineManagerId = "";
+    this.managerName = "";
     this.joinDate = "";
-    this.csiStaffIdHandler = this.csiStaffIdHandler.bind(this);
-    this.staffNameHandler = this.staffNameHandler.bind(this);
-    this.emailHandler = this.emailHandler.bind(this);
-    this.icNumberHandler = this.icNumberHandler.bind(this);
+    this.emplIdHandler = this.emplIdHandler.bind(this);
+    this.nameHandler = this.nameHandler.bind(this);
+    this.businessEmailHandler = this.businessEmailHandler.bind(this);
+    this.nricPassportHandler = this.nricPassportHandler.bind(this);
     this.jobTitleHandler = this.jobTitleHandler.bind(this);
     this.mobileNoHandler = this.mobileNoHandler.bind(this);
     this.businessUnitHandler = this.businessUnitHandler.bind(this);
-    this.lineManagerIdHandler = this.lineManagerIdHandler.bind(this);
+    this.managerNameHandler = this.managerNameHandler.bind(this);
     this.joinDateHandler = this.joinDateHandler.bind(this);
     this.save = this.save.bind(this);
     this.state = {
@@ -43,20 +41,20 @@ class NewStaffProfile extends Component {
     formSubmitEvent.preventDefault();
   };
 
-  csiStaffIdHandler(event) {
-    this.csiStaffId = event.target.value;
+  emplIdHandler(event) {
+    this.empliId = event.target.value;
   }
 
-  staffNameHandler(event) {
-    this.staffName = event.target.value;
+  nameHandler(event) {
+    this.name = event.target.value;
   }
 
-  emailHandler(event) {
-    this.email = event.target.value;
+  businessEmailHandler(event) {
+    this.businessEmail = event.target.value;
   }
 
-  icNumberHandler(event) {
-    this.icNumber = event.target.value;
+  nricPassportHandler(event) {
+    this.nricPassport = event.target.value;
   }
 
   jobTitleHandler(event) {
@@ -71,8 +69,8 @@ class NewStaffProfile extends Component {
     this.businessUnit = event.target.value;
   }
 
-  lineManagerIdHandler(event) {
-    this.lineManagerId = event.target.value;
+  managerNameHandler(event) {
+    this.managerName = event.target.value;
   }
 
   joinDateHandler(event) {
@@ -81,19 +79,18 @@ class NewStaffProfile extends Component {
 
   save() {
     let staffProfile = new StaffProfile(
-      0,
-      this.csiStaffId,
-      this.staffName,
-      this.email,
-      this.icNumber,
+      this.emplId,
+      this.name,
+      this.businessEmail,
+      this.nricPassport,
       this.jobTitle,
       this.mobileNo,
       this.businessUnit,
-      this.lineManagerId,
+      this.managerName,
       this.joinDate
     );
     console.log(JSON.stringify(staffProfile));
-    fetch("http://localhost/api/staffprofile", {
+    fetch("http://localhost/api/employeedetails", {
       method: "post",
       body: JSON.stringify(staffProfile),
       headers: {
@@ -124,7 +121,7 @@ class NewStaffProfile extends Component {
                 name="csiStaffId"
                 id="csiStaffId"
                 placeholder="CSI Staff ID"
-                onChange={this.csiStaffIdHandler}
+                onChange={this.emplId}
               />
             </FormGroup>
             <FormGroup>
@@ -134,7 +131,7 @@ class NewStaffProfile extends Component {
                 name="staffName"
                 id="staffName"
                 placeholder="Staff Name"
-                onChange={this.staffNameHandler}
+                onChange={this.nameHandler}
               />
             </FormGroup>
             <FormGroup>
@@ -144,7 +141,7 @@ class NewStaffProfile extends Component {
                 name="email"
                 id="email"
                 placeholder="Email"
-                onChange={this.emailHandler}
+                onChange={this.businessEmailHandler}
               />
             </FormGroup>
             <FormGroup>
@@ -154,7 +151,7 @@ class NewStaffProfile extends Component {
                 name="icNumber"
                 id="icNumber"
                 placeholder="NRIC / Passport No."
-                onChange={this.icNumberHandler}
+                onChange={this.nricPassportHandler}
               />
             </FormGroup>
 
@@ -195,7 +192,7 @@ class NewStaffProfile extends Component {
                 name="lineManagerId"
                 id="lineManagerId"
                 placeholder="Line Manager"
-                onChange={this.lineManagerIdHandler}
+                onChange={this.managerNameHandler}
               />
             </FormGroup>
             <FormGroup>
