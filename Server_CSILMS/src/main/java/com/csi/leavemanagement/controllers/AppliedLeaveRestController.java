@@ -43,9 +43,9 @@ public class AppliedLeaveRestController {
 	
 	@RequestMapping(value="/appliedleave/{emplid}", method=RequestMethod.DELETE)
 	public String doDeleteAppliedLeaveById(@PathVariable("emplid") String emplid,  
-											   @RequestParam("effDate") String effDateStr, 
-											   @RequestParam("startDate") String startDateStr,
-											   @RequestParam("leavecode") String leaveCode) {
+										   @RequestParam("effDate") String effDateStr, 
+										   @RequestParam("startDate") String startDateStr,
+										   @RequestParam("leavecode") String leaveCode) {
 				
 		// If both dates are not null, parse and create Date objects
 		Date startDate = null, effDate = null;
@@ -76,15 +76,42 @@ public class AppliedLeaveRestController {
 
 	@RequestMapping(value="/appliedleave/{emplid}", method=RequestMethod.PATCH)
 	public AppliedLeave doUpdateAppliedLeaveById(@PathVariable("emplid") String emplid,  
-													     @RequestParam("effDate") String effDateStr, 
-													     @RequestParam("startDate") String startDateStr,
-													     @RequestParam("leavecode") String leaveCode,
-													     @RequestBody AppliedLeave appliedLeave) {
+												 @RequestParam("effDate") String effDateStr, 
+												 @RequestParam("startDate") String startDateStr,
+												 @RequestParam("leavecode") String leaveCode,
+												 @RequestBody AppliedLeave appliedLeave) {
 		
 		AppliedLeave newAppliedLeave = this.appliedLeaveService.save(appliedLeave);
 		return newAppliedLeave;
 	}
 
+	@RequestMapping(value="/appliedleave/{emplid}/{effDate}/{startDate}/{leavecode}", method=RequestMethod.GET)
+	public AppliedLeave doGetAppliedLeaveById(@PathVariable("emplid") String emplid,  
+											  @PathVariable("effDate") String effDateStr, 
+											  @PathVariable("startDate") String startDateStr,
+											  @PathVariable("leavecode") String leaveCode) {
+		
+		// Try create Effective Date and Start Date from Path Variable
+		Date startDate = null, effDate = null;
+		boolean dateValid = false;
+				
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+			
+			startDate = sdf.parse(startDateStr);
+			effDate = sdf.parse(effDateStr);
+			dateValid = true;				
+		} catch (Exception e) {
+			dateValid = false;
+		}
+		
+		if(dateValid) 
+			return this.appliedLeaveService.findById(emplid, effDate, startDate, leaveCode);			
+		else 
+			return null;
+	}
+	
 	@RequestMapping(value="/appliedleave/{emplid}", method=RequestMethod.GET)
 	public List<AppliedLeave> doListAppliedLeaveByEmplid(@PathVariable("emplid") String emplid, 
 													 	 @RequestParam(value="leaveCode", required=false) String leaveCode,
@@ -160,4 +187,10 @@ public class AppliedLeaveRestController {
 		return count;
 	}
 	
+	@RequestMapping(value="/appliedleave/count/{emplid}/{leaveCode}", method=RequestMethod.GET)
+	public long doCountAppliedLeaveByEmplidB(@PathVariable("emplid") String emplid, 
+											 @PathVariable("leaveCode") String leaveCode) {
+		long count = this.appliedLeaveService.countByEmplidAndLeaveCode(emplid, leaveCode);
+		return count;
+	}	
 }

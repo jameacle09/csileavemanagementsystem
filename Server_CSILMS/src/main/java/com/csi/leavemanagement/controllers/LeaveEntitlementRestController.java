@@ -1,5 +1,6 @@
 package com.csi.leavemanagement.controllers;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -30,6 +31,32 @@ public class LeaveEntitlementRestController {
 	public List<LeaveEntitlement> doListLeaveEntitlement() {
 		List<LeaveEntitlement> leaveEntitlements = this.leaveEntitlementService.findAll();
 		return leaveEntitlements;
+	}
+	
+	@RequestMapping(value="/leaveentitlement/{emplid}", method=RequestMethod.GET)
+	public List<LeaveEntitlement> doGetLeaveEntitlement(@PathVariable("emplid") String emplid,  
+														@RequestParam(value="year", required=false) Integer year,
+														@RequestParam(value="leavecode", required=false) String leaveCode) {
+
+		List<LeaveEntitlement> leaveEntitlement = null;
+		if(year != null && leaveCode != null) {
+			
+			LeaveEntitlement leaveEntitlementResult = this.leaveEntitlementService.findById(emplid, year, leaveCode);
+			if (leaveEntitlementResult != null) {
+				
+				leaveEntitlement = new ArrayList<LeaveEntitlement>();
+				leaveEntitlement.add(leaveEntitlementResult);
+			}		
+		} else if(year != null && leaveCode == null) 
+			leaveEntitlement = this.leaveEntitlementService.findByEmplidYear(emplid, year);
+		
+		else if(year == null && leaveCode != null) 
+			leaveEntitlement = this.leaveEntitlementService.findByEmplidLeaveCode(emplid, leaveCode);
+			
+		else 
+			leaveEntitlement = this.leaveEntitlementService.findByEmplid(emplid);
+		
+		return leaveEntitlement;
 	}
 	
 	@RequestMapping(value="/leaveentitlement/{emplid}/{year}/{leavecode}", method=RequestMethod.GET)

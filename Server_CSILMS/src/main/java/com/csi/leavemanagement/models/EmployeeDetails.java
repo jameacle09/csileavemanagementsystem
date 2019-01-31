@@ -4,7 +4,10 @@ import java.util.Date;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
 @Entity
@@ -21,6 +24,7 @@ public class EmployeeDetails {
 	@Column(name = "join_date")
 	private Date joinDate;
 	
+	@Column(name = "status")
 	private String status;
 	
 	@Column(name = "business_unit")
@@ -32,17 +36,20 @@ public class EmployeeDetails {
 	@Column(name = "job_title")
 	private String jobTitle;
 	
-	@Column(name = "reports_to")
-	private String reportsTo;
+	@ManyToOne
+	@JoinColumn(name = "reports_to")
+	private PersonDetails reportsTo;
 	
 	@Column(name = "report_dotted_line")
 	private String reportDottedLine;
 	
+	@Column(name = "name")
 	private String name;
 	
 	@Column(name = "nric_passprt")
 	private String nricPassport;
 	
+	@Column(name = "gender")
 	private String gender;
 	
 	@Column(name = "marriage_status")
@@ -91,7 +98,7 @@ public class EmployeeDetails {
 		return jobTitle;
 	}
 
-	public String getReportsTo() {
+	public PersonDetails getReportsTo() {
 		return reportsTo;
 	}
 
@@ -163,7 +170,7 @@ public class EmployeeDetails {
 		this.jobTitle = jobTitle;
 	}
 
-	public void setReportsTo(String reportsTo) {
+	public void setReportsTo(PersonDetails reportsTo) {
 		this.reportsTo = reportsTo;
 	}
 

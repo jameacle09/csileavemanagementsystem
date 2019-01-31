@@ -12,5 +12,7 @@ import com.csi.leavemanagement.models.LeaveEntitlementId;
 public interface LeaveEntitlementRepository extends CrudRepository<LeaveEntitlement, LeaveEntitlementId>  {
 
 	List<LeaveEntitlement> findByIdEmplidAndIdYear(String emplid, int year);
+	List<LeaveEntitlement> findByIdEmplidAndIdLeaveCode(String emplid, String leaveCode);
+	List<LeaveEntitlement> findByIdEmplid(String emplid);
 	List<LeaveEntitlement> findByIdYear(int year);
 }

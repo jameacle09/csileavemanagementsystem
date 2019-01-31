@@ -12,6 +12,8 @@ import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
 import javax.persistence.Table;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 @Entity
 @Table(name = "login_tbl")
 public class LoginDetails {
@@ -23,6 +25,7 @@ public class LoginDetails {
 	@Column(name = "userid", unique = true)
 	private String userId;
 
+	@JsonIgnore
 	private String password;
 
 	@Column(name = "lockaccount")

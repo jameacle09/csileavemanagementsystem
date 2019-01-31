@@ -1,17 +1,22 @@
 import React, { Component } from "react";
-
+import { NavLink } from "react-router-dom";
 import ApplyLeave from "../img/applyleave.png";
 import MyLeaveHistory from "../img/myleavehistory.png";
 import MyLeaveDetails from "../img/leavedetails.png";
 import MyProfile from "../img/myprofile.png";
-import ManagerDashboard from "../img/managerapproval.png";
+import ManagerApproval from "../img/managerapproval.png";
 import HRDashboard from "../img/hrdashboard.png";
+import { displayByRole } from '../util/APIUtils';
 
 class Dashboard extends Component {
-  render() {
+  render() {    
     return (
       <div className="containerDashboard">
-        <a href="/applyleave" title="Apply Leave">
+        <NavLink
+          to="/applyleave"
+          title="Apply Leave"
+          activeClassName="sidebarLinkActive"
+        >
           <div className="thumbNail_DashboardMenu">
             <img
               src={ApplyLeave}
@@ -20,8 +25,12 @@ class Dashboard extends Component {
             />
             <div className="thumbNail_DashboardLabel">Apply Leave</div>
           </div>
-        </a>
-        <a href="/myleavehistory" title="View Leave History">
+        </NavLink>
+        <NavLink
+          to="/myleavehistory"
+          title="View Leave History"
+          activeClassName="sidebarLinkActive"
+        >
           <div className="thumbNail_DashboardMenu">
             <img
               src={MyLeaveHistory}
@@ -30,8 +39,12 @@ class Dashboard extends Component {
             />
             <div className="thumbNail_DashboardLabel">My Leave History</div>
           </div>
-        </a>
-        <a href="/myleavedetails" title="View Leave Details">
+        </NavLink>
+        <NavLink
+          to="/myleavedetails"
+          title="View Leave Details"
+          activeClassName="sidebarLinkActive"
+        >
           <div className="thumbNail_DashboardMenu">
             <img
               src={MyLeaveDetails}
@@ -40,8 +53,12 @@ class Dashboard extends Component {
             />
             <div className="thumbNail_DashboardLabel">My Leave Details</div>
           </div>
-        </a>
-        <a href="/myprofile" title="View Profile">
+        </NavLink>
+        <NavLink
+          to="/myprofile"
+          title="View Profile"
+          activeClassName="sidebarLinkActive"
+        >
           <div className="thumbNail_DashboardMenu">
             <img
               src={MyProfile}
@@ -50,18 +67,28 @@ class Dashboard extends Component {
             />
             <div className="thumbNail_DashboardLabel">My Profile</div>
           </div>
-        </a>
-        <a href="/managerapproval" title="Manager Dashboard">
+        </NavLink>
+        <NavLink
+          to="/managerapproval"
+          title="Manager Approval"
+          activeClassName="sidebarLinkActive"
+          style={displayByRole(this.props.currentUser, "MANAGER")}
+        >
           <div className="thumbNail_DashboardMenu">
             <img
-              src={ManagerDashboard}
-              alt="Manager Dashboard"
+              src={ManagerApproval}
+              alt="Manager Approval"
               className="thumbNail_DashboardImage"
             />
-            <div className="thumbNail_DashboardLabel">Manager Dashboard</div>
+            <div className="thumbNail_DashboardLabel">Manager Approval</div>
           </div>
-        </a>
-        <a href="/liststaffprofile" title="HR Dashboard">
+        </NavLink>
+        <NavLink
+          to="/liststaffprofile"
+          title="HR Dashboard"
+          activeClassName="sidebarLinkActive"
+          style={displayByRole(this.props.currentUser, "HR")}
+        >
           <div className="thumbNail_DashboardMenu">
             <img
               src={HRDashboard}
@@ -70,7 +97,7 @@ class Dashboard extends Component {
             />
             <div className="thumbNail_DashboardLabel">HR Dashboard</div>
           </div>
-        </a>
+        </NavLink>
       </div>
     );
   }

@@ -6,12 +6,12 @@ import javax.persistence.Id;
 import javax.persistence.Table;
 
 @Entity
-@Table(name="department_tbl")
+@Table(name="dept_v")
 public class Department {
 
 	@Id 
 	@Column(name="dept_id")
-	private String department;
+	private String deptId;
 
 	@Column(name="dept_name")
 	private String deptName;
@@ -21,16 +21,16 @@ public class Department {
 	}
 
 	public Department(String department, String deptName) {
-		this.department = department;
+		this.deptId = department;
 		this.deptName = deptName;
 	}
 
-	public String getDepartment() {
-		return department;
+	public String getDeptId() {
+		return deptId;
 	}
 
-	public void setDepartment(String department) {
-		this.department = department;
+	public void setDeptId(String deptId) {
+		this.deptId = deptId;
 	}
 
 	public String getDeptName() {
@@ -43,6 +43,6 @@ public class Department {
 
 	@Override
 	public String toString() {
-		return "Department [department=" + department + ", deptName=" + deptName + "]";
+		return "Department [deptId=" + deptId + ", deptName=" + deptName + "]";
 	}
 }

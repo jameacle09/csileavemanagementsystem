@@ -1,14 +1,5 @@
 import React, { Component } from "react";
-import {
-  Button,
-  Form,
-  FormGroup,
-  Label,
-  Input,
-  FormText,
-  Col,
-  Alert
-} from "reactstrap";
+import { Button, Form, FormGroup, Label, Input, FormText, Col, Alert } from "reactstrap";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
@@ -452,6 +443,7 @@ class ApplyLeave extends Component {
                   value={leaveDuration}
                   placeholder="Days"
                   onChange={this.handleDateChange}
+                  required
                 />
               </Col>
               <Col xs={8}>{durationErrorMsg}</Col>
@@ -494,11 +486,11 @@ class ApplyLeave extends Component {
               </Input>
             </FormGroup>
             <br />
-            <Button color="primary" onClick={this.handleSubmit}>
+            <Button color="primary" style={{ backgroundColor: '#3F51B5', color: 'white' }} onClick={this.handleSubmit}>
               Submit
             </Button>
             <span> </span>
-            <Button color="danger" onClick={this.clickdiscard}>
+            <Button onClick={this.clickdiscard}>
               Discard
             </Button>
           </Form>
