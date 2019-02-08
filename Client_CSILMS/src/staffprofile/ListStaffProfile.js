@@ -38,9 +38,9 @@ class ListStaffProfile extends Component {
               >
                 <span
                   className="fa fa-plus"
-                  style={{ margin: "0px 10px 0px 0px" }}
+                  style={{ margin: "0px 5px 0px 0px" }}
                 />
-                New Staff
+                Add Employee
               </Button>
             </Col>
           </Row>

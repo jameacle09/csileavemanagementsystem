@@ -153,17 +153,17 @@ class App extends Component {
                     <Route
                       path="/logindetails"
                       exact
-                      title="Staff Login Details"
+                      title="User Login Details"
                       component={LoginDetails}
                     />
                     <Route
                       path="/logindetails/add"
-                      title="Add Employee Login Details"
+                      title="Add User Login Details"
                       component={AddLoginDetails}
                     />
                     <Route
                       path="/logindetails/edit/:userId"
-                      title="Edit Employee Login Details"
+                      title="Edit User Login Details"
                       component={EditLoginDetails}
                     />
                     <Redirect to="/" />

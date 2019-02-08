@@ -1,7 +1,8 @@
 import React, { Component } from "react";
 import StaffProfile from "./StaffProfile";
-import { Form, FormGroup, Label, Input } from "reactstrap";
-import Button from "@material-ui/core/Button";
+import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+
+// import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
 
@@ -115,7 +116,7 @@ class NewStaffProfile extends Component {
         </div>
         <div className="tableContainerFlex">
           <Form onSubmit={this.handleFormSubmit}>
-            <div width="100%" align="right">
+            {/* <div width="100%" align="right">
               <Button
                 component={Link}
                 to="/resetpassword"
@@ -125,7 +126,7 @@ class NewStaffProfile extends Component {
               >
                 Reset Password
               </Button>
-            </div>
+            </div> */}
             <FormGroup>
               <Label for="csiStaffId">CSI Staff ID</Label>
               <Input
@@ -166,7 +167,6 @@ class NewStaffProfile extends Component {
                 onChange={this.icNumberHandler}
               />
             </FormGroup>
-
             <FormGroup>
               <Label for="jobTitle">Job Title</Label>
               <Input
@@ -260,7 +260,15 @@ class NewStaffProfile extends Component {
               onClick={this.save}
               style={{ textTransform: "none", color: "white" }}
             >
-              Submit
+              Save
+            </Button>
+            &nbsp;&nbsp;
+            <Button
+              color="primary"
+              style={{ backgroundColor: "#3F51B5", color: "white" }}
+              onSubmit={this.validatePassword}
+            >
+              Cancel
             </Button>
           </Form>
         </div>

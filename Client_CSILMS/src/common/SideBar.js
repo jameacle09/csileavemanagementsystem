@@ -63,7 +63,7 @@ class SideBar extends Component {
               </li>
               <li>
                 <NavLink to="/logindetails" activeClassName="sidebarLinkActive">
-                  Employee Login Details
+                  User Login Details
                 </NavLink>
               </li>
               <li>

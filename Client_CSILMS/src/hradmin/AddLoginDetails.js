@@ -1,12 +1,48 @@
 import React, { Component } from "react";
-import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import {
+  ButtonToolbar,
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input
+} from "reactstrap";
 // import Button from '@material-ui/core/Button';
 import "../common/Styles.css";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
+import NewEmpLookupModal from "../modal/NewEmpLookup";
+
+const initialState = {
+  userId: "",
+  emplId: "",
+  emplName: "",
+  password: "",
+  confirmPassword: "",
+  lockAccount: "",
+  modalShow: false
+};
+
 class UserProfile extends Component {
-  clickdiscard = () => {
+  state = { ...initialState };
+
+  clearState = () => {
+    this.setState({ ...initialState });
+  };
+
+  validateForm = () => {
+    const { userId, emplId, emplName, password, confirmPassword } = this.state;
+    const isInvalid =
+      !userId ||
+      !emplId ||
+      !emplName ||
+      !password ||
+      password !== confirmPassword;
+    return isInvalid;
+  };
+
+  clickDiscard = () => {
     confirmAlert({
       message: "Do you want to cancel this request?",
       buttons: [
@@ -20,15 +56,44 @@ class UserProfile extends Component {
       ]
     });
   };
+
+  showModal = () => {
+    this.setState({
+      ...this.state,
+      modalShow: !this.state.modalShow
+    });
+  };
+
   render() {
+    const {
+      userId,
+      emplId,
+      emplName,
+      password,
+      confirmPassword,
+      modalShow
+    } = this.state;
+
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Add Login Details</h3>
+            <h3 className="headerStyle">Add User Login Details</h3>
           </span>
         </div>
         <div className="tableContainerFlex">
+          <Button
+            variant="contained"
+            color="primary"
+            type="button"
+            onClick={this.showModal}
+          >
+            <span className="fa fa-search" />
+            &nbsp; Search New Employee
+          </Button>
+          <NewEmpLookupModal onClose={this.showModal} show={modalShow}>
+            Search New Employee
+          </NewEmpLookupModal>
           <Form>
             <FormGroup>
               <Label for="userId">User ID</Label>
@@ -37,33 +102,40 @@ class UserProfile extends Component {
                 name="userId"
                 id="userId"
                 placeholder="User ID"
+                value={userId}
+                disabled
               />
             </FormGroup>
             <FormGroup>
-              <Label for="emplid">Employee ID</Label>
+              <Label for="emplId">Employee ID</Label>
               <Input
                 type="text"
                 name="emplId"
                 id="emplId"
                 placeholder="Employee ID"
+                value={emplId}
+                disabled
               />
             </FormGroup>
             <FormGroup>
-              <Label for="staffName">Employee Name</Label>
+              <Label for="emplName">Employee Name</Label>
               <Input
                 type="text"
                 name="emplName"
                 id="emplName"
                 placeholder="Employee Name"
+                value={emplName}
+                disabled
               />
             </FormGroup>
             <FormGroup>
-              <Label for="newPassword">Password</Label>
+              <Label for="password">Password</Label>
               <Input
                 type="password"
-                name="assword"
+                name="password"
                 id="password"
                 placeholder="Password"
+                value={password}
                 required
               />
             </FormGroup>
@@ -74,6 +146,7 @@ class UserProfile extends Component {
                 name="confirmPassword"
                 id="confirmPassword"
                 placeholder="Confirm Password"
+                value={confirmPassword}
                 required
               />
             </FormGroup>
@@ -87,12 +160,12 @@ class UserProfile extends Component {
             <Button
               color="primary"
               style={{ backgroundColor: "#3F51B5", color: "white" }}
-              onSubmit={this.validatePassword}
+              disabled={this.validateForm()}
             >
               Save
             </Button>
             &nbsp;&nbsp;
-            <Button onClick={this.clickdiscard}>Discard</Button>
+            <Button onClick={this.clickDiscard}>Discard</Button>
           </Form>
         </div>
       </div>

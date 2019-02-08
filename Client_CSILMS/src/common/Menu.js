@@ -28,7 +28,7 @@ class Menu extends Component {
     const menuTitle = {
       fontFamily: "Helvetica",
       fontSize: "18px",
-      display: "block",
+      display: "inline-flex",
       color: "rgb(214, 209, 209)",
       margin: "0px 20px 0 0",
       textDecoration: "none"

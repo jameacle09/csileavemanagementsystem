@@ -10,7 +10,7 @@ class LoginDetails extends Component {
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Employee Login Details</h3>
+            <h3 className="headerStyle">User Login Details</h3>
           </span>
         </div>
         <div className="tableContainerFlex">
@@ -38,7 +38,7 @@ class LoginDetails extends Component {
                   className="fa fa-plus"
                   style={{ margin: "0px 10px 0px 0px" }}
                 />
-                New User
+                Add User
               </Button>
             </Col>
           </Row>

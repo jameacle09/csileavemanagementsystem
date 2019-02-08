@@ -10,12 +10,10 @@ class Footer extends Component {
 
   render() {
     return (
-      <div height="38px">
-        <div className="footerContainer">
-          <span className="footerText">
-            Copyright &copy; {new Date().getFullYear()} {this.footerMessage}
-          </span>
-        </div>
+      <div className="footerContainer">
+        <span className="footerText">
+          Copyright &copy; {new Date().getFullYear()} {this.footerMessage}
+        </span>
       </div>
     );
   }
