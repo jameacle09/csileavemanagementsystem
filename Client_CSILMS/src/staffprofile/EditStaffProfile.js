@@ -120,10 +120,10 @@ class EditStaffProfile extends Component {
             {/* <div width="100%" align="right">
               <Button
                 component={Link}
-                to="resetpassword"
+                to="/resetpassword"
                 variant="contained"
                 color="primary"
-                style={{ textTransform: "none" }}
+                style={{ textTransform: "none", color: "white" }}
               >
                 Reset Password
               </Button>
