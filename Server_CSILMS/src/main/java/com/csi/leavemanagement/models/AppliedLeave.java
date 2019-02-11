@@ -17,6 +17,11 @@ public class AppliedLeave {
 	@EmbeddedId 
 	private AppliedLeaveId id;
 	
+	@MapsId("emplid")
+	@ManyToOne
+	@JoinColumn(name="emplid")
+	private EmployeeDetails employeeDetails;
+	
 	@MapsId("leaveCode")
 	@ManyToOne
 	@JoinColumn(name="leave_code")
