@@ -16,6 +16,7 @@ import StaffProfileComponent from "./staffprofile/StaffProfileComponent";
 import ListStaffProfile from "./staffprofile/ListStaffProfile";
 import NewStaffProfile from "./staffprofile/NewStaffProfile";
 import ResetPassword from "./staffprofile/ResetPassword";
+import EditStaffProfile from "./staffprofile/EditStaffProfile";
 import PublicHoliday from "./hradmin/PublicHoliday";
 import AddPublicHoliday from "./hradmin/AddPublicHoliday";
 import EditPublicHoliday from "./hradmin/EditPublicHoliday";
@@ -24,6 +25,9 @@ import AddLeaveCategory from "./hradmin/AddLeaveCategory";
 import EditLeaveCategory from "./hradmin/EditLeaveCategory";
 import LeaveEntitlement from "./hradmin/LeaveEntitlement";
 import EditEntitlement from "./hradmin/EditEntitlement";
+import LoginDetails from "./hradmin/LoginDetails";
+import AddLoginDetails from "./hradmin/AddLoginDetails";
+import EditLoginDetails from "./hradmin/EditLoginDetails";
 import "./common/Styles.css";
 import { getCurrentUser } from './util/APIUtils';
 import Login from './login/Login';
@@ -157,6 +161,11 @@ class App extends Component {
                       component={NewStaffProfile}
                     />
                     <Route
+                      path="/liststaffprofile/edit/:emplId"
+                      title="Edit Staff Profile"
+                      component={EditStaffProfile}
+                    />
+                    <Route
                       path="/publicholiday"
                       title="Public Holiday"
                       component={PublicHoliday}
@@ -172,7 +181,7 @@ class App extends Component {
                       component={LeaveEntitlement}
                     />
                     <Route
-                      path="/editentitlement"
+                      path="/leaveentitlement/edit/:emplId"
                       title="Edit Entitlement"
                       component={EditEntitlement}
                     />
@@ -197,9 +206,20 @@ class App extends Component {
                       component={EditLeaveCategory}
                     />
                     <Route
-                      path="/resetpassword"
-                      title="Reset Password"
-                      component={ResetPassword}
+                      path="/logindetails"
+                      exact
+                      title="User Login Details"
+                      component={LoginDetails}
+                    />
+                    <Route
+                      path="/logindetails/add"
+                      title="Add User Login Details"
+                      component={AddLoginDetails}
+                    />
+                    <Route
+                      path="/logindetails/edit/:userId"
+                      title="Edit User Login Details"
+                      component={EditLoginDetails}
                     />
                   </Switch>
                 </div>

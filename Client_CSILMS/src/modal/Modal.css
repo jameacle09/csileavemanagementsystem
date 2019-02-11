@@ -1,0 +1,45 @@
+.newEmpLookupBackdrop {
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  padding: 50;
+}
+.newEmpLookupModal {
+  background-color: #fff;
+  box-shadow: 4px 4px 4px rgb(63, 84, 105);
+  border: 1px solid gray;
+  border-radius: 5px;
+  max-width: 94%;
+  min-height: 400px;
+  margin: 150px auto;
+  position: relative;
+}
+.modalHeader {
+  position: inherit;
+  font-family: Helvetica;
+  width: 100%;
+  height: 48px;
+  background: #b8e2fc;
+  top: 0;
+  padding-top: 10px;
+  padding-left: 10px;
+  border-bottom-color: #032a53;
+  border-bottom: 1px;
+  border-bottom-style: solid;
+  border-top-left-radius: 5px;
+  border-top-right-radius: 5px;
+}
+.modalFooter {
+  position: absolute;
+  left: 10px;
+  bottom: 20px;
+  border-radius: 5px;
+}
+@media (min-width: 769px) {
+  .newEmpLookupModal {
+    max-width: 600px;
+  }
+}
