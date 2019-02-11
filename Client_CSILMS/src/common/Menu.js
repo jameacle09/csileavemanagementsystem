@@ -18,16 +18,17 @@ class Menu extends Component {
   }
   render() {
     const menuContainer = {
-      fontSize: "1rem",
       background: "#004A9B",
       fontFamily: "Helvetica",
       margin: "0 0 0 0",
       padding: "0",
       width: "100%"
+      // height: "38px"
     };
     const menuTitle = {
       fontFamily: "Helvetica",
       fontSize: "18px",
+      display: "inline-flex",
       color: "rgb(214, 209, 209)",
       margin: "0px 20px 0 0",
       textDecoration: "none"

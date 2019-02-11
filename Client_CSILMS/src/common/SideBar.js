@@ -70,7 +70,12 @@ class SideBar extends Component {
                   to="/liststaffprofile"
                   activeClassName="sidebarLinkActive"
                 >
-                  Staff Profile
+                  Employee Profile
+                </NavLink>
+              </li>
+              <li>
+                <NavLink to="/logindetails" activeClassName="sidebarLinkActive">
+                  User Login Details
                 </NavLink>
               </li>
               <li>

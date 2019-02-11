@@ -1,4 +1,5 @@
-import React, { Component } from 'react';
+import React, { Component } from "react";
+import "./Styles.css";
 
 class Footer extends Component {
   constructor(props) {
@@ -8,27 +9,14 @@ class Footer extends Component {
   }
 
   render() {
-    const footerStyle = {
-      textAlign: "center",
-      fontSize: "13px",
-      color: "#8AADD4",
-      background: "#004A9B",
-      fontFamily: 'Helvetica',
-      borderRadius: 0
-    };
-
     return (
-      <div className="card" style={footerStyle}>
-        <div className="card-header">
+      <div className="footerContainer">
+        <span className="footerText">
           Copyright &copy; {new Date().getFullYear()} {this.footerMessage}
-        </div>
+        </span>
       </div>
     );
   }
 }
 
 export default Footer;
-
-
-
-
