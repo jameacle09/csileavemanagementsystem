@@ -54,7 +54,7 @@ export function displayByRole(props, roleName){
     });
 
     if(currRole.length > 0) {
-      return {display:"block"};
+      return {display:"inline"};
     } else {
       return {display:"none"};
     }
