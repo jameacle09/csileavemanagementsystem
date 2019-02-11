@@ -9,16 +9,21 @@ import org.springframework.stereotype.Service;
 
 import com.csi.leavemanagement.models.AppliedLeave;
 import com.csi.leavemanagement.models.AppliedLeaveId;
+import com.csi.leavemanagement.models.EmployeeDetails;
 import com.csi.leavemanagement.repositories.AppliedLeaveRepository;
+import com.csi.leavemanagement.repositories.EmployeeDetailsRepository;
 
 @Service
 public class AppliedLeaveService {
 
 	private AppliedLeaveRepository appliedLeaveRepository;
+	private EmployeeDetailsService employeeDetailsService;
 
 	@Autowired
-	public AppliedLeaveService(AppliedLeaveRepository appliedLeaveRepository) {
+	public AppliedLeaveService(AppliedLeaveRepository appliedLeaveRepository,
+			                   EmployeeDetailsService employeeDetailsService) {
 		this.appliedLeaveRepository = appliedLeaveRepository;
+		this.employeeDetailsService = employeeDetailsService;
 	}
 	
 	public List<AppliedLeave> findAll() {
@@ -93,6 +98,14 @@ public class AppliedLeaveService {
 				(emplid, leaveCode, leaveStatus, startDate, endDate);		
 	}
 		
+	public long countByApproverAndLeaveStatus(String approver, String leaveStatus) {
+		return appliedLeaveRepository.countByApproverAndLeaveStatus(approver, leaveStatus);
+	}
+	
+	public List<AppliedLeave> findByApproverAndLeaveStatus(String approver, String leaveStatus) {
+		return appliedLeaveRepository.findByApproverAndLeaveStatus(approver, leaveStatus);
+	}
+	
 	/*
 	 * METHODS for retrieving manager's reportee
 	 */
@@ -153,10 +166,13 @@ public class AppliedLeaveService {
 	}
 
 	private List<String> findAllReportee(String mgrlid) {
-		ArrayList<String> emplList = new ArrayList<String>();
+		ArrayList<String> emplIdList = new ArrayList<String>();
 		
 		// Retrieve the list of employee reporting under Manager ID
+		List<EmployeeDetails> empList= this.employeeDetailsService.findByMgrId(mgrlid);
+		for(EmployeeDetails emp : empList)
+			emplIdList.add(emp.getEmplId());
 		
-		return emplList;
+		return emplIdList;
 	}
 }
