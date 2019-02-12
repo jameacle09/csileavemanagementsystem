@@ -3,13 +3,18 @@ package com.csi.leavemanagement.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.csi.leavemanagement.models.EmployeeDetails;
+import com.csi.leavemanagement.models.PersonDetails;
+import com.csi.leavemanagement.security.CurrentUser;
+import com.csi.leavemanagement.security.UserPrincipal;
 import com.csi.leavemanagement.services.EmployeeDetailsService;
 
 @RestController
@@ -39,4 +44,11 @@ public class EmployeeDetailsController {
 	public List<EmployeeDetails> doGetEmployeeDetailsByMgrId(@PathVariable("mgrId") String mgrId) {
 		return this.employeeDetailsService.findByMgrId(mgrId);
 	}
+	
+	@GetMapping("/employeedetail/me")
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+    public EmployeeDetails getMyDetails(@CurrentUser UserPrincipal currentUser) {
+		EmployeeDetails employeeDetail = this.employeeDetailsService.findById(currentUser.getId());
+		return employeeDetail;
+    }
 }

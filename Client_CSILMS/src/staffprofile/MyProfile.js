@@ -32,7 +32,7 @@ class MyProfile extends Component {
 
   loadUserProfile() {
     fetchData({
-      url: API_BASE_URL + "/persondetail/me",
+      url: API_BASE_URL + "/employeedetail/me",
       method: 'GET'
     }).then(response => {
       this.setState({
@@ -42,6 +42,19 @@ class MyProfile extends Component {
       if (error.status === 401) {
         this.props.history.push("/login");
       }
+      let userData = {
+        emplId: "",
+        name: "",
+        businessEmail: "",
+        nricPassport: "",
+        jobTitle: "",
+        mobileNo: "",
+        businessUnit: "",
+        managerName: "",
+        joinDate: "",
+        reportsTo: ""
+      };
+      this.setState({ userData: userData });
     });
   }
 
@@ -55,28 +68,7 @@ class MyProfile extends Component {
     }
   }
 
-  /*  componentDidMount() {
-      // fetch data from API
-      fetch("http://localhost/api/employeedetails/E000000001")
-        .then(response => response.json())
-        .then(data => this.setState({ userData: data }))
-        .catch(err => {
-          // if unable to fetch data, assign default (spaces) to values
-          let userData = {
-            emplId: "",
-            name: "",
-            businessEmail: "",
-            nricPassport: "",
-            jobTitle: "",
-            mobileNo: "",
-            businessUnit: "",
-            managerName: "",
-            joinDate: "",
-            reportsTo: ""
-          };
-          this.setState({ userData: userData });
-        });
-    } */
+
   render() {
     if (this.state.userData == null) {
       // display loading screen until data is available
@@ -96,7 +88,7 @@ class MyProfile extends Component {
         (joinDate.getMonth() + 1) +
         "-" +
         joinDate.getDate();
-      //userData["managerName"] = this.state.userData["reportsTo"]["name"];
+      userData["managerName"] = this.state.userData["reportsTo"]["name"];
     }
     return (
       <div className="mainContainerFlex">
