@@ -8,16 +8,19 @@ class MyLeaveDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userData: {
-        id: "",
-        leaveCategory: "",
-        carryForward: "",
-        entitlement: "",
-        availableLeave: "",
-        takenLeave: "",
-        balanceLeave: ""
-      }
+      userData: []
     };
+    // this.state = {
+    //   userData: {
+    //     id: "",
+    //     leaveCategory: "",
+    //     carryForward: "",
+    //     entitlement: "",
+    //     availableLeave: "",
+    //     takenLeave: "",
+    //     balanceLeave: ""
+    //   }
+    // };
 
     this.loadMyLeaveDetails = this.loadMyLeaveDetails.bind(this);
 
@@ -35,15 +38,26 @@ class MyLeaveDetails extends Component {
       if (error.status === 401) {
         this.props.history.push("/login");
       }
-      let userData = {
-        id: "",
-        leaveCategory: "",
-        carryForward: "",
-        entitlement: "",
-        availableLeave: "",
-        takenLeave: "",
-        balanceLeave: ""
-      };
+      // let userData = {
+      //   id: "",
+      //   leaveCategory: "",
+      //   carryForward: "",
+      //   entitlement: "",
+      //   availableLeave: "",
+      //   takenLeave: "",
+      //   balanceLeave: ""
+      // };
+      let userData = [
+        // {
+        //   id: "",
+        //   leaveCategory: "",
+        //   carryForward: "",
+        //   entitlement: "",
+        //   availableLeave: "",
+        //   takenLeave: "",
+        //   balanceLeave: ""
+        // }
+      ];
       this.setState({ userData: userData });
     });
   }
@@ -59,6 +73,10 @@ class MyLeaveDetails extends Component {
   }
   render() {
     let userData = this.state.userData;
+    console.log(userData);
+    // if (userData["id"] !== "") {
+    //   userData["managerName"] = this.state.userData["reportsTo"]["name"];
+    // }
     return (
       <div className="mainContainerLeavePages">
         <div className="headerContainerFlex">
@@ -81,18 +99,26 @@ class MyLeaveDetails extends Component {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>{userData["leaveCategory"]}</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>
+              
+                 {
+                  this.state.userData.map(function (item, key) {
+                    return (
+                      <tr key={key}>
+                        <td>{item.leaveCategory}</td>
+                        <td>{item.entitlement}</td>
+                        <td>{item.carryForward}</td>
+                        <td>{item.availableLeave}</td>
+                        <td>{item.takenLeave}</td>
+                        <td>{item.balanceLeave}</td>
+                      </tr>
+                    )
+                  })
+                } 
+              
             </tbody>
           </Table>
         </div>
+
       </div>
     );
   }
