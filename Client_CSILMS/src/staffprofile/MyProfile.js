@@ -5,7 +5,8 @@ import Button from "@material-ui/core/Button";
 import "../common/Styles.css";
 import Loading from "../img/Spinner-1s-200px.gif";
 import { fetchData } from '../util/APIUtils';
-import { API_BASE_URL } from '../constants'; 
+import { API_BASE_URL } from '../constants';
+import { withRouter } from 'react-router-dom';
 
 class MyProfile extends Component {
   constructor(props) {
@@ -24,37 +25,64 @@ class MyProfile extends Component {
         reportsTo: ""
       }
     };
-    
+
+    this.loadUserProfile = this.loadUserProfile.bind(this);
+
   }
 
-/*  componentDidMount() {
-    // fetch data from API
-    fetch("http://localhost/api/employeedetails/E000000001")
-      .then(response => response.json())
-      .then(data => this.setState({ userData: data }))
-      .catch(err => {
-        // if unable to fetch data, assign default (spaces) to values
-        let userData = {
-          emplId: "",
-          name: "",
-          businessEmail: "",
-          nricPassport: "",
-          jobTitle: "",
-          mobileNo: "",
-          businessUnit: "",
-          managerName: "",
-          joinDate: "",
-          reportsTo: ""
-        };
-        this.setState({ userData: userData });
+  loadUserProfile() {
+    fetchData({
+      url: API_BASE_URL + "/persondetail/me",
+      method: 'GET'
+    }).then(response => {
+      this.setState({
+        userData: response
       });
-  } */
+    }).catch(error => {
+      if (error.status === 401) {
+        this.props.history.push("/login");
+      }
+    });
+  }
+
+  componentDidMount() {
+    this.loadUserProfile();
+  }
+
+  componentDidUpdate(nextProps) {
+    if (this.props.isAuthenticated !== nextProps.isAuthenticated) {
+      this.loadUserProfile();
+    }
+  }
+
+  /*  componentDidMount() {
+      // fetch data from API
+      fetch("http://localhost/api/employeedetails/E000000001")
+        .then(response => response.json())
+        .then(data => this.setState({ userData: data }))
+        .catch(err => {
+          // if unable to fetch data, assign default (spaces) to values
+          let userData = {
+            emplId: "",
+            name: "",
+            businessEmail: "",
+            nricPassport: "",
+            jobTitle: "",
+            mobileNo: "",
+            businessUnit: "",
+            managerName: "",
+            joinDate: "",
+            reportsTo: ""
+          };
+          this.setState({ userData: userData });
+        });
+    } */
   render() {
     if (this.state.userData == null) {
       // display loading screen until data is available
       return (
         <div className="containerFlex">
-          <img src={ Loading } alt="Loading" style={{padding: "300px"}} />
+          <img src={Loading} alt="Loading" style={{ padding: "300px" }} />
         </div>
       );
     }
@@ -68,7 +96,7 @@ class MyProfile extends Component {
         (joinDate.getMonth() + 1) +
         "-" +
         joinDate.getDate();
-      userData["managerName"] = this.state.userData["reportsTo"]["name"];
+      //userData["managerName"] = this.state.userData["reportsTo"]["name"];
     }
     return (
       <div className="mainContainerFlex">
@@ -170,4 +198,4 @@ class MyProfile extends Component {
     );
   }
 }
-export default MyProfile;
+export default withRouter(MyProfile);
