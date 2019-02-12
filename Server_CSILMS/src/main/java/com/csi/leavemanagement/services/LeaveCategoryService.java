@@ -11,8 +11,13 @@ import com.csi.leavemanagement.repositories.LeaveCategoryRepository;
 @Service
 public class LeaveCategoryService {
 
-	@Autowired
 	private LeaveCategoryRepository leaveCategoryRepository;
+	
+	@Autowired
+	public LeaveCategoryService(LeaveCategoryRepository leaveCategoryRepository) {
+		this.leaveCategoryRepository = leaveCategoryRepository;
+	}
+	
 	public List<LeaveCategory> findAll() {
 		List<LeaveCategory> leaveCategories = (List<LeaveCategory>)this.leaveCategoryRepository.findAll();
 		return leaveCategories;
@@ -22,16 +27,12 @@ public class LeaveCategoryService {
 		return this.leaveCategoryRepository.save(leaveCategory);
 	}
 	
-	public LeaveCategory findById(int id) {
+	public LeaveCategory findById(String id) {
 		LeaveCategory leaveCategory = this.leaveCategoryRepository.findById(id).orElse(null);
-		return leaveCategory;
-		
+		return leaveCategory;		
 	}
 	
-	public void deleteByID(int id) {
-		this.leaveCategoryRepository.deleteById(id);
-		
+	public void deleteByID(String id) {
+		this.leaveCategoryRepository.deleteById(id);		
 	}
-	
-	
 }

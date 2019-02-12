@@ -1,15 +1,15 @@
 import React, { Component } from "react";
 import { NavLink } from "react-router-dom";
-
 import ApplyLeave from "../img/applyleave.png";
 import MyLeaveHistory from "../img/myleavehistory.png";
 import MyLeaveDetails from "../img/leavedetails.png";
 import MyProfile from "../img/myprofile.png";
 import ManagerApproval from "../img/managerapproval.png";
 import HRDashboard from "../img/hrdashboard.png";
+import { displayByRole } from '../util/APIUtils';
 
 class Dashboard extends Component {
-  render() {
+  render() {    
     return (
       <div className="containerDashboard">
         <NavLink
@@ -72,6 +72,7 @@ class Dashboard extends Component {
           to="/managerapproval"
           title="Manager Approval"
           activeClassName="sidebarLinkActive"
+          style={displayByRole(this.props.currentUser, "MANAGER")}
         >
           <div className="thumbNail_DashboardMenu">
             <img
@@ -86,6 +87,7 @@ class Dashboard extends Component {
           to="/liststaffprofile"
           title="HR Dashboard"
           activeClassName="sidebarLinkActive"
+          style={displayByRole(this.props.currentUser, "HR")}
         >
           <div className="thumbNail_DashboardMenu">
             <img

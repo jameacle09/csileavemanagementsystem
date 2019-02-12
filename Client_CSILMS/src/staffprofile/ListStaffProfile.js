@@ -61,9 +61,9 @@ class ListStaffProfile extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.props.data.map((staffprofile, index) => (
+              {/* {this.props.data.map((staffprofile, index) => (
                 <StaffTableRow key={index} staffprofile={staffprofile} />
-              ))}
+              ))} */}
             </tbody>
           </Table>
         </div>

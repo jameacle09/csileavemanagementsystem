@@ -13,17 +13,18 @@ import org.springframework.web.bind.annotation.RestController;
 import com.csi.leavemanagement.services.LeaveCategoryService;
 import com.csi.leavemanagement.models.LeaveCategory;
 
-
-
-
 @RestController
 @RequestMapping("/api")
 @CrossOrigin
 public class LeaveCategoryRestController {
 
-	@Autowired
 	private LeaveCategoryService leaveCategoryService;
 	
+	@Autowired
+	public LeaveCategoryRestController(LeaveCategoryService leaveCategoryService) {
+		this.leaveCategoryService = leaveCategoryService;
+	}
+
 	@RequestMapping(value="/leavecategories", method=RequestMethod.GET)
 	public List<LeaveCategory> doListLeaveCategories() {
 		List<LeaveCategory> leaveCategories = this.leaveCategoryService.findAll();
@@ -31,7 +32,7 @@ public class LeaveCategoryRestController {
 	}
 	
 	@RequestMapping(value="/leavecategory/{id}", method=RequestMethod.GET)
-	public LeaveCategory doGetLeaveCategoryById(@PathVariable("id") int id) {
+	public LeaveCategory doGetLeaveCategoryById(@PathVariable("id") String id) {
 		LeaveCategory leaveCategory = this.leaveCategoryService.findById(id);
 		return leaveCategory;
 	}
@@ -43,14 +44,14 @@ public class LeaveCategoryRestController {
 	}
 	
 	@RequestMapping(value="/leavecategory/{id}", method=RequestMethod.DELETE)
-	public String doDeleteLeaveCategory(@PathVariable("id") int id) {
+	public String doDeleteLeaveCategory(@PathVariable("id") String id) {
 		this.leaveCategoryService.deleteByID(id);
 		return "Successfully Deleted";
 	}
 	
 	@RequestMapping(value="/leavecategory/{id}", method=RequestMethod.PATCH)
-	public LeaveCategory doUpdateLeaveCategory(@PathVariable("id") int id, @RequestBody LeaveCategory leaveCategory) {
-		leaveCategory.setId(id);
+	public LeaveCategory doUpdateLeaveCategory(@PathVariable("id") String id, @RequestBody LeaveCategory leaveCategory) {
+		leaveCategory.setLeaveCode(id);
 		LeaveCategory newLeaveCategory = this.leaveCategoryService.save(leaveCategory);
 		return newLeaveCategory;
 	}

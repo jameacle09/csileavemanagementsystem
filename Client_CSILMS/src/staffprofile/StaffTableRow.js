@@ -6,25 +6,24 @@ class StaffTableRow extends Component {
   render() {
     return (
       <tr>
-        <td>{this.props.staffprofile.csiStaffId}</td>
-        <td>{this.props.staffprofile.staffName}</td>
-        <td>{this.props.staffprofile.email}</td>
-        <td>{this.props.staffprofile.icNumber}</td>
+        <td>{this.props.staffprofile.emplId}</td>
+        <td>{this.props.staffprofile.name}</td>
+        <td>{this.props.staffprofile.businessEmail}</td>
+        <td>{this.props.staffprofile.nricPassport}</td>
         <td>{this.props.staffprofile.jobTitle}</td>
         <td>{this.props.staffprofile.mobileNo}</td>
         <td>{this.props.staffprofile.businessUnit}</td>
-        <td>{this.props.staffprofile.lineManagerId}</td>
+        <td>{this.props.staffprofile.managerName}</td>
         <td>{this.props.staffprofile.joinDate}</td>
         <td>
           <Button
-            //to={`/liststaffprofile/edit/${this.props.staffprofile.csiStaffId}`}
-
-
-
             component={Link}
             to="/liststaffprofile/edit/add"
             variant="contained"
             color="primary"
+            tag={Link}
+            to={`/liststaffprofile/edit/${this.props.staffprofile.emplId}`}
+            activeclassname="active"
             style={{ textTransform: "none", color: "white" }}
           >
             <span className="fa fa-edit" style={{ textTransform: "none", color: "white" }} />

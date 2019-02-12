@@ -21,7 +21,7 @@ class StaffProfileComponent extends Component {
     }
 
     showStaffProfiles() {
-        fetch('http://localhost/api/staffprofiles')
+        fetch('http://localhost/api/employeedetails')
             .then((response) => response.json())
             .then((data) => this.setState({data: data})) 
         this.setState({ componenttoloadstatus: "dolist"});

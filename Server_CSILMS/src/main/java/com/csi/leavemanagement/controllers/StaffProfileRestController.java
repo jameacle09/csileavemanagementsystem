@@ -3,18 +3,15 @@ package com.csi.leavemanagement.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.csi.leavemanagement.services.StaffProfileService;
 import com.csi.leavemanagement.models.StaffProfile ;
+import com.csi.leavemanagement.services.StaffProfileService;
 
 
 
@@ -66,4 +63,5 @@ public class StaffProfileRestController {
 		StaffProfile newStaffProfile = this.staffProfileService.save(staffProfile);
 		return newStaffProfile;
 	}
+	
 }
