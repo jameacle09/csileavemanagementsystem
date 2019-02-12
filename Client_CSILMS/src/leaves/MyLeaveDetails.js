@@ -98,4 +98,4 @@ class MyLeaveDetails extends Component {
   }
 }
 
-export default MyLeaveDetails;
+export default withRouter(MyLeaveDetails);
