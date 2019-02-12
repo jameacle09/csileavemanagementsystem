@@ -42,4 +42,9 @@ public class EmployeeDetailsService {
 		
 		return null;
 	}
+	
+	public List<EmployeeDetails> findAllManagers() {
+		List<EmployeeDetails> managerList = this.employeeDetailRepository.findAllManagers();
+		return managerList;
+	}
 }
