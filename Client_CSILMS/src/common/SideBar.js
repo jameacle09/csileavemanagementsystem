@@ -17,6 +17,7 @@ class SideBar extends Component {
   };
 
   render() {
+    if(this.props.currentUser){
     return (
       <nav id="sidebar">
         <Link to="/" title="Home">
@@ -170,6 +171,10 @@ class SideBar extends Component {
         </ul>
       </nav>
     );
+      }
+    else {
+      return (<div></div>);
+    }
   }
 }
 

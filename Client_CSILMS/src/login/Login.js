@@ -6,15 +6,14 @@ import {
   } from 'reactstrap';
 import { ACCESS_TOKEN } from '../constants'; 
 import { login } from '../util/APIUtils';
-import { Redirect } from "react-router-dom";
 import "./Login.css";
 import { FormErrors } from './LoginError';
+import { withRouter } from 'react-router-dom';
 
 class Login extends Component{
 	constructor(props) {
 		super(props);
 		this.state = { 
-            redirectToReferrer: false,
             email : '',
             password : '',
             formErrors: {email: '', password: '', loginfailed: ''},
@@ -23,26 +22,16 @@ class Login extends Component{
             formValid: false
         };
 
-		//this.handleChange = this.handleChange.bind(this);
-		//this.handleSubmit = this.handleSubmit.bind(this);
+        this.submitForm = this.submitForm.bind(this);
+        this.handleUserInput = this.handleUserInput.bind(this);
     }
     
-    handleUserInput = (e) => {
+    handleUserInput(e){
         const name = e.target.name;
         const value = e.target.value;
-        this.setState({[name]: value},
-                      () => { this.validateField(name, value) });
+        this.setState({[name]: value}, () => { this.validateField(name, value) });
     }
 	
-	handleChange = async (event) => {
-        const { target } = event;
-        const value = target.value;
-        const { name } = target;
-        await this.setState({
-        [ name ]: value,
-        });
-    }
-
     validateField(fieldName, value) {
         let fieldValidationErrors = this.state.formErrors;
         let emailValid = this.state.emailValid;
@@ -78,10 +67,6 @@ class Login extends Component{
         .then(response => {
             localStorage.setItem(ACCESS_TOKEN, response.accessToken);
 			this.props.onLogin();
-            this.setState({ redirectToReferrer: true,
-                                    errorState:true
-            });
-					//this.props.history.push("/");
         }).catch(error => {
             let fieldValidationErrors = this.state.formErrors;
             if(error.status === 401) {
@@ -97,16 +82,7 @@ class Login extends Component{
         this.setState({formValid: this.state.emailValid && this.state.passwordValid});
     }
     
-    errorClass(error) {
-        return(error.length === 0 ? '' : 'has-error');
-    }
-
     render() {
-		let { from } = this.props.location.state || { from: { pathname: "/" } };
-    	let { redirectToReferrer } = this.state;
-
-        if (redirectToReferrer) return <Redirect to={from} />;
-        
         const { email, password } = this.state;
 
         return (
@@ -116,7 +92,7 @@ class Login extends Component{
                 <div>
                     <FormErrors formErrors={this.state.formErrors} />
                 </div>
-                <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
+                <Form className="form" onSubmit={this.submitForm}>
                 <Col>
                 <FormGroup>
                     <Label>E-mail</Label>
@@ -135,13 +111,13 @@ class Login extends Component{
                     />
                 </FormGroup>
           </Col>
-          <Button>Submit</Button>
+          <Button >Submit</Button>
       </Form>
       </div>
       </center>
-        );
+    );
 
     }
 }
 
-export default Login;
+export default withRouter(Login);

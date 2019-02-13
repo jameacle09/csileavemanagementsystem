@@ -17,26 +17,24 @@ class Menu extends Component {
     });
   }
   render() {
-    const menuContainer = {
-      fontSize: "1rem",
-      background: "#004A9B",
-      fontFamily: "Helvetica",
-      margin: "0 0 0 0",
-      padding: "0",
-      width: "100%"
-    };
-    const menuTitle = {
-      fontFamily: "Helvetica",
-      fontSize: "18px",
-      color: "rgb(214, 209, 209)",
-      margin: "0px 20px 0 0",
-      textDecoration: "none"
-    };
-    return (
-      <nav
-        className="navbar navbar-expand-lg navbar-light bg-light"
-        style={menuContainer}
-      >
+    if(this.props.currentUser){
+      const menuContainer = {
+          fontSize: "1rem",
+          background: "#004A9B",
+          fontFamily: "Helvetica",
+          margin: "0 0 0 0",
+          padding: "0",
+          width: "100%"
+      };
+      const menuTitle = {
+        fontFamily: "Helvetica",
+        fontSize: "18px",
+        color: "rgb(214, 209, 209)",
+        margin: "0px 20px 0 0",
+        textDecoration: "none"
+      };
+      return (
+        <nav className="navbar navbar-expand-lg navbar-light bg-light" style={menuContainer}>
         <div className="container-fluid" style={menuContainer}>
           <button
             type="button"
@@ -55,6 +53,10 @@ class Menu extends Component {
         </div>
       </nav>
     );
+      }
+    else {
+      return(<div></div>);
+    }
   }
 }
 
