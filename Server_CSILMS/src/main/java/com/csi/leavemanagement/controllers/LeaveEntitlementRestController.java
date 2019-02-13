@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -13,6 +14,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.csi.leavemanagement.models.LeaveEntitlement;
+import com.csi.leavemanagement.security.CurrentUser;
+import com.csi.leavemanagement.security.UserPrincipal;
 import com.csi.leavemanagement.services.LeaveEntitlementService;
 
 @RestController
@@ -31,6 +34,46 @@ public class LeaveEntitlementRestController {
 	public List<LeaveEntitlement> doListLeaveEntitlement() {
 		List<LeaveEntitlement> leaveEntitlements = this.leaveEntitlementService.findAll();
 		return leaveEntitlements;
+	}
+	
+	@RequestMapping(value="/leaveentitlement/me", method=RequestMethod.GET)
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+	public List<LeaveEntitlement> doGetMyLeaveEntitlement(@CurrentUser UserPrincipal currentUser,  
+														@RequestParam(value="year", required=false) Integer year,
+														@RequestParam(value="leavecode", required=false) String leaveCode) {
+
+		String emplid = currentUser.getId();
+		
+		List<LeaveEntitlement> leaveEntitlement = null;
+		if(year != null && leaveCode != null) {
+			
+			LeaveEntitlement leaveEntitlementResult = this.leaveEntitlementService.findById(emplid, year, leaveCode);
+			if (leaveEntitlementResult != null) {
+				
+				leaveEntitlement = new ArrayList<LeaveEntitlement>();
+				leaveEntitlement.add(leaveEntitlementResult);
+			}		
+		} else if(year != null && leaveCode == null) 
+			leaveEntitlement = this.leaveEntitlementService.findByEmplidYear(emplid, year);
+		
+		else if(year == null && leaveCode != null) 
+			leaveEntitlement = this.leaveEntitlementService.findByEmplidLeaveCode(emplid, leaveCode);
+			
+		else 
+			leaveEntitlement = this.leaveEntitlementService.findByEmplid(emplid);
+		
+		return leaveEntitlement;
+	}
+
+
+	@RequestMapping(value="/leaveentitlement/me/{year}/{leavecode}", method=RequestMethod.GET)
+	public LeaveEntitlement doGetMyLeaveEntitlementById(@CurrentUser UserPrincipal currentUser,  
+													  @PathVariable("year") int year,
+													  @PathVariable("leavecode") String leaveCode) {
+		
+		String emplid = currentUser.getId();
+		LeaveEntitlement leaveEntitlement = this.leaveEntitlementService.findById(emplid, year, leaveCode);
+		return leaveEntitlement;
 	}
 	
 	@RequestMapping(value="/leaveentitlement/{emplid}", method=RequestMethod.GET)

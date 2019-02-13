@@ -17,6 +17,11 @@ public class AppliedLeave {
 	@EmbeddedId 
 	private AppliedLeaveId id;
 	
+	@MapsId("emplid")
+	@ManyToOne
+	@JoinColumn(name="emplid")
+	private EmployeeDetails employeeDetails;
+	
 	@MapsId("leaveCode")
 	@ManyToOne
 	@JoinColumn(name="leave_code")
@@ -49,10 +54,11 @@ public class AppliedLeave {
 	public AppliedLeave() {
 	}
 
-	public AppliedLeave(AppliedLeaveId id, LeaveCategory leaveCategory, Date endDate, String halfDay,
+	public AppliedLeave(AppliedLeaveId id, EmployeeDetails employeeDetails, LeaveCategory leaveCategory, Date endDate, String halfDay,
 			float leaveDuration, String leaveStatus, String reason, String approver, Date approvedDate,
 			String attachment) {
 		this.id = id;
+		this.employeeDetails = employeeDetails;
 		this.leaveCategory = leaveCategory;
 		this.endDate = endDate;
 		this.halfDay = halfDay;
@@ -72,6 +78,14 @@ public class AppliedLeave {
 		this.id = id;
 	}
 	
+	public EmployeeDetails getEmployeeDetails() {
+		return employeeDetails;
+	}
+
+	public void setEmployeeDetails(EmployeeDetails employeeDetails) {
+		this.employeeDetails = employeeDetails;
+	}
+
 	public LeaveCategory getLeaveCategory() {
 		return leaveCategory;
 	}
@@ -146,7 +160,7 @@ public class AppliedLeave {
 
 	@Override
 	public String toString() {
-		return "AppliedLeave [id=" + id + ", leaveCategory=" + leaveCategory + ", endDate=" + endDate + ", halfDay="
+		return "AppliedLeave [id=" + id + ", employeeDetails=" + employeeDetails + ", leaveCategory=" + leaveCategory + ", endDate=" + endDate + ", halfDay="
 				+ halfDay + ", leaveDuration=" + leaveDuration + ", leaveStatus=" + leaveStatus + ", reason=" + reason
 				+ ", approver=" + approver + ", approvedDate=" + approvedDate + ", attachment=" + attachment + "]";
 	}

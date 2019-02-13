@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Button, Form, FormGroup, Label, Input, FormText, Col, Alert } from "reactstrap";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
+import { fetchData } from '../util/APIUtils';
+import { API_BASE_URL } from '../constants'; 
 
 class ApplyLeave extends Component {
   constructor(props) {
@@ -9,25 +11,23 @@ class ApplyLeave extends Component {
 
     this.state = {
       userData: {
-        id: "",
-        csiStaffId: "",
-        staffName: "",
-        lineManager: null
+        emplId: "",
+        name: "",
+        reportsTo: null
       },
       staffLeave: {
         availableLeave: ""
       },
       leaveCategoryList: [
         {
-          id: "",
           leaveCode: "",
-          leaveName: ""
+          leaveDescr: ""
         }
       ],
       approverList: [
         {
-          id: "",
-          staffName: ""
+          emplId: "",
+          name: ""
         }
       ],
       startDate: new Date(),
@@ -61,47 +61,54 @@ class ApplyLeave extends Component {
     });
   };
 
-/*  componentDidMount() {
+  componentDidMount() {
+    
     // fetch CSI Staff ID and Name from API
-    fetch("http://localhost/api/staffprofile/1")
-      .then(response => response.json())
+    fetchData({
+      url: API_BASE_URL + "/employeedetail/me",
+      method: 'GET'
+      })
       .then(data => {
         this.setState({ userData: data });
-        if (data["lineManager"] !== null)
-          this.setState({ approverId: data["lineManager"]["id"] });
+        if (data["reportsTo"] !== null)
+          this.setState({ approverId: data["reportsTo"]["id"] });
       })
       .catch(err => {
         // if unable to fetch data, assign default (spaces) to values
         let userData = {
-          id: "",
-          csiStaffId: "",
-          staffName: "",
-          lineManager: null
+          emplId: "",
+          name: "",
+          reportsTo: null
         };
         this.setState({ userData: userData });
       });
 
     // fetch leave category from API
-    fetch("http://localhost/api/leavecategories")
-      .then(response => response.json())
+    fetchData({
+      url: API_BASE_URL + "/leavecategories",
+      method: 'GET'
+      })
       .then(data =>
-        this.setState({ leaveCategoryList: data, leaveCategory: data[0]["id"] })
+        this.setState({ leaveCategoryList: data, leaveCategory: data[0]["leaveCode"] })
       )
       .catch(err => {
+        console.log(err)
         // if unable to fetch data, assign default (spaces) to values
         let leaveCategoryData = [
           {
-            id: "",
             leaveCode: "",
-            leaveName: ""
+            leaveDescr: ""
           }
         ];
         this.setState({ leaveCategoryList: leaveCategoryData });
       });
 
     // fetch leave balance from API
-    fetch("http://localhost/api/staffleave/1")
-      .then(response => response.json())
+    const thisYear = new Date().getFullYear();
+    fetchData({
+      url: API_BASE_URL + "/leaveentitlement/me/" + thisYear + "/AL",
+      method: 'GET'
+      })
       .then(data => this.setState({ staffLeave: data }))
       .catch(err => {
         // if unable to fetch data, assign default (spaces) to values
@@ -110,23 +117,25 @@ class ApplyLeave extends Component {
         };
         this.setState({ staffLeave: staffLeaveData });
       });
-
+    
     // fetch approvers from API
-    fetch("http://localhost/api/managers")
-      .then(response => response.json())
+    fetchData({
+      url: API_BASE_URL + "/leaveapprovers",
+      method: 'GET'
+      })
       .then(data => this.setState({ approverList: data }))
       .catch(err => {
         // if unable to fetch data, assign default (spaces) to values
         let approverListData = [
           {
-            id: "",
-            staffName: ""
+            emplId: "",
+            name: ""
           }
         ];
         this.setState({ approverList: approverListData });
       });
   }
-*/
+
   // this method process changes on all 3 date related fields
   handleDateChange(event) {
     const fieldName = event.target.name;
@@ -357,7 +366,7 @@ class ApplyLeave extends Component {
                 type="text"
                 name="csiStaffId"
                 id="csiStaffId"
-                value={userData["csiStaffId"]}
+                value={userData["emplId"]}
                 disabled={true}
               />
             </FormGroup>
@@ -367,7 +376,7 @@ class ApplyLeave extends Component {
                 type="text"
                 name="staffName"
                 id="staffName"
-                value={userData["staffName"]}
+                value={userData["name"]}
                 disabled={true}
               />
             </FormGroup>
@@ -384,9 +393,9 @@ class ApplyLeave extends Component {
                   return (
                     <option
                       key={leaveCategory["leaveCode"]}
-                      value={leaveCategory["id"]}
+                      value={leaveCategory["leaveCode"]}
                     >
-                      {leaveCategory["leaveName"]}
+                      {leaveCategory["leaveDescr"]}
                     </option>
                   );
                 })}
@@ -477,11 +486,13 @@ class ApplyLeave extends Component {
                 value={approverId}
               >
                 {approverList.map(approver => {
-                  return (
-                    <option key={approver["id"]} value={approver["id"]}>
-                      {approver["staffName"]}
-                    </option>
-                  );
+                  if(approver["emplId"] !== userData["emplId"]) {
+                    return (
+                      <option key={approver["emplId"]} value={approver["emplId"]}>
+                        {approver["name"]}
+                      </option>
+                    );
+                  }
                 })}
               </Input>
             </FormGroup>
