@@ -99,8 +99,7 @@ class MyLeaveDetails extends Component {
               </tr>
             </thead>
             <tbody>
-              
-                 {
+              {/* {
                   this.state.userData.map(function (item, key) {
                     return (
                       <tr key={key}>
@@ -113,12 +112,10 @@ class MyLeaveDetails extends Component {
                       </tr>
                     )
                   })
-                } 
-              
+                }  */}
             </tbody>
           </Table>
         </div>
-
       </div>
     );
   }
