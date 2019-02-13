@@ -3,9 +3,29 @@ import { Table } from "reactstrap";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
+import  { Redirect, withRouter } from 'react-router-dom';
 
 class PublicHoliday extends Component {
+  constructor(props) {
+    super(props);
+    this.isHrRole = this.isHrRole.bind(this);
+  }
+  
+  isHrRole(props){
+    if(!props) return;
+    const roles = props.roles;
+    const currRole = roles.filter(function(role){
+      return role.roleName === "HR";
+    });
+
+    return currRole.length > 0 ? true : false;
+  }
+
   render() {
+    if(!this.isHrRole(this.props.currentUser)){
+      return(<Redirect to='/forbidden'  />);
+    }
+
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -86,4 +106,4 @@ class PublicHoliday extends Component {
   }
 }
 
-export default PublicHoliday;
+export default withRouter(PublicHoliday);
