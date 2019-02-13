@@ -99,20 +99,21 @@ class MyLeaveDetails extends Component {
               </tr>
             </thead>
             <tbody>
-              {/* {
-                  this.state.userData.map(function (item, key) {
+               {
+                  this.state.userData.map(function(item, key) {
                     return (
                       <tr key={key}>
-                        <td>{item.leaveCategory}</td>
-                        <td>{item.entitlement}</td>
-                        <td>{item.carryForward}</td>
-                        <td>{item.availableLeave}</td>
-                        <td>{item.takenLeave}</td>
-                        <td>{item.balanceLeave}</td>
+                        <td>{}</td>
+                        <td>{item.leaveCategory.leaveDescr}</td>
+                        <td>{item.entitlement} days</td>
+                        <td>{item.carryForward} days</td>
+                        <td>{item.availableLeave} days</td>
+                        <td>{item.takenLeave} days</td>
+                        <td>{item.balanceLeave} days</td>
                       </tr>
                     )
                   })
-                }  */}
+                }  
             </tbody>
           </Table>
         </div>
