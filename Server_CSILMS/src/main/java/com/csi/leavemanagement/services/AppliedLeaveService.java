@@ -1,9 +1,13 @@
 package com.csi.leavemanagement.services;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import javax.naming.LimitExceededException;
+
+import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,17 +22,37 @@ public class AppliedLeaveService {
 
 	private AppliedLeaveRepository appliedLeaveRepository;
 	private EmployeeDetailsService employeeDetailsService;
+	private LeaveEntitlementService leaveEntitlementService;
 
 	@Autowired
 	public AppliedLeaveService(AppliedLeaveRepository appliedLeaveRepository,
-			                   EmployeeDetailsService employeeDetailsService) {
+			                   EmployeeDetailsService employeeDetailsService,
+			                   LeaveEntitlementService leaveEntitlementService) {
 		this.appliedLeaveRepository = appliedLeaveRepository;
 		this.employeeDetailsService = employeeDetailsService;
+		this.leaveEntitlementService = leaveEntitlementService;
 	}
 	
 	public List<AppliedLeave> findAll() {
 		List<AppliedLeave> appliedLeaveList = (List<AppliedLeave>)this.appliedLeaveRepository.findAll();
 		return appliedLeaveList;
+	}
+	
+	public AppliedLeave create(AppliedLeave newAppliedLeave) throws ConstraintViolationException, LimitExceededException {
+		// validate leave
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(newAppliedLeave.getId().getStartDate());
+		int year = cal.get(Calendar.YEAR);
+		
+		// Check 1: If duration exceed current available leave entitlement
+		leaveEntitlementService.findById(newAppliedLeave.getId().getEmplid(),
+										 year, 
+										 newAppliedLeave.getLeaveCategory().getLeaveCode());
+		
+		// Check 2: If there's leave applied during the same duration
+				
+		return this.appliedLeaveRepository.save(newAppliedLeave);
 	}
 	
 	public AppliedLeave save(AppliedLeave newAppliedLeave) {

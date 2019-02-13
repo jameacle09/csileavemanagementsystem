@@ -289,12 +289,12 @@ class ApplyLeave extends Component {
               buttons: [
                 {
                   label: "Ok",
-        //          onClick: () => this.props.history.push("/myleavehistory")
+                  onClick: () => this.props.history.push("/myleavehistory")
                 }
               ]
             });
           else
-            alert("Failed : " + JSON.stringify(res))
+            alert("Unable to apply leave : " + JSON.stringify(res))
         })
         .catch(err => {
           console.log("!!! Error : ".err);
