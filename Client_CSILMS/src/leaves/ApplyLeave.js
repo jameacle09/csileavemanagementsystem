@@ -252,18 +252,26 @@ class ApplyLeave extends Component {
     if (validForm) {
       // create JSON Object for new Leave Request
       let newLeaveRequest = {
-        staffId: { id: this.state.userData["id"] },
-        leaveCategory: { id: this.state.leaveCategory },
-        startDate: this.state.startDate,
+        id: { 
+          emplid: this.state.userData["emplId"],
+          effDate: new Date(),
+          startDate: this.state.startDate,
+          leaveCode: this.state.leaveCategory
+        },
         endDate: this.state.endDate,
+        halfDay: this.state.isHalfDay,
         leaveDuration: this.state.leaveDuration,
-        leaveReason: this.state.leaveReason,
-        leaveStatusId: { id: 3 } // All new leave has status of 3, Pending Approval
+        leaveStatus: 'PNAPV',
+        reason: this.state.leaveReason,
+        approver: this.state.approverId,
+        approverDate: null,
+        attachment: ''
       };
 
       console.log(JSON.stringify(newLeaveRequest));
 
-      fetch("http://localhost/api/leavedetail", {
+      fetchData({
+        url: API_BASE_URL + "/appliedleave",
         method: "POST",
         headers: {
           Accept: "application/json",
@@ -271,7 +279,6 @@ class ApplyLeave extends Component {
         },
         body: JSON.stringify(newLeaveRequest)
       })
-        .then(res => res.json())
         .then(res => {
           console.log(JSON.stringify(res));
           if (res.hasOwnProperty("id") && res["id"] != null)
@@ -280,12 +287,11 @@ class ApplyLeave extends Component {
               buttons: [
                 {
                   label: "Ok",
-                  onClick: () => this.props.history.push("/myleavehistory")
+        //          onClick: () => this.props.history.push("/myleavehistory")
                 }
               ]
             });
         })
-        //        .then(this.props.history.push('/MyLeaveHistory'))
         .catch(err => {
           console.log("!!! Error : ".err);
         });
