@@ -3,9 +3,15 @@ import { Table } from "reactstrap";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
+import  { Redirect, withRouter } from 'react-router-dom';
+import { isHrRole } from '../util/APIUtils';
 
 class LeaveCategory extends Component {
   render() {
+    if(!isHrRole(this.props.currentUser)){
+      return(<Redirect to='/forbidden'  />);
+    }
+
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -66,4 +72,4 @@ class LeaveCategory extends Component {
   }
 }
 
-export default LeaveCategory;
+export default withRouter(LeaveCategory);

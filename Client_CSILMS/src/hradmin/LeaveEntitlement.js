@@ -3,9 +3,15 @@ import { Table } from "reactstrap";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
+import  { Redirect, withRouter } from 'react-router-dom';
+import { isHrRole } from '../util/APIUtils';
 
 class LeaveEntitlement extends Component {
   render() {
+    if(!isHrRole(this.props.currentUser)){
+      return(<Redirect to='/forbidden'  />);
+    }
+
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -76,4 +82,4 @@ class LeaveEntitlement extends Component {
   }
 }
 
-export default LeaveEntitlement;
+export default withRouter(LeaveEntitlement);

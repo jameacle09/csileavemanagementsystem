@@ -4,9 +4,15 @@ import Button from "@material-ui/core/Button";
 import StaffTableRow from "./StaffTableRow";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
+import  { Redirect, withRouter } from 'react-router-dom';
+import { isHrRole } from '../util/APIUtils';
 
 class ListStaffProfile extends Component {
   render() {
+    if(!isHrRole(this.props.currentUser)){
+      return(<Redirect to='/forbidden'  />);
+    }
+
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -72,4 +78,4 @@ class ListStaffProfile extends Component {
   }
 }
 
-export default ListStaffProfile;
+export default withRouter(ListStaffProfile);

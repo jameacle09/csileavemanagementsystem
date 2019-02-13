@@ -2,9 +2,15 @@ import React, { Component } from "react";
 import { Form, FormGroup, Label, Input } from "reactstrap";
 import Button from '@material-ui/core/Button';
 import "../common/Styles.css";
+import  { Redirect, withRouter } from 'react-router-dom';
+import { isHrRole } from '../util/APIUtils';
 
 class EditPublicHoliday extends Component {
   render() {
+    if(!isHrRole(this.props.currentUser)){
+      return(<Redirect to='/forbidden'  />);
+    }
+    
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -49,4 +55,4 @@ class EditPublicHoliday extends Component {
   }
 }
 
-export default EditPublicHoliday;
+export default withRouter(EditPublicHoliday);
