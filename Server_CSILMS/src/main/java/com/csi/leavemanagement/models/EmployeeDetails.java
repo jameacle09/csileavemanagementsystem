@@ -1,12 +1,16 @@
 package com.csi.leavemanagement.models;
 
 import java.util.Date;
+import java.util.HashSet;
+import java.util.Set;
 
 import javax.persistence.Column;
 import javax.persistence.Entity;
 import javax.persistence.FetchType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.Table;
 
@@ -69,6 +73,10 @@ public class EmployeeDetails {
 	
 	@Column(name = "marriage_cnt")
 	private int marriageCount;
+
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "emplid"), inverseJoinColumns = @JoinColumn(name = "role"))
+	private Set<Roles> roles = new HashSet<Roles>();
 
 	public String getEmplId() {
 		return emplId;
@@ -212,6 +220,14 @@ public class EmployeeDetails {
 
 	public void setMarriageCount(int marriageCount) {
 		this.marriageCount = marriageCount;
+	}
+
+	public Set<Roles> getRoles() {
+		return roles;
+	}
+
+	public void setRoles(Set<Roles> roles) {
+		this.roles = roles;
 	}
 
 	/* (non-Javadoc)

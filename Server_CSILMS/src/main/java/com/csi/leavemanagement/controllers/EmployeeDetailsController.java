@@ -39,6 +39,10 @@ public class EmployeeDetailsController {
 		return this.employeeDetailsService.findById(emplId);
 	}
 	
+	@RequestMapping(value="/leaveapprovers", method=RequestMethod.GET)
+	public List<EmployeeDetails> doGetAllManager() {
+		return this.employeeDetailsService.findAllManagers();
+	}
 
 	@RequestMapping(value="/employeedetails/{mgrId}/reportee", method=RequestMethod.GET)
 	public List<EmployeeDetails> doGetEmployeeDetailsByMgrId(@PathVariable("mgrId") String mgrId) {

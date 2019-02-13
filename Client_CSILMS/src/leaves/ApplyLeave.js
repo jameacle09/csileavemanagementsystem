@@ -26,8 +26,8 @@ class ApplyLeave extends Component {
       ],
       approverList: [
         {
-          id: "",
-          staffName: ""
+          emplId: "",
+          name: ""
         }
       ],
       startDate: new Date(),
@@ -117,22 +117,23 @@ class ApplyLeave extends Component {
         };
         this.setState({ staffLeave: staffLeaveData });
       });
-    /*
+    
     // fetch approvers from API
-    fetch("http://localhost/api/managers")
-      .then(response => response.json())
+    fetchData({
+      url: API_BASE_URL + "/leaveapprovers",
+      method: 'GET'
+      })
       .then(data => this.setState({ approverList: data }))
       .catch(err => {
         // if unable to fetch data, assign default (spaces) to values
         let approverListData = [
           {
-            id: "",
-            staffName: ""
+            emplId: "",
+            name: ""
           }
         ];
         this.setState({ approverList: approverListData });
       });
-    */
   }
 
   // this method process changes on all 3 date related fields
@@ -485,11 +486,13 @@ class ApplyLeave extends Component {
                 value={approverId}
               >
                 {approverList.map(approver => {
-                  return (
-                    <option key={approver["id"]} value={approver["id"]}>
-                      {approver["staffName"]}
-                    </option>
-                  );
+                  if(approver["emplId"] !== userData["emplId"]) {
+                    return (
+                      <option key={approver["emplId"]} value={approver["emplId"]}>
+                        {approver["name"]}
+                      </option>
+                    );
+                  }
                 })}
               </Input>
             </FormGroup>
