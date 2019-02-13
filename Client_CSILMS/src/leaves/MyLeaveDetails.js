@@ -10,19 +10,8 @@ class MyLeaveDetails extends Component {
     this.state = {
       userData: []
     };
-    // this.state = {
-    //   userData: {
-    //     id: "",
-    //     leaveCategory: "",
-    //     carryForward: "",
-    //     entitlement: "",
-    //     availableLeave: "",
-    //     takenLeave: "",
-    //     balanceLeave: ""
-    //   }
-    // };
-
     this.loadMyLeaveDetails = this.loadMyLeaveDetails.bind(this);
+    this.autoIncrementRow = this.autoIncrementRow.bind(this);
 
   }
 
@@ -38,26 +27,7 @@ class MyLeaveDetails extends Component {
       if (error.status === 401) {
         this.props.history.push("/login");
       }
-      // let userData = {
-      //   id: "",
-      //   leaveCategory: "",
-      //   carryForward: "",
-      //   entitlement: "",
-      //   availableLeave: "",
-      //   takenLeave: "",
-      //   balanceLeave: ""
-      // };
-      let userData = [
-        // {
-        //   id: "",
-        //   leaveCategory: "",
-        //   carryForward: "",
-        //   entitlement: "",
-        //   availableLeave: "",
-        //   takenLeave: "",
-        //   balanceLeave: ""
-        // }
-      ];
+      let userData = [];
       this.setState({ userData: userData });
     });
   }
@@ -71,12 +41,15 @@ class MyLeaveDetails extends Component {
       this.loadMyLeaveDetails();
     }
   }
-  render() {
-    let userData = this.state.userData;
+
+  autoIncrementRow() {
+    let userData = [];
     console.log(userData);
-    // if (userData["id"] !== "") {
-    //   userData["managerName"] = this.state.userData["reportsTo"]["name"];
-    // }
+    for (userData = 0; userData < userData.length; userData++) {
+      userData += + userData;
+    }
+  }
+  render() {
     return (
       <div className="mainContainerLeavePages">
         <div className="headerContainerFlex">
@@ -89,7 +62,6 @@ class MyLeaveDetails extends Component {
           <Table responsive>
             <thead>
               <tr>
-                <th>No.</th>
                 <th>Leave Type</th>
                 <th>Entitlement</th>
                 <th>Carry Forward</th>
@@ -99,21 +71,20 @@ class MyLeaveDetails extends Component {
               </tr>
             </thead>
             <tbody>
-               {
-                  this.state.userData.map(function(item, key) {
-                    return (
-                      <tr key={key}>
-                        <td>{}</td>
-                        <td>{item.leaveCategory.leaveDescr}</td>
-                        <td>{item.entitlement} days</td>
-                        <td>{item.carryForward} days</td>
-                        <td>{item.availableLeave} days</td>
-                        <td>{item.takenLeave} days</td>
-                        <td>{item.balanceLeave} days</td>
-                      </tr>
-                    )
-                  })
-                }  
+              {
+                this.state.userData.map(function (item, key) {
+                  return (
+                    <tr key={key}>
+                      <td>{item.leaveCategory.leaveDescr}</td>
+                      <td>{item.entitlement} days</td>
+                      <td>{item.carryForward} days</td>
+                      <td>{item.availableLeave} days</td>
+                      <td>{item.takenLeave} days</td>
+                      <td>{item.balanceLeave} days</td>
+                    </tr>
+                  )
+                })
+              }
             </tbody>
           </Table>
         </div>
