@@ -15,7 +15,7 @@ class MyLeaveHistory extends Component {
 
   loadMyLeaveHistory() {
     fetchData({
-      url: API_BASE_URL + "/appliedleave/E000000001",
+      url: API_BASE_URL + "/appliedleave/me",
       method: 'GET'
     }).then(response => {
       this.setState({
@@ -78,12 +78,12 @@ class MyLeaveHistory extends Component {
                   return (
                     <tr key={key}>
                       <td></td>
-                      <td>{item.startDate}</td>
+                      <td>{item.id.startDate}</td>
                       <td>{item.endDate}</td>
                       <td>{item.leaveDuration}</td>
-                      <td>{item.leaveDescr}</td>
+                      <td>{item.leaveCategory.leaveDescr}</td>
                       <td>{item.reason}</td>
-                      <td>{item.effDate}</td>
+                      <td>{item.id.effDate}</td>
                       <td>{item.leaveStatus}</td>
                       <td></td>
                     </tr>
