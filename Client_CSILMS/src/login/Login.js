@@ -3,7 +3,7 @@ import { Col, Form, FormGroup, Label, Input, Button } from "reactstrap";
 // import Button from "@material-ui/core/Button";
 import { ACCESS_TOKEN } from "../constants";
 import { login } from "../util/APIUtils";
-import { Redirect } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import "./Login.css";
 import { FormErrors } from "./LoginError";
 import CSILogo from "../img/CSI_Logo.png";
@@ -116,17 +116,12 @@ class Login extends Component {
     });
   }
 
-  errorClass(error) {
-    return error.length === 0 ? "" : "has-error";
-  }
-
-  render() {
-    let { from } = this.props.location.state || { from: { pathname: "/" } };
-    let { redirectToReferrer } = this.state;
-
-    if (redirectToReferrer) return <Redirect to={from} />;
-
-    const { email, password } = this.state;
+    validateForm() {
+        this.setState({formValid: this.state.emailValid && this.state.passwordValid});
+    }
+    
+    render() {
+      const { email, password } = this.state;
 
     const textInputStyle = {
       fontSize: "18px",
@@ -146,6 +141,7 @@ class Login extends Component {
       background: "#004a9b",
       boxShadow: "3px 3px 3px rgb(95, 116, 136)"
     };
+
     return (
       <div className="loginMainContainer">
         <div className="loginTextContainer">
@@ -229,4 +225,4 @@ class Login extends Component {
   }
 }
 
-export default Login;
+export default withRouter(Login);

@@ -1,11 +1,16 @@
 import React, { Component } from "react";
 import { Table, Input, Row, Col } from "reactstrap";
 import Button from "@material-ui/core/Button";
-import { Link } from "react-router-dom";
+import { Link, Redirect, withRouter } from "react-router-dom";
 import "../common/Styles.css";
+import { isHrRole } from '../util/APIUtils';
 
 class LoginDetails extends Component {
   render() {
+    if(!isHrRole(this.props.currentUser)){
+      return(<Redirect to='/forbidden'  />);
+    }
+
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -90,4 +95,4 @@ class LoginDetails extends Component {
   }
 }
 
-export default LoginDetails;
+export default withRouter(LoginDetails);
