@@ -1,6 +1,7 @@
 package com.csi.leavemanagement.controllers;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -222,6 +223,22 @@ public class AppliedLeaveRestController {
 	public List<AppliedLeave> doFindPendingMyApproval(@CurrentUser UserPrincipal currentUser) {
 		String approver = currentUser.getId();
 		List<AppliedLeave> appliedLeaveList = this.appliedLeaveService.findByApproverAndLeaveStatus(approver, "PNAPV");
+		return appliedLeaveList;
+	}	
+	
+	@RequestMapping(value="/appliedleave/me/{year}", method=RequestMethod.GET)
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+	public List<AppliedLeave> doFindMyReporteeLeaves(@CurrentUser UserPrincipal currentUser, 
+			 										 @PathVariable("year") int year) {
+		String approver = currentUser.getId();
+		
+		Calendar cal = Calendar.getInstance();
+		cal.set(year, 0, 1);
+		Date startDate = cal.getTime();
+		cal.set(year, 11, 31);
+		Date endDate = cal.getTime();
+		
+		List<AppliedLeave> appliedLeaveList = this.appliedLeaveService.findByManagerReporteeBetweenDates(approver, startDate, endDate);
 		return appliedLeaveList;
 	}	
 }
