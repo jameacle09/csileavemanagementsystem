@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.csi.leavemanagement.models.AppliedLeave;
+import com.csi.leavemanagement.security.CurrentUser;
+import com.csi.leavemanagement.security.UserPrincipal;
 import com.csi.leavemanagement.services.AppliedLeaveService;
 
 @RestController
@@ -204,5 +207,76 @@ public class AppliedLeaveRestController {
 	public List<AppliedLeave> doFindPendingApproverApproval(@PathVariable("approver") String approver) {
 		List<AppliedLeave> appliedLeaveList = this.appliedLeaveService.findByApproverAndLeaveStatus(approver, "PNAPV");
 		return appliedLeaveList;
-	}		
+	}
+	
+	@RequestMapping(value="/appliedleave/me", method=RequestMethod.GET)
+	@PreAuthorize("hasAuthority('EMPLOYEE')")
+	public List<AppliedLeave> doGetMyAppliedLeaveByEmplid(@CurrentUser UserPrincipal currentUser, 
+													 	 @RequestParam(value="leaveCode", required=false) String leaveCode,
+														 @RequestParam(value="leaveStatus", required=false) String leaveStatus,
+													 	 @RequestParam(value="startDate", required=false) String startDateStr,
+														 @RequestParam(value="endDate", required=false) String endDateStr) {
+				
+		// If both dates are not null, parse and create Date objects
+		Date startDate = null, endDate = null;
+		boolean datePresent = false;
+		
+		if(startDateStr != null && endDateStr != null) {
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+				
+				startDate = sdf.parse(startDateStr);
+				endDate = sdf.parse(endDateStr);
+				datePresent = true;				
+			} catch (Exception e) {
+				datePresent = false;
+			}
+		}
+		
+		String emplid = currentUser.getId();
+		
+		List<AppliedLeave> appliedLeave;
+		
+		// Call corresponding Service method base on PARAM provided
+		if(leaveCode != null && leaveStatus != null && datePresent) {
+			appliedLeave = this.appliedLeaveService.
+								findByEmplidAndLeaveCodeAndLeaveStatusAndBetweenDate
+								(emplid, leaveCode, leaveStatus, startDate, endDate);
+			
+		} else if(leaveCode != null && leaveStatus != null && !datePresent) {
+			appliedLeave = this.appliedLeaveService.
+								findByEmplidAndLeaveCodeAndLeaveStatus
+								(emplid, leaveCode, leaveStatus);
+		
+		} else if(leaveCode != null && leaveStatus == null && datePresent) {
+			appliedLeave = this.appliedLeaveService.
+								findByEmplidAndLeaveCodeBetweenDates
+								(emplid, leaveCode, startDate, endDate);
+			
+		} else if(leaveCode != null && leaveStatus == null && !datePresent) { 				
+			appliedLeave = this.appliedLeaveService.
+								findByEmplidAndLeaveCode
+								(emplid, leaveCode);
+		
+		} else if(leaveCode == null && leaveStatus != null && datePresent) { 				
+			appliedLeave = this.appliedLeaveService.
+								findByEmplidAndLeaveStatusBetweenDates
+								(emplid, leaveStatus, startDate, endDate);
+		
+		} else if(leaveCode == null && leaveStatus != null && !datePresent) { 				
+			appliedLeave = this.appliedLeaveService.
+								findByEmplidAndLeaveStatus
+								(emplid, leaveStatus);
+		
+		} else if(leaveCode == null && leaveStatus == null && datePresent) { 				
+			appliedLeave = this.appliedLeaveService.
+								findByEmplidBetweenDates
+								(emplid, startDate, endDate);
+		
+		} else //(leaveCode == null && leaveStatus == null && !datePresent) 
+			appliedLeave = this.appliedLeaveService.findByEmplid(emplid);
+		
+		return appliedLeave;
+	}
 }
