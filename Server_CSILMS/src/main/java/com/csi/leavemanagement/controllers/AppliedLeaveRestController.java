@@ -1,6 +1,7 @@
 package com.csi.leavemanagement.controllers;
 
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -197,18 +198,19 @@ public class AppliedLeaveRestController {
 		return count;
 	}	
 
-	@RequestMapping(value="/appliedleave/count/{approver}/pendingApproval", method=RequestMethod.GET)
+	@RequestMapping(value="/appliedleave/count/{approver}/pendingapproval", method=RequestMethod.GET)
 	public long doCountPendingApproverApproval(@PathVariable("approver") String approver) {
 		long count = this.appliedLeaveService.countByApproverAndLeaveStatus(approver, "PNAPV");
 		return count;
 	}	
 
-	@RequestMapping(value="/appliedleave/{approver}/pendingApproval", method=RequestMethod.GET)
+	@RequestMapping(value="/appliedleave/{approver}/pendingapproval", method=RequestMethod.GET)
 	public List<AppliedLeave> doFindPendingApproverApproval(@PathVariable("approver") String approver) {
 		List<AppliedLeave> appliedLeaveList = this.appliedLeaveService.findByApproverAndLeaveStatus(approver, "PNAPV");
 		return appliedLeaveList;
 	}
 	
+
 	@RequestMapping(value="/appliedleave/me", method=RequestMethod.GET)
 	@PreAuthorize("hasAuthority('EMPLOYEE')")
 	public List<AppliedLeave> doGetMyAppliedLeaveByEmplid(@CurrentUser UserPrincipal currentUser, 
@@ -279,4 +281,37 @@ public class AppliedLeaveRestController {
 		
 		return appliedLeave;
 	}
+
+	@RequestMapping(value="/appliedleave/count/me/pendingapproval", method=RequestMethod.GET)
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+	public long doCountPendingMyApproval(@CurrentUser UserPrincipal currentUser) {
+		String approver = currentUser.getId();
+		long count = this.appliedLeaveService.countByApproverAndLeaveStatus(approver, "PNAPV");
+		return count;
+	}	
+
+	@RequestMapping(value="/appliedleave/me/pendingapproval", method=RequestMethod.GET)
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+	public List<AppliedLeave> doFindPendingMyApproval(@CurrentUser UserPrincipal currentUser) {
+		String approver = currentUser.getId();
+		List<AppliedLeave> appliedLeaveList = this.appliedLeaveService.findByApproverAndLeaveStatus(approver, "PNAPV");
+		return appliedLeaveList;
+	}	
+	
+	@RequestMapping(value="/appliedleave/me/{year}", method=RequestMethod.GET)
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+	public List<AppliedLeave> doFindMyReporteeLeaves(@CurrentUser UserPrincipal currentUser, 
+			 										 @PathVariable("year") int year) {
+		String approver = currentUser.getId();
+		
+		Calendar cal = Calendar.getInstance();
+		cal.set(year, 0, 1);
+		Date startDate = cal.getTime();
+		cal.set(year, 11, 31);
+		Date endDate = cal.getTime();
+		
+		List<AppliedLeave> appliedLeaveList = this.appliedLeaveService.findByManagerReporteeBetweenDates(approver, startDate, endDate);
+		return appliedLeaveList;
+	}	
+
 }
