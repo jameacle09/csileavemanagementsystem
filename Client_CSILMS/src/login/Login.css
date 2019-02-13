@@ -1,26 +1,103 @@
-.Login {
-  text-align: left;
-  padding: 1em;
-  margin: 1em;
-  border: 2px solid #d3d3d3;
-  border-radius: .5em;
-  vertical-align: middle;
-  margin-left: auto;
-  margin-right: auto;
-  margin-top: 50px;
-  width: 600px;
-}
-
-.form {
-  width: 500px;
-  padding: 1em;
-}
-
-label {
+.loginMainContainer {
+  width: 100%;
+  height: 100%;
+  position: fixed;
   display: flex;
-  font-weight: 600;
+  flex-direction: row;
+  overflow: auto;
+}
+.loginTextContainer {
+  background: #004a9b;
+  padding: 0;
+  width: 50%;
+  height: 100%;
+  position: relative;
+}
+.loginTextSubContainer {
+  font: Helvetica;
+  color: white;
+  text-align: right;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 474px;
+  height: 380px;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: auto;
+  margin-right: 15px;
+}
+.loginTextMessageContainer {
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+}
+.loginContainer {
+  width: 50%;
+  background: #032a53;
+  height: 100%;
+  position: relative;
+}
+.loginBox {
+  text-align: left;
+  background-color: white;
+  color: #032a53;
+  font: 18px Helvetica;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 474px;
+  height: 380px;
+  margin-top: auto;
+  margin-bottom: auto;
+  margin-left: 15px;
+  border: 1px solid #032a53;
+  border-radius: 10px;
+  align-self: flex-start;
+}
+.loginBoxHeader {
+  height: 110px;
+  width: 100%;
+  padding-top: 12px;
+}
+.loginBoxFooter {
+  position: absolute;
+  width: 100%;
+  bottom: 20px;
+  border-radius: 5px;
 }
 
-button {
-  justify-content: flex-end;
+@media (max-width: 768px) {
+  .loginMainContainer {
+    flex-direction: column;
+  }
+  .loginTextContainer {
+    width: 100%;
+    height: 40%;
+  }
+  .loginContainer {
+    width: 100%;
+    height: 60%;
+  }
+  .loginBox {
+    width: 100%;
+    height: 100%;
+    border-radius: 0;
+    box-shadow: 0;
+    border: 0;
+    margin: 0;
+  }
+  .loginTextSubContainer {
+    width: 98%;
+    height: 90%;
+    text-align: center;
+    margin: auto;
+  }
+  .loginTextMessageContainer {
+    display: none;
+  }
 }

@@ -1,6 +1,11 @@
 import React, { Component } from "react";
 import "./stickyfooter.css";
-import { Route, BrowserRouter as Router, Switch, withRouter } from "react-router-dom";
+import {
+  Route,
+  BrowserRouter as Router,
+  Switch,
+  withRouter
+} from "react-router-dom";
 import SideBar from "./common/SideBar";
 import Menu from "./common/Menu";
 import Footer from "./common/Footer";
@@ -13,9 +18,9 @@ import StaffLeaveHistory from "./manager/StaffLeaveHistory";
 import MyProfile from "./staffprofile/MyProfile";
 import ChangePassword from "./staffprofile/ChangePassword";
 import StaffProfileComponent from "./staffprofile/StaffProfileComponent";
-import ListStaffProfile from "./staffprofile/ListStaffProfile";
+//import ListStaffProfile from "./staffprofile/ListStaffProfile";
 import NewStaffProfile from "./staffprofile/NewStaffProfile";
-import ResetPassword from "./staffprofile/ResetPassword";
+// import ResetPassword from "./staffprofile/ResetPassword";
 import EditStaffProfile from "./staffprofile/EditStaffProfile";
 import PublicHoliday from "./hradmin/PublicHoliday";
 import AddPublicHoliday from "./hradmin/AddPublicHoliday";
@@ -29,19 +34,18 @@ import LoginDetails from "./hradmin/LoginDetails";
 import AddLoginDetails from "./hradmin/AddLoginDetails";
 import EditLoginDetails from "./hradmin/EditLoginDetails";
 import "./common/Styles.css";
-import { getCurrentUser } from './util/APIUtils';
-import Login from './login/Login';
-import { ACCESS_TOKEN } from './constants';
+import { getCurrentUser } from "./util/APIUtils";
+import Login from "./login/Login";
+import { ACCESS_TOKEN } from "./constants";
 
 class App extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
       currentUser: null,
       isAuthenticated: false,
       isLoading: false
-    }
+    };
 
     this.loadCurrentUser = this.loadCurrentUser.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -49,7 +53,7 @@ class App extends Component {
   }
 
   loadCurrentUser() {
-    this.setState({ isLoading: true});
+    this.setState({ isLoading: true });
     getCurrentUser()
       .then(response => {
         this.setState({
@@ -57,15 +61,16 @@ class App extends Component {
           isAuthenticated: true,
           isLoading: false
         });
-      }).catch(error => {
+      })
+      .catch(error => {
         console.log(error);
         this.setState({
-          isLoading: false,
-        });  
+          isLoading: false
+        });
       });
   }
 
-  handleLogout(redirectTo="/") {
+  handleLogout(redirectTo = "/") {
     localStorage.removeItem(ACCESS_TOKEN);
 
     this.setState({
@@ -86,12 +91,18 @@ class App extends Component {
   }
 
   render() {
-    let menu, sideBar;
-    if(this.state.isAuthenticated){
+    let menu, sideBar, footer;
+    if (this.state.isAuthenticated) {
       menu = <Menu />;
-      sideBar = <SideBar currentUser={this.state.currentUser} handleLogout={this.handleLogout} />;
+      sideBar = (
+        <SideBar
+          currentUser={this.state.currentUser}
+          handleLogout={this.handleLogout}
+        />
+      );
+      footer = <Footer />;
     }
-     
+
     return (
       <Router>
         <div className="Site">
@@ -106,10 +117,26 @@ class App extends Component {
                   <Switch>
                     {/*<Route exact path="/" title="Home" component={HomePage} />*/}
 
-                    <Route exact path="/" title="Home" render={(props) => <HomePage isAuthenticated={this.state.isAuthenticated}  
-                        currentUser={this.state.currentUser} handleLogout={this.handleLogout} {...props} />} />
+                    <Route
+                      exact
+                      path="/"
+                      title="Home"
+                      render={props => (
+                        <HomePage
+                          isAuthenticated={this.state.isAuthenticated}
+                          currentUser={this.state.currentUser}
+                          handleLogout={this.handleLogout}
+                          {...props}
+                        />
+                      )}
+                    />
 
-                    <Route path="/login" render={(props) => <Login onLogin={this.handleLogin} {...props} />} />
+                    <Route
+                      path="/login"
+                      render={props => (
+                        <Login onLogin={this.handleLogin} {...props} />
+                      )}
+                    />
                     <Route
                       path="/applyleave"
                       title="Apply Leave"
@@ -150,13 +177,13 @@ class App extends Component {
                       title="List Staff Profile"
                       component={StaffProfileComponent}
                     />
-                    <Route
+                    {/* <Route
                       path="/liststaffprofile"
                       title="List Staff Profile"
                       component={ListStaffProfile}
-                    />
+                    /> */}
                     <Route
-                      path="/newstaffprofile"
+                      path="/liststaffprofile/add"
                       title="New Staff Profile"
                       component={NewStaffProfile}
                     />
@@ -226,7 +253,8 @@ class App extends Component {
               </div>
             </div>
           </div>
-          <Footer />
+          {footer}
+          {/* <Footer /> */}
         </div>
       </Router>
     );
