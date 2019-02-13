@@ -70,8 +70,8 @@ class ApplyLeave extends Component {
       })
       .then(data => {
         this.setState({ userData: data });
-        if (data["reportsTo"] !== null)
-          this.setState({ approverId: data["reportsTo"]["id"] });
+        if (data["reportsTo"] != null)
+          this.setState({ approverId: data["reportsTo"]["emplId"] });
       })
       .catch(err => {
         // if unable to fetch data, assign default (spaces) to values
@@ -258,12 +258,18 @@ class ApplyLeave extends Component {
           startDate: this.state.startDate,
           leaveCode: this.state.leaveCategory
         },
+        employeeDetails: {
+          emplId: this.state.userData["emplId"]
+        },
+        leaveCategory: {
+          leaveCode: this.state.leaveCategory
+        },
         endDate: this.state.endDate,
-        halfDay: this.state.isHalfDay,
+        halfDay: this.state.isHalfDay? 'Y' : 'N',
         leaveDuration: this.state.leaveDuration,
         leaveStatus: 'PNAPV',
-        reason: this.state.leaveReason,
         approver: this.state.approverId,
+        reason: this.state.leaveReason,
         approverDate: null,
         attachment: ''
       };
@@ -273,10 +279,6 @@ class ApplyLeave extends Component {
       fetchData({
         url: API_BASE_URL + "/appliedleave",
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
         body: JSON.stringify(newLeaveRequest)
       })
         .then(res => {
@@ -291,6 +293,8 @@ class ApplyLeave extends Component {
                 }
               ]
             });
+          else
+            alert("Failed : " + JSON.stringify(res))
         })
         .catch(err => {
           console.log("!!! Error : ".err);
