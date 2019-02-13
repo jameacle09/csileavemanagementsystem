@@ -1,147 +1,232 @@
-import React, { Component } from 'react';
-import {
-    Col, Form,
-    FormGroup, Label, Input,
-    Button
-  } from 'reactstrap';
-import { ACCESS_TOKEN } from '../constants'; 
-import { login } from '../util/APIUtils';
+import React, { Component } from "react";
+import { Col, Form, FormGroup, Label, Input, Button } from "reactstrap";
+// import Button from "@material-ui/core/Button";
+import { ACCESS_TOKEN } from "../constants";
+import { login } from "../util/APIUtils";
 import { Redirect } from "react-router-dom";
 import "./Login.css";
-import { FormErrors } from './LoginError';
+import { FormErrors } from "./LoginError";
+import CSILogo from "../img/CSI_Logo.png";
 
-class Login extends Component{
-	constructor(props) {
-		super(props);
-		this.state = { 
-            redirectToReferrer: false,
-            email : '',
-            password : '',
-            formErrors: {email: '', password: '', loginfailed: ''},
-            emailValid: false,
-            passwordValid: false,
-            formValid: false
-        };
+class Login extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      redirectToReferrer: false,
+      email: "",
+      password: "",
+      formErrors: { email: "", password: "", loginfailed: "" },
+      emailValid: false,
+      passwordValid: false,
+      formValid: false
+    };
 
-		//this.handleChange = this.handleChange.bind(this);
-		//this.handleSubmit = this.handleSubmit.bind(this);
-    }
-    
-    handleUserInput = (e) => {
-        const name = e.target.name;
-        const value = e.target.value;
-        this.setState({[name]: value},
-                      () => { this.validateField(name, value) });
-    }
-	
-	handleChange = async (event) => {
-        const { target } = event;
-        const value = target.value;
-        const { name } = target;
-        await this.setState({
-        [ name ]: value,
-        });
-    }
+    //this.handleChange = this.handleChange.bind(this);
+    //this.handleSubmit = this.handleSubmit.bind(this);
+  }
 
-    validateField(fieldName, value) {
+  handleUserInput = e => {
+    const name = e.target.name;
+    const value = e.target.value;
+    this.setState({ [name]: value }, () => {
+      this.validateField(name, value);
+    });
+  };
+
+  // handleChange = async event => {
+  //   const { target } = event;
+  //   const value = target.value;
+  //   const { name } = target;
+  //   await this.setState({
+  //     [name]: value
+  //   });
+  // };
+
+  handleChange = event => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  };
+
+  validateFields = () => {
+    const { email, password } = this.state;
+    const isInvalid = !email || !password;
+    return isInvalid;
+  };
+
+  validateField(fieldName, value) {
+    let fieldValidationErrors = this.state.formErrors;
+    let emailValid = this.state.emailValid;
+    let passwordValid = this.state.passwordValid;
+
+    switch (fieldName) {
+      case "email":
+        emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
+        fieldValidationErrors.email = emailValid ? "" : "E-mail is invalid";
+        break;
+      case "password":
+        passwordValid = value.length >= 6;
+        fieldValidationErrors.password = passwordValid
+          ? ""
+          : "Password is too short";
+        break;
+      default:
+        break;
+    }
+    this.setState(
+      {
+        formErrors: fieldValidationErrors,
+        emailValid: emailValid,
+        passwordValid: passwordValid
+      },
+      this.validateForm
+    );
+  }
+
+  submitForm(e) {
+    e.preventDefault();
+    const values = {
+      email: this.state.email,
+      password: this.state.password
+    };
+
+    const loginRequest = Object.assign({}, values);
+    login(loginRequest)
+      .then(response => {
+        localStorage.setItem(ACCESS_TOKEN, response.accessToken);
+        this.props.onLogin();
+        this.setState({ redirectToReferrer: true, errorState: true });
+        //this.props.history.push("/");
+      })
+      .catch(error => {
         let fieldValidationErrors = this.state.formErrors;
-        let emailValid = this.state.emailValid;
-        let passwordValid = this.state.passwordValid;
-    
-        switch(fieldName) {
-          case 'email':
-            emailValid = value.match(/^([\w.%+-]+)@([\w-]+\.)+([\w]{2,})$/i);
-            fieldValidationErrors.email = emailValid ? '' : 'E-mail is invalid';
-            break;
-          case 'password':
-            passwordValid = value.length >= 6;
-            fieldValidationErrors.password = passwordValid ? '': 'Password is too short';
-            break;
-          default:
-            break;
+        if (error.status === 401) {
+          fieldValidationErrors.loginfailed =
+            "Your Username or Password is incorrect. Please try again!";
+          this.setState({ formErrors: fieldValidationErrors });
+        } else {
+          fieldValidationErrors.loginfailed =
+            "Sorry! Something went wrong. Please try again!";
         }
-        this.setState({formErrors: fieldValidationErrors,
-                        emailValid: emailValid,
-                        passwordValid: passwordValid
-                      }, this.validateForm);
-    }
-    
-    submitForm(e) {
-        e.preventDefault();
-        const values = {
-            email : this.state.email,
-            password : this.state.password
-        }
+      });
+  }
 
-		const loginRequest = Object.assign({}, values);
-        login(loginRequest)
-        .then(response => {
-            localStorage.setItem(ACCESS_TOKEN, response.accessToken);
-			this.props.onLogin();
-            this.setState({ redirectToReferrer: true,
-                                    errorState:true
-            });
-					//this.props.history.push("/");
-        }).catch(error => {
-            let fieldValidationErrors = this.state.formErrors;
-            if(error.status === 401) {
-                fieldValidationErrors.loginfailed = 'Your Username or Password is incorrect. Please try again!';
-                this.setState({formErrors: fieldValidationErrors}); 
-            } else {
-                fieldValidationErrors.loginfailed = 'Sorry! Something went wrong. Please try again!';                                     
-            }
-		});
-    }
+  validateForm() {
+    this.setState({
+      formValid: this.state.emailValid && this.state.passwordValid
+    });
+  }
 
-    validateForm() {
-        this.setState({formValid: this.state.emailValid && this.state.passwordValid});
-    }
-    
-    errorClass(error) {
-        return(error.length === 0 ? '' : 'has-error');
-    }
+  errorClass(error) {
+    return error.length === 0 ? "" : "has-error";
+  }
 
-    render() {
-		let { from } = this.props.location.state || { from: { pathname: "/" } };
-    	let { redirectToReferrer } = this.state;
+  render() {
+    let { from } = this.props.location.state || { from: { pathname: "/" } };
+    let { redirectToReferrer } = this.state;
 
-        if (redirectToReferrer) return <Redirect to={from} />;
-        
-        const { email, password } = this.state;
+    if (redirectToReferrer) return <Redirect to={from} />;
 
-        return (
-            <center>
-            <div className="Login">
-                <h2>Sign In</h2>
-                <div>
-                    <FormErrors formErrors={this.state.formErrors} />
-                </div>
-                <Form className="form" onSubmit={ (e) => this.submitForm(e) }>
+    const { email, password } = this.state;
+
+    const textInputStyle = {
+      fontSize: "18px",
+      border: "1px solid rgb(95, 116, 136)",
+      borderRadius: "20px",
+      height: "40px",
+      boxShadow: "3px 3px 3px rgb(95, 116, 136)",
+      color: "#032a53"
+    };
+
+    const buttonLoginStyle = {
+      fontSize: "18px",
+      border: "1px solid #004a9b",
+      borderRadius: "20px",
+      width: "100%",
+      height: "40px",
+      background: "#004a9b",
+      boxShadow: "3px 3px 3px rgb(95, 116, 136)"
+    };
+    return (
+      <div className="loginMainContainer">
+        <div className="loginTextContainer">
+          <div className="loginTextSubContainer">
+            <img
+              src={CSILogo}
+              alt="CSI Interfusion Logo"
+              style={{ padding: "0 0 16px 0" }}
+            />
+            <br />
+            <h4 style={{ color: "rgb(214, 209, 209)" }}>
+              CSI Interfusion Sdn. Bhd.
+            </h4>
+            <br />
+            <br />
+            <h2>Leave Management System</h2>
+            <div className="loginTextMessageContainer">
+              <p>
+                Please login to submit your Leave Request or you may reach out
+                to the HR Department to request for your own access.
+              </p>
+            </div>
+          </div>
+        </div>
+        <div className="loginContainer" align="left">
+          <div className="loginBox">
+            <div className="loginBoxHeader">
+              <h2 align="center">Sign In</h2>
+              <FormErrors formErrors={this.state.formErrors} />
+            </div>
+
+            <Form onSubmit={e => this.submitForm(e)}>
+              <Col>
+                <FormGroup>
+                  <Label>User ID (E-mail)</Label>
+                  <Input
+                    type="email"
+                    name="email"
+                    id="Email"
+                    placeholder="myemail@email.com"
+                    value={email}
+                    // onChange={this.handleUserInput}
+                    onChange={this.handleChange}
+                    style={textInputStyle}
+                  />
+                </FormGroup>
+              </Col>
+              <Col>
+                <FormGroup>
+                  <Label for="examplePassword">Password</Label>
+                  <Input
+                    type="password"
+                    name="password"
+                    id="Password"
+                    placeholder="********"
+                    value={password}
+                    // onChange={this.handleUserInput}
+                    onChange={this.handleChange}
+                    style={textInputStyle}
+                  />
+                </FormGroup>
+              </Col>
+              <div className="loginBoxFooter" align="center">
                 <Col>
-                <FormGroup>
-                    <Label>E-mail</Label>
-                    <Input type="email" name="email" id="exampleEmail" placeholder="myemail@email.com"
-                        value={ email }
-                        onChange={this.handleUserInput}
-                    />
-                </FormGroup>
-          </Col>
-          <Col>
-                <FormGroup>
-                    <Label for="examplePassword">Password</Label>
-                    <Input type="password" name="password" id="examplePassword" placeholder="********"
-                        value={ password }
-                        onChange={this.handleUserInput}
-                    />
-                </FormGroup>
-          </Col>
-          <Button>Submit</Button>
-      </Form>
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    type="submit"
+                    style={buttonLoginStyle}
+                    disabled={this.validateFields()}
+                  >
+                    Login
+                  </Button>
+                </Col>
+              </div>
+            </Form>
+          </div>
+        </div>
       </div>
-      </center>
-        );
-
-    }
+    );
+  }
 }
 
 export default Login;
