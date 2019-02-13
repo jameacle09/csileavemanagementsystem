@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -15,6 +16,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.csi.leavemanagement.models.AppliedLeave;
+import com.csi.leavemanagement.security.CurrentUser;
+import com.csi.leavemanagement.security.UserPrincipal;
 import com.csi.leavemanagement.services.AppliedLeaveService;
 
 @RestController
@@ -194,15 +197,31 @@ public class AppliedLeaveRestController {
 		return count;
 	}	
 
-	@RequestMapping(value="/appliedleave/count/{approver}/pendingApproval", method=RequestMethod.GET)
+	@RequestMapping(value="/appliedleave/count/{approver}/pendingapproval", method=RequestMethod.GET)
 	public long doCountPendingApproverApproval(@PathVariable("approver") String approver) {
 		long count = this.appliedLeaveService.countByApproverAndLeaveStatus(approver, "PNAPV");
 		return count;
 	}	
 
-	@RequestMapping(value="/appliedleave/{approver}/pendingApproval", method=RequestMethod.GET)
+	@RequestMapping(value="/appliedleave/{approver}/pendingapproval", method=RequestMethod.GET)
 	public List<AppliedLeave> doFindPendingApproverApproval(@PathVariable("approver") String approver) {
 		List<AppliedLeave> appliedLeaveList = this.appliedLeaveService.findByApproverAndLeaveStatus(approver, "PNAPV");
 		return appliedLeaveList;
-	}		
+	}
+	
+	@RequestMapping(value="/appliedleave/count/me/pendingapproval", method=RequestMethod.GET)
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+	public long doCountPendingMyApproval(@CurrentUser UserPrincipal currentUser) {
+		String approver = currentUser.getId();
+		long count = this.appliedLeaveService.countByApproverAndLeaveStatus(approver, "PNAPV");
+		return count;
+	}	
+
+	@RequestMapping(value="/appliedleave/me/pendingapproval", method=RequestMethod.GET)
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+	public List<AppliedLeave> doFindPendingMyApproval(@CurrentUser UserPrincipal currentUser) {
+		String approver = currentUser.getId();
+		List<AppliedLeave> appliedLeaveList = this.appliedLeaveService.findByApproverAndLeaveStatus(approver, "PNAPV");
+		return appliedLeaveList;
+	}	
 }
