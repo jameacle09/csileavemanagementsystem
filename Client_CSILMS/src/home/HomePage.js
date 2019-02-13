@@ -4,6 +4,7 @@ import Dashboard from "./Dashboard";
 import { fetchData } from '../util/APIUtils';
 import { API_BASE_URL } from '../constants'; 
 import { withRouter } from 'react-router-dom';
+import { Hidden } from "@material-ui/core";
 
 class HomePage extends Component {
   constructor(props) {
@@ -11,10 +12,12 @@ class HomePage extends Component {
     this.state = {
       userData: {
         name: ""
-      }
+      },
+      pendingApproval: []
     };
     
     this.loadUserProfile = this.loadUserProfile.bind(this);
+    this.loadPendingApprovalManager = this.loadPendingApprovalManager.bind(this);
   }
 
   loadUserProfile(){
@@ -32,8 +35,24 @@ class HomePage extends Component {
     });
   }
 
+  loadPendingApprovalManager(){
+    fetchData({
+      url: API_BASE_URL + "/appliedleave/count/me/pendingapproval",
+      method: 'GET'
+    }).then(response => {
+      this.setState({
+        pendingApproval: response
+      });
+    }).catch(error => {
+      if(error.status === 401) {
+         this.props.history.push("/login");    
+      } 
+    });
+  }
+
   componentDidMount() {
     this.loadUserProfile();
+    this.loadPendingApprovalManager();
   }
 
   render() {
@@ -47,13 +66,17 @@ class HomePage extends Component {
     };
 
     let userData = this.state.userData;
-    
+    let pendingApproval = this.state.pendingApproval;
+    // if (pendingApproval == 0) {
+    //   return null;
+    // } 
     return (
       <div>
         <Jumbotron style={divStyle}>
           
-          <h1 className="display-3">Hello, {userData["name"]}! </h1>
+          <h1 className="display-3">Hello, {userData["name"]}!</h1>
           <p className="lead">Welcome to CSI Leave Management System.</p>
+          <p>You have {pendingApproval} leave request by your staff to be approve.</p>
           {
             // <hr className="my-2" />
             // <p>Leave Management System for employees of CSI Interfusion Sdn. Bhd.</p>
