@@ -7,10 +7,13 @@ class MyLeaveHistory extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userData: []
+      userData: [
+        // {
+        //   joinDate: ""
+        // }
+      ]
     };
     this.loadMyLeaveHistory = this.loadMyLeaveHistory.bind(this);
-    this.autoIncrementRow = this.autoIncrementRow.bind(this);
   }
 
   loadMyLeaveHistory() {
@@ -27,6 +30,7 @@ class MyLeaveHistory extends Component {
       }
       let userData = [];
       this.setState({ userData: userData });
+      console.log(userData);
     });
   }
 
@@ -40,15 +44,21 @@ class MyLeaveHistory extends Component {
     }
   }
 
-  autoIncrementRow() {
-    let userData = [];
-    console.log(userData);
-    for (userData = 0; userData < userData.length; userData++) {
-      userData += + userData;
-    }
-  }
-
+  
   render() {
+    let userData = this.state.userData;
+    // console.log(userData);
+    // // reformat dates and retrive manager name ONLY when data fetch successfully
+    // if (userData["id"] !== "") {
+    //   let endDate = new Date(this.state.userData["endDate"]);
+    //   userData["endDate"] =
+    //   endDate.getFullYear() +
+    //     "-" +
+    //     (endDate.getMonth() + 1) +
+    //     "-" +
+    //     endDate.getDate();
+    // }
+
     return (
       <div className="mainContainerLeavePages">
         <div className="headerContainerFlex">
