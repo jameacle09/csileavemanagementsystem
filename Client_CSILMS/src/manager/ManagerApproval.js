@@ -2,9 +2,15 @@ import React, { Component } from "react";
 import { Table } from "reactstrap";
 // import ManagerSideBar from "./ManagerSideBar";
 import "../common/Styles.css";
+import  { Redirect, withRouter } from 'react-router-dom';
+import { isManagerRole } from '../util/APIUtils';
 
 class ManagerApproval extends Component {
   render() {
+    if(!isManagerRole(this.props.currentUser)){
+      return(<Redirect to='/forbidden'  />);
+    }
+
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -38,4 +44,4 @@ class ManagerApproval extends Component {
   }
 }
 
-export default ManagerApproval;
+export default withRouter(ManagerApproval);

@@ -36,12 +36,6 @@ class HomePage extends Component {
     this.loadUserProfile();
   }
 
-  componentDidUpdate(nextProps) {
-    if(this.props.isAuthenticated !== nextProps.isAuthenticated) {
-      this.loadUserProfile();
-    }
-  }
-
   render() {
     const divStyle = {
       backgroundImage:
@@ -53,7 +47,7 @@ class HomePage extends Component {
     };
 
     let userData = this.state.userData;
-
+    
     return (
       <div>
         <Jumbotron style={divStyle}>

@@ -2,6 +2,8 @@ import React, { Component } from "react";
 import { Form, FormGroup, Label, Input } from "reactstrap";
 import Button from '@material-ui/core/Button';
 import "../common/Styles.css";
+import  { Redirect, withRouter } from 'react-router-dom';
+import { isHrRole } from '../util/APIUtils';
 
 class EditEntitlement extends Component {
   constructor(props) {
@@ -55,6 +57,10 @@ class EditEntitlement extends Component {
   }
 
   render() {
+    if(!isHrRole(this.props.currentUser)){
+      return(<Redirect to='/forbidden'  />);
+    }
+
     const { userData, leaveCategory } = this.state;
     return (
       <div className="mainContainerFlex">
@@ -164,4 +170,4 @@ class EditEntitlement extends Component {
   }
 }
 
-export default EditEntitlement;
+export default withRouter(EditEntitlement);

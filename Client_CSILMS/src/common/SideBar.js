@@ -17,6 +17,10 @@ class SideBar extends Component {
   };
 
   render() {
+    if(!this.props.currentUser){
+      return (<div></div>);
+    }
+    
     return (
       <nav id="sidebar">
         <Link to="/" title="Home">
