@@ -83,7 +83,7 @@ class LeaveEntitlement extends Component {
             <thead>
               <tr>
                 <th>CSI Staff ID</th>
-                {/* <th>Staff Name</th> */}
+                <th>Staff Name</th>
                 <th>Leave Year</th>
                 <th>Leave Type</th>
                 <th>Carried Forward</th>
@@ -100,17 +100,17 @@ class LeaveEntitlement extends Component {
                   return (
                     <tr key={key}> 
                       <td>{item.id.emplid}</td>
-                      {/* <td>{item.id.name}</td> */}
+                      <td>{item.employeeDetails.name}</td>
                       <td>{item.id.year}</td>
                       <td>{item.leaveCategory.leaveDescr}</td>
-                      <td>{item.carryForward}</td>
-                      <td>{item.entitlement}</td>
-                      <td>{item.availableLeave}</td>
-                      <td>{item.takenLeave}</td>
-                      <td>{item.balanceLeave}</td>
+                      <td>{item.carryForward} days</td>
+                      <td>{item.entitlement} days</td>
+                      <td>{item.availableLeave} days</td>
+                      <td>{item.takenLeave} days</td>
+                      <td>{item.balanceLeave} days</td>
                       <td><Button
                         component={Link}
-                        to={`/leaveentitlement/edit/${"csiStaffId"}`}
+                        to={`/leaveentitlement/edit/${"emplid"}`}
                         variant="contained"
                         color="primary"
                         style={{ textTransform: "none", color: "white" }}
