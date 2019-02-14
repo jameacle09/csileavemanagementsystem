@@ -3,6 +3,7 @@ package com.csi.leavemanagement.controllers;
 import java.net.URI;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
@@ -11,6 +12,7 @@ import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,6 +22,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.csi.leavemanagement.models.AppliedLeave;
+import com.csi.leavemanagement.security.CurrentUser;
+import com.csi.leavemanagement.security.UserPrincipal;
 import com.csi.leavemanagement.services.AppliedLeaveService;
 
 @RestController
@@ -219,15 +223,120 @@ public class AppliedLeaveRestController {
 		return count;
 	}	
 
-	@RequestMapping(value="/appliedleave/count/{approver}/pendingApproval", method=RequestMethod.GET)
+	@RequestMapping(value="/appliedleave/count/{approver}/pendingapproval", method=RequestMethod.GET)
 	public long doCountPendingApproverApproval(@PathVariable("approver") String approver) {
 		long count = this.appliedLeaveService.countByApproverAndLeaveStatus(approver, "PNAPV");
 		return count;
 	}	
 
-	@RequestMapping(value="/appliedleave/{approver}/pendingApproval", method=RequestMethod.GET)
+	@RequestMapping(value="/appliedleave/{approver}/pendingapproval", method=RequestMethod.GET)
 	public List<AppliedLeave> doFindPendingApproverApproval(@PathVariable("approver") String approver) {
 		List<AppliedLeave> appliedLeaveList = this.appliedLeaveService.findByApproverAndLeaveStatus(approver, "PNAPV");
 		return appliedLeaveList;
-	}		
+	}
+	
+
+	@RequestMapping(value="/appliedleave/me", method=RequestMethod.GET)
+	@PreAuthorize("hasAuthority('EMPLOYEE')")
+	public List<AppliedLeave> doGetMyAppliedLeaveByEmplid(@CurrentUser UserPrincipal currentUser, 
+													 	 @RequestParam(value="leaveCode", required=false) String leaveCode,
+														 @RequestParam(value="leaveStatus", required=false) String leaveStatus,
+													 	 @RequestParam(value="startDate", required=false) String startDateStr,
+														 @RequestParam(value="endDate", required=false) String endDateStr) {
+				
+		// If both dates are not null, parse and create Date objects
+		Date startDate = null, endDate = null;
+		boolean datePresent = false;
+		
+		if(startDateStr != null && endDateStr != null) {
+			try {
+				SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+				sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+				
+				startDate = sdf.parse(startDateStr);
+				endDate = sdf.parse(endDateStr);
+				datePresent = true;				
+			} catch (Exception e) {
+				datePresent = false;
+			}
+		}
+		
+		String emplid = currentUser.getId();
+		
+		List<AppliedLeave> appliedLeave;
+		
+		// Call corresponding Service method base on PARAM provided
+		if(leaveCode != null && leaveStatus != null && datePresent) {
+			appliedLeave = this.appliedLeaveService.
+								findByEmplidAndLeaveCodeAndLeaveStatusAndBetweenDate
+								(emplid, leaveCode, leaveStatus, startDate, endDate);
+			
+		} else if(leaveCode != null && leaveStatus != null && !datePresent) {
+			appliedLeave = this.appliedLeaveService.
+								findByEmplidAndLeaveCodeAndLeaveStatus
+								(emplid, leaveCode, leaveStatus);
+		
+		} else if(leaveCode != null && leaveStatus == null && datePresent) {
+			appliedLeave = this.appliedLeaveService.
+								findByEmplidAndLeaveCodeBetweenDates
+								(emplid, leaveCode, startDate, endDate);
+			
+		} else if(leaveCode != null && leaveStatus == null && !datePresent) { 				
+			appliedLeave = this.appliedLeaveService.
+								findByEmplidAndLeaveCode
+								(emplid, leaveCode);
+		
+		} else if(leaveCode == null && leaveStatus != null && datePresent) { 				
+			appliedLeave = this.appliedLeaveService.
+								findByEmplidAndLeaveStatusBetweenDates
+								(emplid, leaveStatus, startDate, endDate);
+		
+		} else if(leaveCode == null && leaveStatus != null && !datePresent) { 				
+			appliedLeave = this.appliedLeaveService.
+								findByEmplidAndLeaveStatus
+								(emplid, leaveStatus);
+		
+		} else if(leaveCode == null && leaveStatus == null && datePresent) { 				
+			appliedLeave = this.appliedLeaveService.
+								findByEmplidBetweenDates
+								(emplid, startDate, endDate);
+		
+		} else //(leaveCode == null && leaveStatus == null && !datePresent) 
+			appliedLeave = this.appliedLeaveService.findByEmplid(emplid);
+		
+		return appliedLeave;
+	}
+
+	@RequestMapping(value="/appliedleave/count/me/pendingapproval", method=RequestMethod.GET)
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+	public long doCountPendingMyApproval(@CurrentUser UserPrincipal currentUser) {
+		String approver = currentUser.getId();
+		long count = this.appliedLeaveService.countByApproverAndLeaveStatus(approver, "PNAPV");
+		return count;
+	}	
+
+	@RequestMapping(value="/appliedleave/me/pendingapproval", method=RequestMethod.GET)
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+	public List<AppliedLeave> doFindPendingMyApproval(@CurrentUser UserPrincipal currentUser) {
+		String approver = currentUser.getId();
+		List<AppliedLeave> appliedLeaveList = this.appliedLeaveService.findByApproverAndLeaveStatus(approver, "PNAPV");
+		return appliedLeaveList;
+	}	
+	
+	@RequestMapping(value="/appliedleave/me/{year}", method=RequestMethod.GET)
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+	public List<AppliedLeave> doFindMyReporteeLeaves(@CurrentUser UserPrincipal currentUser, 
+			 										 @PathVariable("year") int year) {
+		String approver = currentUser.getId();
+		
+		Calendar cal = Calendar.getInstance();
+		cal.set(year, 0, 1);
+		Date startDate = cal.getTime();
+		cal.set(year, 11, 31);
+		Date endDate = cal.getTime();
+		
+		List<AppliedLeave> appliedLeaveList = this.appliedLeaveService.findByManagerReporteeBetweenDates(approver, startDate, endDate);
+		return appliedLeaveList;
+	}	
+
 }

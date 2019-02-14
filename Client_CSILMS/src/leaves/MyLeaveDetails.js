@@ -1,7 +1,54 @@
 import React, { Component } from "react";
 import { Table } from "reactstrap";
+import { fetchData } from '../util/APIUtils';
+import { API_BASE_URL } from '../constants';
+import { withRouter } from 'react-router-dom';
 
 class MyLeaveDetails extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userData: []
+    };
+    this.loadMyLeaveDetails = this.loadMyLeaveDetails.bind(this);
+    this.autoIncrementRow = this.autoIncrementRow.bind(this);
+
+  }
+
+  loadMyLeaveDetails() {
+    fetchData({
+      url: API_BASE_URL + "/leaveentitlement/me",
+      method: 'GET'
+    }).then(response => {
+      this.setState({
+        userData: response
+      });
+    }).catch(error => {
+      if (error.status === 401) {
+        this.props.history.push("/login");
+      }
+      let userData = [];
+      this.setState({ userData: userData });
+    });
+  }
+
+  componentDidMount() {
+    this.loadMyLeaveDetails();
+  }
+
+  componentDidUpdate(nextProps) {
+    if (this.props.isAuthenticated !== nextProps.isAuthenticated) {
+      this.loadMyLeaveDetails();
+    }
+  }
+
+  autoIncrementRow() {
+    let userData = [];
+    console.log(userData);
+    for (userData = 0; userData < userData.length; userData++) {
+      userData += + userData;
+    }
+  }
   render() {
     return (
       <div className="mainContainerLeavePages">
@@ -15,7 +62,6 @@ class MyLeaveDetails extends Component {
           <Table responsive>
             <thead>
               <tr>
-                <th>No.</th>
                 <th>Leave Type</th>
                 <th>Entitlement</th>
                 <th>Carry Forward</th>
@@ -25,15 +71,20 @@ class MyLeaveDetails extends Component {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>
+              {
+                this.state.userData.map(function (item, key) {
+                  return (
+                    <tr key={key}>
+                      <td>{item.leaveCategory.leaveDescr}</td>
+                      <td>{item.entitlement} days</td>
+                      <td>{item.carryForward} days</td>
+                      <td>{item.availableLeave} days</td>
+                      <td>{item.takenLeave} days</td>
+                      <td>{item.balanceLeave} days</td>
+                    </tr>
+                  )
+                })
+              }
             </tbody>
           </Table>
         </div>
@@ -42,4 +93,4 @@ class MyLeaveDetails extends Component {
   }
 }
 
-export default MyLeaveDetails;
+export default withRouter(MyLeaveDetails);

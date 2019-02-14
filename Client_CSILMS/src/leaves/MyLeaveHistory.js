@@ -1,8 +1,64 @@
 import React, { Component } from "react";
 import { Table } from "reactstrap";
+import { fetchData } from '../util/APIUtils';
+import { API_BASE_URL } from '../constants';
 
 class MyLeaveHistory extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userData: [
+        // {
+        //   joinDate: ""
+        // }
+      ]
+    };
+    this.loadMyLeaveHistory = this.loadMyLeaveHistory.bind(this);
+  }
+
+  loadMyLeaveHistory() {
+    fetchData({
+      url: API_BASE_URL + "/appliedleave/me",
+      method: 'GET'
+    }).then(response => {
+      this.setState({
+        userData: response
+      });
+    }).catch(error => {
+      if (error.status === 401) {
+        this.props.history.push("/login");
+      }
+      let userData = [];
+      this.setState({ userData: userData });
+      console.log(userData);
+    });
+  }
+
+  componentDidMount() {
+    this.loadMyLeaveHistory();
+  }
+
+  componentDidUpdate(nextProps) {
+    if (this.props.isAuthenticated !== nextProps.isAuthenticated) {
+      this.loadMyLeaveHistory();
+    }
+  }
+
+  
   render() {
+    let userData = this.state.userData;
+    // console.log(userData);
+    // // reformat dates and retrive manager name ONLY when data fetch successfully
+    // if (userData["id"] !== "") {
+    //   let endDate = new Date(this.state.userData["endDate"]);
+    //   userData["endDate"] =
+    //   endDate.getFullYear() +
+    //     "-" +
+    //     (endDate.getMonth() + 1) +
+    //     "-" +
+    //     endDate.getDate();
+    // }
+
     return (
       <div className="mainContainerLeavePages">
         <div className="headerContainerFlex">
@@ -27,17 +83,23 @@ class MyLeaveHistory extends Component {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-                <td>-</td>
-              </tr>
+            {
+                this.state.userData.map(function (item, key) {
+                  return (
+                    <tr key={key}>
+                      <td></td>
+                      <td>{item.id.startDate}</td>
+                      <td>{item.endDate}</td>
+                      <td>{item.leaveDuration}</td>
+                      <td>{item.leaveCategory.leaveDescr}</td>
+                      <td>{item.reason}</td>
+                      <td>{item.id.effDate}</td>
+                      <td>{item.leaveStatus}</td>
+                      <td></td>
+                    </tr>
+                  )
+                })
+              }
             </tbody>
           </Table>
         </div>

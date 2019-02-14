@@ -17,6 +17,10 @@ class Menu extends Component {
     });
   }
   render() {
+    if(!this.props.currentUser){
+      return(<div></div>);
+    }
+
     const menuContainer = {
       background: "#004A9B",
       fontFamily: "Helvetica",

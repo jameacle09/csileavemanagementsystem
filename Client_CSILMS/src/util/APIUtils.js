@@ -59,3 +59,23 @@ export function displayByRole(props, roleName){
       return {display:"none"};
     }
 }
+
+export function isHrRole(props){
+    if(!props) return;
+    const roles = props.roles;
+    const currRole = roles.filter(function(role){
+      return role.roleName === "HR";
+    });
+
+    return currRole.length > 0 ? true : false;
+}
+
+export function isManagerRole(props){
+    if(!props) return;
+    const roles = props.roles;
+    const currRole = roles.filter(function(role){
+      return role.roleName === "MANAGER";
+    });
+
+    return currRole.length > 0 ? true : false;
+}
