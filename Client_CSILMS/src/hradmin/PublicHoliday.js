@@ -7,6 +7,7 @@ import { Redirect, withRouter } from 'react-router-dom';
 import { isHrRole } from '../util/APIUtils';
 import { fetchData } from '../util/APIUtils';
 import { API_BASE_URL } from '../constants';
+import Moment from 'react-moment';
 
 class PublicHoliday extends Component {
   constructor(props) {
@@ -108,7 +109,7 @@ class PublicHoliday extends Component {
                 this.state.userData.map(function (item, key) {
                   return (
                     <tr key={key}>
-                      <td>{item.holidayDate}</td>
+                      <td><Moment format="YYYY-MM-DD">{item.holidayDate}</Moment></td>
                       <td>{item.holidayDay}</td>
                       <td>{item.holidayDescr}</td>
                       <td>{item.holidayState}</td>

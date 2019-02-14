@@ -8,6 +8,7 @@ import { Redirect, withRouter } from 'react-router-dom';
 import { isHrRole } from '../util/APIUtils';
 import { fetchData } from '../util/APIUtils';
 import { API_BASE_URL } from '../constants';
+import Moment from 'react-moment';
 
 class ListStaffProfile extends Component {
   constructor(props) {
@@ -116,7 +117,7 @@ class ListStaffProfile extends Component {
                       <td>{item.mobileNo}</td>
                       <td>{item.businessUnit}</td>
                       <td>{item.reportsTo.name}</td>
-                      <td>{item.joinDate}</td>
+                      <td><Moment format="YYYY-MM-DD">{item.joinDate}</Moment></td>
                       <td><Button>Edit</Button></td>
                     </tr>
                   )

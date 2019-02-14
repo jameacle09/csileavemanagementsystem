@@ -7,6 +7,7 @@ import Loading from "../img/Spinner-1s-200px.gif";
 import { fetchData } from '../util/APIUtils';
 import { API_BASE_URL } from '../constants';
 import { withRouter } from 'react-router-dom';
+import Moment from 'react-moment';
 
 class MyProfile extends Component {
   constructor(props) {
@@ -81,13 +82,13 @@ class MyProfile extends Component {
     let userData = this.state.userData;
     // reformat dates and retrive manager name ONLY when data fetch successfully
     if (userData["emplId"] !== "") {
-      let joinDate = new Date(this.state.userData["joinDate"]);
-      userData["joinDate"] =
-        joinDate.getFullYear() +
-        "-" +
-        (joinDate.getMonth() + 1) +
-        "-" +
-        joinDate.getDate();
+      // let joinDate = new Date(this.state.userData["joinDate"]);
+      // userData["joinDate"] =
+      //   joinDate.getFullYear() +
+      //   "-" +
+      //   (joinDate.getMonth() + 1) +
+      //   "-" +
+      //   joinDate.getDate();
       userData["managerName"] = this.state.userData["reportsTo"]["name"];
     }
     return (
@@ -153,7 +154,7 @@ class MyProfile extends Component {
               </ListGroupItem>
               <ListGroupItem>
                 Join Date:{" "}
-                <p className="profileDataText">{userData["joinDate"]}</p>
+                <p className="profileDataText"><Moment format="YYYY-MM-DD">{userData["joinDate"]}</Moment></p>
               </ListGroupItem>
             </ListGroup>
           </div>
