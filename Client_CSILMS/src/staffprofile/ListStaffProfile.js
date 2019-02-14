@@ -4,13 +4,51 @@ import Button from "@material-ui/core/Button";
 import StaffTableRow from "./StaffTableRow";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
-import  { Redirect, withRouter } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import { isHrRole } from '../util/APIUtils';
+import { fetchData } from '../util/APIUtils';
+import { API_BASE_URL } from '../constants';
 
 class ListStaffProfile extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userData: []
+    };
+    this.loadEmployeeDetails = this.loadEmployeeDetails.bind(this);
+  }
+
+  loadEmployeeDetails() {
+    fetchData({
+      url: API_BASE_URL + "/employeedetails",
+      method: 'GET'
+    }).then(response => {
+      this.setState({
+        userData: response
+      });
+    }).catch(error => {
+      if (error.status === 401) {
+        this.props.history.push("/login");
+      }
+      let userData = [];
+      this.setState({ userData: userData });
+      console.log(userData);
+    });
+  }
+
+  componentDidMount() {
+    this.loadEmployeeDetails();
+  }
+
+  componentDidUpdate(nextProps) {
+    if (this.props.isAuthenticated !== nextProps.isAuthenticated) {
+      this.loadEmployeeDetails();
+    }
+  }
+
   render() {
-    if(!isHrRole(this.props.currentUser)){
-      return(<Redirect to='/forbidden'  />);
+    if (!isHrRole(this.props.currentUser)) {
+      return (<Redirect to='/forbidden' />);
     }
 
     return (
@@ -67,9 +105,25 @@ class ListStaffProfile extends Component {
               </tr>
             </thead>
             <tbody>
-              {/* {this.props.data.map((staffprofile, index) => (
-                <StaffTableRow key={index} staffprofile={staffprofile} />
-              ))} */}
+            {
+                this.state.userData.map(function (item, key) {
+                  return (
+                    <tr key={key}>
+                      <td>{item.emplId}</td>
+                      <td>{item.name}</td>
+                      <td>{item.businessEmail}</td>
+                      <td>{item.nricPassport}</td>
+                      <td>{item.jobTitle}</td>
+                      <td>{item.mobileNo}</td>
+                      <td>{item.businessUnit}</td>
+                      <td>{item.reportsTo.name}</td>
+                      <td>{item.joinDate}</td>
+                      <td></td>
+                      <td></td>
+                    </tr>
+                  )
+                })
+              }
             </tbody>
           </Table>
         </div>
