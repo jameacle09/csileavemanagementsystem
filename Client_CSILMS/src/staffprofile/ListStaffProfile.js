@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Table, Input, Row, Col } from "reactstrap";
-import Button from "@material-ui/core/Button";
+import { Table, Input, Row, Col, Button } from "reactstrap";
+//import Button from "@material-ui/core/Button";
 import StaffTableRow from "./StaffTableRow";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
@@ -101,7 +101,6 @@ class ListStaffProfile extends Component {
                 <th>Line Manager</th>
                 <th>Join Date</th>
                 <th>Edit</th>
-                <th>Delete</th>
               </tr>
             </thead>
             <tbody>
@@ -118,8 +117,7 @@ class ListStaffProfile extends Component {
                       <td>{item.businessUnit}</td>
                       <td>{item.reportsTo.name}</td>
                       <td>{item.joinDate}</td>
-                      <td></td>
-                      <td></td>
+                      <td><Button>Edit</Button></td>
                     </tr>
                   )
                 })
