@@ -25,36 +25,36 @@ class EditEntitlement extends Component {
     };
   }
 
-  componentDidMount() {
-    // fetch CSI Staff ID and Name from API
-    fetch("http://localhost/api/staffprofile/1")
-      .then(response => response.json())
-      .then(data => this.setState({ userData: data }))
-      .catch(err => {
-        // if unable to fetch data, assign default (spaces) to values
-        let userData = {
-          csiStaffId: "",
-          staffName: ""
-        };
-        this.setState({ userData: userData });
-      });
+  // componentDidMount() {
+  //   // fetch CSI Staff ID and Name from API
+  //   fetch("http://localhost/api/staffprofile/1")
+  //     .then(response => response.json())
+  //     .then(data => this.setState({ userData: data }))
+  //     .catch(err => {
+  //       // if unable to fetch data, assign default (spaces) to values
+  //       let userData = {
+  //         csiStaffId: "",
+  //         staffName: ""
+  //       };
+  //       this.setState({ userData: userData });
+  //     });
 
-    // fetch leave category from API
-    fetch("http://localhost/api/leavecategories")
-      .then(response => response.json())
-      .then(data => this.setState({ leaveCategory: data }))
-      .catch(err => {
-        // if unable to fetch data, assign default (spaces) to values
-        let leaveCategoryData = [
-          {
-            id: "",
-            leaveCode: "",
-            leaveName: ""
-          }
-        ];
-        this.setState({ leaveCategory: leaveCategoryData });
-      });
-  }
+  //   // fetch leave category from API
+  //   fetch("http://localhost/api/leavecategories")
+  //     .then(response => response.json())
+  //     .then(data => this.setState({ leaveCategory: data }))
+  //     .catch(err => {
+  //       // if unable to fetch data, assign default (spaces) to values
+  //       let leaveCategoryData = [
+  //         {
+  //           id: "",
+  //           leaveCode: "",
+  //           leaveName: ""
+  //         }
+  //       ];
+  //       this.setState({ leaveCategory: leaveCategoryData });
+  //     });
+  // }
 
   render() {
     if(!isHrRole(this.props.currentUser)){

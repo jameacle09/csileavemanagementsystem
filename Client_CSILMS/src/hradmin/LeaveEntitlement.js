@@ -110,7 +110,7 @@ class LeaveEntitlement extends Component {
                       <td>{item.balanceLeave} days</td>
                       <td><Button
                         component={Link}
-                        to={`/leaveentitlement/edit/${"emplid"}`}
+                        to={`/leaveentitlement/edit/${item.id.emplid}`}
                         variant="contained"
                         color="primary"
                         style={{ textTransform: "none", color: "white" }}
