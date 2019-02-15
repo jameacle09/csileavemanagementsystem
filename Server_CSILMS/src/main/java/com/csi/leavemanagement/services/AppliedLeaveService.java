@@ -1,6 +1,8 @@
 package com.csi.leavemanagement.services;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -10,25 +12,86 @@ import org.springframework.stereotype.Service;
 import com.csi.leavemanagement.models.AppliedLeave;
 import com.csi.leavemanagement.models.AppliedLeaveId;
 import com.csi.leavemanagement.models.EmployeeDetails;
+import com.csi.leavemanagement.models.LeaveEntitlement;
 import com.csi.leavemanagement.repositories.AppliedLeaveRepository;
-import com.csi.leavemanagement.repositories.EmployeeDetailsRepository;
 
 @Service
 public class AppliedLeaveService {
 
 	private AppliedLeaveRepository appliedLeaveRepository;
 	private EmployeeDetailsService employeeDetailsService;
+	private LeaveEntitlementService leaveEntitlementService;
 
 	@Autowired
 	public AppliedLeaveService(AppliedLeaveRepository appliedLeaveRepository,
-			                   EmployeeDetailsService employeeDetailsService) {
+			                   EmployeeDetailsService employeeDetailsService,
+			                   LeaveEntitlementService leaveEntitlementService) {
 		this.appliedLeaveRepository = appliedLeaveRepository;
 		this.employeeDetailsService = employeeDetailsService;
+		this.leaveEntitlementService = leaveEntitlementService;
 	}
 	
 	public List<AppliedLeave> findAll() {
 		List<AppliedLeave> appliedLeaveList = (List<AppliedLeave>)this.appliedLeaveRepository.findAll();
 		return appliedLeaveList;
+	}
+	
+	public AppliedLeave create(AppliedLeave newAppliedLeave) throws Exception {
+		// validate leave
+		
+		Calendar cal = Calendar.getInstance();
+		cal.setTime(newAppliedLeave.getId().getStartDate());
+		int year = cal.get(Calendar.YEAR);
+		
+		// Check 1: If duration exceed current available leave entitlement
+		LeaveEntitlement userLeaveEntitlement = leaveEntitlementService.findById(newAppliedLeave.getId().getEmplid(),
+																				 year, 
+																				 newAppliedLeave.getLeaveCategory().getLeaveCode());
+		
+		if(userLeaveEntitlement.getBalanceLeave() < newAppliedLeave.getLeaveDuration())
+			throw new Exception("csilms: You do not have sufficient leave balance for " + userLeaveEntitlement.getLeaveCategory().getLeaveDescr());
+		
+		// Check 2: If there's leave applied during the same duration
+		List<AppliedLeave> userAppliedLeaveList = this.appliedLeaveRepository.findByIdEmplid(newAppliedLeave.getId().getEmplid());
+		
+		SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+		Date newLeaveStartDate = newAppliedLeave.getId().getStartDate();
+		Date newLeaveEndDate = newAppliedLeave.getEndDate();
+				
+		for(AppliedLeave userAppliedLeave : userAppliedLeaveList) {
+			
+			// Skip existing leaves that are cancelled or rejected
+			if(userAppliedLeave.getLeaveStatus() == "CANCL" || userAppliedLeave.getLeaveStatus() == "REJCT")
+				continue;
+			
+			Date existingLeaveStartDate = userAppliedLeave.getId().getStartDate();
+			Date existingLeaveEndDate = userAppliedLeave.getEndDate();
+			String existingLeaveStartDateStr = sdf.format(existingLeaveStartDate);
+			String existingLeaveEndDateStr = sdf.format(existingLeaveEndDate);
+			
+			// Check if leave start date overlaps with any existing leave start and end date
+			if( (existingLeaveStartDate.before(newLeaveStartDate) && existingLeaveEndDate.after(newLeaveStartDate)) || 
+					newLeaveStartDate.equals(existingLeaveStartDate) || 
+					newLeaveStartDate.equals(existingLeaveEndDate)) 
+				throw new Exception("csilms: You have already applied " + userAppliedLeave.getLeaveCategory().getLeaveDescr() + " from " 
+						+ existingLeaveStartDateStr + " to " + existingLeaveEndDateStr );
+						
+			if(newAppliedLeave.getLeaveDuration() > 1) {				
+				// Check if leave end date overlaps with any existing leave, if start date and end date are different
+				if( (existingLeaveStartDate.before(newLeaveEndDate) && existingLeaveEndDate.after(newLeaveEndDate)) || 
+						newLeaveEndDate.equals(existingLeaveStartDate) || 
+						newLeaveEndDate.equals(existingLeaveEndDate))
+					throw new Exception("csilms: You have already applied " + userAppliedLeave.getLeaveCategory().getLeaveDescr() + " from " 
+							+ existingLeaveStartDateStr + " to " + existingLeaveEndDateStr );
+				
+				// Check if any existing leave are in between new leave start and end date
+				if(newLeaveStartDate.before(existingLeaveStartDate) && newLeaveEndDate.after(existingLeaveEndDate))
+					throw new Exception("csilms: You have already applied " + userAppliedLeave.getLeaveCategory().getLeaveDescr() + " from " 
+							+ existingLeaveStartDateStr + " to " + existingLeaveEndDateStr );
+			}
+		}
+				
+		return this.appliedLeaveRepository.save(newAppliedLeave);
 	}
 	
 	public AppliedLeave save(AppliedLeave newAppliedLeave) {

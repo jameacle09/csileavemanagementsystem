@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -40,11 +42,27 @@ public class AppliedLeaveRestController {
 	}
 
 	@RequestMapping(value="/appliedleave", method=RequestMethod.POST)
-	public AppliedLeave doSaveAppliedLeave(@RequestBody AppliedLeave appliedLeave) {
-		AppliedLeave newAppliedLeave = this.appliedLeaveService.save(appliedLeave);
-		return newAppliedLeave;
+	public ResponseEntity<String> doSaveAppliedLeave(@RequestBody AppliedLeave appliedLeave) {
+
+		try {
+
+			AppliedLeave newAppliedLeave = this.appliedLeaveService.create(appliedLeave);
+			if(newAppliedLeave == null) 
+				return new ResponseEntity<String>("{ \"message\": \"Leave application failed\"", HttpStatus.BAD_REQUEST);
+			
+		} catch (Exception e) {
+
+			if(e.getMessage().substring(0, 6).contentEquals("csilms"))
+				return new ResponseEntity<String>("{ \"message\": \"" + e.getMessage().substring(8) + "\"}", HttpStatus.CONFLICT);
+			else
+				// TODO : to remove e.getMessage and replace with proper error message before deployment
+				return new ResponseEntity<String>("{ \"message\": \"" + e.getMessage() + "\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+		}
+		
+		// Leave application created successfully
+		return new ResponseEntity<String>("{ \"message\": \"Leave application created\" }", HttpStatus.CREATED );		
 	}
-	
+
 	@RequestMapping(value="/appliedleave/{emplid}", method=RequestMethod.DELETE)
 	public String doDeleteAppliedLeaveById(@PathVariable("emplid") String emplid,  
 										   @RequestParam("effDate") String effDateStr, 
