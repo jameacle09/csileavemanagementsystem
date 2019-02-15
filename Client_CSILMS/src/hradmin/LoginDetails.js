@@ -4,11 +4,54 @@ import Button from "@material-ui/core/Button";
 import { Link, Redirect, withRouter } from "react-router-dom";
 import "../common/Styles.css";
 import { isHrRole } from '../util/APIUtils';
+import { fetchData } from '../util/APIUtils';
+import { API_BASE_URL } from '../constants';
 
 class LoginDetails extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      userData: [
+        // {
+        //   joinDate: ""
+        // }
+      ]
+    };
+    this.loadLoginDetails = this.loadLoginDetails.bind(this);
+  }
+
+  loadLoginDetails() {
+    fetchData({
+      url: API_BASE_URL + "/logindetails",
+      method: 'GET'
+    }).then(response => {
+      this.setState({
+        userData: response
+      });
+    }).catch(error => {
+      if (error.status === 401) {
+        this.props.history.push("/login");
+      }
+      let userData = [];
+      this.setState({ userData: userData });
+      console.log(userData);
+    });
+  }
+
+  componentDidMount() {
+    this.loadLoginDetails();
+  }
+
+  componentDidUpdate(nextProps) {
+    if (this.props.isAuthenticated !== nextProps.isAuthenticated) {
+      this.loadLoginDetails();
+    }
+  }
+
   render() {
-    if(!isHrRole(this.props.currentUser)){
-      return(<Redirect to='/forbidden'  />);
+    if (!isHrRole(this.props.currentUser)) {
+      return (<Redirect to='/forbidden' />);
     }
 
     return (
@@ -52,41 +95,46 @@ class LoginDetails extends Component {
               <tr>
                 <th>User ID</th>
                 <th>Employee ID</th>
-                <th>Employee Name</th>
+                {/* <th>Employee Name</th> */}
                 <th>Account Locked?</th>
                 <th>Edit</th>
                 <th>Delete</th>
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td />
-                <td />
-                <td />
-                <td />
-                <td>
-                  <Button
-                    className="btn btn-primary"
-                    color="primary"
-                    tag={Link}
-                    to={`/logindetails/edit/${"userid"}`}
-                    activeclassname="active"
-                  >
-                    <span className="fa fa-edit" />
-                  </Button>
-                </td>
-                <td>
-                  <Button
-                    className="btn btn-primary"
-                    color="primary"
-                    tag={Link}
-                    to={`/logindetails/delete/${"userid"}`}
-                    activeclassname="active"
-                  >
-                    <span className="fa fa-trash" />
-                  </Button>
-                </td>
-              </tr>
+              {
+                this.state.userData.map(function (item, key) {
+                  return (
+                    <tr key={key}>
+                      <td>{item.userId}</td>
+                      <td>{item.emplId}</td>
+                      <td>{item.lockAccount}</td>
+                      <td>
+                        <Button
+                          className="btn btn-primary"
+                          color="primary"
+                          tag={Link}
+                          to={`/logindetails/edit/${"userid"}`}
+                          activeclassname="active"
+                        >
+                          <span className="fa fa-edit" />
+                        </Button>
+                      </td>
+                      <td>
+                        <Button
+                          className="btn btn-primary"
+                          color="primary"
+                          tag={Link}
+                          to={`/logindetails/delete/${"userid"}`}
+                          activeclassname="active"
+                        >
+                          <span className="fa fa-trash" />
+                        </Button>
+                      </td>
+                    </tr>
+                  )
+                })
+              }
             </tbody>
           </Table>
         </div>

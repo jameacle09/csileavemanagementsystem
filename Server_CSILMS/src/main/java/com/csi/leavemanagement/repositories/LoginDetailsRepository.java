@@ -10,5 +10,5 @@ public interface LoginDetailsRepository extends JpaRepository<LoginDetails, Long
 	
 	Optional<LoginDetails> findByUserIdAndLockAccount(String userId, int lockAccount);
 	Optional<LoginDetails> findByEmplId(String emplId);
-
+	Optional<LoginDetails> deleteByEmplId(String emplId);
 }

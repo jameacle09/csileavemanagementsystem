@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import { Table } from "reactstrap";
 import { fetchData } from '../util/APIUtils';
 import { API_BASE_URL } from '../constants';
+import Moment from 'react-moment';
 
 class MyLeaveHistory extends Component {
   constructor(props) {
@@ -88,12 +89,12 @@ class MyLeaveHistory extends Component {
                   return (
                     <tr key={key}>
                       <td></td>
-                      <td>{item.id.startDate}</td>
-                      <td>{item.endDate}</td>
+                      <td><Moment format="YYYY-MM-DD">{item.id.startDate}</Moment></td>
+                      <td><Moment format="YYYY-MM-DD">{item.endDate}</Moment></td>
                       <td>{item.leaveDuration}</td>
                       <td>{item.leaveCategory.leaveDescr}</td>
                       <td>{item.reason}</td>
-                      <td>{item.id.effDate}</td>
+                      <td><Moment format="YYYY-MM-DD">{item.id.effDate}</Moment></td>
                       <td>{item.leaveStatus}</td>
                       <td></td>
                     </tr>

@@ -70,8 +70,8 @@ class ApplyLeave extends Component {
       })
       .then(data => {
         this.setState({ userData: data });
-        if (data["reportsTo"] !== null)
-          this.setState({ approverId: data["reportsTo"]["id"] });
+        if (data["reportsTo"] != null)
+          this.setState({ approverId: data["reportsTo"]["emplId"] });
       })
       .catch(err => {
         // if unable to fetch data, assign default (spaces) to values
@@ -252,29 +252,37 @@ class ApplyLeave extends Component {
     if (validForm) {
       // create JSON Object for new Leave Request
       let newLeaveRequest = {
-        staffId: { id: this.state.userData["id"] },
-        leaveCategory: { id: this.state.leaveCategory },
-        startDate: this.state.startDate,
+        id: { 
+          emplid: this.state.userData["emplId"],
+          effDate: new Date(),
+          startDate: this.state.startDate,
+          leaveCode: this.state.leaveCategory
+        },
+        employeeDetails: {
+          emplId: this.state.userData["emplId"]
+        },
+        leaveCategory: {
+          leaveCode: this.state.leaveCategory
+        },
         endDate: this.state.endDate,
+        halfDay: this.state.isHalfDay? 'Y' : 'N',
         leaveDuration: this.state.leaveDuration,
-        leaveReason: this.state.leaveReason,
-        leaveStatusId: { id: 3 } // All new leave has status of 3, Pending Approval
+        leaveStatus: 'PNAPV',
+        approver: this.state.approverId,
+        reason: this.state.leaveReason,
+        approverDate: null,
+        attachment: ''
       };
 
       console.log(JSON.stringify(newLeaveRequest));
 
-      fetch("http://localhost/api/leavedetail", {
+      fetchData({
+        url: API_BASE_URL + "/appliedleave",
         method: "POST",
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json"
-        },
         body: JSON.stringify(newLeaveRequest)
       })
-        .then(res => res.json())
-        .then(res => {
-          console.log(JSON.stringify(res));
-          if (res.hasOwnProperty("id") && res["id"] != null)
+        .then(res => {  
+          //if (res.hasOwnProperty("id") && res["id"] != null)
             confirmAlert({
               message: "Your leave request is submitted.",
               buttons: [
@@ -285,9 +293,15 @@ class ApplyLeave extends Component {
               ]
             });
         })
-        //        .then(this.props.history.push('/MyLeaveHistory'))
         .catch(err => {
-          console.log("!!! Error : ".err);
+            confirmAlert({
+              message: err.message,
+              buttons: [
+                {
+                  label: "Ok"
+                }
+              ]
+            });
         });
     }
   }

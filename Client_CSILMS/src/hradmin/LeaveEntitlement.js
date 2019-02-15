@@ -3,13 +3,56 @@ import { Table } from "reactstrap";
 import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
-import  { Redirect, withRouter } from 'react-router-dom';
+import { Redirect, withRouter } from 'react-router-dom';
 import { isHrRole } from '../util/APIUtils';
+import { fetchData } from '../util/APIUtils';
+import { API_BASE_URL } from '../constants';
 
 class LeaveEntitlement extends Component {
+
+  constructor(props) {
+    super(props);
+    this.state = {
+      userData: [
+        // {
+        //   joinDate: ""
+        // }
+      ]
+    };
+    this.loadLeaveEntitlement = this.loadLeaveEntitlement.bind(this);
+  }
+
+  loadLeaveEntitlement() {
+    fetchData({
+      url: API_BASE_URL + "/leaveentitlements",
+      method: 'GET'
+    }).then(response => {
+      this.setState({
+        userData: response
+      });
+    }).catch(error => {
+      if (error.status === 401) {
+        this.props.history.push("/login");
+      }
+      let userData = [];
+      this.setState({ userData: userData });
+      console.log(userData);
+    });
+  }
+
+  componentDidMount() {
+    this.loadLeaveEntitlement();
+  }
+
+  componentDidUpdate(nextProps) {
+    if (this.props.isAuthenticated !== nextProps.isAuthenticated) {
+      this.loadLeaveEntitlement();
+    }
+  }
+
   render() {
-    if(!isHrRole(this.props.currentUser)){
-      return(<Redirect to='/forbidden'  />);
+    if (!isHrRole(this.props.currentUser)) {
+      return (<Redirect to='/forbidden' />);
     }
 
     return (
@@ -52,28 +95,32 @@ class LeaveEntitlement extends Component {
               </tr>
             </thead>
             <tbody>
-              <tr>
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td />
-                <td>
-                  <Button
-                    component={Link}
-                    to={`/leaveentitlement/edit/${"csiStaffId"}`}
-                    variant="contained"
-                    color="primary"
-                    style={{ textTransform: "none", color: "white" }}
-                  >
-                    <span className="fa fa-edit" />
-                  </Button>
-                </td>
-              </tr>
+              {
+                this.state.userData.map(function (item, key) {
+                  return (
+                    <tr key={key}> 
+                      <td>{item.id.emplid}</td>
+                      <td>{item.employeeDetails.name}</td>
+                      <td>{item.id.year}</td>
+                      <td>{item.leaveCategory.leaveDescr}</td>
+                      <td>{item.carryForward} days</td>
+                      <td>{item.entitlement} days</td>
+                      <td>{item.availableLeave} days</td>
+                      <td>{item.takenLeave} days</td>
+                      <td>{item.balanceLeave} days</td>
+                      <td><Button
+                        component={Link}
+                        to={`/leaveentitlement/edit/${"emplid"}`}
+                        variant="contained"
+                        color="primary"
+                        style={{ textTransform: "none", color: "white" }}
+                      >
+                        <span className="fa fa-edit" />
+                      </Button></td>
+                    </tr>
+                  )
+                })
+              }
             </tbody>
           </Table>
         </div>
