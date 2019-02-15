@@ -9,8 +9,7 @@ class LeaveRequestApproval extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: [],
-      currentApproverId: "",
+      leaveRequestData: [],
       componentFlag: "doList",
       componentToLoad: <LeaveRequestList />
     };
@@ -26,31 +25,27 @@ class LeaveRequestApproval extends Component {
     // getCurrentUser()
     //   .then(currentUser => {
     //     // console.log(currentUser);
-    //     let currentEmplId = currentUser.emplId;
-    //     this.setState({ currentApproverId: currentEmplId });
+    //     this.setState({ currentApproverId: currentUser.emplId });
     //   })
     //   .catch(err => {
     //     console.log(err);
     //   });
-    // this.setState({ currentApproverId: currentApproverId });
+    // // this.setState({ currentApproverId: currentApproverId });
     //url: API_BASE_URL + "/appliedleave/E000000011/pendingapproval",
 
-    console.log(this.props);
     fetchData({
-      url:
-        API_BASE_URL +
-        `/appliedleave/${this.state.currentApproverId}/pendingapproval`,
+      url: API_BASE_URL + "/appliedleave/me/pendingapproval",
       method: "GET"
     })
       .then(data => {
-        console.log(data);
-        this.setState({ data: data });
-        this.setState({ componentFlag: "doList" });
+        this.setState({
+          leaveRequestData: data,
+          componentFlag: "doList"
+        });
       })
       .catch(err => {
         console.log(err);
       });
-    console.log(this.props.currentUser);
   }
 
   showLeaveRequest() {
@@ -74,7 +69,7 @@ class LeaveRequestApproval extends Component {
       default:
         this.state.componentToLoad = (
           <LeaveRequestList
-            data={this.state.data}
+            data={this.state.leaveRequestData}
             showLeaveRequestList={this.showLeaveRequestList}
           />
         );

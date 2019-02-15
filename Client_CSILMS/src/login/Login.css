@@ -27,7 +27,7 @@
   margin-top: auto;
   margin-bottom: auto;
   margin-left: auto;
-  margin-right: 15px;
+  margin-right: 20px;
 }
 .loginTextMessageContainer {
   position: absolute;
@@ -54,7 +54,7 @@
   height: 380px;
   margin-top: auto;
   margin-bottom: auto;
-  margin-left: 15px;
+  margin-left: 20px;
   border: 1px solid #032a53;
   border-radius: 10px;
   align-self: flex-start;

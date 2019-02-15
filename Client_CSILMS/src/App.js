@@ -10,6 +10,7 @@ import MyLeaveDetails from "./leaves/MyLeaveDetails";
 import MyLeaveHistory from "./leaves/MyLeaveHistory";
 import ManagerApproval from "./manager/ManagerApproval";
 import LeaveRequestApproval from "./manager/LeaveRequestApproval";
+import LeaveRequest from "./manager/LeaveRequest";
 import StaffLeaveHistory from "./manager/StaffLeaveHistory";
 import MyProfile from "./staffprofile/MyProfile";
 import ChangePassword from "./staffprofile/ChangePassword";
@@ -178,11 +179,19 @@ class App extends Component {
                     component={ManagerApproval}
                   /> */}
                   <PrivateRoute
+                    exact
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
                     path="/managerapproval"
-                    title="Manager Approval"
+                    title="Leave Request List"
                     component={LeaveRequestApproval}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/managerapproval/view/:emplId/:effDate/:startDate/:leaveCode"
+                    title="View Leave Request"
+                    component={LeaveRequest}
                   />
 
                   <PrivateRoute
@@ -228,6 +237,7 @@ class App extends Component {
                     component={PublicHoliday}
                   />
                   <PrivateRoute
+                    exact
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
                     path="/leavecategory"
