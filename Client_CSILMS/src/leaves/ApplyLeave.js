@@ -9,6 +9,9 @@ class ApplyLeave extends Component {
   constructor(props) {
     super(props);
 
+    let initialDate = new Date();
+    initialDate.setUTCHours(0,0,0,0);
+
     this.state = {
       userData: {
         emplId: "",
@@ -30,8 +33,8 @@ class ApplyLeave extends Component {
           name: ""
         }
       ],
-      startDate: new Date(),
-      endDate: new Date(),
+      startDate: initialDate,
+      endDate: initialDate,
       isHalfDay: false,
       leaveDuration: 1,
       leaveCategory: "",
