@@ -281,9 +281,8 @@ class ApplyLeave extends Component {
         method: "POST",
         body: JSON.stringify(newLeaveRequest)
       })
-        .then(res => {
-          console.log(JSON.stringify(res));
-          if (res.hasOwnProperty("id") && res["id"] != null)
+        .then(res => {  
+          //if (res.hasOwnProperty("id") && res["id"] != null)
             confirmAlert({
               message: "Your leave request is submitted.",
               buttons: [
@@ -293,11 +292,16 @@ class ApplyLeave extends Component {
                 }
               ]
             });
-          else
-            alert("Unable to apply leave : " + JSON.stringify(res))
         })
         .catch(err => {
-          console.log("!!! Error : ".err);
+            confirmAlert({
+              message: err.message,
+              buttons: [
+                {
+                  label: "Ok"
+                }
+              ]
+            });
         });
     }
   }
