@@ -9,7 +9,9 @@ import ApplyLeave from "./leaves/ApplyLeave";
 import MyProfile from "./staffprofile/MyProfile";
 import MyLeaveDetails from "./leaves/MyLeaveDetails";
 import MyLeaveHistory from "./leaves/MyLeaveHistory";
-import ManagerApproval from "./manager/ManagerApproval";
+// import ManagerApproval from "./manager/ManagerApproval";
+import LeaveRequestsList from "./manager/LeaveRequestsList";
+import LeaveRequest from "./manager/LeaveRequest";
 import StaffLeaveHistory from "./manager/StaffLeaveHistory";
 import StaffProfileComponent from "./staffprofile/StaffProfileComponent";
 import ListStaffProfile from "./staffprofile/ListStaffProfile";
@@ -32,9 +34,9 @@ import "./common/Styles.css";
 import { getCurrentUser } from "./util/APIUtils";
 import Login from "./login/Login";
 import { ACCESS_TOKEN } from "./constants";
-import PrivateRoute from './common/PrivateRoute';
-import Forbidden from './common/Forbidden';
-import NotFound from './common/NotFound';
+import PrivateRoute from "./common/PrivateRoute";
+import Forbidden from "./common/Forbidden";
+import NotFound from "./common/NotFound";
 
 class App extends Component {
   constructor(props) {
@@ -43,7 +45,7 @@ class App extends Component {
       currentUser: null,
       isAuthenticated: false,
       isLoading: false
-    }
+    };
 
     this.loadCurrentUser = this.loadCurrentUser.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
@@ -92,10 +94,16 @@ class App extends Component {
       <div className="Site">
         <div className="Site-content">
           <div className="wrapper">
-            <SideBar isAuthenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-              handleLogout={this.handleLogout} />
+            <SideBar
+              isAuthenticated={this.state.isAuthenticated}
+              currentUser={this.state.currentUser}
+              handleLogout={this.handleLogout}
+            />
             <div id="content" style={{ width: "100%" }}>
-              <Menu isAuthenticated={this.state.isAuthenticated} currentUser={this.state.currentUser} />
+              <Menu
+                isAuthenticated={this.state.isAuthenticated}
+                currentUser={this.state.currentUser}
+              />
               <div className="mainContainerFlex">
                 <Switch>
                   {/*<Route exact path="/" title="Home" component={HomePage} />*/}
@@ -114,72 +122,200 @@ class App extends Component {
                     )}
                   />
 
-                  <PrivateRoute exact authenticated={this.state.isAuthenticated} path="/"
-                    component={HomePage} currentUser={this.state.currentUser} handleLogout={this.handleLogout}></PrivateRoute>
-                  <Route path="/login" render={(props) => <Login onLogin={this.handleLogin} {...props} />} />
-                  <PrivateRoute authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/applyleave" title="Apply Leave" component={ApplyLeave} ></PrivateRoute>
-                  <PrivateRoute authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/myleavehistory" title="My Leave History" component={MyLeaveHistory}></PrivateRoute>
-                  <PrivateRoute authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/myleavedetails" title="My Leave Details" component={MyLeaveDetails}></PrivateRoute>
-                  <PrivateRoute authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/myprofile" title="My Profile" component={MyProfile}></PrivateRoute>
+                  <PrivateRoute
+                    exact
+                    authenticated={this.state.isAuthenticated}
+                    path="/"
+                    component={HomePage}
+                    currentUser={this.state.currentUser}
+                    handleLogout={this.handleLogout}
+                  />
+                  <Route
+                    path="/login"
+                    render={props => (
+                      <Login onLogin={this.handleLogin} {...props} />
+                    )}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/applyleave"
+                    title="Apply Leave"
+                    component={ApplyLeave}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/myleavehistory"
+                    title="My Leave History"
+                    component={MyLeaveHistory}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/myleavedetails"
+                    title="My Leave Details"
+                    component={MyLeaveDetails}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/myprofile"
+                    title="My Profile"
+                    component={MyProfile}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/changepassword"
+                    title="Change Password"
+                    component={ChangePassword}
+                  />
+                  {/* <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/managerapproval"
+                    title="Manager Approval"
+                    component={ManagerApproval}
+                  /> */}
+                  <PrivateRoute
+                    exact
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/leaverequests"
+                    title="Leave Requests List"
+                    component={LeaveRequestsList}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/leaverequests/view/:emplId/:effDate/:startDate/:leaveCode"
+                    title="View Leave Request"
+                    component={LeaveRequest}
+                  />
 
-                  <PrivateRoute authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/managerapproval" title="Manager Approval" component={ManagerApproval}></PrivateRoute>
-
-
-                  <PrivateRoute authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/staffleavehistory" title="Staff Leave History" component={StaffLeaveHistory}></PrivateRoute>
-                  <PrivateRoute authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/staffprofile" title="Staff Profile" component={StaffProfileComponent}></PrivateRoute>
-
-
-                  <PrivateRoute exact authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/liststaffprofile" title="List Staff Profile" component={ListStaffProfile}></PrivateRoute>
-                  <PrivateRoute authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/newstaffprofile" title="New Staff Profile" component={NewStaffProfile}></PrivateRoute>
-                  <PrivateRoute authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/liststaffprofile/edit/:emplId" title="Edit Staff Profile" component={EditStaffProfile}></PrivateRoute>
-
-
-                  <PrivateRoute exact authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/leaveentitlement" title="Leave Entitlement" component={LeaveEntitlement}></PrivateRoute>
-                  <PrivateRoute authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/leaveentitlement/edit" title="Edit Entitlement" component={EditEntitlement}></PrivateRoute>
-
-
-                  <PrivateRoute exact authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/publicholiday" title="Public Holiday" component={PublicHoliday}></PrivateRoute>
-                  <PrivateRoute authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/publicholiday/add" title="Add Public Holiday" component={AddPublicHoliday}></PrivateRoute>
-                  <PrivateRoute authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/publicholiday/edit" title="Edit Public Holiday" component={EditPublicHoliday}></PrivateRoute>
-
-
-                  <PrivateRoute exact authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/leavecategory" title="Leave Category" component={LeaveCategory}></PrivateRoute>
-                  <PrivateRoute authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/leavecategory/add" title="Add Leave Category" component={AddLeaveCategory}></PrivateRoute>
-                  <PrivateRoute authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/leavecategory/edit/:leaveCode" title="Edit Leave Category" component={EditLeaveCategory}></PrivateRoute>
-
-
-                  <PrivateRoute exact authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/logindetails" title="User Login Details" component={LoginDetails}></PrivateRoute>
-                  <PrivateRoute authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/logindetails/add" title="Add User Login Details" component={AddLoginDetails}></PrivateRoute>
-                  <PrivateRoute authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/logindetails/edit/:userId" title="Edit User Login Details" component={EditLoginDetails}></PrivateRoute>
-
-
-                  <PrivateRoute authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/changepassword" title="Change Password" component={ChangePassword}></PrivateRoute>
-                  <PrivateRoute authenticated={this.state.isAuthenticated} currentUser={this.state.currentUser}
-                    path="/resetpassword" title="Reset Password" component={ResetPassword}></PrivateRoute>
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/staffleavehistory"
+                    title="Staff Leave History"
+                    component={StaffLeaveHistory}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/staffprofile"
+                    title="Staff Profile"
+                    component={StaffProfileComponent}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/liststaffprofile"
+                    title="List Staff Profile"
+                    component={ListStaffProfile}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/newstaffprofile"
+                    title="New Staff Profile"
+                    component={NewStaffProfile}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/liststaffprofile/edit/:emplId"
+                    title="Edit Staff Profile"
+                    component={EditStaffProfile}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/publicholiday"
+                    title="Public Holiday"
+                    component={PublicHoliday}
+                  />
+                  <PrivateRoute
+                    exact
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/leavecategory"
+                    title="Leave Category"
+                    component={LeaveCategory}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/leaveentitlement"
+                    title="Leave Entitlement"
+                    component={LeaveEntitlement}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/leaveentitlement/edit/:emplId"
+                    title="Edit Entitlement"
+                    component={EditEntitlement}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/addpublicholiday"
+                    title="Add Public Holiday"
+                    component={AddPublicHoliday}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/editpublicholiday"
+                    title="Edit Public Holiday"
+                    component={EditPublicHoliday}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/addleavecategory"
+                    title="Add Leave Category"
+                    component={AddLeaveCategory}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/editleavecategory"
+                    title="Edit Leave Category"
+                    component={EditLeaveCategory}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/logindetails"
+                    title="User Login Details"
+                    component={LoginDetails}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/logindetails/add"
+                    title="Add User Login Details"
+                    component={AddLoginDetails}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/logindetails/edit/:userId"
+                    title="Edit User Login Details"
+                    component={EditLoginDetails}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/resetpassword"
+                    title="Reset Password"
+                    component={ResetPassword}
+                  />
                   <PrivateRoute path="/forbidden" component={Forbidden} />
-                  <Route component={NotFound}></Route>
+                  <Route component={NotFound} />
                 </Switch>
               </div>
             </div>

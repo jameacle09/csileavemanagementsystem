@@ -2,12 +2,12 @@ import React, { Component } from "react";
 import { Table } from "reactstrap";
 // import ManagerSideBar from "./ManagerSideBar";
 import "../common/Styles.css";
-import  { Redirect, withRouter } from 'react-router-dom';
-import { isManagerRole } from '../util/APIUtils';
-import { fetchData } from '../util/APIUtils';
-import { API_BASE_URL } from '../constants';
-import Moment from 'react-moment';
-import 'moment-timezone';
+import { Redirect, withRouter } from "react-router-dom";
+import { isManagerRole } from "../util/APIUtils";
+import { fetchData } from "../util/APIUtils";
+import { API_BASE_URL } from "../constants";
+import Moment from "react-moment";
+// import 'moment-timezone';
 
 class StaffLeaveHistory extends Component {
   constructor(props) {
@@ -17,30 +17,28 @@ class StaffLeaveHistory extends Component {
       leaveRequest: []
     };
   }
-  loadHistoryData(){
+  loadHistoryData() {
     // fetch leave request from API
     const thisYear = new Date().getFullYear();
     fetchData({
       url: API_BASE_URL + "/appliedleave/me/" + thisYear,
-      method: 'GET'
-      })
+      method: "GET"
+    })
       .then(data => this.setState({ leaveRequest: data }))
       .catch(err => {
         // if unable to fetch data, assign default (spaces) to values
         let leaveRequest = [];
         this.setState({ leaveRequest: leaveRequest });
       });
-    }
+  }
   componentDidMount() {
     this.loadHistoryData();
   }
   render() {
-    const {
-      leaveRequest
-    } = this.state;
+    const { leaveRequest } = this.state;
 
-    if(!isManagerRole(this.props.currentUser)){
-      return(<Redirect to='/forbidden'  />);
+    if (!isManagerRole(this.props.currentUser)) {
+      return <Redirect to="/forbidden" />;
     }
 
     return (
@@ -63,19 +61,21 @@ class StaffLeaveHistory extends Component {
               </tr>
             </thead>
             <tbody>
-              {
-                this.state.leaveRequest.map(function(item, key){
-                  return(
-                    <tr key={key}>
-                      <td>{item.employeeDetails.name}</td>
-                      <td>{item.leaveCategory.leaveDescr}</td>
-                      <td>{item.leaveStatus}</td>
-                      <td><Moment format="YYYY/MM/DD">{item.id.startDate}</Moment></td>
-                      <td><Moment format="YYYY/MM/DD">{item.endDate}</Moment></td>
-                    </tr>
-                  )
-                })
-              }
+              {this.state.leaveRequest.map(function(item, key) {
+                return (
+                  <tr key={key}>
+                    <td>{item.employeeDetails.name}</td>
+                    <td>{item.leaveCategory.leaveDescr}</td>
+                    <td>{item.leaveStatus}</td>
+                    <td>
+                      <Moment format="YYYY/MM/DD">{item.id.startDate}</Moment>
+                    </td>
+                    <td>
+                      <Moment format="YYYY/MM/DD">{item.endDate}</Moment>
+                    </td>
+                  </tr>
+                );
+              })}
             </tbody>
           </Table>
         </div>

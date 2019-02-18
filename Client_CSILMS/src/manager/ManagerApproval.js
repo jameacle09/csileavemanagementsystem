@@ -2,15 +2,9 @@ import React, { Component } from "react";
 import { Table } from "reactstrap";
 // import ManagerSideBar from "./ManagerSideBar";
 import "../common/Styles.css";
-import  { Redirect, withRouter } from 'react-router-dom';
-import { isManagerRole } from '../util/APIUtils';
 
 class ManagerApproval extends Component {
   render() {
-    if(!isManagerRole(this.props.currentUser)){
-      return(<Redirect to='/forbidden'  />);
-    }
-
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -23,14 +17,20 @@ class ManagerApproval extends Component {
           <Table responsive>
             <thead>
               <tr>
-                <th>Name</th>
+                <th>Empl ID</th>
+                <th>Employee Name</th>
                 <th>Leave Type</th>
-                <th>Status</th>
+                <th>Leave Status</th>
                 <th>Action</th>
               </tr>
             </thead>
             <tbody>
+              {/* {this.props.data.map((staffprofile, index) => (
+                <StaffTableRow key={index} staffprofile={staffprofile} />
+              ))} */}
+
               <tr>
+                <td>-</td>
                 <td>-</td>
                 <td>-</td>
                 <td>-</td>
@@ -44,4 +44,4 @@ class ManagerApproval extends Component {
   }
 }
 
-export default withRouter(ManagerApproval);
+export default ManagerApproval;
