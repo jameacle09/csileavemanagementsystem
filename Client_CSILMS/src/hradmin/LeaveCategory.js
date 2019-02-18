@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Table } from "reactstrap";
-import Button from "@material-ui/core/Button";
+import { Row, Col, Button, Table } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
 import { Redirect, withRouter } from 'react-router-dom';
@@ -12,11 +11,7 @@ class LeaveCategory extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userData: [
-        // {
-        //   joinDate: ""
-        // }
-      ]
+      userData: []
     };
     this.loadLeaveCategory = this.loadLeaveCategory.bind(this);
   }
@@ -54,6 +49,53 @@ class LeaveCategory extends Component {
       return (<Redirect to='/forbidden' />);
     }
 
+    const LeaveCategoryCols = [
+      {
+        id: "leaveCode",
+        Header: "Leave Code",
+        accessor: "leaveCode",
+        minWidth: 60,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "leaveDescr",
+        Header: "Leave Description",
+        accessor: "leaveDescr",
+        minWidth: 60,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "entitlement",
+        Header: "Entitlement",
+        accessor: "entitlement",
+        minWidth: 60,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "editAction",
+        Header: "Edit",
+        accessor: editButton => (
+          <Button
+            size="sm"
+            tag={Link}
+            to={`/leavecategory/edit/${"leaveCode"}`}
+            className="smallButtonOverride"
+          >
+            <span className="fa fa-edit" /> Edit
+          </Button>
+        ),
+        minWidth: 40,
+        sortable: false,
+        filterable: false,
+        style: {
+          textAlign: "center"
+        }
+      }
+    ];
+
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -61,6 +103,29 @@ class LeaveCategory extends Component {
             <h3 className="headerStyle">List of Leave Category</h3>
           </span>
         </div>
+        <div className="reactTableContainer">
+          <Row style={{ height: "50px" }}>
+            <Col md="6" xs="6">
+              
+            </Col>
+            <Col md="6" xs="6" style={{ textAlign: "right" }}>
+              <Button
+                tag={Link}
+                to={`/leavecategory/add`}
+                className="largeButtonOverride"
+              >
+                <span
+                  className="fa fa-plus"
+                  style={{ margin: "0px 5px 0px 0px" }}
+                />
+                Add Category
+              </Button>
+            </Col>
+          </Row>
+        </div>
+
+
+
         <br />
         <div className="tableContainerFlex">
           <div style={{ textAlign: "right" }}>
