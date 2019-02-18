@@ -1,6 +1,6 @@
 import React, { Component } from "react";
-import { Table, Input, Row, Col, Button } from "reactstrap";
-//import Button from "@material-ui/core/Button";
+import { Table, Input, Row, Col } from "reactstrap";
+import Button from "@material-ui/core/Button";
 import StaffTableRow from "./StaffTableRow";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
@@ -76,7 +76,7 @@ class ListStaffProfile extends Component {
             <Col md="6" xs="6" style={{ textAlign: "right" }}>
               <Button
                 component={Link}
-                to="/liststaffprofile/add"
+                to="/newstaffprofile"
                 variant="contained"
                 color="primary"
                 style={{ textTransform: "none", color: "white" }}
@@ -117,8 +117,16 @@ class ListStaffProfile extends Component {
                       <td>{item.mobileNo}</td>
                       <td>{item.businessUnit}</td>
                       <td>{item.reportsTo.name}</td>
-                      <td><Moment format="YYYY-MM-DD">{item.joinDate}</Moment></td>
-                      <td><Button>Edit</Button></td>
+                      <td><Moment format="YYYY/MM/DD">{item.joinDate}</Moment></td>
+                      <td><Button
+                        component={Link}
+                        to={`/liststaffprofile/edit/${"emplId"}`}
+                        variant="contained"
+                        color="primary"
+                        style={{ textTransform: "none", color: "white" }}
+                      >
+                        <span className="fa fa-edit" />
+                      </Button></td>
                     </tr>
                   )
                 })

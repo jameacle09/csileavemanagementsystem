@@ -99,7 +99,7 @@ class LeaveCategory extends Component {
                       <td>{item.entitlement}</td>
                       <td><Button
                         component={Link}
-                        to={`/leaveentitlement/edit/${"csiStaffId"}`}
+                        to={`/leavecategory/edit/${item.leaveCode}`}
                         variant="contained"
                         color="primary"
                         style={{ textTransform: "none", color: "white" }}

@@ -111,22 +111,22 @@ class LoginDetails extends Component {
                       <td>{item.lockAccount}</td>
                       <td>
                         <Button
-                          className="btn btn-primary"
+                          component={Link}
+                          to={`/logindetails/edit/${item.userId}`}
+                          variant="contained"
                           color="primary"
-                          tag={Link}
-                          to={`/logindetails/edit/${"userid"}`}
-                          activeclassname="active"
+                          style={{ textTransform: "none", color: "white" }}
                         >
                           <span className="fa fa-edit" />
                         </Button>
                       </td>
                       <td>
                         <Button
-                          className="btn btn-primary"
+                          component={Link}
+                          to={`/logindetails/delete/${item.userId}`}
+                          variant="contained"
                           color="primary"
-                          tag={Link}
-                          to={`/logindetails/delete/${"userid"}`}
-                          activeclassname="active"
+                          style={{ textTransform: "none", color: "white" }}
                         >
                           <span className="fa fa-trash" />
                         </Button>
