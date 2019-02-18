@@ -287,6 +287,7 @@ class App extends Component {
                     component={EditLeaveCategory}
                   />
                   <PrivateRoute
+                    exact
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
                     path="/logindetails"

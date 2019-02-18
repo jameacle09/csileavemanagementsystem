@@ -27,7 +27,6 @@ class ListStaffProfile extends Component {
       url: API_BASE_URL + "/employeedetails",
       method: "GET"
     }).then(data => {
-      console.log("Results:", data);
       this.setState({
         employeeProfiles: data
       });
@@ -127,6 +126,7 @@ class ListStaffProfile extends Component {
         Header: "Action",
         accessor: editButton => (
           <Button
+            color="primary"
             size="sm"
             tag={Link}
             to={`/liststaffprofile/edit/${editButton.emplId}`}
@@ -171,6 +171,7 @@ class ListStaffProfile extends Component {
             </Col>
             <Col md="6" xs="6" style={{ textAlign: "right" }}>
               <Button
+                color="primary"
                 component={Link}
                 to="/liststaffprofile/add"
                 className="largeButtonOverride"

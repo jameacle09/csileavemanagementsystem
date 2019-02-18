@@ -130,6 +130,7 @@ class LeaveRequestsList extends Component {
         Header: "Action",
         accessor: viewButton => (
           <Button
+            color="primary"
             size="sm"
             tag={Link}
             to={`/leaverequests/view/${viewButton.id.emplid}/${formatDateYMD(

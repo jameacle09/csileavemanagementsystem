@@ -1,20 +1,23 @@
 import React, { Component } from "react";
-import { Table } from "reactstrap";
-// import ManagerSideBar from "./ManagerSideBar";
-import "../common/Styles.css";
-import { Redirect, withRouter } from "react-router-dom";
-import { isManagerRole } from "../util/APIUtils";
-import { fetchData } from "../util/APIUtils";
+import { Table, Button } from "reactstrap";
+import { Link, Redirect, withRouter } from "react-router-dom";
+import {
+  fetchData,
+  isManagerRole,
+  formatDateYMD,
+  formatDateDMY
+} from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
-import Moment from "react-moment";
-// import 'moment-timezone';
+import "../common/Styles.css";
+import ReactTable from "react-table";
+import "react-table/react-table.css";
 
 class StaffLeaveHistory extends Component {
   constructor(props) {
     super(props);
 
     this.state = {
-      leaveRequest: []
+      leaveHistoryData: []
     };
   }
   loadHistoryData() {
@@ -24,22 +27,125 @@ class StaffLeaveHistory extends Component {
       url: API_BASE_URL + "/appliedleave/me/" + thisYear,
       method: "GET"
     })
-      .then(data => this.setState({ leaveRequest: data }))
+      .then(data => {
+        console.log(data);
+        this.setState({ leaveHistoryData: data });
+      })
       .catch(err => {
         // if unable to fetch data, assign default (spaces) to values
-        let leaveRequest = [];
-        this.setState({ leaveRequest: leaveRequest });
+        let leaveHistory = [];
+        this.setState({ leaveHistoryData: leaveHistory });
       });
   }
   componentDidMount() {
     this.loadHistoryData();
   }
   render() {
-    const { leaveRequest } = this.state;
-
     if (!isManagerRole(this.props.currentUser)) {
       return <Redirect to="/forbidden" />;
     }
+
+    const showFullString = strHalfDay => {
+      if (strHalfDay === "Y") {
+        return "Yes";
+      } else {
+        return "No";
+      }
+    };
+
+    const leaveHistoryCols = [
+      {
+        id: "emplId",
+        Header: "Employee ID",
+        accessor: "id.emplid",
+        width: 110,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "name",
+        Header: "Employee Name",
+        accessor: "employeeDetails.name",
+        minWidth: 140,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "leaveType",
+        Header: "Leave Type",
+        accessor: "leaveCategory.leaveDescr",
+        minWidth: 120,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "leaveStatus",
+        Header: "Leave Status",
+        accessor: "leaveStatus",
+        minWidth: 120,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "startDate",
+        Header: "Start Date",
+        accessor: d => formatDateDMY(d.id.startDate),
+        minWidth: 94,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "endDate",
+        Header: "End Date",
+        accessor: d => formatDateDMY(d.endDate),
+        minWidth: 94,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "halfDay",
+        Header: "Half Day",
+        accessor: str => showFullString(str.halfDay),
+        minWidth: 140,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "Duration",
+        Header: "Duration",
+        accessor: str => str.leaveDuration + " day(s)",
+        minWidth: 140,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "Action",
+        Header: "Action",
+        accessor: viewButton => (
+          <Button
+            color="primary"
+            size="sm"
+            tag={Link}
+            to={`/leaverequests/view/${viewButton.id.emplid}/${formatDateYMD(
+              viewButton.id.effDate
+            )}/${formatDateYMD(viewButton.id.startDate)}/${
+              viewButton.id.leaveCode
+            }`}
+            activeclassname="active"
+            className="smallButtonOverride"
+          >
+            <span className="fa fa-folder-open" style={{ color: "white" }} />
+            &nbsp;View
+          </Button>
+        ),
+        minWidth: 72,
+        sortable: false,
+        filterable: false,
+        style: {
+          textAlign: "center"
+        }
+      }
+    ];
 
     return (
       <div className="mainContainerFlex">
@@ -48,9 +154,23 @@ class StaffLeaveHistory extends Component {
             <h3 className="headerStyle">Leave History</h3>
           </span>
         </div>
-        <br />
-        <div className="tableContainerFlex">
-          <Table responsive>
+        <div className="reactTableContainer">
+          <ReactTable
+            data={this.state.leaveHistoryData}
+            columns={leaveHistoryCols}
+            defaultPageSize={10}
+            pages={this.state.pages}
+            loading={this.state.loading}
+            filterable={true}
+            sortable={true}
+            multiSort={true}
+            // rowsText="Rows per page"
+            loadingText="Loading Employee Leave History..."
+            noDataText="No data available."
+            className="-striped"
+          />
+
+          {/* <Table responsive>
             <thead>
               <tr>
                 <th>Name</th>
@@ -67,17 +187,13 @@ class StaffLeaveHistory extends Component {
                     <td>{item.employeeDetails.name}</td>
                     <td>{item.leaveCategory.leaveDescr}</td>
                     <td>{item.leaveStatus}</td>
-                    <td>
-                      <Moment format="YYYY/MM/DD">{item.id.startDate}</Moment>
-                    </td>
-                    <td>
-                      <Moment format="YYYY/MM/DD">{item.endDate}</Moment>
-                    </td>
+                    <td>{formatDateDMY(item.id.startDate)}</td>
+                    <td>{formatDateDMY(item.endDate)}</td>
                   </tr>
                 );
               })}
             </tbody>
-          </Table>
+          </Table> */}
         </div>
       </div>
     );
