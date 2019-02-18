@@ -18,6 +18,7 @@ class EditStaffProfile extends Component {
       lineManager: "",
       joinDate: "",
       status: "",
+      roles: ""
     };
     this.toggleCancel = this.toggleCancel.bind(this);
   }
@@ -52,7 +53,8 @@ class EditStaffProfile extends Component {
           businessUnit: data.businessUnit,
           lineManager: data.reportsTo.name,
           joinDate: data.joinDate,
-          status: data.status
+          status: data.status,
+          roles: data.roles.role
         });
 
       })
@@ -60,6 +62,11 @@ class EditStaffProfile extends Component {
         console.log(err);
       });
   }
+
+  handleChange = event => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  };
 
   render() {
     const {
@@ -72,9 +79,11 @@ class EditStaffProfile extends Component {
       businessUnit,
       lineManager,
       joinDate,
-      status
+      status,
+      roles
     } = this.state;
-   // console.log("State", this.state);
+    // console.log("State", this.state);
+
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -85,39 +94,43 @@ class EditStaffProfile extends Component {
         <div className="tableContainerFlex">
           <Form onSubmit={this.handleFormSubmit}>
             <FormGroup>
-              <Label for="csiStaffId">CSI Staff ID</Label>
+              <Label for="emplId">CSI Staff ID</Label>
               <Input
                 type="text"
-                name="csiStaffId"
-                id="csiStaffId"
+                name="emplId"
+                id="emplId"
                 value={emplId}
+                disabled={true}
               />
             </FormGroup>
             <FormGroup>
-              <Label for="staffName">Staff Name</Label>
+              <Label for="name">Staff Name</Label>
               <Input
                 type="text"
-                name="staffName"
-                id="staffName"
+                name="name"
+                id="name"
                 value={name}
+                onChange={this.handleChange}
               />
             </FormGroup>
             <FormGroup>
-              <Label for="email">Email</Label>
+              <Label for="businessEmail">Email</Label>
               <Input
                 type="email"
-                name="email"
-                id="email"
+                name="businessEmail"
+                id="businessEmail"
                 value={businessEmail}
+                onChange={this.handleChange}
               />
             </FormGroup>
             <FormGroup>
-              <Label for="icNumber">NRIC / Passport No.</Label>
+              <Label for="nricPassport">NRIC / Passport No.</Label>
               <Input
                 type="text"
-                name="icNumber"
-                id="icNumber"
+                name="nricPassport"
+                id="nricPassport"
                 value={nricPassport}
+                onChange={this.handleChange}
               />
             </FormGroup>
             <FormGroup>
@@ -127,6 +140,7 @@ class EditStaffProfile extends Component {
                 name="jobTitle"
                 id="jobTitle"
                 value={jobTitle}
+                onChange={this.handleChange}
               />
             </FormGroup>
             <FormGroup>
@@ -136,6 +150,7 @@ class EditStaffProfile extends Component {
                 name="mobileNo"
                 id="mobileNo"
                 value={mobileNo}
+                onChange={this.handleChange}
               />
             </FormGroup>
             <FormGroup>
@@ -145,15 +160,17 @@ class EditStaffProfile extends Component {
                 name="businessUnit"
                 id="businessUnit"
                 value={businessUnit}
+                onChange={this.handleChange}
               />
             </FormGroup>
             <FormGroup>
-              <Label for="lineManagerId">Line Manager</Label>
+              <Label for="lineManager">Line Manager</Label>
               <Input
                 type="text"
-                name="lineManagerId"
-                id="lineManagerId"
+                name="lineManager"
+                id="lineManager"
                 value={lineManager}
+                onChange={this.handleChange}
               />
             </FormGroup>
             <FormGroup>
@@ -163,6 +180,7 @@ class EditStaffProfile extends Component {
                 name="joinDate"
                 id="joinDate"
                 value={formatDateYMD(joinDate)}
+                onChange={this.handleChange}
               />
             </FormGroup>
             <FormGroup>
@@ -171,7 +189,8 @@ class EditStaffProfile extends Component {
                 <Input
                   type="radio"
                   name="active"
-                  value={(status === "A")}
+                  checked={status === "A"}
+                  onChange={this.handleChange}
                 />
                 Active
               </div>
@@ -180,8 +199,8 @@ class EditStaffProfile extends Component {
                   type="radio"
                   name="inactive"
                   value="inactive"
-                  checked={this.state.selectedOption === "inactive"}
-                  onChange={this.handleOptionChange}
+                  checked={status === "I"}
+                  onChange={this.handleChange}
                 />
                 Inactive
               </div>
@@ -189,14 +208,24 @@ class EditStaffProfile extends Component {
             <FormGroup>
               <Label for="role">Role</Label>
               <div className="form-check">
-                <Input type="checkbox" name="employee" value="employee" />{" "}
+                <Input
+                  type="checkbox"
+                  name="employee"
+                  value={roles} />
                 Employee
               </div>
               <div className="form-check">
-                <Input type="checkbox" name="manager" value="manager" /> Manager
+                <Input
+                  type="checkbox"
+                  name="manager"
+                  value={roles} />
+                Manager
               </div>
               <div className="form-check">
-                <Input type="checkbox" name="admin" value="admin" /> Admin
+                <Input
+                  type="checkbox"
+                  name="admin"
+                  value={roles} /> Admin
               </div>
             </FormGroup>
             <br />
