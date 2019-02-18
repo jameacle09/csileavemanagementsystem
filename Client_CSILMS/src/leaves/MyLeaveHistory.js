@@ -49,6 +49,17 @@ class MyLeaveHistory extends Component {
 
   
   render() {
+    const showFullString = strStatus => {
+      if (strStatus === "PNAPV") {
+        return "Pending Approve";
+      } else if (strStatus === "APPRV") {
+        return "Approve";
+      } else if (strStatus === "CANCL") {
+        return "Cancel";
+      } else if (strStatus === "PNCLD") {
+        return "Pending Cancel";
+      }
+    };
     const myLeaveHistoryCols = [
       {
         id: "startDate",
@@ -101,7 +112,7 @@ class MyLeaveHistory extends Component {
       {
         id: "leaveStatus",
         Header: "Status",
-        accessor: "leaveStatus",
+        accessor: d => showFullString(d.leaveStatus),
         minWidth: 140,
         sortable: true,
         filterable: true
@@ -133,6 +144,7 @@ class MyLeaveHistory extends Component {
         }
       }
     ];
+    
     return (
       <div className="mainContainerLeavePages">
         <div className="headerContainerFlex">
