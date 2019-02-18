@@ -134,6 +134,39 @@ public class AppliedLeaveRestController {
 			return null;
 	}
 	
+	@RequestMapping(value="/appliedleave/{emplid}/{effDate}/{startDate}/{leavecode}/{leaveStatus}", method=RequestMethod.PATCH)
+	public AppliedLeave doUpdateAppliedLeaveStatus(@PathVariable("emplid") String emplid,  
+											  @PathVariable("effDate") String effDateStr, 
+											  @PathVariable("startDate") String startDateStr,
+											  @PathVariable("leavecode") String leaveCode,
+											  @PathVariable("leaveStatus") String leaveStatus) {
+		// Try create Effective Date and Start Date from Path Variable
+		Date startDate = null, effDate = null;
+		boolean dateValid = false;
+				
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+			
+			startDate = sdf.parse(startDateStr);
+			effDate = sdf.parse(effDateStr);
+			dateValid = true;				
+		} catch (Exception e) {
+			dateValid = false;
+		}
+		
+		if(! dateValid) 				
+			return null;
+		
+		AppliedLeave thisAppliedLeave = this.appliedLeaveService.findById(emplid, effDate, startDate, leaveCode);
+		
+		if(thisAppliedLeave == null)
+			return null;
+		
+		thisAppliedLeave.setLeaveStatus(leaveStatus);
+		return this.appliedLeaveService.save(thisAppliedLeave);
+	}
+	
 	@RequestMapping(value="/appliedleave/{emplid}", method=RequestMethod.GET)
 	public List<AppliedLeave> doListAppliedLeaveByEmplid(@PathVariable("emplid") String emplid, 
 													 	 @RequestParam(value="leaveCode", required=false) String leaveCode,
