@@ -109,14 +109,14 @@ class PublicHoliday extends Component {
                 this.state.userData.map(function (item, key) {
                   return (
                     <tr key={key}>
-                      <td><Moment format="YYYY-MM-DD">{item.holidayDate}</Moment></td>
+                      <td><Moment format="YYYY/MM/DD">{item.holidayDate}</Moment></td>
                       <td>{item.holidayDay}</td>
                       <td>{item.holidayDescr}</td>
                       <td>{item.holidayState}</td>
                       <td>
                         <Button
                           component={Link}
-                          to={`/publicholiday/edit/${"holidayId"}`}
+                          to={`/publicholiday/edit/${item.holidayDate}`}
                           variant="contained"
                           color="primary"
                           style={{ textTransform: "none", color: "white" }}

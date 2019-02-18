@@ -116,12 +116,12 @@ class Login extends Component {
     });
   }
 
-    validateForm() {
-        this.setState({formValid: this.state.emailValid && this.state.passwordValid});
-    }
-    
-    render() {
-      const { email, password } = this.state;
+  // validateForm() {
+  //     this.setState({formValid: this.state.emailValid && this.state.passwordValid});
+  // }
+
+  render() {
+    const { email, password } = this.state;
 
     const textInputStyle = {
       fontSize: "18px",
@@ -176,7 +176,7 @@ class Login extends Component {
             <Form onSubmit={e => this.submitForm(e)}>
               <Col>
                 <FormGroup>
-                  <Label>User ID (E-mail)</Label>
+                  <Label for="email">User ID (E-mail)</Label>
                   <Input
                     type="email"
                     name="email"
@@ -191,7 +191,7 @@ class Login extends Component {
               </Col>
               <Col>
                 <FormGroup>
-                  <Label for="examplePassword">Password</Label>
+                  <Label for="password">Password</Label>
                   <Input
                     type="password"
                     name="password"

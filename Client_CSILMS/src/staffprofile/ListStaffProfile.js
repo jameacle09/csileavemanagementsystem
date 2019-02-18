@@ -1,20 +1,23 @@
 import React, { Component } from "react";
 import { Table, Input, Row, Col, Button } from "reactstrap";
 //import Button from "@material-ui/core/Button";
-import StaffTableRow from "./StaffTableRow";
+// import StaffTableRow from "./StaffTableRow";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
-import { Redirect, withRouter } from 'react-router-dom';
-import { isHrRole } from '../util/APIUtils';
-import { fetchData } from '../util/APIUtils';
-import { API_BASE_URL } from '../constants';
-import Moment from 'react-moment';
+import { Redirect, withRouter } from "react-router-dom";
+import { isHrRole } from "../util/APIUtils";
+import { fetchData, formatDateDMY } from "../util/APIUtils";
+import { API_BASE_URL } from "../constants";
+// import Moment from "react-moment";
+import ReactTable from "react-table";
+import "react-table/react-table.css";
+import ExportToExcel from "./StaffProfilesToExcel";
 
 class ListStaffProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userData: []
+      employeeProfiles: []
     };
     this.loadEmployeeDetails = this.loadEmployeeDetails.bind(this);
   }
@@ -22,18 +25,12 @@ class ListStaffProfile extends Component {
   loadEmployeeDetails() {
     fetchData({
       url: API_BASE_URL + "/employeedetails",
-      method: 'GET'
-    }).then(response => {
+      method: "GET"
+    }).then(data => {
+      console.log("Results:", data);
       this.setState({
-        userData: response
+        employeeProfiles: data
       });
-    }).catch(error => {
-      if (error.status === 401) {
-        this.props.history.push("/login");
-      }
-      let userData = [];
-      this.setState({ userData: userData });
-      console.log(userData);
     });
   }
 
@@ -41,16 +38,112 @@ class ListStaffProfile extends Component {
     this.loadEmployeeDetails();
   }
 
-  componentDidUpdate(nextProps) {
-    if (this.props.isAuthenticated !== nextProps.isAuthenticated) {
-      this.loadEmployeeDetails();
-    }
-  }
+  // componentDidUpdate(nextProps) {
+  //   if (this.props.isAuthenticated !== nextProps.isAuthenticated) {
+  //     this.loadEmployeeDetails();
+  //   }
+  // }
 
   render() {
     if (!isHrRole(this.props.currentUser)) {
-      return (<Redirect to='/forbidden' />);
+      return <Redirect to="/forbidden" />;
     }
+
+    const EmplProfileCols = [
+      {
+        id: "emplId",
+        Header: "Employee ID",
+        accessor: "emplId",
+        width: 110,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "name",
+        Header: "Employee Name",
+        accessor: "name",
+        minWidth: 140,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "businessEmail",
+        Header: "Business Email",
+        accessor: "businessEmail",
+        minWidth: 170,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "nricPassport",
+        Header: () => (
+          <span className="tableHeaderStyle">NRIC/Passport No.</span>
+        ),
+        accessor: "nricPassport",
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "jobTitle",
+        Header: "Job Title",
+        accessor: "jobTitle",
+        minWidth: 110,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "mobileNo",
+        Header: "Mobile No.",
+        accessor: "mobileNo",
+        minWidth: 110,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "businessUnit",
+        Header: "BU",
+        accessor: "businessUnit",
+        minWidth: 80,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "reportsTo",
+        Header: "Line Manager",
+        accessor: "reportsTo.name",
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "joinDate",
+        Header: "Join Date",
+        accessor: d => formatDateDMY(d.joinDate),
+        minWidth: 94,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "Action",
+        Header: "Action",
+        accessor: editButton => (
+          <Button
+            size="sm"
+            tag={Link}
+            to={`/liststaffprofile/edit/${editButton.emplId}`}
+            className="smallButtonOverride"
+          >
+            <span className="fa fa-edit" />
+            &nbsp;Edit
+          </Button>
+        ),
+        minWidth: 72,
+        sortable: false,
+        filterable: false,
+        style: {
+          textAlign: "center"
+        }
+      }
+    ];
 
     return (
       <div className="mainContainerFlex">
@@ -59,27 +152,28 @@ class ListStaffProfile extends Component {
             <h3 className="headerStyle">Employee Profile</h3>
           </span>
         </div>
-        <br />
-        <div className="tableContainerFlex">
-          <Row>
-            <Col md="6" xs="6" className="search">
-              <Input
-                type="text"
-                maxlength="50"
-                placeholder="Search Employee"
-                style={{ width: "35%" }}
-              />
-              <Button variant="contained" color="primary" type="submit" >
-                <span className="fa fa-search" />
-              </Button>
+        <div className="reactTableContainer">
+          <Row style={{ height: "50px" }}>
+            <Col md="6" xs="6">
+              {/* <Button component={Link} to="" className="largeButtonOverride">
+                <span
+                  className="fa fa-file-excel"
+                  style={{ margin: "0px 5px 0px 0px" }}
+                />
+                Export to Excel
+              </Button> */}
+              <ExportToExcel employeeProfiles={this.state.employeeProfiles}>
+                <span
+                  className="fa fa-file-excel"
+                  style={{ margin: "0px 5px 0px 0px" }}
+                />
+              </ExportToExcel>
             </Col>
             <Col md="6" xs="6" style={{ textAlign: "right" }}>
               <Button
                 component={Link}
-                to="/liststaffprofile/add"
-                variant="contained"
-                color="primary"
-                style={{ textTransform: "none", color: "white" }}
+                to="/newstaffprofile"
+                className="largeButtonOverride"
               >
                 <span
                   className="fa fa-plus"
@@ -89,42 +183,33 @@ class ListStaffProfile extends Component {
               </Button>
             </Col>
           </Row>
-          <Table responsive>
-            <thead>
-              <tr>
-                <th>Employee ID</th>
-                <th>Employee Name</th>
-                <th>Email</th>
-                <th>NRIC / Passport No.</th>
-                <th>Job Title</th>
-                <th>Mobile No.</th>
-                <th>Business Unit</th>
-                <th>Line Manager</th>
-                <th>Join Date</th>
-                <th>Edit</th>
-              </tr>
-            </thead>
-            <tbody>
-            {
-                this.state.userData.map(function (item, key) {
-                  return (
-                    <tr key={key}>
-                      <td>{item.emplId}</td>
-                      <td>{item.name}</td>
-                      <td>{item.businessEmail}</td>
-                      <td>{item.nricPassport}</td>
-                      <td>{item.jobTitle}</td>
-                      <td>{item.mobileNo}</td>
-                      <td>{item.businessUnit}</td>
-                      <td>{item.reportsTo.name}</td>
-                      <td><Moment format="YYYY-MM-DD">{item.joinDate}</Moment></td>
-                      <td><Button>Edit</Button></td>
-                    </tr>
-                  )
-                })
-              }
-            </tbody>
-          </Table>
+          <ReactTable
+            data={this.state.employeeProfiles}
+            columns={EmplProfileCols}
+            defaultPageSize={10}
+            pages={this.state.pages}
+            loading={this.state.loading}
+            filterable={true}
+            sortable={true}
+            multiSort={true}
+            // rowsText="Rows per page"
+            loadingText="Loading Employe Profiles..."
+            noDataText="No data available."
+            className="-striped"
+          >
+            {/* {(state, filteredData, instance) => {
+              // console.log("PageRows", state.pageRows);
+              this.reactTable = state.pageRows.map(employeeProfile => {
+                return employeeProfile._original;
+              });
+              return (
+                <div>
+                  {filteredData()}
+                  <ExportToExcel employeeProfiles={this.reactTable} />
+                </div>
+              );
+            }} */}
+          </ReactTable>
         </div>
       </div>
     );

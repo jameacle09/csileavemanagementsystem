@@ -57,7 +57,8 @@ a:focus {
 }
 #sidebar .sidebar-header {
   padding: 20px;
-  background: #004a9b;
+  background-color: #004a9b;
+  /* background: rgb(39, 129, 247); */
 }
 #sidebar ul.components {
   padding: 20px 0;
@@ -75,25 +76,28 @@ a:focus {
 }
 #sidebar ul li a:hover {
   color: white;
-  background: #004a9b;
-  /* background: rgb(39, 129, 247); */
+  /* background: #004a9b; */
+  background: rgb(39, 129, 247);
 }
 #sidebar ul li.active > a,
 a[aria-expanded="true"] {
   color: #fff;
   background: #004a9b;
+  border-top: 1px solid #032a53;
+  /* border-bottom: 1px solid #032a53; */
   /* background: rgb(31, 119, 233); */
 }
 ul ul a {
   font-size: 14px;
   padding-left: 30px !important;
-  background: rgb(31, 119, 233);
-  /* background: #004a9b; */
+  /* background: rgb(31, 119, 233); */
+  background: #004a9b;
   color: white;
 }
 .sidebarLinkActive {
-  background: #004a9b;
+  /* background: #004a9b; */
   /* background: rgb(39, 129, 247); */
+  background-image: linear-gradient(to right, #004a9b, rgb(39, 129, 247));
   /* background: white; */
   /* color: #004a9b; */
   /* border: 1px inset white; */
@@ -258,7 +262,7 @@ ul ul a {
 }
 .headerContainerFlex {
   margin: 10px auto;
-  width: 96%;
+  width: 98%;
   padding: 20px;
   display: flex;
   justify-content: flex-start;
@@ -280,7 +284,7 @@ ul ul a {
 .tableContainerFlex {
   margin: 0px auto;
   margin-bottom: 10px;
-  width: 96%;
+  width: 98%;
   padding: 20px;
   flex-basis: auto;
   box-shadow: 5px 5px 5px rgb(95, 116, 136);
@@ -323,4 +327,94 @@ ul ul a {
 .container_password_show {
   text-align: right;
   padding: 2px 2px;
+}
+
+/**********************************************/
+/*** React Table Styles ***********************/
+/**********************************************/
+.reactTableContainer {
+  margin: 0px auto;
+  margin-bottom: 10px;
+  width: 98%;
+  padding: 10px;
+  flex-basis: auto;
+  box-shadow: 5px 5px 5px rgb(95, 116, 136);
+  border: 1px solid #032a53;
+  border-radius: 5px;
+  justify-content: flex-start;
+  text-align: left;
+}
+.ReactTable .rt-thead {
+  font-weight: bold;
+}
+.ReactTable {
+  color: black;
+  font-family: Helvetica;
+  font-size: 16px;
+}
+.ReactTable .rt-thead.-filters input,
+.ReactTable .rt-thead.-filters select,
+.ReactTable .-pagination .-pageJump input,
+.ReactTable .-pagination input,
+.ReactTable .-pagination select {
+  border: 1px solid rgb(214, 209, 209) !important;
+}
+.ReactTable .rt-tr .rt-td {
+  height: 40px;
+}
+.ReactTable .rt-tr .action {
+  transition: all 0.2s ease;
+  /* text-align: center; */
+  transform: scale(0);
+}
+.ReactTable .rt-tr:hover .action {
+  transform: scale(1.3);
+}
+.ReactTable .rt-tr:hover .rt-td {
+  background: #cce7f8;
+}
+.ReactTable .-pagination .-btn:not([disabled]) {
+  /* background: #004a9b !important; */
+  background: rgb(214, 209, 209) !important;
+  border-radius: 5px;
+  color: #004a9b;
+  font-weight: bold;
+}
+.ReactTable .-pagination .-btn[disabled] {
+  background: rgb(214, 209, 209) !important;
+  opacity: 0.5;
+  border-radius: 5px;
+  color: #004a9b;
+  font-weight: bold;
+  cursor: default;
+}
+.ReactTable .-pagination .-btn:not([disabled]):hover {
+  background: #004a9b !important;
+  color: #fff;
+}
+/**********************************************/
+.smallButtonOverride {
+  background: #004a9b !important;
+  font-family: "Helvetica" !important;
+  size: 16px !important;
+  color: white;
+}
+.largeButtonOverride {
+  background: #004a9b !important;
+  font-family: "Helvetica" !important;
+  size: 16px !important;
+  color: white;
+}
+.exportToExcelButton {
+  background: #004a9b;
+  font-family: "Helvetica";
+  size: 16px !important;
+  color: white;
+  height: 40px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  padding-left: 12px;
+  padding-right: 12px;
+  border-radius: 5px;
+  border: 1px solid gray;
 }

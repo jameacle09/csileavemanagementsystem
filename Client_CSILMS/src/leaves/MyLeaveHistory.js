@@ -89,12 +89,12 @@ class MyLeaveHistory extends Component {
                   return (
                     <tr key={key}>
                       <td></td>
-                      <td><Moment format="YYYY-MM-DD">{item.id.startDate}</Moment></td>
-                      <td><Moment format="YYYY-MM-DD">{item.endDate}</Moment></td>
+                      <td><Moment format="YYYY/MM/DD">{item.id.startDate}</Moment></td>
+                      <td><Moment format="YYYY/MM/DD">{item.endDate}</Moment></td>
                       <td>{item.leaveDuration}</td>
                       <td>{item.leaveCategory.leaveDescr}</td>
                       <td>{item.reason}</td>
-                      <td><Moment format="YYYY-MM-DD">{item.id.effDate}</Moment></td>
+                      <td><Moment format="YYYY/MM/DD">{item.id.effDate}</Moment></td>
                       <td>{item.leaveStatus}</td>
                       <td></td>
                     </tr>
