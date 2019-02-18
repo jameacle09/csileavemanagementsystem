@@ -209,6 +209,7 @@ class App extends Component {
                     component={StaffProfileComponent}
                   />
                   <PrivateRoute
+                  exact
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
                     path="/liststaffprofile"

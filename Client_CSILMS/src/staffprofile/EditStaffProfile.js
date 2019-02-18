@@ -1,111 +1,81 @@
 import React, { Component } from "react";
 import StaffProfile from "./StaffProfile";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
-// import Button from "@material-ui/core/Button";
-// import { Link } from "react-router-dom";
 import "../common/Styles.css";
+import { fetchData, formatDateYMD } from "../util/APIUtils";
+import { API_BASE_URL } from "../constants";
 
 class EditStaffProfile extends Component {
   constructor(props) {
     super(props);
-    this.id = "";
-    this.csiStaffId = "";
-    this.staffName = "";
-    this.email = "";
-    this.icNumber = "";
-    this.jobTitle = "";
-    this.mobileNo = "";
-    this.businessUnit = "";
-    this.lineManagerId = "";
-    this.joinDate = "";
-    this.csiStaffIdHandler = this.csiStaffIdHandler.bind(this);
-    this.staffNameHandler = this.staffNameHandler.bind(this);
-    this.emailHandler = this.emailHandler.bind(this);
-    this.icNumberHandler = this.icNumberHandler.bind(this);
-    this.jobTitleHandler = this.jobTitleHandler.bind(this);
-    this.mobileNoHandler = this.mobileNoHandler.bind(this);
-    this.businessUnitHandler = this.businessUnitHandler.bind(this);
-    this.lineManagerIdHandler = this.lineManagerIdHandler.bind(this);
-    this.joinDateHandler = this.joinDateHandler.bind(this);
-    this.save = this.save.bind(this);
     this.state = {
-      selectedOption: "active"
+      emplId: "",
+      name: "",
+      businessEmail: "",
+      nricPassport: "",
+      jobTitle: "",
+      mobileNo: "",
+      businessUnit: "",
+      lineManager: "",
+      joinDate: "",
+      status: "",
     };
+    this.toggleCancel = this.toggleCancel.bind(this);
   }
 
-  handleOptionChange = changeEvent => {
-    this.setState({
-      selectedOption: changeEvent.target.value
-    });
-  };
-
-  handleFormSubmit = formSubmitEvent => {
-    formSubmitEvent.preventDefault();
-  };
-
-  csiStaffIdHandler(event) {
-    this.csiStaffId = event.target.value;
+  toggleCancel() {
+    this.setState(prevState => ({
+      modalCancel: !prevState.modalCancel
+    }));
   }
 
-  staffNameHandler(event) {
-    this.staffName = event.target.value;
-  }
+  componentDidMount() {
+    const {
+      emplId
+    } = this.props.computedMatch.params;
 
-  emailHandler(event) {
-    this.email = event.target.value;
-  }
+    fetchData({
+      url:
+        API_BASE_URL +
+        "/employeedetails/" +
+        emplId,
+      method: "GET"
+    })
+      .then(data => {
+        console.log("Fetched Data", data);
+        this.setState({
+          emplId: data.emplId,
+          name: data.name,
+          businessEmail: data.businessEmail,
+          nricPassport: data.nricPassport,
+          jobTitle: data.jobTitle,
+          mobileNo: data.mobileNo,
+          businessUnit: data.businessUnit,
+          lineManager: data.reportsTo.name,
+          joinDate: data.joinDate,
+          status: data.status
+        });
 
-  icNumberHandler(event) {
-    this.icNumber = event.target.value;
-  }
-
-  jobTitleHandler(event) {
-    this.jobTitle = event.target.value;
-  }
-
-  mobileNoHandler(event) {
-    this.mobileNo = event.target.value;
-  }
-
-  businessUnitHandler(event) {
-    this.businessUnit = event.target.value;
-  }
-
-  lineManagerIdHandler(event) {
-    this.lineManagerId = event.target.value;
-  }
-
-  joinDateHandler(event) {
-    this.joinDate = event.target.value;
-  }
-
-  save() {
-    let staffProfile = new StaffProfile(
-      0,
-      this.csiStaffId,
-      this.staffName,
-      this.email,
-      this.icNumber,
-      this.jobTitle,
-      this.mobileNo,
-      this.businessUnit,
-      this.lineManagerId,
-      this.joinDate
-    );
-    console.log(JSON.stringify(staffProfile));
-    fetch("http://localhost/api/staffprofile", {
-      method: "post",
-      body: JSON.stringify(staffProfile),
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json"
-      }
-    }).then(response => {
-      this.props.showStaffProfiles();
-    });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   }
 
   render() {
+    const {
+      emplId,
+      name,
+      businessEmail,
+      nricPassport,
+      jobTitle,
+      mobileNo,
+      businessUnit,
+      lineManager,
+      joinDate,
+      status
+    } = this.state;
+    console.log("State", this.state);
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -117,25 +87,13 @@ class EditStaffProfile extends Component {
 
         <div className="tableContainerFlex">
           <Form onSubmit={this.handleFormSubmit}>
-            {/* <div width="100%" align="right">
-              <Button
-                component={Link}
-                to="/resetpassword"
-                variant="contained"
-                color="primary"
-                style={{ textTransform: "none", color: "white" }}
-              >
-                Reset Password
-              </Button>
-            </div> */}
             <FormGroup>
               <Label for="csiStaffId">CSI Staff ID</Label>
               <Input
                 type="text"
                 name="csiStaffId"
                 id="csiStaffId"
-                placeholder="CSI Staff ID"
-                onChange={this.csiStaffIdHandler}
+                value={emplId}
               />
             </FormGroup>
             <FormGroup>
@@ -144,8 +102,7 @@ class EditStaffProfile extends Component {
                 type="text"
                 name="staffName"
                 id="staffName"
-                placeholder="Staff Name"
-                onChange={this.staffNameHandler}
+                value={name}
               />
             </FormGroup>
             <FormGroup>
@@ -154,8 +111,7 @@ class EditStaffProfile extends Component {
                 type="email"
                 name="email"
                 id="email"
-                placeholder="Email"
-                onChange={this.emailHandler}
+                value={businessEmail}
               />
             </FormGroup>
             <FormGroup>
@@ -164,8 +120,7 @@ class EditStaffProfile extends Component {
                 type="text"
                 name="icNumber"
                 id="icNumber"
-                placeholder="NRIC / Passport No."
-                onChange={this.icNumberHandler}
+                value={nricPassport}
               />
             </FormGroup>
             <FormGroup>
@@ -174,8 +129,7 @@ class EditStaffProfile extends Component {
                 type="text"
                 name="jobTitle"
                 id="jobTitle"
-                placeholder="Job Title"
-                onChange={this.jobTitleHandler}
+                value={jobTitle}
               />
             </FormGroup>
             <FormGroup>
@@ -184,8 +138,7 @@ class EditStaffProfile extends Component {
                 type="text"
                 name="mobileNo"
                 id="mobileNo"
-                placeholder="Mobile No."
-                onChange={this.mobileNoHandler}
+                value={mobileNo}
               />
             </FormGroup>
             <FormGroup>
@@ -194,8 +147,7 @@ class EditStaffProfile extends Component {
                 type="text"
                 name="businessUnit"
                 id="businessUnit"
-                placeholder="Business Unit"
-                onChange={this.businessUnitHandler}
+                value={businessUnit}
               />
             </FormGroup>
             <FormGroup>
@@ -204,8 +156,7 @@ class EditStaffProfile extends Component {
                 type="text"
                 name="lineManagerId"
                 id="lineManagerId"
-                placeholder="Line Manager"
-                onChange={this.lineManagerIdHandler}
+                value={lineManager}
               />
             </FormGroup>
             <FormGroup>
@@ -214,8 +165,7 @@ class EditStaffProfile extends Component {
                 type="date"
                 name="joinDate"
                 id="joinDate"
-                placeholder="Join Date"
-                onChange={this.joinDateHandler}
+                value={formatDateYMD(joinDate)}
               />
             </FormGroup>
             <FormGroup>
@@ -224,9 +174,7 @@ class EditStaffProfile extends Component {
                 <Input
                   type="radio"
                   name="active"
-                  value="active"
-                  checked={this.state.selectedOption === "active"}
-                  onChange={this.handleOptionChange}
+                  value={(status === "A")}
                 />
                 Active
               </div>
@@ -255,20 +203,13 @@ class EditStaffProfile extends Component {
               </div>
             </FormGroup>
             <br />
-            <Button
-              variant="contained"
-              color="primary"
-              onClick={this.save}
-              style={{ textTransform: "none" }}
+            <Button color="primary"
+              className="largeButtonOverride"
             >
               Save
-            </Button>
+                </Button>
             &nbsp;&nbsp;
-            <Button
-              color="primary"
-              style={{ backgroundColor: "#3F51B5", color: "white" }}
-              onSubmit={this.validatePassword}
-            >
+            <Button color="secondary" onClick={this.toggleCancel}>
               Cancel
             </Button>
           </Form>
