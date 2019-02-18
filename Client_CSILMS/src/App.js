@@ -6,18 +6,17 @@ import Menu from "./common/Menu";
 import Footer from "./common/Footer";
 import HomePage from "./home/HomePage";
 import ApplyLeave from "./leaves/ApplyLeave";
+import MyProfile from "./staffprofile/MyProfile";
 import MyLeaveDetails from "./leaves/MyLeaveDetails";
 import MyLeaveHistory from "./leaves/MyLeaveHistory";
 // import ManagerApproval from "./manager/ManagerApproval";
 import LeaveRequestsList from "./manager/LeaveRequestsList";
 import LeaveRequest from "./manager/LeaveRequest";
-import StaffLeaveHistory from "./manager/StaffLeaveHistory";
-import MyProfile from "./staffprofile/MyProfile";
-import ChangePassword from "./staffprofile/ChangePassword";
+import LeaveHistoryList from "./manager/LeaveHistoryList";
+import LeaveHistoryView from "./manager/LeaveHistoryView";
 import StaffProfileComponent from "./staffprofile/StaffProfileComponent";
 import ListStaffProfile from "./staffprofile/ListStaffProfile";
 import NewStaffProfile from "./staffprofile/NewStaffProfile";
-import ResetPassword from "./staffprofile/ResetPassword";
 import EditStaffProfile from "./staffprofile/EditStaffProfile";
 import PublicHoliday from "./hradmin/PublicHoliday";
 import AddPublicHoliday from "./hradmin/AddPublicHoliday";
@@ -30,6 +29,8 @@ import EditEntitlement from "./hradmin/EditEntitlement";
 import LoginDetails from "./hradmin/LoginDetails";
 import AddLoginDetails from "./hradmin/AddLoginDetails";
 import EditLoginDetails from "./hradmin/EditLoginDetails";
+import ChangePassword from "./staffprofile/ChangePassword";
+import ResetPassword from "./staffprofile/ResetPassword";
 import "./common/Styles.css";
 import { getCurrentUser } from "./util/APIUtils";
 import Login from "./login/Login";
@@ -193,14 +194,22 @@ class App extends Component {
                     title="View Leave Request"
                     component={LeaveRequest}
                   />
-
+                  <PrivateRoute
+                    exact
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/leavehistory"
+                    title="Employee Leave History List"
+                    component={LeaveHistoryList}
+                  />
                   <PrivateRoute
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
-                    path="/staffleavehistory"
-                    title="Staff Leave History"
-                    component={StaffLeaveHistory}
+                    path="/leavehistory/view/:emplId/:effDate/:startDate/:leaveCode"
+                    title="Employee Leave History"
+                    component={LeaveHistoryView}
                   />
+
                   <PrivateRoute
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}

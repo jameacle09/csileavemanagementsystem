@@ -6,6 +6,41 @@ import { fetchData, isHrRole } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import { confirmAlert } from "react-confirm-alert";
+
+class Login extends Component {
+  render() {
+    return (
+      <tr key={this.props.key}>
+        <td>{this.props.item.userId}</td>
+        <td>{this.props.item.emplId}</td>
+        <td>{this.props.item.lockAccount}</td>
+        <td>
+          <Button
+            onClick={this.props.confirmResetPassword}
+            variant="contained"
+            color="primary"
+            style={{ textTransform: "none", color: "white" }}
+          >
+            {/*<span className="fa fa-edit" />*/}
+            Reset Password
+          </Button>
+        </td>
+        <td>
+          <Button
+            component={Link}
+            to={`/logindetails/delete/${this.props.item.userId}`}
+            variant="contained"
+            color="primary"
+            style={{ textTransform: "none", color: "white" }}
+          >
+            <span className="fa fa-trash" />
+          </Button>
+        </td>
+      </tr>
+    );
+  }
+}
 
 class LoginDetails extends Component {
   _isMounted = false;
@@ -13,29 +48,81 @@ class LoginDetails extends Component {
     super(props);
 
     this.state = {
-      loginDetailsData: []
+      // loginDetailsData: []
+      userData: []
     };
     this.loadLoginDetails = this.loadLoginDetails.bind(this);
+    this.resetPassword = this.resetPassword.bind(this);
+  }
+
+  confirmResetPassword(e, emplId) {
+    confirmAlert({
+      message: "Do you want to reset password for employee " + emplId + "?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => this.resetPassword(emplId)
+        },
+        {
+          label: "No"
+        }
+      ]
+    });
+  }
+
+  resetPassword(emplId) {
+    const values = { emplid: emplId };
+    const request = Object.assign({}, values);
+
+    fetchData({
+      url: API_BASE_URL + "/resetPassword",
+      method: "POST",
+      body: JSON.stringify(request)
+    })
+      .then(response => {
+        confirmAlert({
+          message:
+            "You have successfully reset password for employee " + emplId + "?",
+          buttons: [
+            {
+              label: "OK"
+            }
+          ]
+        });
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
   }
 
   loadLoginDetails() {
     fetchData({
       url: API_BASE_URL + "/logindetails",
       method: "GET"
-    }).then(data => {
-      console.log(data);
-      // this.setState({
-      //   loginDetailsData: data
-      // });
-    });
-
-    // .catch(error => {
-    //   if (error.status === 401) {
-    //     this.props.history.push("/login");
-    //   }
-    //   let loginDetailsData = [];
-    //   this.setState({ loginDetailsData: loginDetailsData });
-    // });
+    })
+      .then(response => {
+        this.setState({
+          userData: response
+        });
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+        let userData = [];
+        this.setState({ userData: userData });
+      });
   }
 
   componentDidMount() {
@@ -150,6 +237,20 @@ class LoginDetails extends Component {
         }
       }
     ];
+
+    const loginDetailsViews = [];
+    this.state.userData.forEach((item, key) => {
+      loginDetailsViews.push(
+        <Login
+          key={key}
+          item={item}
+          confirmResetPassword={event =>
+            this.confirmResetPassword(event, item.emplId)
+          }
+        />
+      );
+    });
+
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -158,22 +259,22 @@ class LoginDetails extends Component {
           </span>
         </div>
         <div className="reactTableContainer">
-          <Row style={{ height: "50px" }}>
-            <Col md="6" xs="6">
-              {/* <Button component={Link} to="" className="largeButtonOverride">
+          {/* <Row style={{ height: "50px" }}> */}
+          {/* <Col md="6" xs="6"> */}
+          {/* <Button component={Link} to="" className="largeButtonOverride">
                 <span
                   className="fa fa-file-excel"
                   style={{ margin: "0px 5px 0px 0px" }}
                 />
                 Export to Excel
               </Button> */}
-              {/* <ExportToExcel employeeProfiles={this.state.employeeProfiles}>
+          {/* <ExportToExcel employeeProfiles={this.state.employeeProfiles}>
                 <span
                   className="fa fa-file-excel"
                   style={{ margin: "0px 5px 0px 0px" }}
                 />
               </ExportToExcel> */}
-            </Col>
+          {/* </Col>
             <Col md="6" xs="6" style={{ textAlign: "right" }}>
               <Button
                 color="primary"
@@ -190,8 +291,8 @@ class LoginDetails extends Component {
                 Add User
               </Button>
             </Col>
-          </Row>
-          <ReactTable
+          </Row> */}
+          {/* <ReactTable
             data={this.state.loginDetailsData}
             columns={loginDetailsCols}
             defaultPageSize={10}
@@ -204,9 +305,9 @@ class LoginDetails extends Component {
             loadingText="Loading Employee Login Details..."
             noDataText="No data available."
             className="-striped"
-          />
+          /> */}
 
-          {/* <Row>
+          <Row>
             <Col md="6" xs="6" className="search">
               <Input
                 type="text"
@@ -239,46 +340,14 @@ class LoginDetails extends Component {
               <tr>
                 <th>User ID</th>
                 <th>Employee ID</th>
-                 <th>Employee Name</th> 
+                <th>Employee Name</th>
                 <th>Account Locked?</th>
                 <th>Edit</th>
                 <th>Delete</th>
               </tr>
             </thead>
-            <tbody>
-              {this.state.loginDetailsData.map(function(item, key) {
-                return (
-                  <tr key={key}>
-                    <td>{item.userId}</td>
-                    <td>{item.emplId}</td>
-                    <td>{item.lockAccount}</td>
-                    <td>
-                      <Button
-                        className="btn btn-primary"
-                        color="primary"
-                        tag={Link}
-                        to={`/logindetails/edit/${"userid"}`}
-                        activeclassname="active"
-                      >
-                        <span className="fa fa-edit" />
-                      </Button>
-                    </td>
-                    <td>
-                      <Button
-                        className="btn btn-primary"
-                        color="primary"
-                        tag={Link}
-                        to={`/logindetails/delete/${"userid"}`}
-                        activeclassname="active"
-                      >
-                        <span className="fa fa-trash" />
-                      </Button>
-                    </td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table> */}
+            <tbody>{loginDetailsViews}</tbody>
+          </Table>
         </div>
       </div>
     );

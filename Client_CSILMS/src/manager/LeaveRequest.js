@@ -37,17 +37,17 @@ class LeaveRequest extends Component {
     this.toggleReject = this.toggleReject.bind(this);
   }
 
-  toggleApprove() {
+  toggleApprove = () => {
     this.setState(prevState => ({
       modalApprove: !prevState.modalApprove
     }));
-  }
+  };
 
-  toggleReject() {
+  toggleReject = () => {
     this.setState(prevState => ({
       modalReject: !prevState.modalReject
     }));
-  }
+  };
 
   componentDidMount() {
     const {
@@ -89,6 +89,57 @@ class LeaveRequest extends Component {
   }
 
   handleCancel = () => {
+    this.props.history.push("/leaverequests");
+  };
+
+  updateAppliedLeaveStatus = (event, strLeaveStatus) => {
+    const {
+      emplId,
+      effDate,
+      startDate,
+      leaveCode
+    } = this.props.computedMatch.params;
+    const leaveStatus = strLeaveStatus;
+
+    event.preventDefault();
+    console.log("leaveStatus", leaveStatus);
+
+    // if (strLeaveStatus === "APPRV") {
+    //   this.setState(prevState => ({
+    //     modalApprove: !prevState.modalApprove
+    //   }));
+    // } else {
+    //   this.setState(prevState => ({
+    //     modalReject: !prevState.modalReject
+    //   }));
+    // }
+
+    fetchData({
+      url:
+        API_BASE_URL +
+        "/appliedleave/" +
+        emplId +
+        "/" +
+        effDate +
+        "/" +
+        startDate +
+        "/" +
+        leaveCode +
+        "/" +
+        leaveStatus,
+      method: "PATCH"
+    })
+      .then(response => {
+        console.log(response);
+        if (response.message === "Leave application updated") {
+          console.log("Update Successful!");
+        } else {
+          console.log("Update Unsuccessful!");
+        }
+      })
+      .catch(err => {
+        console.log(err);
+      });
     this.props.history.push("/leaverequests");
   };
 
@@ -266,6 +317,7 @@ class LeaveRequest extends Component {
             <FormGroup row>
               <Col sm={{ size: 10, offset: 2 }}>
                 <Button
+                  type="button"
                   color="primary"
                   onClick={this.toggleApprove}
                   className="largeButtonOverride"
@@ -273,11 +325,19 @@ class LeaveRequest extends Component {
                   Approve
                 </Button>
                 <span> </span>
-                <Button color="danger" onClick={this.toggleReject}>
+                <Button
+                  type="button"
+                  color="danger"
+                  onClick={this.toggleReject}
+                >
                   Reject
                 </Button>
                 <span> </span>
-                <Button color="secondary" onClick={this.handleCancel}>
+                <Button
+                  type="button"
+                  color="secondary"
+                  onClick={this.handleCancel}
+                >
                   Cancel
                 </Button>
                 <div>
@@ -298,8 +358,11 @@ class LeaveRequest extends Component {
                     </ModalBody>
                     <ModalFooter>
                       <Button
+                        type="submit"
                         color="primary"
-                        onClick={this.toggleApprove}
+                        onClick={event =>
+                          this.updateAppliedLeaveStatus(event, "APPRV")
+                        }
                         className="largeButtonOverride"
                       >
                         Confirm
@@ -327,7 +390,13 @@ class LeaveRequest extends Component {
                       Are you sure you want to Reject this Leave Request?
                     </ModalBody>
                     <ModalFooter>
-                      <Button color="danger" onClick={this.toggleReject}>
+                      <Button
+                        type="submit"
+                        color="danger"
+                        onClick={event =>
+                          this.updateAppliedLeaveStatus(event, "REJCT")
+                        }
+                      >
                         Confirm
                       </Button>
                       <Button color="secondary" onClick={this.toggleReject}>

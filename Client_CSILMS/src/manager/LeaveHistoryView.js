@@ -18,7 +18,7 @@ import { fetchData, formatDateYMD } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import "../common/Styles.css";
 
-class LeaveRequest extends Component {
+class LeaveHistoryView extends Component {
   constructor(props) {
     super(props);
     this.state = {
@@ -29,7 +29,10 @@ class LeaveRequest extends Component {
       endDate: "",
       isHalfDay: "N",
       leaveDuration: "1 day(s)",
-      leaveReason: ""
+      leaveReason: "",
+      approver: "",
+      leaveStatus: "",
+      approvedDate: ""
     };
   }
 
@@ -64,7 +67,10 @@ class LeaveRequest extends Component {
           endDate: data.endDate,
           isHalfDay: data.halfDay,
           leaveDuration: data.leaveDuration + " day(s)",
-          leaveReason: data.reason
+          leaveReason: data.reason,
+          approver: data.approver,
+          leaveStatus: data.leaveStatus,
+          approvedDate: data.approvedDate
         });
       })
       .catch(err => {
@@ -72,8 +78,8 @@ class LeaveRequest extends Component {
       });
   }
 
-  handleCancel = () => {
-    this.props.history.push("/leaverequests");
+  handleBackToMain = () => {
+    this.props.history.push("/leavehistory");
   };
 
   render() {
@@ -85,7 +91,10 @@ class LeaveRequest extends Component {
       endDate,
       isHalfDay,
       leaveDuration,
-      leaveReason
+      leaveReason,
+      approver,
+      leaveStatus,
+      approvedDate
     } = this.state;
 
     const BooleanHalfDay = strHalfDay => {
@@ -96,21 +105,11 @@ class LeaveRequest extends Component {
       }
     };
 
-    const externalCloseBtn = (
-      <button
-        className="close"
-        style={{ position: "absolute", top: "15px", right: "15px" }}
-        onClick={this.toggle}
-      >
-        &times;
-      </button>
-    );
-
     return (
       <div className="mainContainerLeavePages">
         <div className="headerContainerFlex">
           <span>
-            <h3 className="headerStyle">Leave History</h3>
+            <h3 className="headerStyle">View Leave History</h3>
           </span>
         </div>
 
@@ -248,10 +247,52 @@ class LeaveRequest extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
+              <Label for="approver" sm={2}>
+                Approver Name:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="text"
+                  name="approver"
+                  id="approver"
+                  value={approver}
+                  disabled={true}
+                />
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label for="leaveStatus" sm={2}>
+                Leave Status:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="text"
+                  name="leaveStatus"
+                  id="leaveStatus"
+                  value={leaveStatus}
+                  disabled={true}
+                />
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label for="endDate" sm={2}>
+                Date Status Changed:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="date"
+                  name="endDate"
+                  id="endDate"
+                  value={formatDateYMD(approvedDate)}
+                  disabled={true}
+                />
+              </Col>
+            </FormGroup>
+            <FormGroup row>
               <Col sm={{ size: 10, offset: 2 }}>
                 <Button
                   color="primary"
-                  onClick={this.handleCancel}
+                  onClick={this.handleBackToMain}
                   className="largeButtonOverride"
                 >
                   Back
@@ -265,4 +306,4 @@ class LeaveRequest extends Component {
   }
 }
 
-export default LeaveRequest;
+export default LeaveHistoryView;

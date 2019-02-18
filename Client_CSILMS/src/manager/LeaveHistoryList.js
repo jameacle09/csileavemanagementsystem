@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Button } from "reactstrap";
+import { Table, Button, Row, Col } from "reactstrap";
 import { Link, Redirect, withRouter } from "react-router-dom";
 import {
   fetchData,
@@ -11,8 +11,9 @@ import { API_BASE_URL } from "../constants";
 import "../common/Styles.css";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import ExportToExcel from "./LeaveHistoryToExcel";
 
-class StaffLeaveHistory extends Component {
+class LeaveHistoryList extends Component {
   constructor(props) {
     super(props);
 
@@ -79,14 +80,6 @@ class StaffLeaveHistory extends Component {
         filterable: true
       },
       {
-        id: "leaveStatus",
-        Header: "Leave Status",
-        accessor: "leaveStatus",
-        minWidth: 120,
-        sortable: true,
-        filterable: true
-      },
-      {
         id: "startDate",
         Header: "Start Date",
         accessor: d => formatDateDMY(d.id.startDate),
@@ -119,6 +112,14 @@ class StaffLeaveHistory extends Component {
         filterable: true
       },
       {
+        id: "leaveStatus",
+        Header: "Leave Status",
+        accessor: "leaveStatus",
+        minWidth: 120,
+        sortable: true,
+        filterable: true
+      },
+      {
         id: "Action",
         Header: "Action",
         accessor: viewButton => (
@@ -126,7 +127,7 @@ class StaffLeaveHistory extends Component {
             color="primary"
             size="sm"
             tag={Link}
-            to={`/leaverequests/view/${viewButton.id.emplid}/${formatDateYMD(
+            to={`/leavehistory/view/${viewButton.id.emplid}/${formatDateYMD(
               viewButton.id.effDate
             )}/${formatDateYMD(viewButton.id.startDate)}/${
               viewButton.id.leaveCode
@@ -151,10 +152,25 @@ class StaffLeaveHistory extends Component {
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Leave History</h3>
+            <h3 className="headerStyle">Leave History List</h3>
           </span>
         </div>
         <div className="reactTableContainer">
+          <Row style={{ height: "50px" }}>
+            <Col md="6" xs="6">
+              {/* <Button component={Link} to="" className="largeButtonOverride">
+                <span
+                  className="fa fa-file-excel"
+                  style={{ margin: "0px 5px 0px 0px" }}
+                />
+                Export to Excel
+              </Button> */}
+              <ExportToExcel leaveHistoryData={this.state.leaveHistoryData} />
+            </Col>
+            <Col md="6" xs="6" style={{ textAlign: "right" }}>
+              <span> </span>
+            </Col>
+          </Row>
           <ReactTable
             data={this.state.leaveHistoryData}
             columns={leaveHistoryCols}
@@ -200,4 +216,4 @@ class StaffLeaveHistory extends Component {
   }
 }
 
-export default withRouter(StaffLeaveHistory);
+export default withRouter(LeaveHistoryList);

@@ -173,7 +173,7 @@ class ListStaffProfile extends Component {
               <Button
                 color="primary"
                 component={Link}
-                to="/liststaffprofile/add"
+                to="/newstaffprofile"
                 className="largeButtonOverride"
               >
                 <span

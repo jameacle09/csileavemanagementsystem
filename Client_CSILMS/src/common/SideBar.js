@@ -131,10 +131,7 @@ class SideBar extends Component {
                 </NavLink>
               </li>
               <li>
-                <NavLink
-                  to="/staffleavehistory"
-                  activeClassName="sidebarLinkActive"
-                >
+                <NavLink to="/leavehistory" activeClassName="sidebarLinkActive">
                   Leave History
                 </NavLink>
               </li>
