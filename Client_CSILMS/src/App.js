@@ -229,14 +229,7 @@ class App extends Component {
                     path="/liststaffprofile/edit/:emplId"
                     title="Edit Staff Profile"
                     component={EditStaffProfile}
-                  />
-                  <PrivateRoute
-                    authenticated={this.state.isAuthenticated}
-                    currentUser={this.state.currentUser}
-                    path="/publicholiday"
-                    title="Public Holiday"
-                    component={PublicHoliday}
-                  />
+                  />                  
                   <PrivateRoute
                     exact
                     authenticated={this.state.isAuthenticated}
@@ -260,16 +253,24 @@ class App extends Component {
                     component={EditEntitlement}
                   />
                   <PrivateRoute
+                  exact
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
-                    path="/addpublicholiday"
+                    path="/publicholiday"
+                    title="Public Holiday"
+                    component={PublicHoliday}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/publicholiday/add"
                     title="Add Public Holiday"
                     component={AddPublicHoliday}
                   />
                   <PrivateRoute
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
-                    path="/editpublicholiday"
+                    path="/publicholiday/edit/:holidayDate"
                     title="Edit Public Holiday"
                     component={EditPublicHoliday}
                   />

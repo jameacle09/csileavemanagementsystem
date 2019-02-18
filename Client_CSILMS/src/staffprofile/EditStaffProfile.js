@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-import StaffProfile from "./StaffProfile";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import "../common/Styles.css";
 import { fetchData, formatDateYMD } from "../util/APIUtils";
@@ -75,7 +74,7 @@ class EditStaffProfile extends Component {
       joinDate,
       status
     } = this.state;
-    console.log("State", this.state);
+   // console.log("State", this.state);
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -83,8 +82,6 @@ class EditStaffProfile extends Component {
             <h3 className="headerStyle">Edit Employee Profile</h3>
           </span>
         </div>
-        <br />
-
         <div className="tableContainerFlex">
           <Form onSubmit={this.handleFormSubmit}>
             <FormGroup>
