@@ -20,9 +20,6 @@ class Login extends Component {
       passwordValid: false,
       formValid: false
     };
-
-    //this.handleChange = this.handleChange.bind(this);
-    //this.handleSubmit = this.handleSubmit.bind(this);
   }
 
   handleUserInput = e => {
@@ -32,15 +29,6 @@ class Login extends Component {
       this.validateField(name, value);
     });
   };
-
-  // handleChange = async event => {
-  //   const { target } = event;
-  //   const value = target.value;
-  //   const { name } = target;
-  //   await this.setState({
-  //     [name]: value
-  //   });
-  // };
 
   handleChange = event => {
     const { name, value } = event.target;
@@ -94,8 +82,6 @@ class Login extends Component {
       .then(response => {
         localStorage.setItem(ACCESS_TOKEN, response.accessToken);
         this.props.onLogin();
-        this.setState({ redirectToReferrer: true, errorState: true });
-        //this.props.history.push("/");
       })
       .catch(error => {
         let fieldValidationErrors = this.state.formErrors;
@@ -116,12 +102,8 @@ class Login extends Component {
     });
   }
 
-  // validateForm() {
-  //     this.setState({formValid: this.state.emailValid && this.state.passwordValid});
-  // }
-
   render() {
-    const { email, password } = this.state;
+      const { email, password } = this.state;
 
     const textInputStyle = {
       fontSize: "18px",
