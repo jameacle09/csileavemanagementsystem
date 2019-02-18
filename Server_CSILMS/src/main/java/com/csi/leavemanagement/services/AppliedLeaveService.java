@@ -13,6 +13,7 @@ import com.csi.leavemanagement.models.AppliedLeave;
 import com.csi.leavemanagement.models.AppliedLeaveId;
 import com.csi.leavemanagement.models.EmployeeDetails;
 import com.csi.leavemanagement.models.LeaveEntitlement;
+import com.csi.leavemanagement.models.Translateitem;
 import com.csi.leavemanagement.repositories.AppliedLeaveRepository;
 
 @Service
@@ -21,14 +22,17 @@ public class AppliedLeaveService {
 	private AppliedLeaveRepository appliedLeaveRepository;
 	private EmployeeDetailsService employeeDetailsService;
 	private LeaveEntitlementService leaveEntitlementService;
+	private TranslateitemService translateitemService;
 
 	@Autowired
 	public AppliedLeaveService(AppliedLeaveRepository appliedLeaveRepository,
 			                   EmployeeDetailsService employeeDetailsService,
-			                   LeaveEntitlementService leaveEntitlementService) {
+			                   LeaveEntitlementService leaveEntitlementService,
+			                   TranslateitemService translateitemService) {
 		this.appliedLeaveRepository = appliedLeaveRepository;
 		this.employeeDetailsService = employeeDetailsService;
 		this.leaveEntitlementService = leaveEntitlementService;
+		this.translateitemService = translateitemService;
 	}
 	
 	public List<AppliedLeave> findAll() {
@@ -92,6 +96,25 @@ public class AppliedLeaveService {
 		}
 				
 		return this.appliedLeaveRepository.save(newAppliedLeave);
+	}
+	
+	public AppliedLeave updateLeaveStatus(AppliedLeave appliedLeave, String newLeaveStatus) throws Exception {
+		
+		// Validate Leave Status
+		List<Translateitem> leaveStatusList = this.translateitemService.findByFieldname("leave_status");
+		boolean validStatus = false;
+		for(Translateitem leaveStatusItem : leaveStatusList) {
+			if(leaveStatusItem.getId().getFieldvalue().equals(newLeaveStatus)) {
+				validStatus = true;
+				break;
+			}
+		}
+		
+		if(!validStatus) 
+			throw new Exception("csilms: Invalid Leave Status : " + newLeaveStatus);
+		
+		appliedLeave.setLeaveStatus(newLeaveStatus);
+		return this.appliedLeaveRepository.save(appliedLeave);
 	}
 	
 	public AppliedLeave save(AppliedLeave newAppliedLeave) {
