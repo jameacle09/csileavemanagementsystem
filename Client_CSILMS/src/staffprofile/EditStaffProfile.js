@@ -18,7 +18,14 @@ class EditStaffProfile extends Component {
       lineManager: "",
       joinDate: "",
       status: "",
-      roles: ""
+      roles: [{
+        role: "",
+        roleName: ""
+      }],
+      rolesList: [{
+        role: "",
+        roleName: ""
+      }]
     };
     this.toggleCancel = this.toggleCancel.bind(this);
   }
@@ -54,9 +61,15 @@ class EditStaffProfile extends Component {
           lineManager: data.reportsTo.name,
           joinDate: data.joinDate,
           status: data.status,
-          roles: data.roles.role
+          roles: data.roles,
+          rolesList: [
+            { role: "E", roleName: "Employee" },
+            { role: "M", roleName: "Manager" },
+            { role: "A", roleName: "Admin" }
+          ]
         });
-
+        console.log(data.roles);
+        console.log(this.rolesList);
       })
       .catch(err => {
         console.log(err);
@@ -80,7 +93,8 @@ class EditStaffProfile extends Component {
       lineManager,
       joinDate,
       status,
-      roles
+      roles,
+      rolesList
     } = this.state;
     // console.log("State", this.state);
 
@@ -188,7 +202,8 @@ class EditStaffProfile extends Component {
               <div className="form-check">
                 <Input
                   type="radio"
-                  name="active"
+                  name="status"
+                  value='A'
                   checked={status === "A"}
                   onChange={this.handleChange}
                 />
@@ -197,36 +212,35 @@ class EditStaffProfile extends Component {
               <div className="form-check">
                 <Input
                   type="radio"
-                  name="inactive"
-                  value="inactive"
+                  name="status"
+                  value="I"
                   checked={status === "I"}
                   onChange={this.handleChange}
                 />
                 Inactive
               </div>
+              <span>{status}</span>
             </FormGroup>
             <FormGroup>
               <Label for="role">Role</Label>
-              <div className="form-check">
-                <Input
-                  type="checkbox"
-                  name="employee"
-                  value={roles} />
-                Employee
-              </div>
-              <div className="form-check">
-                <Input
-                  type="checkbox"
-                  name="manager"
-                  value={roles} />
-                Manager
-              </div>
-              <div className="form-check">
-                <Input
-                  type="checkbox"
-                  name="admin"
-                  value={roles} /> Admin
-              </div>
+              {this.state.rolesList.map(function (item, key) {
+                return (
+                  <div className="form-check">
+                    <Input
+                      type="checkbox"
+                      name="roles"
+                      value={item.role} />
+                    <span>{item.roleName}</span>
+                  </div>
+                )
+              })}
+              {this.state.roles.map(function (item, key) {
+                return (
+                  <tr key={key}>
+                    <td>{item.roleName}</td>
+                  </tr>
+                )
+              })}
             </FormGroup>
             <br />
             <Button color="primary"
