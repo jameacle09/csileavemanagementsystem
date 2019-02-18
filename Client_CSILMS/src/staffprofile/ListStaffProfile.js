@@ -1,14 +1,11 @@
 import React, { Component } from "react";
-import { Table, Input, Row, Col, Button } from "reactstrap";
-//import Button from "@material-ui/core/Button";
-// import StaffTableRow from "./StaffTableRow";
+import { Row, Col, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
 import { Redirect, withRouter } from "react-router-dom";
 import { isHrRole } from "../util/APIUtils";
 import { fetchData, formatDateDMY } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
-// import Moment from "react-moment";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import ExportToExcel from "./StaffProfilesToExcel";
@@ -37,12 +34,6 @@ class ListStaffProfile extends Component {
   componentDidMount() {
     this.loadEmployeeDetails();
   }
-
-  // componentDidUpdate(nextProps) {
-  //   if (this.props.isAuthenticated !== nextProps.isAuthenticated) {
-  //     this.loadEmployeeDetails();
-  //   }
-  // }
 
   render() {
     if (!isHrRole(this.props.currentUser)) {
@@ -132,8 +123,7 @@ class ListStaffProfile extends Component {
             to={`/liststaffprofile/edit/${editButton.emplId}`}
             className="smallButtonOverride"
           >
-            <span className="fa fa-edit" />
-            &nbsp;Edit
+            <span className="fa fa-edit" /> Edit
           </Button>
         ),
         minWidth: 72,
@@ -155,13 +145,6 @@ class ListStaffProfile extends Component {
         <div className="reactTableContainer">
           <Row style={{ height: "50px" }}>
             <Col md="6" xs="6">
-              {/* <Button component={Link} to="" className="largeButtonOverride">
-                <span
-                  className="fa fa-file-excel"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-                Export to Excel
-              </Button> */}
               <ExportToExcel employeeProfiles={this.state.employeeProfiles}>
                 <span
                   className="fa fa-file-excel"
@@ -171,8 +154,8 @@ class ListStaffProfile extends Component {
             </Col>
             <Col md="6" xs="6" style={{ textAlign: "right" }}>
               <Button
-                component={Link}
-                to="/newstaffprofile"
+                tag={Link}
+                to={`/newstaffprofile/`}
                 className="largeButtonOverride"
               >
                 <span
@@ -192,23 +175,10 @@ class ListStaffProfile extends Component {
             filterable={true}
             sortable={true}
             multiSort={true}
-            // rowsText="Rows per page"
             loadingText="Loading Employe Profiles..."
             noDataText="No data available."
             className="-striped"
           >
-            {/* {(state, filteredData, instance) => {
-              // console.log("PageRows", state.pageRows);
-              this.reactTable = state.pageRows.map(employeeProfile => {
-                return employeeProfile._original;
-              });
-              return (
-                <div>
-                  {filteredData()}
-                  <ExportToExcel employeeProfiles={this.reactTable} />
-                </div>
-              );
-            }} */}
           </ReactTable>
         </div>
       </div>

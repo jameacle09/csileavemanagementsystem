@@ -12,7 +12,7 @@ class ExportToExcel extends Component {
           id="test-table-xls-button"
           className="exportToExcelButton"
           table="table-to-xls"
-          filename="filteredData"
+          filename="Employee Profile"
           sheet="tablexls"
           buttonText="Export to Excel"
         />

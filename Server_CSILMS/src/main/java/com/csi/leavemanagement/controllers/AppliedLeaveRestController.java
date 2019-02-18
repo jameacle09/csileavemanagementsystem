@@ -191,7 +191,7 @@ public class AppliedLeaveRestController {
 			}
 		}
 		
-		responseEntityMessage.put("message","Leave application updated");
+		responseEntityMessage.put("message","Success");
 		return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.OK);	
 	}
 	

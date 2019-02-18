@@ -1,6 +1,5 @@
 import React, { Component } from "react";
-import { Table, Button } from "reactstrap";
-// import Button from "@material-ui/core/Button";
+import { Button } from "reactstrap";
 import { Link, Redirect } from "react-router-dom";
 import {
   fetchData,
@@ -170,61 +169,10 @@ class LeaveRequestsList extends Component {
             filterable={true}
             sortable={true}
             multiSort={true}
-            // rowsText="Rows per page"
             loadingText="Loading Employe Profiles..."
             noDataText="No data available."
             className="-striped"
           />
-
-          {/* <Table bordered>
-            <thead>
-              <tr>
-                <th>Empl ID</th>
-                <th>Employee Name</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Leave Type</th>
-                <th>Half Day</th>
-                <th>Duration</th>
-                <th>View</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.leaveRequestData.map((leaveRequest, index) => (
-                <tr key={index}>
-                  <td>{leaveRequest.id.emplid}</td>
-                  <td>{leaveRequest.employeeDetails.name}</td>
-                  <td>{formatDateDMY(leaveRequest.id.startDate)}</td>
-                  <td>{formatDateDMY(leaveRequest.endDate)}</td>
-                  <td>{leaveRequest.leaveCategory.leaveDescr}</td>
-                  <td>{showFullString(leaveRequest.halfDay)}</td>
-                  <td>{leaveRequest.leaveDuration} day(s)</td>
-                  <td>
-                    <Button
-                      component={Link}
-                      variant="contained"
-                      color="primary"
-                      tag={Link}
-                      to={`/leaverequests/view/${
-                        leaveRequest.id.emplid
-                      }/${formatDateYMD(
-                        leaveRequest.id.effDate
-                      )}/${formatDateYMD(leaveRequest.id.startDate)}/${
-                        leaveRequest.id.leaveCode
-                      }`}
-                      activeclassname="active"
-                      style={{ textTransform: "none", color: "white" }}
-                    >
-                      <span
-                        className="fa fa-folder-open"
-                        style={{ textTransform: "none", color: "white" }}
-                      />
-                    </Button>
-                  </td>
-                </tr>
-              ))}
-            </tbody>
-          </Table> */}
         </div>
       </div>
     );
