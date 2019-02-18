@@ -3,7 +3,9 @@ package com.csi.leavemanagement.controllers;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,25 +44,31 @@ public class AppliedLeaveRestController {
 	}
 
 	@RequestMapping(value="/appliedleave", method=RequestMethod.POST)
-	public ResponseEntity<String> doSaveAppliedLeave(@RequestBody AppliedLeave appliedLeave) {
+	public ResponseEntity<?> doSaveAppliedLeave(@RequestBody AppliedLeave appliedLeave) {
 
+		Map<String, String> responseEntityMessage = new HashMap<String, String> ();
 		try {
 
 			AppliedLeave newAppliedLeave = this.appliedLeaveService.create(appliedLeave);
-			if(newAppliedLeave == null) 
-				return new ResponseEntity<String>("{ \"message\": \"Leave application failed\"", HttpStatus.BAD_REQUEST);
-			
+			if(newAppliedLeave == null) {
+				responseEntityMessage.put("message", "Leave application failed");
+				return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.BAD_REQUEST);				
+			}			
 		} catch (Exception e) {
 
-			if(e.getMessage().substring(0, 6).contentEquals("csilms"))
-				return new ResponseEntity<String>("{ \"message\": \"" + e.getMessage().substring(8) + "\"}", HttpStatus.CONFLICT);
-			else
+			if(e.getMessage().substring(0, 6).contentEquals("csilms")) {
+				responseEntityMessage.put("message", e.getMessage().substring(8));
+				return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.CONFLICT);
+			} else {
 				// TODO : to remove e.getMessage and replace with proper error message before deployment
-				return new ResponseEntity<String>("{ \"message\": \"" + e.getMessage() + "\"}", HttpStatus.INTERNAL_SERVER_ERROR);
+				responseEntityMessage.put("message", e.getMessage());
+				return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
 		}
 		
 		// Leave application created successfully
-		return new ResponseEntity<String>("{ \"message\": \"Leave application created\" }", HttpStatus.CREATED );		
+		responseEntityMessage.put("message", "Leave application submitted");
+		return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.CREATED );		
 	}
 
 	@RequestMapping(value="/appliedleave/{emplid}", method=RequestMethod.DELETE)
@@ -135,11 +143,14 @@ public class AppliedLeaveRestController {
 	}
 	
 	@RequestMapping(value="/appliedleave/{emplid}/{effDate}/{startDate}/{leavecode}/{leaveStatus}", method=RequestMethod.PATCH)
-	public AppliedLeave doUpdateAppliedLeaveStatus(@PathVariable("emplid") String emplid,  
+	public ResponseEntity<?> doUpdateAppliedLeaveStatus(@PathVariable("emplid") String emplid,  
 											  @PathVariable("effDate") String effDateStr, 
 											  @PathVariable("startDate") String startDateStr,
 											  @PathVariable("leavecode") String leaveCode,
 											  @PathVariable("leaveStatus") String leaveStatus) {
+		
+		Map <String, String> responseEntityMessage = new HashMap<String, String> ();
+		
 		// Try create Effective Date and Start Date from Path Variable
 		Date startDate = null, effDate = null;
 		boolean dateValid = false;
@@ -155,16 +166,23 @@ public class AppliedLeaveRestController {
 			dateValid = false;
 		}
 		
-		if(! dateValid) 				
-			return null;
+		if(! dateValid) {			
+			responseEntityMessage.put("message","Input Date is invalid");
+			return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.BAD_REQUEST);	
+		}
 		
 		AppliedLeave thisAppliedLeave = this.appliedLeaveService.findById(emplid, effDate, startDate, leaveCode);
 		
-		if(thisAppliedLeave == null)
-			return null;
+		if(thisAppliedLeave == null){			
+			responseEntityMessage.put("message","Leave application not found");
+			return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.NOT_FOUND);	
+		}
 		
 		thisAppliedLeave.setLeaveStatus(leaveStatus);
-		return this.appliedLeaveService.save(thisAppliedLeave);
+		this.appliedLeaveService.save(thisAppliedLeave);
+		
+		responseEntityMessage.put("message","Leave application updated");
+		return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.OK);	
 	}
 	
 	@RequestMapping(value="/appliedleave/{emplid}", method=RequestMethod.GET)
