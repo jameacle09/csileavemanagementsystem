@@ -1,7 +1,10 @@
 import React from "react";
-import { Button, Form, FormGroup, Label, Input } from "reactstrap";
+import { Button, Form, FormGroup, Label, Input, Alert } from "reactstrap";
 import "../common/Styles.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { fetchData } from '../util/APIUtils';
+import { withRouter } from 'react-router-dom';
+import { API_BASE_URL } from '../constants'; 
 
 class ChangePassword extends React.Component {
   constructor(props) {
@@ -10,21 +13,67 @@ class ChangePassword extends React.Component {
       currentPasswordType: "password",
       passwordType: "password",
       confirmPasswordType: "password",
+      currentPassword: "",
       password: "",
-      confirmPassword: ""
+      confirmPassword: "",
+      visibleFailed: false,
+      visibleSuccess: false
     };
+
     this.validatePassword = this.validatePassword.bind(this);
+    this.submitForm = this.submitForm.bind(this);
+    this.onDismiss = this.onDismiss.bind(this);
   }
 
-  validatePassword(event) {
-    if (event.target.name === "password") {
-      this.setState({ password: event.target.value });
-    }
+  onDismiss() {
+    this.setState({ visibleFailed: false,
+                    visibleSuccess: false
+                });
+  }
 
+  submitForm(e) {
+    e.preventDefault();
+    const values = {
+      password: this.state.currentPassword,
+      newPassword: this.state.password
+    };
+    
+    const request = Object.assign({}, values);
+    
+    fetchData({
+      url: API_BASE_URL + "/changePassword",
+      method: 'POST',
+      body: JSON.stringify(request)
+    }).then(response => {
+      if(response.message === "FAILED"){
+        this.setState({visibleFailed:true,
+                        currentPassword:"",
+                        password:"",
+                        confirmPassword:""});
+      } else if(response.message === "SUCCESS"){
+        this.setState({visibleSuccess:true,
+                        currentPassword:"",
+                        password:"",
+                        confirmPassword:""});
+      }
+    }).catch(error => {
+      if(error.status === 401) {
+         this.props.history.push("/login");    
+      } 
+    });
+
+  }
+
+  handleChange = event => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  };
+
+  validatePassword(event) {
     if (event.target.name === "confirmPassword") {
       this.setState({ confirmPassword: event.target.value });
       if (event.target.value !== this.state.password) {
-        event.target.setCustomValidity("Password not match");
+        event.target.setCustomValidity("Passwords Don't Match");
       } else {
         event.target.setCustomValidity("");
       }
@@ -79,6 +128,7 @@ class ChangePassword extends React.Component {
       currentPasswordType,
       passwordType,
       confirmPasswordType,
+      currentPassword,
       password,
       confirmPassword
     } = this.state;
@@ -95,7 +145,13 @@ class ChangePassword extends React.Component {
         </div>
         <br />
         <div className="container" style={divStyle}>
-          <Form>
+        <Alert color="danger" isOpen={this.state.visibleFailed} toggle={this.onDismiss}>
+            Sorry! Failed to change new password due to invalid current password.
+        </Alert>
+        <Alert color="info" isOpen={this.state.visibleSuccess} toggle={this.onDismiss}>
+            You have successfully change new password.
+        </Alert>
+          <Form onSubmit={e => this.submitForm(e)} name="form">
             <FormGroup>
               <Label for="currentPassword" align="left">
                 Current Password
@@ -104,9 +160,11 @@ class ChangePassword extends React.Component {
                 <Input
                   style={inputStyle}
                   type={currentPasswordType}
-                  name="currentpassword"
-                  id="passcurrentpassword"
-                  aria-label="passcurrentpassword"
+                  name="currentPassword"
+                  id="currentPassword"
+                  value={currentPassword}
+                  onChange={this.handleChange}
+                  aria-label="currentPassword"
                   aria-describedby="basic-addon2"
                   autoFocus required
                 />
@@ -125,18 +183,20 @@ class ChangePassword extends React.Component {
               </div>
             </FormGroup>
             <FormGroup>
-              <Label for="password">Change Password</Label>
+              <Label for="password">New Password</Label>
               <div className="input-group mb-3">
                 <Input
                   style={inputStyle}
                   type={passwordType}
                   name="password"
                   id="password"
-                  onChange={this.validatePassword}
+                  onChange={this.handleChange}
                   value={password}
                   aria-label="password"
                   aria-describedby="basic-addon2"
                   required
+                  pattern="^\S{8,}$"
+                  title="8 characters minimum"
                 />
                 <div className="container_password_show input-group-append">
                   <span
@@ -151,18 +211,21 @@ class ChangePassword extends React.Component {
               </div>
             </FormGroup>
             <FormGroup>
-              <Label for="confirmPassword">Confirm Password</Label>
+              <Label for="confirmPassword">Confirm New Password</Label>
               <div className="input-group mb-3">
                 <Input
                   style={inputStyle}
                   type={confirmPasswordType}
                   name="confirmPassword"
                   id="confirmPassword"
-                  onChange={this.validatePassword}
+                  onChange={this.handleChange}
+                  onBlur={this.validatePassword}
                   value={confirmPassword}
                   aria-label="confirmPassword"
                   aria-describedby="basic-addon2"
                   required
+                  pattern="^\S{8,}$"
+                  title="8 characters minimum"
                 />
                 <div className="container_password_show input-group-append">
                   <span
@@ -180,9 +243,9 @@ class ChangePassword extends React.Component {
             </FormGroup>
             <br />
             <Button
-              color="primary"              
+              color="primary"
+              type="submit"            
               style={{ textTransform: 'none', float: 'right', backgroundColor: '#3F51B5', color: 'white' }}
-              onSubmit={this.validatePassword}
             >
               Submit
             </Button>
@@ -193,5 +256,4 @@ class ChangePassword extends React.Component {
   }
 }
 
-//ReactDOM.render(<ChangePassword />, document.getElementById("react"));
-export default ChangePassword;
+export default withRouter(ChangePassword);
