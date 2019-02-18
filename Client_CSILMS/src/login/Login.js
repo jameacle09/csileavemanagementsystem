@@ -33,15 +33,6 @@ class Login extends Component {
     });
   };
 
-  // handleChange = async event => {
-  //   const { target } = event;
-  //   const value = target.value;
-  //   const { name } = target;
-  //   await this.setState({
-  //     [name]: value
-  //   });
-  // };
-
   handleChange = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
@@ -94,8 +85,6 @@ class Login extends Component {
       .then(response => {
         localStorage.setItem(ACCESS_TOKEN, response.accessToken);
         this.props.onLogin();
-        this.setState({ redirectToReferrer: true, errorState: true });
-        //this.props.history.push("/");
       })
       .catch(error => {
         let fieldValidationErrors = this.state.formErrors;
@@ -116,11 +105,7 @@ class Login extends Component {
     });
   }
 
-    validateForm() {
-        this.setState({formValid: this.state.emailValid && this.state.passwordValid});
-    }
-    
-    render() {
+  render() {
       const { email, password } = this.state;
 
     const textInputStyle = {
