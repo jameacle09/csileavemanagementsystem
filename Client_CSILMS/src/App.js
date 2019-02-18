@@ -8,8 +8,8 @@ import HomePage from "./home/HomePage";
 import ApplyLeave from "./leaves/ApplyLeave";
 import MyLeaveDetails from "./leaves/MyLeaveDetails";
 import MyLeaveHistory from "./leaves/MyLeaveHistory";
-import ManagerApproval from "./manager/ManagerApproval";
-import LeaveRequestApproval from "./manager/LeaveRequestApproval";
+// import ManagerApproval from "./manager/ManagerApproval";
+import LeaveRequestsList from "./manager/LeaveRequestsList";
 import LeaveRequest from "./manager/LeaveRequest";
 import StaffLeaveHistory from "./manager/StaffLeaveHistory";
 import MyProfile from "./staffprofile/MyProfile";
@@ -182,14 +182,14 @@ class App extends Component {
                     exact
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
-                    path="/managerapproval"
-                    title="Leave Request List"
-                    component={LeaveRequestApproval}
+                    path="/leaverequests"
+                    title="Leave Requests List"
+                    component={LeaveRequestsList}
                   />
                   <PrivateRoute
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
-                    path="/managerapproval/view/:emplId/:effDate/:startDate/:leaveCode"
+                    path="/leaverequests/view/:emplId/:effDate/:startDate/:leaveCode"
                     title="View Leave Request"
                     component={LeaveRequest}
                   />

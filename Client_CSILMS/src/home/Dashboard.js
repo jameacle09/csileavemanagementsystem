@@ -6,10 +6,10 @@ import MyLeaveDetails from "../img/leavedetails.png";
 import MyProfile from "../img/myprofile.png";
 import ManagerApproval from "../img/managerapproval.png";
 import HRDashboard from "../img/hrdashboard.png";
-import { displayByRole } from '../util/APIUtils';
+import { displayByRole } from "../util/APIUtils";
 
 class Dashboard extends Component {
-  render() {    
+  render() {
     return (
       <div className="containerDashboard">
         <NavLink
@@ -69,7 +69,7 @@ class Dashboard extends Component {
           </div>
         </NavLink>
         <NavLink
-          to="/managerapproval"
+          to="/leaverequests"
           title="Manager Approval"
           activeClassName="sidebarLinkActive"
           style={displayByRole(this.props.currentUser, "MANAGER")}

@@ -7,11 +7,16 @@ import {
   Input,
   FormText,
   Col,
-  Alert
+  Alert,
+  CustomInput,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
 } from "reactstrap";
-import "react-confirm-alert/src/react-confirm-alert.css";
-import { fetchData } from "../util/APIUtils";
+import { fetchData, formatDateYMD } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
+import "../common/Styles.css";
 
 class LeaveRequest extends Component {
   constructor(props) {
@@ -24,8 +29,24 @@ class LeaveRequest extends Component {
       endDate: "",
       isHalfDay: "N",
       leaveDuration: "1 day(s)",
-      leaveReason: ""
+      leaveReason: "",
+      modalApprove: false,
+      modalReject: false
     };
+    this.toggleApprove = this.toggleApprove.bind(this);
+    this.toggleReject = this.toggleReject.bind(this);
+  }
+
+  toggleApprove() {
+    this.setState(prevState => ({
+      modalApprove: !prevState.modalApprove
+    }));
+  }
+
+  toggleReject() {
+    this.setState(prevState => ({
+      modalReject: !prevState.modalReject
+    }));
   }
 
   componentDidMount() {
@@ -50,7 +71,7 @@ class LeaveRequest extends Component {
       method: "GET"
     })
       .then(data => {
-        // console.log(data);
+        console.log("Fetched Data", data);
         this.setState({
           emplId: data.id.emplid,
           name: data.employeeDetails.name,
@@ -67,6 +88,10 @@ class LeaveRequest extends Component {
       });
   }
 
+  handleCancel = () => {
+    this.props.history.push("/leaverequests");
+  };
+
   render() {
     const {
       emplId,
@@ -78,18 +103,7 @@ class LeaveRequest extends Component {
       leaveDuration,
       leaveReason
     } = this.state;
-    console.log(this.state);
-    const formatDate = strDate => {
-      var d = new Date(strDate),
-        month = "" + (d.getMonth() + 1),
-        day = "" + d.getDate(),
-        year = d.getFullYear();
 
-      if (month.length < 2) month = "0" + month;
-      if (day.length < 2) day = "0" + day;
-
-      return [year, month, day].join("-");
-    };
     const BooleanHalfDay = strHalfDay => {
       if (strHalfDay === "Y") {
         return true;
@@ -98,6 +112,16 @@ class LeaveRequest extends Component {
       }
     };
 
+    const externalCloseBtn = (
+      <button
+        className="close"
+        style={{ position: "absolute", top: "15px", right: "15px" }}
+        onClick={this.toggle}
+      >
+        &times;
+      </button>
+    );
+
     return (
       <div className="mainContainerLeavePages">
         <div className="headerContainerFlex">
@@ -105,61 +129,93 @@ class LeaveRequest extends Component {
             <h3 className="headerStyle">Leave Request for Approval</h3>
           </span>
         </div>
-        <br />
+
         <div className="tableContainerFlex">
           <Form>
-            <FormGroup>
-              <Label for="emplId">Employee ID:</Label>
-              <Input
-                type="text"
-                name="emplId"
-                id="emplId"
-                value={emplId}
-                disabled={true}
-              />
+            <FormGroup row>
+              <Label for="emplId" sm={2}>
+                Employee ID:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="text"
+                  name="emplId"
+                  id="emplId"
+                  value={emplId}
+                  disabled={true}
+                />
+              </Col>
             </FormGroup>
-            <FormGroup>
-              <Label for="name">Employee Name:</Label>
-              <Input
-                type="text"
-                name="name"
-                id="name"
-                value={name}
-                disabled={true}
-              />
+            <FormGroup row>
+              <Label for="name" sm={2}>
+                Employee Name:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="text"
+                  name="name"
+                  id="name"
+                  value={name}
+                  disabled={true}
+                />
+              </Col>
             </FormGroup>
-            <FormGroup>
-              <Label for="leaveDescr">Leave Category:</Label>
-              <Input
-                type="text"
-                name="leaveDescr"
-                id="leaveDescr"
-                value={leaveDescr}
-                disabled={true}
-              />
+            <FormGroup row>
+              <Label for="leaveDescr" sm={2}>
+                Leave Category:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="text"
+                  name="leaveDescr"
+                  id="leaveDescr"
+                  value={leaveDescr}
+                  disabled={true}
+                />
+              </Col>
             </FormGroup>
-            <FormGroup>
-              <Label for="startDate">Start Date:</Label>
-              <Input
-                type="date"
-                name="startDate"
-                id="startDate"
-                value={formatDate(startDate)}
-                disabled={true}
-              />
+            <FormGroup row>
+              <Label for="startDate" sm={2}>
+                Start Date:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="date"
+                  name="startDate"
+                  id="startDate"
+                  value={formatDateYMD(startDate)}
+                  disabled={true}
+                />
+              </Col>
             </FormGroup>
-            <FormGroup>
-              <Label for="endDate">End Date:</Label>
-              <Input
-                type="date"
-                name="endDate"
-                id="endDate"
-                value={formatDate(endDate)}
-                disabled={true}
-              />
+            <FormGroup row>
+              <Label for="endDate" sm={2}>
+                End Date:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="date"
+                  name="endDate"
+                  id="endDate"
+                  value={formatDateYMD(endDate)}
+                  disabled={true}
+                />
+              </Col>
             </FormGroup>
-            <FormGroup check>
-              <Label check>
+            <FormGroup row>
+              <Label for="endDate" sm={2}>
+                Taking Half Day?
+              </Label>
+              <Col sm={10}>
+                <CustomInput
+                  type="checkbox"
+                  id="isHalfDay"
+                  label=""
+                  checked={BooleanHalfDay(isHalfDay)}
+                  disabled={true}
+                />
+              </Col>
+              {/* <Label check>
                 <Input
                   type="checkbox"
                   name="isHalfDay"
@@ -168,54 +224,122 @@ class LeaveRequest extends Component {
                   disabled={true}
                 />
                 Taking Half Day Leave?
+              </Label> */}
+            </FormGroup>
+            <FormGroup row>
+              <Label for="leaveDuration" sm={2}>
+                Leave Duration:
               </Label>
+              <Col sm={10}>
+                <Input
+                  type="text"
+                  name="leaveDuration"
+                  id="leaveDuration"
+                  value={leaveDuration}
+                  placeholder="Days"
+                  disabled={true}
+                />
+              </Col>
             </FormGroup>
-            <br />
-            <FormGroup>
-              <Label for="leaveDuration">Leave Duration:</Label>
-              <Input
-                type="text"
-                name="leaveDuration"
-                id="leaveDuration"
-                value={leaveDuration}
-                placeholder="Days"
-                disabled={true}
-              />
+            <FormGroup row>
+              <Label for="leaveReason" sm={2}>
+                Leave Reason:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="textarea"
+                  name="leaveReason"
+                  id="leaveReason"
+                  value={leaveReason}
+                  disabled={true}
+                />
+              </Col>
             </FormGroup>
-            <FormGroup>
-              <Label for="leaveReason">Leave Reason:</Label>
-              <Input
-                type="textarea"
-                name="leaveReason"
-                id="leaveReason"
-                value={leaveReason}
-                disabled={true}
-              />
+            <FormGroup row>
+              <Label for="attachment" sm={2}>
+                File Attachment:
+              </Label>
+              <Col sm={10}>
+                <FormText color="muted">No attachment uploaded.</FormText>
+              </Col>
             </FormGroup>
-            <FormGroup>
-              <Label for="attachment">File Attachment:</Label>
-              <Input type="file" name="attachment" id="attachment" />
-              <FormText color="muted">
-                Click to view the attached document.
-              </FormText>
+            <FormGroup row>
+              <Col sm={{ size: 10, offset: 2 }}>
+                <Button
+                  color="primary"
+                  onClick={this.toggleApprove}
+                  className="largeButtonOverride"
+                >
+                  Approve
+                </Button>
+                <span> </span>
+                <Button color="danger" onClick={this.toggleReject}>
+                  Reject
+                </Button>
+                <span> </span>
+                <Button color="secondary" onClick={this.handleCancel}>
+                  Cancel
+                </Button>
+                <div>
+                  <Modal
+                    isOpen={this.state.modalApprove}
+                    toggle={this.toggleApprove}
+                    className={this.props.className}
+                    // external={externalCloseBtn}
+                    style={{
+                      width: "360px",
+                      height: "300px",
+                      margin: "220px auto"
+                    }}
+                  >
+                    <ModalHeader>Approval Confirmation</ModalHeader>
+                    <ModalBody>
+                      Are you sure you want to Approve this Leave Request?
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        color="primary"
+                        onClick={this.toggleApprove}
+                        className="largeButtonOverride"
+                      >
+                        Confirm
+                      </Button>
+                      <Button color="secondary" onClick={this.toggleApprove}>
+                        Cancel
+                      </Button>
+                    </ModalFooter>
+                  </Modal>
+                </div>
+                <div>
+                  <Modal
+                    isOpen={this.state.modalReject}
+                    toggle={this.toggleReject}
+                    className={this.props.className}
+                    // external={externalCloseBtn}
+                    style={{
+                      width: "360px",
+                      height: "300px",
+                      margin: "220px auto"
+                    }}
+                  >
+                    <ModalHeader>Rejection Confirmation</ModalHeader>
+                    <ModalBody>
+                      Are you sure you want to Reject this Leave Request?
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button color="danger" onClick={this.toggleReject}>
+                        Confirm
+                      </Button>
+                      <Button color="secondary" onClick={this.toggleReject}>
+                        Cancel
+                      </Button>
+                    </ModalFooter>
+                  </Modal>
+                </div>
+              </Col>
             </FormGroup>
-            <br />
-            <Button
-              color="primary"
-              style={{ backgroundColor: "#3F51B5", color: "white" }}
-            >
-              Approve
-            </Button>
-            <span> </span>
-            <Button
-              color="primary"
-              style={{ backgroundColor: "#3F51B5", color: "white" }}
-            >
-              Reject
-            </Button>
           </Form>
         </div>
-        <br />
       </div>
     );
   }
