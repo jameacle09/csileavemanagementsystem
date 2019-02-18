@@ -3,9 +3,42 @@ import { Table, Input, Row, Col } from "reactstrap";
 import Button from "@material-ui/core/Button";
 import { Link, Redirect, withRouter } from "react-router-dom";
 import "../common/Styles.css";
-import { isHrRole } from "../util/APIUtils";
-import { fetchData } from "../util/APIUtils";
-import { API_BASE_URL } from "../constants";
+import { isHrRole } from '../util/APIUtils';
+import { fetchData } from '../util/APIUtils';
+import { API_BASE_URL } from '../constants';
+import { confirmAlert } from "react-confirm-alert";
+
+class Login extends Component {
+    render(){
+      return (
+        <tr key={this.props.key}>
+          <td>{this.props.item.userId}</td>
+          <td>{this.props.item.emplId}</td>
+          <td>{this.props.item.lockAccount}</td>
+          <td>
+            <Button
+              onClick={this.props.confirmResetPassword}
+              variant="contained"
+              color="primary"
+              style={{ textTransform: "none", color: "white" }}>
+              {/*<span className="fa fa-edit" />*/}
+                Reset Password
+            </Button>
+          </td>
+          <td>
+            <Button
+              component={Link}
+              to={`/logindetails/delete/${this.props.item.userId}`}
+              variant="contained"
+              color="primary"
+              style={{ textTransform: "none", color: "white" }}>
+                <span className="fa fa-trash" />
+            </Button>
+          </td>
+        </tr>
+      );
+    }  
+}
 
 class LoginDetails extends Component {
   constructor(props) {
@@ -18,6 +51,55 @@ class LoginDetails extends Component {
       ]
     };
     this.loadLoginDetails = this.loadLoginDetails.bind(this);
+    this.resetPassword = this.resetPassword.bind(this);
+  }
+
+  confirmResetPassword(e, emplId){
+    confirmAlert({
+      message: "Do you want to reset password for employee " + emplId + "?" ,
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => this.resetPassword(emplId)
+        },
+        {
+          label: "No"
+        }
+      ]
+    });
+  }
+
+  resetPassword(emplId){
+    const values = {"emplid": emplId};
+    const request = Object.assign({}, values);
+    
+    fetchData({
+      url: API_BASE_URL + "/resetPassword",
+      method: 'POST',
+      body: JSON.stringify(request)
+    }).then(response => {
+      confirmAlert({
+        message: "You have successfully reset password for employee " + emplId + "?" ,
+        buttons: [
+          {
+            label: "OK"
+          }
+        ]
+      });
+    }).catch(error => {
+      if(error.status === 401) {
+         this.props.history.push("/login");    
+      } else {
+        confirmAlert({
+          message: error.status + " : " + error.message ,
+          buttons: [
+            {
+              label: "OK"
+            }
+          ]
+        });
+      }
+    });
   }
 
   loadLoginDetails() {
@@ -36,7 +118,6 @@ class LoginDetails extends Component {
         }
         let userData = [];
         this.setState({ userData: userData });
-        console.log(userData);
       });
   }
 
@@ -54,6 +135,16 @@ class LoginDetails extends Component {
     if (!isHrRole(this.props.currentUser)) {
       return <Redirect to="/forbidden" />;
     }
+
+    const loginDetailsViews = [];
+    this.state.userData.forEach((item, key) => {
+      loginDetailsViews.push(
+        <Login key={key}
+          item={item}
+          confirmResetPassword={(event) => this.confirmResetPassword(event, item.emplId)}
+        />
+      )
+    });
 
     return (
       <div className="mainContainerFlex">
@@ -103,37 +194,7 @@ class LoginDetails extends Component {
               </tr>
             </thead>
             <tbody>
-              {this.state.userData.map(function(item, key) {
-                return (
-                  <tr key={key}>
-                    <td>{item.userId}</td>
-                    <td>{item.emplId}</td>
-                    <td>{item.lockAccount}</td>
-                    <td>
-                      <Button
-                        className="btn btn-primary"
-                        color="primary"
-                        tag={Link}
-                        to={`/logindetails/edit/${"userid"}`}
-                        activeclassname="active"
-                      >
-                        <span className="fa fa-edit" />
-                      </Button>
-                    </td>
-                    <td>
-                      <Button
-                        className="btn btn-primary"
-                        color="primary"
-                        tag={Link}
-                        to={`/logindetails/delete/${"userid"}`}
-                        activeclassname="active"
-                      >
-                        <span className="fa fa-trash" />
-                      </Button>
-                    </td>
-                  </tr>
-                );
-              })}
+              {loginDetailsViews}
             </tbody>
           </Table>
         </div>
