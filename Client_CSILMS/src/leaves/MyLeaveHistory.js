@@ -1,18 +1,20 @@
 import React, { Component } from "react";
-import { Table } from "reactstrap";
-import { fetchData } from '../util/APIUtils';
 import { API_BASE_URL } from '../constants';
-import Moment from 'react-moment';
+import ReactTable from "react-table";
+import "react-table/react-table.css";
+import {
+  fetchData,
+  formatDateYMD,
+  formatDateDMY
+} from "../util/APIUtils";
+import { Link } from "react-router-dom";
+import { Button } from "reactstrap";
 
 class MyLeaveHistory extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userData: [
-        // {
-        //   joinDate: ""
-        // }
-      ]
+      userData: []
     };
     this.loadMyLeaveHistory = this.loadMyLeaveHistory.bind(this);
   }
@@ -47,19 +49,90 @@ class MyLeaveHistory extends Component {
 
   
   render() {
-    let userData = this.state.userData;
-    // console.log(userData);
-    // // reformat dates and retrive manager name ONLY when data fetch successfully
-    // if (userData["id"] !== "") {
-    //   let endDate = new Date(this.state.userData["endDate"]);
-    //   userData["endDate"] =
-    //   endDate.getFullYear() +
-    //     "-" +
-    //     (endDate.getMonth() + 1) +
-    //     "-" +
-    //     endDate.getDate();
-    // }
-
+    const myLeaveHistoryCols = [
+      {
+        id: "startDate",
+        Header: "Start Date",
+        accessor: d => formatDateDMY(d.id.startDate),
+        minWidth: 94,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "endDate",
+        Header: "End Date",
+        accessor: d => formatDateDMY(d.endDate),
+        minWidth: 94,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "leaveDuration",
+        Header: "Duration",
+        accessor: str => str.leaveDuration + " day(s)",
+        minWidth: 140,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "leaveType",
+        Header: "Leave Type",
+        accessor: "leaveCategory.leaveDescr",
+        minWidth: 140,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "reason",
+        Header: "Reason",
+        accessor: "reason",
+        width: 110,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "effDate",
+        Header: "Applied Date",
+        accessor: d => formatDateDMY(d.id.effDate),
+        minWidth: 94,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "leaveStatus",
+        Header: "Status",
+        accessor: "leaveStatus",
+        minWidth: 140,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "Action",
+        Header: "Action",
+        accessor: viewButton => (
+          <Button
+            size="sm"
+            tag={Link}
+            to={`/myleavehistory/view/${viewButton.id.emplid}/${formatDateYMD(
+              viewButton.id.effDate
+            )}/${formatDateYMD(viewButton.id.startDate)}/${
+              viewButton.id.leaveCode
+            }`}
+            activeclassname="active"
+            className="smallButtonOverride"
+          >
+            <span className="fa fa-folder-open" style={{ color: "white" }} />
+            &nbsp;View
+          </Button>
+        ),
+        minWidth: 72,
+        sortable: false,
+        filterable: false,
+        style: {
+          textAlign: "center"
+        }
+      }
+    ];
     return (
       <div className="mainContainerLeavePages">
         <div className="headerContainerFlex">
@@ -68,8 +141,22 @@ class MyLeaveHistory extends Component {
           </span>
         </div>
         <br />
-        <div className="tableContainerFlex">
-          <Table responsive>
+        <div className="reactTableContainer">
+        <ReactTable
+            data={this.state.userData}
+            columns={myLeaveHistoryCols}
+            defaultPageSize={10}
+            pages={this.state.pages}
+            loading={this.state.loading}
+            filterable={true}
+            sortable={true}
+            multiSort={true}
+            // rowsText="Rows per page"
+            loadingText="Loading Leave History..."
+            noDataText="No data available."
+            className="-striped"
+          />
+          {/* <Table responsive>
             <thead>
               <tr>
                 <th>No.</th>
@@ -102,7 +189,7 @@ class MyLeaveHistory extends Component {
                 })
               }
             </tbody>
-          </Table>
+          </Table> */}
         </div>
       </div>
     );

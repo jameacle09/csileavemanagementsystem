@@ -1,17 +1,16 @@
 import React, { Component } from "react";
-import { Table } from "reactstrap";
+//import { Table } from "reactstrap";
 // import ManagerSideBar from "./ManagerSideBar";
 import "../common/Styles.css";
 import { Redirect, withRouter } from "react-router-dom";
 import { API_BASE_URL } from "../constants";
-import Moment from "react-moment";
+//import Moment from "react-moment";
 // import 'moment-timezone';
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import {
   fetchData,
   isManagerRole,
-  formatDateYMD,
   formatDateDMY
 } from "../util/APIUtils";
 
