@@ -45,7 +45,6 @@ class ChangePassword extends React.Component {
       method: 'POST',
       body: JSON.stringify(request)
     }).then(response => {
-      console.log(response.message);
       if(response.message === "FAILED"){
         this.setState({visibleFailed:true,
                         currentPassword:"",
