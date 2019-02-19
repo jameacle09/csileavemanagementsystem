@@ -36,6 +36,7 @@ class ExportToExcel extends Component {
               <th>Leave Reason</th>
               <th>Leave Status</th>
               <th>Date Status Changed</th>
+              <th>Status Changed By</th>
             </tr>
           </thead>
           <tbody>
@@ -52,6 +53,7 @@ class ExportToExcel extends Component {
                   <td>{leaveHistory.reason}</td>
                   <td>{leaveHistory.leaveStatus}</td>
                   <td>{formatDateDMY(leaveHistory.approvedDate)}</td>
+                  <td>{leaveHistory.approver}</td>
                 </tr>
               );
             })}

@@ -58,7 +58,6 @@ class LeaveHistoryView extends Component {
       method: "GET"
     })
       .then(data => {
-        console.log("Fetched Data", data);
         this.setState({
           emplId: data.id.emplid,
           name: data.employeeDetails.name,
@@ -248,7 +247,7 @@ class LeaveHistoryView extends Component {
             </FormGroup>
             <FormGroup row>
               <Label for="approver" sm={2}>
-                Approver Name:
+                Approver ID:
               </Label>
               <Col sm={10}>
                 <Input

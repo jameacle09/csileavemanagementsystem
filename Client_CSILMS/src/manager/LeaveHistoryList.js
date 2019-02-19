@@ -29,7 +29,6 @@ class LeaveHistoryList extends Component {
       method: "GET"
     })
       .then(data => {
-        console.log(data);
         this.setState({ leaveHistoryData: data });
       })
       .catch(err => {

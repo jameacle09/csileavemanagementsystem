@@ -50,7 +50,7 @@ class LeaveRequestsList extends Component {
     if (!isManagerRole(this.props.currentUser)) {
       return <Redirect to="/forbidden" />;
     }
-    console.log(this.state);
+
     const showFullString = strHalfDay => {
       if (strHalfDay === "Y") {
         return "Yes";

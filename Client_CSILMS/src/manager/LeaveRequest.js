@@ -73,7 +73,6 @@ class LeaveRequest extends Component {
       method: "GET"
     })
       .then(data => {
-        console.log("Fetched Data", data);
         this.setState({
           emplId: data.id.emplid,
           name: data.employeeDetails.name,
