@@ -18,7 +18,6 @@ class AddLeaveCategory extends Component {
             <h3 className="headerStyle">Add Leave Category</h3>
           </span>
         </div>
-        <br />
         <div className="tableContainerFlex">
           <Form>
             <FormGroup>

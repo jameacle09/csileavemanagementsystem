@@ -5,7 +5,6 @@ import "../common/Styles.css";
 
 class ExportToExcel extends Component {
   render() {
-    console.log("Props:", this.props);
     return (
       <div style={{ marginRight: "25px" }}>
         <ReactHTMLTableToExcel

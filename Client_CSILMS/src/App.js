@@ -12,7 +12,8 @@ import MyLeaveHistory from "./leaves/MyLeaveHistory";
 // import ManagerApproval from "./manager/ManagerApproval";
 import LeaveRequestsList from "./manager/LeaveRequestsList";
 import LeaveRequest from "./manager/LeaveRequest";
-import StaffLeaveHistory from "./manager/StaffLeaveHistory";
+import LeaveHistoryList from "./manager/LeaveHistoryList";
+import LeaveHistoryView from "./manager/LeaveHistoryView";
 import StaffProfileComponent from "./staffprofile/StaffProfileComponent";
 import ListStaffProfile from "./staffprofile/ListStaffProfile";
 import NewStaffProfile from "./staffprofile/NewStaffProfile";
@@ -193,14 +194,22 @@ class App extends Component {
                     title="View Leave Request"
                     component={LeaveRequest}
                   />
-
+                  <PrivateRoute
+                    exact
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/leavehistory"
+                    title="Employee Leave History List"
+                    component={LeaveHistoryList}
+                  />
                   <PrivateRoute
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
-                    path="/staffleavehistory"
-                    title="Staff Leave History"
-                    component={StaffLeaveHistory}
+                    path="/leavehistory/view/:emplId/:effDate/:startDate/:leaveCode"
+                    title="Employee Leave History"
+                    component={LeaveHistoryView}
                   />
+
                   <PrivateRoute
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
@@ -209,7 +218,7 @@ class App extends Component {
                     component={StaffProfileComponent}
                   />
                   <PrivateRoute
-                  exact
+                    exact
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
                     path="/liststaffprofile"
@@ -229,15 +238,8 @@ class App extends Component {
                     path="/liststaffprofile/edit/:emplId"
                     title="Edit Staff Profile"
                     component={EditStaffProfile}
-                  />                  
-                  <PrivateRoute
-                    exact
-                    authenticated={this.state.isAuthenticated}
-                    currentUser={this.state.currentUser}
-                    path="/leavecategory"
-                    title="Leave Category"
-                    component={LeaveCategory}
                   />
+
                   <PrivateRoute
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
@@ -253,7 +255,7 @@ class App extends Component {
                     component={EditEntitlement}
                   />
                   <PrivateRoute
-                  exact
+                    exact
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
                     path="/publicholiday"
@@ -274,21 +276,32 @@ class App extends Component {
                     title="Edit Public Holiday"
                     component={EditPublicHoliday}
                   />
+
+                  <PrivateRoute
+                    exact
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/leavecategory"
+                    title="Leave Category"
+                    component={LeaveCategory}
+                  />
                   <PrivateRoute
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
-                    path="/addleavecategory"
+                    path="/leavecategory/add"
                     title="Add Leave Category"
                     component={AddLeaveCategory}
                   />
                   <PrivateRoute
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
-                    path="/editleavecategory"
+                    path="/leavecategory/edit/:leaveCode"
                     title="Edit Leave Category"
                     component={EditLeaveCategory}
                   />
+
                   <PrivateRoute
+                    exact
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
                     path="/logindetails"
