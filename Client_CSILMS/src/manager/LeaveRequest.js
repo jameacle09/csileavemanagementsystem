@@ -7,7 +7,6 @@ import {
   Input,
   FormText,
   Col,
-  Alert,
   CustomInput,
   Modal,
   ModalHeader,
@@ -289,16 +288,6 @@ class LeaveRequest extends Component {
                   disabled={true}
                 />
               </Col>
-              {/* <Label check>
-                <Input
-                  type="checkbox"
-                  name="isHalfDay"
-                  id="isHalfDay"
-                  checked={BooleanHalfDay(isHalfDay)}
-                  disabled={true}
-                />
-                Taking Half Day Leave?
-              </Label> */}
             </FormGroup>
             <FormGroup row>
               <Label for="leaveDuration" sm={2}>
@@ -368,7 +357,6 @@ class LeaveRequest extends Component {
                     isOpen={this.state.modalApprove}
                     toggle={this.toggleApprove}
                     className={this.props.className}
-                    // external={externalCloseBtn}
                     style={{
                       width: "360px",
                       height: "300px",
@@ -401,7 +389,6 @@ class LeaveRequest extends Component {
                     isOpen={this.state.modalReject}
                     toggle={this.toggleReject}
                     className={this.props.className}
-                    // external={externalCloseBtn}
                     style={{
                       width: "360px",
                       height: "300px",

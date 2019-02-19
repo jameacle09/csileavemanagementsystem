@@ -60,8 +60,7 @@ public class AppliedLeaveRestController {
 				responseEntityMessage.put("message", e.getMessage().substring(8));
 				return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.CONFLICT);
 			} else {
-				// TODO : to remove e.getMessage and replace with proper error message before deployment
-				responseEntityMessage.put("message", e.getMessage());
+				responseEntityMessage.put("message", "An unexpected error has occurred");
 				return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.INTERNAL_SERVER_ERROR);
 			}
 		}
@@ -171,6 +170,7 @@ public class AppliedLeaveRestController {
 			return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.BAD_REQUEST);	
 		}
 		
+		// Retrieve the applied leave 
 		AppliedLeave thisAppliedLeave = this.appliedLeaveService.findById(emplid, effDate, startDate, leaveCode);
 		
 		if(thisAppliedLeave == null){			
@@ -178,10 +178,20 @@ public class AppliedLeaveRestController {
 			return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.NOT_FOUND);	
 		}
 		
-		thisAppliedLeave.setLeaveStatus(leaveStatus);
-		this.appliedLeaveService.save(thisAppliedLeave);
+		try {
+			this.appliedLeaveService.updateLeaveStatus(thisAppliedLeave, leaveStatus);
+		} catch (Exception e) {
+			
+			if(e.getMessage().substring(0, 6).contentEquals("csilms")) {
+				responseEntityMessage.put("message", e.getMessage().substring(8));
+				return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.BAD_REQUEST);
+			} else {
+				responseEntityMessage.put("message", "An unexpected error has occurred");
+				return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+			}
+		}
 		
-		responseEntityMessage.put("message","Leave application updated");
+		responseEntityMessage.put("message","Success");
 		return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.OK);	
 	}
 	
