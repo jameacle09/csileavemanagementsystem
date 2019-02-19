@@ -104,6 +104,20 @@ class LeaveHistoryView extends Component {
       }
     };
 
+    const showFullStatus = strStatus => {
+      if (strStatus === "PNAPV") {
+        return "Pending Approve";
+      } else if (strStatus === "APPRV") {
+        return "Approved";
+      } else if (strStatus === "CANCL") {
+        return "Cancelled";
+      } else if (strStatus === "PNCLD") {
+        return "Pending Cancel";
+      } else if (strStatus === "REJCT") {
+        return "Rejected";
+      }
+    };
+
     return (
       <div className="mainContainerLeavePages">
         <div className="headerContainerFlex">
@@ -268,7 +282,7 @@ class LeaveHistoryView extends Component {
                   type="text"
                   name="leaveStatus"
                   id="leaveStatus"
-                  value={leaveStatus}
+                  value={showFullStatus(leaveStatus)}
                   disabled={true}
                 />
               </Col>
