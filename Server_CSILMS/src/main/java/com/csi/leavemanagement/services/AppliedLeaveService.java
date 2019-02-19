@@ -127,12 +127,12 @@ public class AppliedLeaveService {
 																					 year, 
 																					 appliedLeave.getLeaveCategory().getLeaveCode());
 			
-			if(userLeaveEntitlement.getAvailableLeave() < appliedLeave.getLeaveDuration())
+			if(userLeaveEntitlement.getBalanceLeave() < appliedLeave.getLeaveDuration())
 				throw new Exception("csilms: Employee does not have sufficient " + appliedLeave.getLeaveCategory().getLeaveCode()
-						                + ". Leave balance: " + userLeaveEntitlement.getAvailableLeave() + " days, "
+						                + ". Leave balance: " + userLeaveEntitlement.getBalanceLeave() + " days, "
 						                + "applying duration: " + appliedLeave.getLeaveDuration() + " days" );
 			
-			userLeaveEntitlement.setAvailableLeave(
+			userLeaveEntitlement.setBalanceLeave(
 					userLeaveEntitlement.getBalanceLeave() - appliedLeave.getLeaveDuration());
 			userLeaveEntitlement.setTakenLeave(
 					userLeaveEntitlement.getTakenLeave() + appliedLeave.getLeaveDuration());
@@ -142,7 +142,7 @@ public class AppliedLeaveService {
 			// Also update Approved Date
 			appliedLeave.setApprovedDate(new Date());
 		
-		} else if (currentLeaveStatus == "PNCLD" && newLeaveStatus == "CANCL") {
+		} else if (currentLeaveStatus.contentEquals("PNCLD") && newLeaveStatus.contentEquals("CANCL")) {
 			
 			// Update Leave Entitlement
 			Calendar cal = Calendar.getInstance();
@@ -152,7 +152,7 @@ public class AppliedLeaveService {
 			LeaveEntitlement userLeaveEntitlement = leaveEntitlementService.findById(appliedLeave.getId().getEmplid(),
 																					 year, 
 																					 appliedLeave.getLeaveCategory().getLeaveCode());
-			userLeaveEntitlement.setAvailableLeave(
+			userLeaveEntitlement.setBalanceLeave(
 					userLeaveEntitlement.getBalanceLeave() + appliedLeave.getLeaveDuration());
 			userLeaveEntitlement.setTakenLeave(
 					userLeaveEntitlement.getTakenLeave() - appliedLeave.getLeaveDuration());
