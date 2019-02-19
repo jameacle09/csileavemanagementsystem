@@ -72,7 +72,7 @@ class MyLeaveDetails extends Component {
       },
       {
         id: "availableLeave",
-        Header: "Carry Forward",
+        Header: "Available Leave",
         accessor: str => str.availableLeave + " day(s)",
         minWidth: 140,
         sortable: true,
