@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Table, Button } from "reactstrap";
 // import Button from "@material-ui/core/Button";
-import { Link, Redirect } from "react-router-dom";
+import { Link, Redirect, withRouter } from "react-router-dom";
 import {
   fetchData,
   isManagerRole,
@@ -232,4 +232,4 @@ class LeaveRequestsList extends Component {
   }
 }
 
-export default LeaveRequestsList;
+export default withRouter(LeaveRequestsList);

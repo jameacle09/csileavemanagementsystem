@@ -14,8 +14,10 @@ import {
   ModalBody,
   ModalFooter
 } from "reactstrap";
+import { Redirect, withRouter } from "react-router-dom";
 import { fetchData, formatDateYMD } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
+import { confirmAlert } from "react-confirm-alert";
 import "../common/Styles.css";
 
 class LeaveRequest extends Component {
@@ -35,6 +37,7 @@ class LeaveRequest extends Component {
     };
     this.toggleApprove = this.toggleApprove.bind(this);
     this.toggleReject = this.toggleReject.bind(this);
+    this.updateAppliedLeaveStatus = this.updateAppliedLeaveStatus.bind(this);
   }
 
   toggleApprove = () => {
@@ -102,17 +105,12 @@ class LeaveRequest extends Component {
     const leaveStatus = strLeaveStatus;
 
     event.preventDefault();
-    console.log("leaveStatus", leaveStatus);
 
-    // if (strLeaveStatus === "APPRV") {
-    //   this.setState(prevState => ({
-    //     modalApprove: !prevState.modalApprove
-    //   }));
-    // } else {
-    //   this.setState(prevState => ({
-    //     modalReject: !prevState.modalReject
-    //   }));
-    // }
+    if (leaveStatus === "APPRV") {
+      this.toggleApprove();
+    } else {
+      this.toggleReject();
+    }
 
     fetchData({
       url:
@@ -130,17 +128,42 @@ class LeaveRequest extends Component {
       method: "PATCH"
     })
       .then(response => {
-        console.log(response);
         if (response.message === "Leave application updated") {
-          console.log("Update Successful!");
+          confirmAlert({
+            message: "Leave Application has been successfully updated!",
+            buttons: [
+              {
+                label: "OK",
+                onClick: () => this.props.history.push("/leaverequests")
+              }
+            ]
+          });
         } else {
-          console.log("Update Unsuccessful!");
+          confirmAlert({
+            message: "An error occurred. You may try again later...",
+            buttons: [
+              {
+                label: "OK",
+                onClick: () => this.props.history.push("/leaverequests")
+              }
+            ]
+          });
         }
       })
-      .catch(err => {
-        console.log(err);
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
       });
-    this.props.history.push("/leaverequests");
   };
 
   render() {
@@ -414,4 +437,4 @@ class LeaveRequest extends Component {
   }
 }
 
-export default LeaveRequest;
+export default withRouter(LeaveRequest);

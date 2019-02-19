@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Input, Row, Col, Button } from "reactstrap";
+import { Button, Table, Input, Row, Col } from "reactstrap";
 import { Link, Redirect, withRouter } from "react-router-dom";
 import "../common/Styles.css";
 import { fetchData, isHrRole } from "../util/APIUtils";
@@ -43,19 +43,18 @@ class Login extends Component {
 }
 
 class LoginDetails extends Component {
-  _isMounted = false;
   constructor(props) {
     super(props);
-
     this.state = {
-      // loginDetailsData: []
       userData: []
     };
     this.loadLoginDetails = this.loadLoginDetails.bind(this);
     this.resetPassword = this.resetPassword.bind(this);
+    this.confirmResetPassword = this.confirmResetPassword.bind(this);
   }
 
   confirmResetPassword(e, emplId) {
+    console.log(emplId);
     confirmAlert({
       message: "Do you want to reset password for employee " + emplId + "?",
       buttons: [
@@ -126,40 +125,19 @@ class LoginDetails extends Component {
   }
 
   componentDidMount() {
-    this._isMounted = true;
-    // this.loadLoginDetails();
-    fetchData({
-      url: API_BASE_URL + "/logindetails",
-      method: "GET"
-    }).then(loginDetails => {
-      // console.log(data);
-      if (this._isMounted) {
-        this.setState({
-          loginDetailsData: loginDetails
-        });
-      }
-      // this.setState({
-      //   loginDetailsData: data
-      // })
-    });
+    this.loadLoginDetails();
   }
 
-  // componentDidUpdate(nextProps) {
-  //   if (this.props.isAuthenticated !== nextProps.isAuthenticated) {
-  //     this.loadLoginDetails();
-  //   }
-  // }
-
-  componentWillUnmount() {
-    this._isMounted = false;
+  componentDidUpdate(nextProps) {
+    if (this.props.isAuthenticated !== nextProps.isAuthenticated) {
+      this.loadLoginDetails();
+    }
   }
 
   render() {
     if (!isHrRole(this.props.currentUser)) {
       return <Redirect to="/forbidden" />;
     }
-
-    console.log(this.state.loginDetailsData);
 
     const showFullString = strLocked => {
       if (strLocked === "1") {
@@ -168,6 +146,19 @@ class LoginDetails extends Component {
         return "No";
       }
     };
+
+    const loginDetailsViews = [];
+    this.state.userData.forEach((item, key) => {
+      loginDetailsViews.push(
+        <Login
+          key={key}
+          item={item}
+          confirmResetPassword={event =>
+            this.confirmResetPassword(event, item.emplId)
+          }
+        />
+      );
+    });
 
     const loginDetailsCols = [
       {
@@ -185,48 +176,38 @@ class LoginDetails extends Component {
         accessor: "emplId",
         minWidth: 120,
         sortable: true,
-        filterable: true
-      },
-      {
-        id: "name",
-        Header: "Employee Name",
-        // accessor: "employeeDetails.name",
-        Cell: "",
-        minWidth: 140,
-        sortable: true,
-        filterable: true
-      },
-      {
-        id: "jobTitle",
-        Header: "Job Title",
-        // accessor: "employeeDetails.jobTitle",
-        Cell: "",
-        minWidth: 120,
-        sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "lockAccount",
         Header: "Account Locked?",
         accessor: str => showFullString(str.lockAccount),
         minWidth: 80,
-        sortable: true,
-        filterable: true
+        sortable: false,
+        filterable: false,
+        style: {
+          textAlign: "center"
+        }
       },
       {
-        id: "Action",
-        Header: "Action",
-        accessor: editButton => (
+        id: "quickReset",
+        Header: "Quick Reset",
+        accessor: resetButton => (
           <Button
             color="primary"
             size="sm"
-            tag={Link}
-            to={`/logindetails/edit/${editButton.userId}`}
+            onClick={event =>
+              this.confirmResetPassword(event, resetButton.emplId)
+            }
+            variant="contained"
+            // style={{ textTransform: "none", color: "white" }}
             activeclassname="active"
             className="smallButtonOverride"
           >
-            <span className="fa fa-edit" style={{ color: "white" }} />
-            &nbsp;Edit
+            Reset Password
           </Button>
         ),
         minWidth: 72,
@@ -236,20 +217,30 @@ class LoginDetails extends Component {
           textAlign: "center"
         }
       }
+      // {
+      //   id: "Action",
+      //   Header: "Action",
+      //   accessor: editButton => (
+      //     <Button
+      //       color="primary"
+      //       size="sm"
+      //       tag={Link}
+      //       to={`/logindetails/edit/${editButton.userId}`}
+      //       activeclassname="active"
+      //       className="smallButtonOverride"
+      //     >
+      //       <span className="fa fa-edit" style={{ color: "white" }} />
+      //       &nbsp;Edit
+      //     </Button>
+      //   ),
+      //   minWidth: 72,
+      //   sortable: false,
+      //   filterable: false,
+      //   style: {
+      //     textAlign: "center"
+      //   }
+      // }
     ];
-
-    const loginDetailsViews = [];
-    this.state.userData.forEach((item, key) => {
-      loginDetailsViews.push(
-        <Login
-          key={key}
-          item={item}
-          confirmResetPassword={event =>
-            this.confirmResetPassword(event, item.emplId)
-          }
-        />
-      );
-    });
 
     return (
       <div className="mainContainerFlex">
@@ -259,22 +250,10 @@ class LoginDetails extends Component {
           </span>
         </div>
         <div className="reactTableContainer">
-          {/* <Row style={{ height: "50px" }}> */}
-          {/* <Col md="6" xs="6"> */}
-          {/* <Button component={Link} to="" className="largeButtonOverride">
-                <span
-                  className="fa fa-file-excel"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-                Export to Excel
-              </Button> */}
-          {/* <ExportToExcel employeeProfiles={this.state.employeeProfiles}>
-                <span
-                  className="fa fa-file-excel"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-              </ExportToExcel> */}
-          {/* </Col>
+          {/* <Row style={{ height: "50px" }}>
+            <Col md="6" xs="6">
+              <span> </span>
+            </Col>
             <Col md="6" xs="6" style={{ textAlign: "right" }}>
               <Button
                 color="primary"
@@ -292,8 +271,8 @@ class LoginDetails extends Component {
               </Button>
             </Col>
           </Row> */}
-          {/* <ReactTable
-            data={this.state.loginDetailsData}
+          <ReactTable
+            data={this.state.userData}
             columns={loginDetailsCols}
             defaultPageSize={10}
             pages={this.state.pages}
@@ -305,9 +284,8 @@ class LoginDetails extends Component {
             loadingText="Loading Employee Login Details..."
             noDataText="No data available."
             className="-striped"
-          /> */}
-
-          <Row>
+          />
+          {/* <Row>
             <Col md="6" xs="6" className="search">
               <Input
                 type="text"
@@ -347,11 +325,11 @@ class LoginDetails extends Component {
               </tr>
             </thead>
             <tbody>{loginDetailsViews}</tbody>
-          </Table>
+          </Table> */}
         </div>
       </div>
     );
   }
 }
 
-export default LoginDetails;
+export default withRouter(LoginDetails);

@@ -41,6 +41,9 @@ class LeaveHistoryList extends Component {
   componentDidMount() {
     this.loadHistoryData();
   }
+  componentDidUpdate() {
+    this.loadHistoryData();
+  }
   render() {
     if (!isManagerRole(this.props.currentUser)) {
       return <Redirect to="/forbidden" />;
