@@ -128,7 +128,7 @@ class LeaveRequest extends Component {
       method: "PATCH"
     })
       .then(response => {
-        if (response.message === "Leave application updated") {
+        if (response.message === "Success") {
           confirmAlert({
             message: "Leave Application has been successfully updated!",
             buttons: [
