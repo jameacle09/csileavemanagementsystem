@@ -1,18 +1,25 @@
 import React, { Component } from "react";
 import {
-  ButtonToolbar,
   Button,
   Form,
   FormGroup,
   Label,
-  Input
+  Input,
+  FormText,
+  Col,
+  Alert,
+  CustomInput,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
 } from "reactstrap";
 // import Button from '@material-ui/core/Button';
 import "../common/Styles.css";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 
-import NewEmpLookupModal from "../modal/NewEmpLookup";
+// import NewEmpLookupModal from "../modal/NewEmpLookup";
 
 const initialState = {
   userId: "",
@@ -20,8 +27,8 @@ const initialState = {
   emplName: "",
   password: "",
   confirmPassword: "",
-  lockAccount: "",
-  modalShow: false
+  lockAccount: false
+  // modalShow: false
 };
 
 class UserProfile extends Component {
@@ -42,6 +49,18 @@ class UserProfile extends Component {
     return isInvalid;
   };
 
+  handleChange = event => {
+    const { name, value } = event.target;
+    if (name === "lockAccount") {
+      this.setState(prevState => ({
+        lockAccount: !prevState.lockAccount
+      }));
+      // this.setState({ lockAccount: !prevState.lockAccount });
+    } else {
+      this.setState({ [name]: value });
+    }
+  };
+
   clickDiscard = () => {
     confirmAlert({
       message: "Do you want to cancel this request?",
@@ -57,12 +76,12 @@ class UserProfile extends Component {
     });
   };
 
-  showModal = () => {
-    this.setState({
-      ...this.state,
-      modalShow: !this.state.modalShow
-    });
-  };
+  // showModal = () => {
+  //   this.setState({
+  //     ...this.state,
+  //     modalShow: !this.state.modalShow
+  //   });
+  // };
 
   render() {
     const {
@@ -71,9 +90,10 @@ class UserProfile extends Component {
       emplName,
       password,
       confirmPassword,
-      modalShow
+      lockAccount
+      // modalShow
     } = this.state;
-
+    // console.log(this.state);
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -82,90 +102,134 @@ class UserProfile extends Component {
           </span>
         </div>
         <div className="tableContainerFlex">
-          <Button
-            variant="contained"
-            color="primary"
-            type="button"
-            onClick={this.showModal}
-          >
-            <span className="fa fa-search" />
-            &nbsp; Search New Employee
-          </Button>
-          <NewEmpLookupModal onClose={this.showModal} show={modalShow}>
-            Search New Employee
-          </NewEmpLookupModal>
           <Form>
-            <FormGroup>
-              <Label for="userId">User ID</Label>
-              <Input
-                type="email"
-                name="userId"
-                id="userId"
-                placeholder="User ID"
-                value={userId}
-                disabled
-              />
+            <FormGroup row>
+              <Col sm={{ size: 10, offset: 2 }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  type="button"
+                  className="largeButtonOverride"
+                  onClick={this.showModal}
+                >
+                  <span className="fa fa-search" />
+                  &nbsp; Search New Employee
+                </Button>
+                {/* <NewEmpLookupModal onClose={this.showModal} show={modalShow}>
+                  Search New Employee
+                </NewEmpLookupModal> */}
+              </Col>
             </FormGroup>
-            <FormGroup>
-              <Label for="emplId">Employee ID</Label>
-              <Input
-                type="text"
-                name="emplId"
-                id="emplId"
-                placeholder="Employee ID"
-                value={emplId}
-                disabled
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for="emplName">Employee Name</Label>
-              <Input
-                type="text"
-                name="emplName"
-                id="emplName"
-                placeholder="Employee Name"
-                value={emplName}
-                disabled
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for="password">Password</Label>
-              <Input
-                type="password"
-                name="password"
-                id="password"
-                placeholder="Password"
-                value={password}
-                required
-              />
-            </FormGroup>
-            <FormGroup>
-              <Label for="confirmPassword">Confirm Password</Label>
-              <Input
-                type="password"
-                name="confirmPassword"
-                id="confirmPassword"
-                placeholder="Confirm Password"
-                value={confirmPassword}
-                required
-              />
-            </FormGroup>
-            <FormGroup check>
-              <Label check>
-                <Input type="checkbox" name="lockAccount" id="lockAccount" />
-                Lock Account?
+            <FormGroup row>
+              <Label for="userId" sm={2}>
+                User ID (Email):
               </Label>
+              <Col sm={10}>
+                <Input
+                  type="email"
+                  name="userId"
+                  id="userId"
+                  placeholder="User ID"
+                  value={userId}
+                  disabled
+                />
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label for="emplId" sm={2}>
+                Employee ID:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="text"
+                  name="emplId"
+                  id="emplId"
+                  placeholder="Employee ID"
+                  value={emplId}
+                  disabled
+                />
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label for="emplName" sm={2}>
+                Employee Name:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="text"
+                  name="emplName"
+                  id="emplName"
+                  placeholder="Employee Name"
+                  value={emplName}
+                  disabled
+                />
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label for="password" sm={2}>
+                Password
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="password"
+                  name="password"
+                  id="password"
+                  placeholder="Password"
+                  onChange={this.handleChange}
+                  value={password}
+                />
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label for="confirmPassword" sm={2}>
+                Confirm Password
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="password"
+                  name="confirmPassword"
+                  id="confirmPassword"
+                  placeholder="Confirm Password"
+                  onChange={this.handleChange}
+                  value={confirmPassword}
+                />
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label for="lockAccount" sm={2}>
+                Locked Account?
+              </Label>
+              <Col sm={10}>
+                <CustomInput
+                  type="checkbox"
+                  id="lockAccount"
+                  name="lockAccount"
+                  label=""
+                  onChange={this.handleChange}
+                  checked={lockAccount}
+                />
+              </Col>
             </FormGroup>
             <br />
-            <Button
-              color="primary"
-              style={{ backgroundColor: "#3F51B5", color: "white" }}
-              disabled={this.validateForm()}
-            >
-              Save
-            </Button>
-            &nbsp;&nbsp;
-            <Button onClick={this.clickDiscard}>Discard</Button>
+            <FormGroup row>
+              <Col sm={{ size: 10, offset: 2 }}>
+                <Button
+                  color="primary"
+                  style={{ backgroundColor: "#3F51B5", color: "white" }}
+                  disabled={this.validateForm()}
+                >
+                  Submit
+                </Button>
+                <span> </span>
+                <Button color="secondary" onClick={this.clearState}>
+                  Reset
+                </Button>
+                <span> </span>
+                <Button color="secondary" onClick={this.clickDiscard}>
+                  Discard
+                </Button>
+              </Col>
+            </FormGroup>
           </Form>
         </div>
       </div>

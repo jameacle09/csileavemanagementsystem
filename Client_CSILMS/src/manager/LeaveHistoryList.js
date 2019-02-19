@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Button } from "reactstrap";
+import { Table, Button, Row, Col } from "reactstrap";
 import { Link, Redirect, withRouter } from "react-router-dom";
 import {
   fetchData,
@@ -11,41 +11,38 @@ import { API_BASE_URL } from "../constants";
 import "../common/Styles.css";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import ExportToExcel from "./LeaveHistoryToExcel";
 
-class LeaveRequestsList extends Component {
+class LeaveHistoryList extends Component {
   constructor(props) {
     super(props);
+
     this.state = {
-      leaveRequestData: []
+      leaveHistoryData: []
     };
-    this.loadLeaveRequestList = this.loadLeaveRequestList.bind(this);
   }
-
-  componentDidMount() {
-    this.loadLeaveRequestList();
-  }
-
-  componentDidUpdate(nextProps) {
-    if (this.props.isAuthenticated !== nextProps.isAuthenticated) {
-      this.loadLeaveRequestList();
-    }
-  }
-
-  loadLeaveRequestList() {
+  loadHistoryData() {
+    // fetch leave request from API
+    const thisYear = new Date().getFullYear();
     fetchData({
-      url: API_BASE_URL + "/appliedleave/me/pendingapproval",
+      url: API_BASE_URL + "/appliedleave/me/" + thisYear,
       method: "GET"
     })
       .then(data => {
-        this.setState({
-          leaveRequestData: data
-        });
+        this.setState({ leaveHistoryData: data });
       })
       .catch(err => {
-        console.log(err);
+        // if unable to fetch data, assign default (spaces) to values
+        let leaveHistory = [];
+        this.setState({ leaveHistoryData: leaveHistory });
       });
   }
-
+  componentDidMount() {
+    this.loadHistoryData();
+  }
+  componentDidUpdate() {
+    this.loadHistoryData();
+  }
   render() {
     if (!isManagerRole(this.props.currentUser)) {
       return <Redirect to="/forbidden" />;
@@ -59,7 +56,7 @@ class LeaveRequestsList extends Component {
       }
     };
 
-    const leaveRequestsCols = [
+    const leaveHistoryCols = [
       {
         id: "emplId",
         Header: "Employee ID",
@@ -77,9 +74,9 @@ class LeaveRequestsList extends Component {
         filterable: true
       },
       {
-        id: "jobTitle",
-        Header: "Job Title",
-        accessor: "employeeDetails.jobTitle",
+        id: "leaveType",
+        Header: "Leave Type",
+        accessor: "leaveCategory.leaveDescr",
         minWidth: 120,
         sortable: true,
         filterable: true
@@ -101,14 +98,6 @@ class LeaveRequestsList extends Component {
         filterable: true
       },
       {
-        id: "leaveType",
-        Header: "Leave Type",
-        accessor: "leaveCategory.leaveDescr",
-        minWidth: 140,
-        sortable: true,
-        filterable: true
-      },
-      {
         id: "halfDay",
         Header: "Half Day",
         accessor: str => showFullString(str.halfDay),
@@ -125,6 +114,14 @@ class LeaveRequestsList extends Component {
         filterable: true
       },
       {
+        id: "leaveStatus",
+        Header: "Leave Status",
+        accessor: "leaveStatus",
+        minWidth: 120,
+        sortable: true,
+        filterable: true
+      },
+      {
         id: "Action",
         Header: "Action",
         accessor: viewButton => (
@@ -132,7 +129,7 @@ class LeaveRequestsList extends Component {
             color="primary"
             size="sm"
             tag={Link}
-            to={`/leaverequests/view/${viewButton.id.emplid}/${formatDateYMD(
+            to={`/leavehistory/view/${viewButton.id.emplid}/${formatDateYMD(
               viewButton.id.effDate
             )}/${formatDateYMD(viewButton.id.startDate)}/${
               viewButton.id.leaveCode
@@ -157,27 +154,68 @@ class LeaveRequestsList extends Component {
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Leave Requests List</h3>
+            <h3 className="headerStyle">Leave History List</h3>
           </span>
         </div>
         <div className="reactTableContainer">
+          <Row style={{ height: "50px" }}>
+            <Col md="6" xs="6">
+              {/* <Button component={Link} to="" className="largeButtonOverride">
+                <span
+                  className="fa fa-file-excel"
+                  style={{ margin: "0px 5px 0px 0px" }}
+                />
+                Export to Excel
+              </Button> */}
+              <ExportToExcel leaveHistoryData={this.state.leaveHistoryData} />
+            </Col>
+            <Col md="6" xs="6" style={{ textAlign: "right" }}>
+              <span> </span>
+            </Col>
+          </Row>
           <ReactTable
-            data={this.state.leaveRequestData}
-            columns={leaveRequestsCols}
+            data={this.state.leaveHistoryData}
+            columns={leaveHistoryCols}
             defaultPageSize={10}
             pages={this.state.pages}
             loading={this.state.loading}
             filterable={true}
             sortable={true}
             multiSort={true}
-            loadingText="Loading Employe Profiles..."
+            // rowsText="Rows per page"
+            loadingText="Loading Employee Leave History..."
             noDataText="No data available."
             className="-striped"
           />
+
+          {/* <Table responsive>
+            <thead>
+              <tr>
+                <th>Name</th>
+                <th>Leave Type</th>
+                <th>Status</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+              </tr>
+            </thead>
+            <tbody>
+              {this.state.leaveRequest.map(function(item, key) {
+                return (
+                  <tr key={key}>
+                    <td>{item.employeeDetails.name}</td>
+                    <td>{item.leaveCategory.leaveDescr}</td>
+                    <td>{item.leaveStatus}</td>
+                    <td>{formatDateDMY(item.id.startDate)}</td>
+                    <td>{formatDateDMY(item.endDate)}</td>
+                  </tr>
+                );
+              })}
+            </tbody>
+          </Table> */}
         </div>
       </div>
     );
   }
 }
 
-export default withRouter(LeaveRequestsList);
+export default withRouter(LeaveHistoryList);
