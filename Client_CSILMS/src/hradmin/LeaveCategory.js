@@ -82,7 +82,7 @@ class LeaveCategory extends Component {
           <Button
             size="sm"
             tag={Link}
-            to={`/leavecategory/edit/${"leaveCode"}`}
+            to={`/leavecategory/edit/${editButton.leaveCode}`}
             className="smallButtonOverride"
           >
             <span className="fa fa-edit" /> Edit
