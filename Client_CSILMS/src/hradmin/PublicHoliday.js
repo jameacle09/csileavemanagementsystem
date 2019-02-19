@@ -22,7 +22,7 @@ class PublicHoliday extends Component {
       url: API_BASE_URL + "/publicholidays",
       method: 'GET'
     }).then(data => {
-      console.log("Results:", data);
+      //console.log("Results:", data);
       this.setState({
         publicHolidayDetails: data
       });
