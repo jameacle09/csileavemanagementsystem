@@ -15,4 +15,6 @@ public interface EmployeeDetailsRepository extends JpaRepository<EmployeeDetails
 	
 	@Query("SELECT DISTINCT e FROM EmployeeDetails e INNER JOIN e.roles r WHERE r.role = 'M'")
 	List<EmployeeDetails> findAllManagers();
+	
+	List<EmployeeDetails> findByEmplIdNotIn(List<String> emplId);
 }

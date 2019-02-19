@@ -44,6 +44,12 @@ public class EmployeeDetailsController {
 		return this.employeeDetailsService.findAllManagers();
 	}
 
+	@GetMapping("/employee/withoutlogin")
+    @PreAuthorize("hasAuthority('HR')")
+	public List<EmployeeDetails> doGetEmployeeWithoutLogin() {
+		return this.employeeDetailsService.findEmplidWithoutLogin();
+	}
+	
 	@RequestMapping(value="/employeedetails/{mgrId}/reportee", method=RequestMethod.GET)
 	public List<EmployeeDetails> doGetEmployeeDetailsByMgrId(@PathVariable("mgrId") String mgrId) {
 		return this.employeeDetailsService.findByMgrId(mgrId);
