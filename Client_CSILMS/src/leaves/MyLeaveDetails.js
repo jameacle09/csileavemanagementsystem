@@ -1,8 +1,12 @@
 import React, { Component } from "react";
-import { Table } from "reactstrap";
-import { fetchData } from '../util/APIUtils';
+import ReactTable from "react-table";
 import { API_BASE_URL } from '../constants';
 import { withRouter } from 'react-router-dom';
+import "react-table/react-table.css";
+import {
+  fetchData,
+  formatDateDMY
+} from "../util/APIUtils";
 
 class MyLeaveDetails extends Component {
   constructor(props) {
@@ -11,8 +15,6 @@ class MyLeaveDetails extends Component {
       userData: []
     };
     this.loadMyLeaveDetails = this.loadMyLeaveDetails.bind(this);
-    this.autoIncrementRow = this.autoIncrementRow.bind(this);
-
   }
 
   loadMyLeaveDetails() {
@@ -42,14 +44,57 @@ class MyLeaveDetails extends Component {
     }
   }
 
-  autoIncrementRow() {
-    let userData = [];
-    console.log(userData);
-    for (userData = 0; userData < userData.length; userData++) {
-      userData += + userData;
-    }
-  }
   render() {
+    const myLeaveDetailsCols = [
+      {
+        id: "leaveType",
+        Header: "Leave Type",
+        accessor: "leaveCategory.leaveDescr",
+        minWidth: 140,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "entitlement",
+        Header: "Entitlement",
+        accessor: str => str.entitlement + " day(s)",
+        minWidth: 94,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "carryForward",
+        Header: "Carry Forward",
+        accessor: str => str.carryForward + " day(s)",
+        minWidth: 140,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "availableLeave",
+        Header: "Carry Forward",
+        accessor: str => str.availableLeave + " day(s)",
+        minWidth: 140,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "takenLeave",
+        Header: "Taken Leave",
+        accessor: str => str.takenLeave + " day(s)",
+        minWidth: 140,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "balanceLeave",
+        Header: "Balance Leave",
+        accessor: str => str.balanceLeave + " day(s)",
+        minWidth: 140,
+        sortable: true,
+        filterable: true
+      }
+    ]
     return (
       <div className="mainContainerLeavePages">
         <div className="headerContainerFlex">
@@ -58,7 +103,23 @@ class MyLeaveDetails extends Component {
           </span>
         </div>
         <br />
-        <div className="tableContainerFlex">
+        <div className="reactTableContainer">
+        <ReactTable
+            data={this.state.userData}
+            columns={myLeaveDetailsCols}
+            defaultPageSize={10}
+            pages={this.state.pages}
+            loading={this.state.loading}
+            filterable={true}
+            sortable={true}
+            multiSort={true}
+            // rowsText="Rows per page"
+            loadingText="Loading Leave History..."
+            noDataText="No data available."
+            className="-striped"
+          />
+        </div>
+        {/* <div className="tableContainerFlex">
           <Table responsive>
             <thead>
               <tr>
@@ -87,7 +148,7 @@ class MyLeaveDetails extends Component {
               }
             </tbody>
           </Table>
-        </div>
+        </div> */}
       </div>
     );
   }

@@ -58,6 +58,8 @@ class MyLeaveHistory extends Component {
         return "Cancel";
       } else if (strStatus === "PNCLD") {
         return "Pending Cancel";
+      } else if (strStatus === "REJCT") {
+        return "Rejected";
       }
     };
     const myLeaveHistoryCols = [
