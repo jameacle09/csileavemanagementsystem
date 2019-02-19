@@ -113,7 +113,59 @@ public class AppliedLeaveService {
 		if(!validStatus) 
 			throw new Exception("csilms: Invalid Leave Status : " + newLeaveStatus);
 		
+		
+		// Handle different type of leave status change
+		String currentLeaveStatus = appliedLeave.getLeaveStatus();
+		if(currentLeaveStatus.contentEquals("PNAPV") && newLeaveStatus.contentEquals("APPRV")) {
+			
+			// Update Leave Entitlement
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(appliedLeave.getId().getStartDate());
+			int year = cal.get(Calendar.YEAR);
+			
+			LeaveEntitlement userLeaveEntitlement = leaveEntitlementService.findById(appliedLeave.getId().getEmplid(),
+																					 year, 
+																					 appliedLeave.getLeaveCategory().getLeaveCode());
+			
+			if(userLeaveEntitlement.getAvailableLeave() < appliedLeave.getLeaveDuration())
+				throw new Exception("csilms: Employee does not have sufficient " + appliedLeave.getLeaveCategory().getLeaveCode()
+						                + ". Leave balance: " + userLeaveEntitlement.getAvailableLeave() + " days, "
+						                + "applying duration: " + appliedLeave.getLeaveDuration() + " days" );
+			
+			userLeaveEntitlement.setAvailableLeave(
+					userLeaveEntitlement.getBalanceLeave() - appliedLeave.getLeaveDuration());
+			userLeaveEntitlement.setTakenLeave(
+					userLeaveEntitlement.getTakenLeave() + appliedLeave.getLeaveDuration());
+			
+			leaveEntitlementService.save(userLeaveEntitlement);
+			
+			// Also update Approved Date
+			appliedLeave.setApprovedDate(new Date());
+		
+		} else if (currentLeaveStatus == "PNCLD" && newLeaveStatus == "CANCL") {
+			
+			// Update Leave Entitlement
+			Calendar cal = Calendar.getInstance();
+			cal.setTime(appliedLeave.getId().getStartDate());
+			int year = cal.get(Calendar.YEAR);
+			
+			LeaveEntitlement userLeaveEntitlement = leaveEntitlementService.findById(appliedLeave.getId().getEmplid(),
+																					 year, 
+																					 appliedLeave.getLeaveCategory().getLeaveCode());
+			userLeaveEntitlement.setAvailableLeave(
+					userLeaveEntitlement.getBalanceLeave() + appliedLeave.getLeaveDuration());
+			userLeaveEntitlement.setTakenLeave(
+					userLeaveEntitlement.getTakenLeave() - appliedLeave.getLeaveDuration());
+			
+			leaveEntitlementService.save(userLeaveEntitlement);
+			
+		} else if(currentLeaveStatus.contentEquals("PNAPV") && newLeaveStatus.contentEquals("REJCT")) {
+
+			appliedLeave.setApprovedDate(new Date());
+		}
+		
 		appliedLeave.setLeaveStatus(newLeaveStatus);
+		
 		return this.appliedLeaveRepository.save(appliedLeave);
 	}
 	
