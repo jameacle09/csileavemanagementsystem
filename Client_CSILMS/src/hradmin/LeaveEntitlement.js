@@ -1,12 +1,14 @@
 import React, { Component } from "react";
-import { Table } from "reactstrap";
-import Button from "@material-ui/core/Button";
+import { Button } from "reactstrap";
+import ReactTable from "react-table";
+// import Button from "@material-ui/core/Button";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
 import { Redirect, withRouter } from 'react-router-dom';
 import { isHrRole } from '../util/APIUtils';
-import { fetchData } from '../util/APIUtils';
 import { API_BASE_URL } from '../constants';
+import "react-table/react-table.css";
+import { fetchData, formatDateDMY } from "../util/APIUtils";
 
 class LeaveEntitlement extends Component {
 
@@ -54,7 +56,100 @@ class LeaveEntitlement extends Component {
     if (!isHrRole(this.props.currentUser)) {
       return (<Redirect to='/forbidden' />);
     }
-
+    const leaveEntitlementCols = [
+      {
+        id: "emplid",
+        Header: "CSI Staff ID",
+        accessor: "id.emplid",
+        minWidth: 140,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "name",
+        Header: "Staff Name",
+        accessor: "employeeDetails.name",
+        minWidth: 140,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "leaveYear",
+        Header: "Year",
+        accessor: "id.year",
+        minWidth: 70,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "leaveType",
+        Header: "Leave Type",
+        accessor: "leaveCategory.leaveDescr",
+        minWidth: 140,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "entitlement",
+        Header: "Entitlement",
+        accessor: str => str.entitlement + " day(s)",
+        minWidth: 94,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "carryForward",
+        Header: "Carry Forward",
+        accessor: str => str.carryForward + " day(s)",
+        minWidth: 140,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "availableLeave",
+        Header: "Available",
+        accessor: str => str.availableLeave + " day(s)",
+        minWidth: 100,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "takenLeave",
+        Header: "Taken",
+        accessor: str => str.takenLeave + " day(s)",
+        minWidth: 100,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "balanceLeave",
+        Header: "Balance",
+        accessor: str => str.balanceLeave + " day(s)",
+        minWidth: 100,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "editAction",
+        Header: "Edit",
+        accessor: editButton => (
+          <Button
+            size="sm"
+            tag={Link}
+            to={`/publicholiday/edit/${formatDateDMY(editButton.holidayDate)}`}
+            className="smallButtonOverride"
+          >
+            <span className="fa fa-edit" /> Edit
+          </Button>
+        ),
+        minWidth: 70,
+        sortable: false,
+        filterable: false,
+        style: {
+          textAlign: "center"
+        }
+      }
+    ]
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -63,7 +158,23 @@ class LeaveEntitlement extends Component {
           </span>
         </div>
         <br />
-        <div className="tableContainerFlex">
+        <div className="reactTableContainer">
+        <ReactTable
+            data={this.state.userData}
+            columns={leaveEntitlementCols}
+            defaultPageSize={10}
+            pages={this.state.pages}
+            loading={this.state.loading}
+            filterable={true}
+            sortable={true}
+            multiSort={true}
+            // rowsText="Rows per page"
+            loadingText="Loading Leave History..."
+            noDataText="No data available."
+            className="-striped"
+          />
+        </div>
+        {/* <div className="tableContainerFlex">
           <div style={{ textAlign: "right" }}>
             <Button
               variant="contained"
@@ -123,7 +234,7 @@ class LeaveEntitlement extends Component {
               }
             </tbody>
           </Table>
-        </div>
+        </div> */}
       </div>
     );
   }
