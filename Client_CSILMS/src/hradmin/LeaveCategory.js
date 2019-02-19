@@ -1,28 +1,29 @@
 import React, { Component } from "react";
-import { Row, Col, Button, Table } from "reactstrap";
+import { Row, Col, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
 import { Redirect, withRouter } from 'react-router-dom';
 import { isHrRole } from '../util/APIUtils';
 import { fetchData } from '../util/APIUtils';
 import { API_BASE_URL } from '../constants';
+import ReactTable from "react-table";
 
 class LeaveCategory extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userData: []
+      leaveCategoryDetails: []
     };
-    this.loadLeaveCategory = this.loadLeaveCategory.bind(this);
+    this.loadleaveCategoryDetails = this.loadleaveCategoryDetails.bind(this);
   }
 
-  loadLeaveCategory() {
+  loadleaveCategoryDetails() {
     fetchData({
       url: API_BASE_URL + "/leavecategories",
       method: 'GET'
     }).then(response => {
       this.setState({
-        userData: response
+        leaveCategoryDetails: response
       });
     }).catch(error => {
       if (error.status === 401) {
@@ -35,12 +36,12 @@ class LeaveCategory extends Component {
   }
 
   componentDidMount() {
-    this.loadLeaveCategory();
+    this.loadleaveCategoryDetails();
   }
 
   componentDidUpdate(nextProps) {
     if (this.props.isAuthenticated !== nextProps.isAuthenticated) {
-      this.loadLeaveCategory();
+      this.loadleaveCategoryDetails();
     }
   }
 
@@ -54,7 +55,7 @@ class LeaveCategory extends Component {
         id: "leaveCode",
         Header: "Leave Code",
         accessor: "leaveCode",
-        minWidth: 60,
+        minWidth: 20,
         sortable: true,
         filterable: true
       },
@@ -62,7 +63,7 @@ class LeaveCategory extends Component {
         id: "leaveDescr",
         Header: "Leave Description",
         accessor: "leaveDescr",
-        minWidth: 60,
+        minWidth: 150,
         sortable: true,
         filterable: true
       },
@@ -70,7 +71,7 @@ class LeaveCategory extends Component {
         id: "entitlement",
         Header: "Entitlement",
         accessor: "entitlement",
-        minWidth: 60,
+        minWidth: 20,
         sortable: true,
         filterable: true
       },
@@ -122,11 +123,23 @@ class LeaveCategory extends Component {
               </Button>
             </Col>
           </Row>
+          <ReactTable
+            data={this.state.leaveCategoryDetails}
+            columns={LeaveCategoryCols}
+            defaultPageSize={10}
+            pages={this.state.pages}
+            filterable={true}
+            sortable={true}
+            multiSort={true}
+            noDataText="No data available."
+            className="-striped"
+          >
+          </ReactTable>
         </div>
 
 
 
-        <br />
+        {/* <br />
         <div className="tableContainerFlex">
           <div style={{ textAlign: "right" }}>
             <Button
@@ -176,8 +189,10 @@ class LeaveCategory extends Component {
                 })
               }
             </tbody>
-          </Table>
-        </div>
+          </Table> */}
+
+
+
       </div>
     );
   }

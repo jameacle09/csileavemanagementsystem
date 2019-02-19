@@ -68,8 +68,8 @@ class EditStaffProfile extends Component {
             { role: "A", roleName: "Admin" }
           ]
         });
-        console.log(data.roles);
-        console.log(this.rolesList);
+       // console.log(data.roles);
+       // console.log(this.rolesList);
       })
       .catch(err => {
         console.log(err);
@@ -219,7 +219,7 @@ class EditStaffProfile extends Component {
                 />
                 Inactive
               </div>
-              <span>{status}</span>
+              {/* <span>{status}</span> */}
             </FormGroup>
             <FormGroup>
               <Label for="role">Role</Label>
@@ -237,7 +237,7 @@ class EditStaffProfile extends Component {
               {this.state.roles.map(function (item, key) {
                 return (
                   <tr key={key}>
-                    <td>{item.roleName}</td>
+                    {/* <td>{item.roleName}</td> */}
                   </tr>
                 )
               })}
