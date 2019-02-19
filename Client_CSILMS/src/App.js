@@ -9,6 +9,7 @@ import ApplyLeave from "./leaves/ApplyLeave";
 import MyProfile from "./staffprofile/MyProfile";
 import MyLeaveDetails from "./leaves/MyLeaveDetails";
 import MyLeaveHistory from "./leaves/MyLeaveHistory";
+import MyLeaveHistoryView from "./leaves/MyLeaveHistoryView";
 // import ManagerApproval from "./manager/ManagerApproval";
 import LeaveRequestsList from "./manager/LeaveRequestsList";
 import LeaveRequest from "./manager/LeaveRequest";
@@ -150,6 +151,14 @@ class App extends Component {
                     path="/myleavehistory"
                     title="My Leave History"
                     component={MyLeaveHistory}
+                  />
+                  <PrivateRoute
+                  exact
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/myleavehistory/view/:emplId/:effDate/:startDate/:leaveCode"
+                    title="My Leave History View"
+                    component={MyLeaveHistoryView}
                   />
                   <PrivateRoute
                     authenticated={this.state.isAuthenticated}
