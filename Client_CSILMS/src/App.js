@@ -10,7 +10,6 @@ import MyProfile from "./staffprofile/MyProfile";
 import MyLeaveDetails from "./leaves/MyLeaveDetails";
 import MyLeaveHistory from "./leaves/MyLeaveHistory";
 import MyLeaveHistoryView from "./leaves/MyLeaveHistoryView";
-// import ManagerApproval from "./manager/ManagerApproval";
 import LeaveRequestsList from "./manager/LeaveRequestsList";
 import LeaveRequest from "./manager/LeaveRequest";
 import LeaveHistoryList from "./manager/LeaveHistoryList";
@@ -181,13 +180,6 @@ class App extends Component {
                     title="Change Password"
                     component={ChangePassword}
                   />
-                  {/* <PrivateRoute
-                    authenticated={this.state.isAuthenticated}
-                    currentUser={this.state.currentUser}
-                    path="/managerapproval"
-                    title="Manager Approval"
-                    component={ManagerApproval}
-                  /> */}
                   <PrivateRoute
                     exact
                     authenticated={this.state.isAuthenticated}
@@ -250,6 +242,7 @@ class App extends Component {
                   />
 
                   <PrivateRoute
+                  exact
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
                     path="/leaveentitlement"
@@ -263,6 +256,7 @@ class App extends Component {
                     title="Edit Entitlement"
                     component={EditEntitlement}
                   />
+
                   <PrivateRoute
                     exact
                     authenticated={this.state.isAuthenticated}
@@ -331,6 +325,7 @@ class App extends Component {
                     title="Edit User Login Details"
                     component={EditLoginDetails}
                   />
+                  
                   <PrivateRoute
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
