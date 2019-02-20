@@ -146,6 +146,7 @@ class App extends Component {
                     component={ApplyLeave}
                   />
                   <PrivateRoute
+                  exact
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
                     path="/myleavehistory"
@@ -153,7 +154,6 @@ class App extends Component {
                     component={MyLeaveHistory}
                   />
                   <PrivateRoute
-                  exact
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
                     path="/myleavehistory/view/:emplId/:effDate/:startDate/:leaveCode"

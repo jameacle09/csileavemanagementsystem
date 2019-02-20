@@ -53,9 +53,9 @@ class MyLeaveHistory extends Component {
       if (strStatus === "PNAPV") {
         return "Pending Approve";
       } else if (strStatus === "APPRV") {
-        return "Approve";
+        return "Approved";
       } else if (strStatus === "CANCL") {
-        return "Cancel";
+        return "Cancelled";
       } else if (strStatus === "PNCLD") {
         return "Pending Cancel";
       } else if (strStatus === "REJCT") {

@@ -17,6 +17,7 @@ import {
 import { fetchData, formatDateYMD } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import "../common/Styles.css";
+import { Redirect, withRouter } from "react-router-dom";
 
 class MyLeaveHistoryView extends Component {
   constructor(props) {
@@ -27,7 +28,6 @@ class MyLeaveHistoryView extends Component {
       leaveDescr: "",
       startDate: "",
       endDate: "",
-      isHalfDay: "N",
       leaveDuration: "1 day(s)",
       leaveReason: "",
       approver: "",
@@ -65,12 +65,10 @@ class MyLeaveHistoryView extends Component {
           leaveDescr: data.leaveCategory.leaveDescr,
           startDate: data.id.startDate,
           endDate: data.endDate,
-          isHalfDay: data.halfDay,
           leaveDuration: data.leaveDuration + " day(s)",
           leaveReason: data.reason,
           approver: data.approver,
-          leaveStatus: data.leaveStatus,
-          approvedDate: data.approvedDate
+          leaveStatus: data.leaveStatus
         });
       })
       .catch(err => {
@@ -89,21 +87,11 @@ class MyLeaveHistoryView extends Component {
       leaveDescr,
       startDate,
       endDate,
-      isHalfDay,
       leaveDuration,
       leaveReason,
       approver,
-      leaveStatus,
-      approvedDate
+      leaveStatus
     } = this.state;
-
-    const BooleanHalfDay = strHalfDay => {
-      if (strHalfDay === "Y") {
-        return true;
-      } else {
-        return false;
-      }
-    };
 
     const showFullStatus = strStatus => {
       if (strStatus === "PNAPV") {
@@ -123,7 +111,7 @@ class MyLeaveHistoryView extends Component {
       <div className="mainContainerLeavePages">
         <div className="headerContainerFlex">
           <span>
-            <h3 className="headerStyle">View Leave History</h3>
+            <h3 className="headerStyle">View My Leave History</h3>
           </span>
         </div>
 
@@ -200,30 +188,6 @@ class MyLeaveHistoryView extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="endDate" sm={2}>
-                Taking Half Day?
-              </Label>
-              <Col sm={10}>
-                <CustomInput
-                  type="checkbox"
-                  id="isHalfDay"
-                  label=""
-                  checked={BooleanHalfDay(isHalfDay)}
-                  disabled={true}
-                />
-              </Col>
-              {/* <Label check>
-                <Input
-                  type="checkbox"
-                  name="isHalfDay"
-                  id="isHalfDay"
-                  checked={BooleanHalfDay(isHalfDay)}
-                  disabled={true}
-                />
-                Taking Half Day Leave?
-              </Label> */}
-            </FormGroup>
-            <FormGroup row>
               <Label for="leaveDuration" sm={2}>
                 Leave Duration:
               </Label>
@@ -289,20 +253,6 @@ class MyLeaveHistoryView extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="endDate" sm={2}>
-                Date Status Changed:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="date"
-                  name="endDate"
-                  id="endDate"
-                  value={formatDateYMD(approvedDate)}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
               <Col sm={{ size: 10, offset: 2 }}>
                 <Button
                   color="primary"
@@ -320,4 +270,4 @@ class MyLeaveHistoryView extends Component {
   }
 }
 
-export default MyLeaveHistoryView;
+export default withRouter(MyLeaveHistoryView);
