@@ -1,7 +1,10 @@
 package com.csi.leavemanagement.controllers;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -18,43 +21,76 @@ import com.csi.leavemanagement.services.PublicHolidayService;
 @RequestMapping("/api")
 @CrossOrigin
 public class PublicHolidayRestController {
-	
-	private PublicHolidayService publicHolidayService;
+    
+    private PublicHolidayService publicHolidayService;
 
-	@Autowired
-	private PublicHolidayRestController(PublicHolidayService publicHolidayService) {
-		this.publicHolidayService = publicHolidayService;
-	}
-	
-	@RequestMapping(value="/publicholidays", method=RequestMethod.GET)
-	public List<PublicHoliday> doListPublicHolidays() {
-		List<PublicHoliday> publicHolidayList = this.publicHolidayService.findAll();
-		return publicHolidayList;
-	}
-	
-	@RequestMapping(value="/publicholiday/{id}", method=RequestMethod.GET)
-	public PublicHoliday doGetPublicHolidayById(@PathVariable("id") Date id) {
-		PublicHoliday publicHoliday = this.publicHolidayService.findById(id);
-		return publicHoliday;
-	}
-	
-	@RequestMapping(value="/publicholiday", method=RequestMethod.POST)
-	public PublicHoliday doSavePublicHoliday(@RequestBody PublicHoliday publicHoliday) {
-		PublicHoliday newPublicHoliday = this.publicHolidayService.save(publicHoliday);
-		return newPublicHoliday;
-	}
-	
-	@RequestMapping(value="/publicholiday/{id}", method=RequestMethod.DELETE)
-	public String doDeletePublicHoliday(@PathVariable("id") Date id) {
-		this.publicHolidayService.deleteByID(id);
-		return "Successfully Deleted";
-	}
-	
-	@RequestMapping(value="/publicholiday/{id}", method=RequestMethod.PATCH)
-	public PublicHoliday doUpdatePublicHoliday(@PathVariable("id") Date id, 
-												@RequestBody PublicHoliday publicHoliday) {
-		publicHoliday.setHolidayDate(id);
-		PublicHoliday newPublicHoliday = this.publicHolidayService.save(publicHoliday);
-		return newPublicHoliday;
-	}
+    @Autowired
+    private PublicHolidayRestController(PublicHolidayService publicHolidayService) {
+        this.publicHolidayService = publicHolidayService;
+    }
+    
+    @RequestMapping(value="/publicholidays", method=RequestMethod.GET)
+    public List<PublicHoliday> doListPublicHolidays() {
+        List<PublicHoliday> publicHolidayList = this.publicHolidayService.findAll();
+        return publicHolidayList;
+    }
+    
+    @RequestMapping(value="/publicholiday/{id}", method=RequestMethod.GET)
+    public PublicHoliday doGetPublicHolidayById(@PathVariable("id") String idStr) {
+        Date id = null;
+                
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            
+            id = sdf.parse(idStr);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        PublicHoliday publicHoliday = this.publicHolidayService.findById(id);
+        return publicHoliday;
+    }
+    
+    @RequestMapping(value="/publicholiday", method=RequestMethod.POST)
+    public PublicHoliday doSavePublicHoliday(@RequestBody PublicHoliday publicHoliday) {
+        PublicHoliday newPublicHoliday = this.publicHolidayService.save(publicHoliday);
+        return newPublicHoliday;
+    }
+    
+    @RequestMapping(value="/publicholiday/{id}", method=RequestMethod.DELETE)
+    public String doDeletePublicHoliday(@PathVariable("id") Date id) {
+        this.publicHolidayService.deleteByID(id);
+        return "Successfully Deleted";
+    }
+    
+    /*@RequestMapping(value="/publicholiday/{id}", method=RequestMethod.PATCH)
+    public PublicHoliday doUpdatePublicHoliday(@PathVariable("id") Date id,
+                                                @RequestBody PublicHoliday publicHoliday) {
+        publicHoliday.setHolidayDate(id);
+        PublicHoliday newPublicHoliday = this.publicHolidayService.save(publicHoliday);
+        return newPublicHoliday;
+    }*/
+    
+    @RequestMapping(value="/publicholiday/{id}", method=RequestMethod.PATCH)
+    public PublicHoliday doUpdatePublicHoliday(@PathVariable("id") String idStr,
+                                                @RequestBody PublicHoliday publicHoliday) {
+        
+        Date id = null;
+        
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            
+            id = sdf.parse(idStr);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
+
+        publicHoliday.setHolidayDate(id);
+        PublicHoliday newPublicHoliday = this.publicHolidayService.save(publicHoliday);
+        return newPublicHoliday;
+    }
 }
