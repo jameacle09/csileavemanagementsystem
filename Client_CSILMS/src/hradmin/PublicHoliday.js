@@ -15,6 +15,7 @@ class PublicHoliday extends Component {
       publicHolidayDetails: []
     };
     this.loadPublicHolidayDetails = this.loadPublicHolidayDetails.bind(this);
+    // this.handleDelete = this.handleDelete.bind(this);
   }
 
   loadPublicHolidayDetails() {
@@ -46,26 +47,26 @@ class PublicHoliday extends Component {
     }
   }
 
-  toggleDelete = () => {
-    this.setState(prevState => ({
-      modalDelete: !prevState.modalDelete
-    }));
-  };
+  // toggleDelete = () => {
+  //   this.setState(prevState => ({
+  //     modalDelete: !prevState.modalDelete
+  //   }));
+  // };
 
-  handleDelete(event) {
-    event.preventDefault();
+  // handleDelete(event) {
+  //   event.preventDefault();
 
-    const {
-      holidayDate
-    } = this.props.computedMatch.params;
+  //   const {
+  //     holidayDate
+  //   } = this.props.computedMatch.params;
 
-    fetchData({
-      url: API_BASE_URL + "/publicholiday/" +
-      holidayDate,
-      method: "DELETE"
-    })
-    this.props.history.push("/publicholiday");
-  }
+  //   fetchData({
+  //     url: API_BASE_URL + "/publicholiday/" +
+  //     holidayDate,
+  //     method: "DELETE"
+  //   })
+  //   this.props.history.push("/publicholiday");
+  // }
 
   render() {
     if (!isHrRole(this.props.currentUser)) {
@@ -107,7 +108,7 @@ class PublicHoliday extends Component {
       },
       {
         id: "editAction",
-        Header: "Edit",
+        Header: "Action",
         accessor: editButton => (
           <Button
             size="sm"
@@ -124,26 +125,27 @@ class PublicHoliday extends Component {
         style: {
           textAlign: "center"
         }
-      },
-      {
-        id: "deleteAction",
-        Header: "Delete",
-        accessor: deleteButton => (
-          <Button
-            size="sm"
-            className="smallButtonOverride"
-            onClick={this.toggleDelete}
-          >
-            <span className="fa fa-trash" /> Delete
-          </Button>
-        ),
-        minWidth: 40,
-        sortable: false,
-        filterable: false,
-        style: {
-          textAlign: "center"
-        }
       }
+      // ,
+      // {
+      //   id: "deleteAction",
+      //   Header: "Delete",
+      //   accessor: deleteButton => (
+      //     <Button
+      //       size="sm"
+      //       className="smallButtonOverride"
+      //       // onClick={this.toggleDelete}
+      //     >
+      //       <span className="fa fa-trash" /> Delete
+      //     </Button>
+      //   ),
+      //   minWidth: 40,
+      //   sortable: false,
+      //   filterable: false,
+      //   style: {
+      //     textAlign: "center"
+      //   }
+      // }
     ];
 
     return (
@@ -201,7 +203,7 @@ class PublicHoliday extends Component {
 
 
 
-          <div>
+          {/* <div>
                   <Modal
                     isOpen={this.state.modalDelete}
                     toggle={this.toggleDelete}
@@ -229,7 +231,7 @@ class PublicHoliday extends Component {
                       </Button>
                     </ModalFooter>
                   </Modal>
-                </div>
+                </div> */}
 
 
 

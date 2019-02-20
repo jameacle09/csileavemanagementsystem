@@ -60,7 +60,18 @@ public class PublicHolidayRestController {
     }
     
     @RequestMapping(value="/publicholiday/{id}", method=RequestMethod.DELETE)
-    public String doDeletePublicHoliday(@PathVariable("id") Date id) {
+    public String doDeletePublicHoliday(@PathVariable("id") String idStr) {
+    	Date id = null;
+        
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+            sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+            
+            id = sdf.parse(idStr);
+        } catch (ParseException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         this.publicHolidayService.deleteByID(id);
         return "Successfully Deleted";
     }

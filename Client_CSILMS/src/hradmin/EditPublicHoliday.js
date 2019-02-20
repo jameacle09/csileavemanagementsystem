@@ -17,7 +17,8 @@ class EditPublicHoliday extends Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.doNotSubmit = this.doNotSubmit.bind(this);
-    this.toggleApprove = this.toggleApprove.bind(this);
+    this.toggleSave = this.toggleSave.bind(this);
+    this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
@@ -40,16 +41,21 @@ class EditPublicHoliday extends Component {
           holidayDescr: data.holidayDescr,
           holidayState: data.holidayState
         });
-
       })
       .catch(err => {
         console.log(err);
       });
   }
 
-  toggleApprove = () => {
+  toggleSave = () => {
     this.setState(prevState => ({
-      modalApprove: !prevState.modalApprove
+      modalSave: !prevState.modalSave
+    }));
+  };
+
+  toggleDelete = () => {
+    this.setState(prevState => ({
+      modalDelete: !prevState.modalDelete
     }));
   };
 
@@ -99,9 +105,22 @@ class EditPublicHoliday extends Component {
         body: JSON.stringify(editPublicHoliday)
       })
       this.props.history.push("/publicholiday");
-
     }
+  }
 
+  handleDelete(event) {
+    event.preventDefault();
+
+    const {
+      holidayDate
+    } = this.props.computedMatch.params;
+
+    fetchData({
+      url: API_BASE_URL + "/publicholiday/" +
+      holidayDate,
+      method: "DELETE"
+    })
+    this.props.history.push("/publicholiday");
   }
 
   render() {
@@ -130,7 +149,7 @@ class EditPublicHoliday extends Component {
               <Col sm={10}>
                 <Input
                   type="date"
-                  name="phDate"
+                  name="holidayDate"
                   id="phDate"
                   value={formatDateYMD(holidayDate)}
                   onChange={this.handleChange}
@@ -143,7 +162,7 @@ class EditPublicHoliday extends Component {
               <Col sm={10}>
                 <Input 
                   type="text" 
-                  name="phDay" 
+                  name="holidayDay" 
                   id="phDay" 
                   value={holidayDay}
                   onChange={this.handleChange}
@@ -155,7 +174,7 @@ class EditPublicHoliday extends Component {
               <Col sm={10}>
                 <Input
                   type="text"
-                  name="holiday"
+                  name="holidayDescr"
                   id="holiday"
                   value={holidayDescr}
                   onChange={this.handleChange}
@@ -167,7 +186,7 @@ class EditPublicHoliday extends Component {
               <Col sm={10}>
                 <Input 
                   type="text" 
-                  name="state" 
+                  name="holidayState" 
                   id="state" 
                   value={holidayState}
                   onChange={this.handleChange}
@@ -179,11 +198,20 @@ class EditPublicHoliday extends Component {
                 <Button
                   type="button"
                   color="primary"
-                  onClick={this.toggleApprove}
+                  onClick={this.toggleSave}
                   className="largeButtonOverride"
                   disabled={this.validateFields()}
                 >
                   Save
+                </Button>
+                <span> </span>
+                <Button
+                  type="button"
+                  color="danger"
+                  onClick={this.toggleDelete}
+                  // disabled={this.validateDelete()}
+                >
+                  Delete
                 </Button>
                 <span> </span>
                 <Button
@@ -195,8 +223,8 @@ class EditPublicHoliday extends Component {
                 </Button>
                 <div>
                   <Modal
-                    isOpen={this.state.modalApprove}
-                    toggle={this.toggleApprove}
+                    isOpen={this.state.modalSave}
+                    toggle={this.toggleSave}
                     className={this.props.className}
                     style={{
                       width: "360px",
@@ -217,13 +245,41 @@ class EditPublicHoliday extends Component {
                       >
                         Confirm
                       </Button>
-                      <Button color="secondary" onClick={this.toggleApprove}>
+                      <Button color="secondary" onClick={this.toggleSave}>
                         Cancel
                       </Button>
                     </ModalFooter>
                   </Modal>
                 </div>
-
+                <div>
+                  <Modal
+                    isOpen={this.state.modalDelete}
+                    toggle={this.toggleDelete}
+                    className={this.props.className}
+                    style={{
+                      width: "360px",
+                      height: "300px",
+                      margin: "220px auto"
+                    }}
+                  >
+                    <ModalHeader>Delete Confirmation</ModalHeader>
+                    <ModalBody>
+                      Are you sure you want to delete this item?
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        type="submit"
+                        color="danger"
+                        onClick={this.handleDelete}
+                      >
+                        Confirm
+                      </Button>
+                      <Button color="secondary" onClick={this.toggleDelete}>
+                        Cancel
+                      </Button>
+                    </ModalFooter>
+                  </Modal>
+                </div>
               </Col>
             </FormGroup>
           </Form>

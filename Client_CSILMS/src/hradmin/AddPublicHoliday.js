@@ -4,9 +4,81 @@ import "../common/Styles.css";
 import  { Redirect, withRouter } from 'react-router-dom';
 import { isHrRole } from '../util/APIUtils';
 import { fetchData, formatDateYMD } from "../util/APIUtils";
+import { API_BASE_URL } from "../constants";
 
 class AddPublicHoliday extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      holidayDate: "",
+      holidayDay: "",
+      holidayDescr: "",
+      holidayState: ""
+    };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.doNotSubmit = this.doNotSubmit.bind(this);
+    this.toggleSave = this.toggleSave.bind(this);
+  }
+
+  toggleSave = () => {
+    this.setState(prevState => ({
+      modalSave: !prevState.modalSave
+    }));
+  };
+
+  handleCancel = () => {
+    this.props.history.push("/publicholiday");
+  };
+
+  handleChange = event => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
+  };
+
+  validateFields = () => {
+    const { holidayDate, holidayDay, holidayDescr, holidayState } = this.state;
+    const isInvalid = !holidayDate || !holidayDay || !holidayDescr || !holidayState;
+    return isInvalid;
+  };
+
+  // Do not submit form, unless user clicked on submit button
+  doNotSubmit(event) {
+    event.preventDefault();
+  }
+
+  // create JSON object with form data, and call API
+  handleSubmit(event) {
+    event.preventDefault();
+    let validForm = true;
+
+    if (validForm) {
+      // create JSON Object for Edit Leave Category
+      let AddPublicHoliday = {
+        holidayDate: this.state.holidayDate,
+        holidayDay: this.state.holidayDay,
+        holidayDescr: this.state.holidayDescr,
+        holidayState: this.state.holidayState
+      };
+
+      console.log(JSON.stringify(AddPublicHoliday));
+
+      fetchData({
+        url: API_BASE_URL + "/publicholiday",
+        method: "POST",
+        body: JSON.stringify(AddPublicHoliday)
+      })
+      this.props.history.push("/publicholiday");
+    }
+  }
+
   render() {
+    const {
+      holidayDate,
+      holidayDay,
+      holidayDescr,
+      holidayState
+    } = this.state;
+
     if(!isHrRole(this.props.currentUser)){
       return(<Redirect to='/forbidden'  />);
     }
@@ -25,9 +97,9 @@ class AddPublicHoliday extends Component {
               <Col sm={10}>
                 <Input
                   type="date"
-                  name="phDate"
+                  name="holidayDate"
                   id="phDate"
-                  // value={formatDateYMD(holidayDate)}
+                  value={formatDateYMD(holidayDate)}
                   onChange={this.handleChange}
                   required
                 />
@@ -38,9 +110,9 @@ class AddPublicHoliday extends Component {
               <Col sm={10}>
                 <Input 
                   type="text" 
-                  name="phDay" 
+                  name="holidayDay" 
                   id="phDay" 
-                  // value={holidayDay}
+                  value={holidayDay}
                   onChange={this.handleChange}
                 />
               </Col>
@@ -50,9 +122,9 @@ class AddPublicHoliday extends Component {
               <Col sm={10}>
                 <Input
                   type="text"
-                  name="holiday"
+                  name="holidayDescr"
                   id="holiday"
-                  // value={holidayDescr}
+                  value={holidayDescr}
                   onChange={this.handleChange}
                 />
               </Col>
@@ -62,9 +134,9 @@ class AddPublicHoliday extends Component {
               <Col sm={10}>
                 <Input 
                   type="text" 
-                  name="state" 
+                  name="holidayState" 
                   id="state" 
-                  // value={holidayState}
+                  value={holidayState}
                   onChange={this.handleChange}
                 />
               </Col>
@@ -74,9 +146,9 @@ class AddPublicHoliday extends Component {
                 <Button
                   type="button"
                   color="primary"
-                  // onClick={this.toggleApprove}
+                  onClick={this.toggleSave}
                   className="largeButtonOverride"
-                  // disabled={this.validateFields()}
+                  disabled={this.validateFields()}
                 >
                   Save
                 </Button>
@@ -84,15 +156,15 @@ class AddPublicHoliday extends Component {
                 <Button
                   type="button"
                   color="secondary"
-                  // onClick={this.handleCancel}
+                  onClick={this.handleCancel}
                 >
                   Cancel
                 </Button>
                 <div>
                   <Modal
-                    // isOpen={this.state.modalApprove}
-                    // toggle={this.toggleApprove}
-                    // className={this.props.className}
+                    isOpen={this.state.modalSave}
+                    toggle={this.toggleSave}
+                    className={this.props.className}
                     style={{
                       width: "360px",
                       height: "300px",
@@ -107,12 +179,12 @@ class AddPublicHoliday extends Component {
                       <Button
                         type="submit"
                         color="primary"
-                        // onClick={this.handleSubmit}
+                        onClick={this.handleSubmit}
                         className="largeButtonOverride"
                       >
                         Confirm
                       </Button>
-                      <Button color="secondary">
+                      <Button color="secondary" onClick={this.toggleSave}>
                         Cancel
                       </Button>
                     </ModalFooter>
