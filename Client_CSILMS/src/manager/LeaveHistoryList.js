@@ -47,6 +47,19 @@ class LeaveHistoryList extends Component {
     if (!isManagerRole(this.props.currentUser)) {
       return <Redirect to="/forbidden" />;
     }
+    const showFullStatus = strStatus => {
+      if (strStatus === "PNAPV") {
+        return "Pending Approve";
+      } else if (strStatus === "APPRV") {
+        return "Approved";
+      } else if (strStatus === "CANCL") {
+        return "Cancelled";
+      } else if (strStatus === "PNCLD") {
+        return "Pending Cancel";
+      } else if (strStatus === "REJCT") {
+        return "Rejected";
+      }
+    };
 
     const showFullString = strHalfDay => {
       if (strHalfDay === "Y") {
@@ -116,7 +129,7 @@ class LeaveHistoryList extends Component {
       {
         id: "leaveStatus",
         Header: "Leave Status",
-        accessor: "leaveStatus",
+        accessor: str => showFullStatus(str.leaveStatus),
         minWidth: 120,
         sortable: true,
         filterable: true
