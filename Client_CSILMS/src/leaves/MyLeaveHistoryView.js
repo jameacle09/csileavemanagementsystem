@@ -107,10 +107,10 @@ class MyLeaveHistoryView extends Component {
 
     event.preventDefault();
 
-    if (leaveStatus === "APPRV") {
+    if (leaveStatus === "PNCLD") {
       this.toggleCancelLeave();
-    } else if (leaveStatus === "PNAPV"){
-      this.toggleDeleteLeave();
+    } else {
+      this.handleBackToMain();
     }
 
     fetchData({
@@ -131,11 +131,11 @@ class MyLeaveHistoryView extends Component {
       .then(response => {
         if (response.message === "Success") {
           confirmAlert({
-            message: "Leave Application has been successfully updated!",
+            message: "Leave Application has been successfully updated to Pending Cancel!",
             buttons: [
               {
                 label: "OK",
-                onClick: () => this.props.history.push("/leaverequests")
+                onClick: () => this.props.history.push("/myleavehistory")
               }
             ]
           });
@@ -145,7 +145,7 @@ class MyLeaveHistoryView extends Component {
             buttons: [
               {
                 label: "OK",
-                onClick: () => this.props.history.push("/leaverequests")
+                onClick: () => this.props.history.push("/myleavehistory")
               }
             ]
           });
@@ -178,10 +178,10 @@ class MyLeaveHistoryView extends Component {
 
     event.preventDefault();
 
-    if (leaveStatus === "APPRV") {
-      this.toggleCancelLeave();
-    } else if (leaveStatus === "PNAPV"){
+    if (leaveStatus === "PNAPV") {
       this.toggleDeleteLeave();
+    } else {
+      this.handleBackToMain();
     }
 
     fetchData({
@@ -200,11 +200,11 @@ class MyLeaveHistoryView extends Component {
       .then(response => {
         if (response.message === "Success") {
           confirmAlert({
-            message: "Leave Application has been successfully updated!",
+            message: "Leave Application has been successfully deleted!",
             buttons: [
               {
                 label: "OK",
-                onClick: () => this.props.history.push("/leaverequests")
+                onClick: () => this.props.history.push("/myleavehistory")
               }
             ]
           });
@@ -214,7 +214,7 @@ class MyLeaveHistoryView extends Component {
             buttons: [
               {
                 label: "OK",
-                onClick: () => this.props.history.push("/leaverequests")
+                onClick: () => this.props.history.push("/myleavehistory")
               }
             ]
           });
@@ -410,20 +410,30 @@ class MyLeaveHistoryView extends Component {
             </FormGroup>
             <FormGroup row>
               <Col sm={{ size: 10, offset: 2 }}>
-                <Button
+              <Button
+                  type="button"
                   color="primary"
-                  onClick={this.handleBackToMain}
+                  onClick={this.toggleCancelLeave}
                   className="largeButtonOverride"
                 >
-                  Back
+                  Cancel Leave
                 </Button>
+                <span> </span>
                 <Button
                   type="button"
                   color="primary"
                   onClick={this.toggleDeleteLeave}
                   className="largeButtonOverride"
                 >
-                  Cancel Leave
+                  Delete Leave
+                </Button>
+                <span> </span>
+                <Button
+                  color="primary"
+                  onClick={this.handleBackToMain}
+                  className="largeButtonOverride"
+                >
+                  Back
                 </Button>
                 <div>
                   <Modal
@@ -436,9 +446,9 @@ class MyLeaveHistoryView extends Component {
                       margin: "220px auto"
                     }}
                   >
-                    <ModalHeader>Cancel Leave Confirmation</ModalHeader>
+                    <ModalHeader>Approval Confirmation</ModalHeader>
                     <ModalBody>
-                      Are you sure you want to Cancel this Leave Request?
+                      Are you sure you want to Approve this Leave Request?
                     </ModalBody>
                     <ModalFooter>
                       <Button
@@ -451,7 +461,7 @@ class MyLeaveHistoryView extends Component {
                       >
                         Confirm
                       </Button>
-                      <Button color="secondary" onClick={this.handleBackToMain}>
+                      <Button color="secondary" onClick={this.toggleCancelLeave}>
                         Cancel
                       </Button>
                     </ModalFooter>
@@ -468,22 +478,20 @@ class MyLeaveHistoryView extends Component {
                       margin: "220px auto"
                     }}
                   >
-                    <ModalHeader>Cancel Leave Confirmation</ModalHeader>
+                    <ModalHeader>Approval Confirmation</ModalHeader>
                     <ModalBody>
-                      Are you sure you want to Cancel this Leave Request?
+                      Are you sure you want to Delete this Leave Request?
                     </ModalBody>
                     <ModalFooter>
                       <Button
                         type="submit"
                         color="primary"
-                        onClick={event =>
-                          this.deleteAppliedLeaveStatus(event)
-                        }
+                        onClick={this.deleteAppliedLeaveStatus}
                         className="largeButtonOverride"
                       >
                         Confirm
                       </Button>
-                      <Button color="secondary" onClick={this.handleBackToMain}>
+                      <Button color="secondary" onClick={this.toggleDeleteLeave}>
                         Cancel
                       </Button>
                     </ModalFooter>
