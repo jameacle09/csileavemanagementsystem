@@ -1,9 +1,9 @@
 import React, { Component } from "react";
-import { Form, FormGroup, Label, Input, Col, Button, Alert } from "reactstrap";
+import { Form, FormGroup, Label, Input, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import "../common/Styles.css";
 import { Redirect, withRouter } from 'react-router-dom';
 import { isHrRole } from '../util/APIUtils';
-import { fetchData, formatDateYMD } from "../util/APIUtils";
+import { fetchData } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 
 class EditLeaveCategory extends Component {
@@ -12,11 +12,12 @@ class EditLeaveCategory extends Component {
     this.state = {
       leaveCode: "",
       leaveDescr: "",
-      entitlement: ""
+      entitlement: "",
+      modalApprove: false,
     };
-
     this.handleSubmit = this.handleSubmit.bind(this);
     this.doNotSubmit = this.doNotSubmit.bind(this);
+    this.toggleApprove = this.toggleApprove.bind(this);
   }
 
   componentDidMount() {
@@ -62,10 +63,6 @@ class EditLeaveCategory extends Component {
     event.preventDefault();
     let validForm = true;
 
-    // // validate form data
-    // let EntitlementError = this.validateLeaveEntitlement(this.state.entitlement);
-    // if (EntitlementError !== "") validForm = false;
-
     if (validForm) {
       // create JSON Object for Edit Leave Category
       let editLeaveCategory = {
@@ -80,7 +77,6 @@ class EditLeaveCategory extends Component {
         leaveCode
       } = this.props.computedMatch.params;
 
-      
       fetchData({
         url: API_BASE_URL + "/leavecategory/" +
         leaveCode,
@@ -187,6 +183,43 @@ class EditLeaveCategory extends Component {
                 >
                   Cancel
                 </Button>
+                
+
+                <div>
+                  <Modal
+                    isOpen={this.state.modalApprove}
+                    toggle={this.toggleApprove}
+                    className={this.props.className}
+                    style={{
+                      width: "360px",
+                      height: "300px",
+                      margin: "220px auto"
+                    }}
+                  >
+                    <ModalHeader>Approval Confirmation</ModalHeader>
+                    <ModalBody>
+                      Are you sure you want to Approve this Leave Request?
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        type="submit"
+                        color="primary"
+                        onClick={event =>
+                          this.updateAppliedLeaveStatus(event, "APPRV")
+                        }
+                        className="largeButtonOverride"
+                      >
+                        Confirm
+                      </Button>
+                      <Button color="secondary" onClick={this.toggleApprove}>
+                        Cancel
+                      </Button>
+                    </ModalFooter>
+                  </Modal>
+                </div>
+
+
+
               </Col>
             </FormGroup>
           </Form>

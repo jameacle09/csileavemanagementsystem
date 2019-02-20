@@ -55,7 +55,7 @@ class LeaveCategory extends Component {
         id: "leaveCode",
         Header: "Leave Code",
         accessor: "leaveCode",
-        minWidth: 20,
+        minWidth: 40,
         sortable: true,
         filterable: true
       },
@@ -63,7 +63,7 @@ class LeaveCategory extends Component {
         id: "leaveDescr",
         Header: "Leave Description",
         accessor: "leaveDescr",
-        minWidth: 150,
+        minWidth: 130,
         sortable: true,
         filterable: true
       },
@@ -71,7 +71,7 @@ class LeaveCategory extends Component {
         id: "entitlement",
         Header: "Entitlement",
         accessor: "entitlement",
-        minWidth: 20,
+        minWidth: 40,
         sortable: true,
         filterable: true
       },

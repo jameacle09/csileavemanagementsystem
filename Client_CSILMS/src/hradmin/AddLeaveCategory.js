@@ -3,17 +3,27 @@ import { Form, FormGroup, Label, Input, Col, Button } from "reactstrap";
 import "../common/Styles.css";
 import { Redirect, withRouter } from 'react-router-dom';
 import { isHrRole } from '../util/APIUtils';
+import { fetchData } from "../util/APIUtils";
+import { API_BASE_URL } from "../constants";
 
 class AddLeaveCategory extends Component {
   constructor(props) {
     super(props);
     this.state = {
-
+      leaveCode: "",
+      leaveDescr: "",
+      entitlement: ""
     };
+    this.handleSubmit = this.handleSubmit.bind(this);
+    this.doNotSubmit = this.doNotSubmit.bind(this);
   }
-
   handleCancel = () => {
     this.props.history.push("/leavecategory");
+  };
+
+  handleChange = event => {
+    const { name, value } = event.target;
+    this.setState({ [name]: value });
   };
 
   // Do not submit form, unless user clicked on submit button
@@ -26,6 +36,28 @@ class AddLeaveCategory extends Component {
     event.preventDefault();
     let validForm = true;
 
+    if (validForm) {
+      // create JSON Object for Edit Leave Category
+      let editLeaveCategory = {
+        leaveCode: this.state.leaveCode,
+        leaveDescr: this.state.leaveDescr,
+        entitlement: this.state.entitlement
+      };
+
+      console.log(JSON.stringify(editLeaveCategory));
+
+      // const {
+      //   leaveCode
+      // } = this.props.computedMatch.params;
+
+      fetchData({
+        url: API_BASE_URL + "/leavecategory/",
+        method: "POST",
+        body: JSON.stringify(editLeaveCategory)
+      })
+      this.props.history.push("/leavecategory");
+      
+    }
   }
 
   render() {
@@ -87,7 +119,7 @@ class AddLeaveCategory extends Component {
               <Button
                   type="button"
                   color="primary"
-                  onClick=""
+                  onClick={this.handleSubmit}
                   className="largeButtonOverride"
                 >
                   Save
