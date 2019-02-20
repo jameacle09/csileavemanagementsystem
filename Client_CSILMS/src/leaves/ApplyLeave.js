@@ -372,7 +372,7 @@ class ApplyLeave extends Component {
         </div>
         <br />
         <div className="tableContainerFlex">
-          <h5>Annual Leave Balance: {staffLeave["availableLeave"]} Days</h5>
+          <h5>Annual Leave Balance: {staffLeave["balanceLeave"]} Days</h5>
         </div>
         <br />
         <div className="tableContainerFlex">
