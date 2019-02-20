@@ -1,7 +1,10 @@
 package com.csi.leavemanagement.controllers;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -33,7 +36,19 @@ public class PublicHolidayRestController {
 	}
 	
 	@RequestMapping(value="/publicholiday/{id}", method=RequestMethod.GET)
-	public PublicHoliday doGetPublicHolidayById(@PathVariable("id") Date id) {
+	public PublicHoliday doGetPublicHolidayById(@PathVariable("id") String idStr) {
+		Date id = null;
+				
+		try {
+			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+			sdf.setTimeZone(TimeZone.getTimeZone("UTC"));
+			
+			id = sdf.parse(idStr);
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
 		PublicHoliday publicHoliday = this.publicHolidayService.findById(id);
 		return publicHoliday;
 	}

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, FormGroup, Label, Input, Button } from "reactstrap";
+import { Form, FormGroup, Label, Input, Button, Col } from "reactstrap";
 import "../common/Styles.css";
 import { Redirect, withRouter } from 'react-router-dom';
 import { isHrRole } from '../util/APIUtils';
@@ -65,31 +65,39 @@ class EditPublicHoliday extends Component {
         </div>
         <div className="tableContainerFlex">
           <Form>
-            <FormGroup>
-              <Label for="phDate">Date</Label>
-              <Input
-                type="date"
-                name="phDate"
-                id="phDate"
-                value={holidayDate}
-              />
+            <FormGroup row>
+              <Label for="phDate" sm={2}>Date</Label>
+              <Col sm={10}>
+                <Input
+                  type="date"
+                  name="phDate"
+                  id="phDate"
+                  value={holidayDate}
+                />
+              </Col>
             </FormGroup>
-            <FormGroup>
-              <Label for="phDay">Day</Label>
-              <Input type="text" name="phDay" id="phDay" value={holidayDay} />
+            <FormGroup row>
+              <Label for="phDay" sm={2}>Day</Label>
+              <Col sm={10}>
+                <Input type="text" name="phDay" id="phDay" value={holidayDay} />
+              </Col>
             </FormGroup>
-            <FormGroup>
-              <Label for="holiday">Holiday</Label>
-              <Input
-                type="text"
-                name="holiday"
-                id="holiday"
-                value={holidayDescr}
-              />
+            <FormGroup row>
+              <Label for="holiday" sm={2}>Holiday</Label>
+              <Col sm={10}>
+                <Input
+                  type="text"
+                  name="holiday"
+                  id="holiday"
+                  value={holidayDescr}
+                />
+              </Col>
             </FormGroup>
-            <FormGroup>
-              <Label for="state">State</Label>
-              <Input type="text" name="state" id="state" value={holidayState} />
+            <FormGroup row>
+              <Label for="state" sm={2}>State</Label>
+              <Col sm={10}>
+                <Input type="text" name="state" id="state" value={holidayState} />
+              </Col>
             </FormGroup>
             <Button variant="contained" color="primary" style={{ textTransform: "none", color: "white" }}>Save</Button>
           </Form>
