@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, FormGroup, Label, Input, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
+import { Form, FormGroup, Label, Input, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from "reactstrap";
 import "../common/Styles.css";
 import { Redirect, withRouter } from 'react-router-dom';
 import { isHrRole } from '../util/APIUtils';
@@ -12,8 +12,7 @@ class EditLeaveCategory extends Component {
     this.state = {
       leaveCode: "",
       leaveDescr: "",
-      entitlement: "",
-      modalApprove: false,
+      entitlement: ""
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.doNotSubmit = this.doNotSubmit.bind(this);
@@ -45,6 +44,12 @@ class EditLeaveCategory extends Component {
       });
   }
 
+  toggleApprove = () => {
+    this.setState(prevState => ({
+      modalApprove: !prevState.modalApprove
+    }));
+  };
+
   handleCancel = () => {
     this.props.history.push("/leavecategory");
   };
@@ -52,6 +57,12 @@ class EditLeaveCategory extends Component {
   handleChange = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
+  };
+
+  validateFields = () => {
+    const { leaveCode, leaveDescr, entitlement } = this.state;
+    const isInvalid = !leaveCode || !leaveDescr || !entitlement;
+    return isInvalid;
   };
 
   // Do not submit form, unless user clicked on submit button
@@ -79,25 +90,22 @@ class EditLeaveCategory extends Component {
 
       fetchData({
         url: API_BASE_URL + "/leavecategory/" +
-        leaveCode,
+          leaveCode,
         method: "PATCH",
         body: JSON.stringify(editLeaveCategory)
       })
       this.props.history.push("/leavecategory");
-      
+
     }
   }
 
-  // validateLeaveEnt(leaveEnt) {
-  //   // Validate if input is a number
-  //   if (isNaN(leaveEnt)) {
-  //     return <Alert color="danger">Invalid number</Alert>;
-  //   }
-  //   if (leaveEnt === ""){
-  //     return <Alert color="danger">Please Fill Required Field</Alert>;
-  //   }
-  // }
-  
+  validateLeaveEnt(leaveEnt) {
+    // Validate if input is a number
+    if (isNaN(leaveEnt)) {
+      return <Alert color="danger">Invalid number</Alert>;
+    }
+  }
+
   render() {
     const {
       leaveCode,
@@ -108,7 +116,7 @@ class EditLeaveCategory extends Component {
       return (<Redirect to='/forbidden' />);
     }
 
-    // let leaveEntErrorMsg = this.validateLeaveEnt(entitlement);
+    let leaveEntErrorMsg = this.validateLeaveEnt(entitlement);
 
     return (
       <div className="mainContainerFlex">
@@ -118,7 +126,7 @@ class EditLeaveCategory extends Component {
           </span>
         </div>
         <div className="tableContainerFlex">
-        <Form onSubmit={this.doNotSubmit}>
+          <Form onSubmit={this.doNotSubmit}>
             <FormGroup row>
               <Label for="leaveCode" sm={2}>
                 Leave Code:
@@ -128,7 +136,7 @@ class EditLeaveCategory extends Component {
                   type="text"
                   name="leaveCode"
                   id="leaveCode"
-                  value={leaveCode}                  
+                  value={leaveCode}
                   onChange={this.handleChange}
                   required
                 />
@@ -161,8 +169,7 @@ class EditLeaveCategory extends Component {
                   value={entitlement}
                   onChange={this.handleChange}
                   required
-                />
-                {/* {leaveEntErrorMsg} */}
+                /><span>{leaveEntErrorMsg}</span>
               </Col>
             </FormGroup>
             <FormGroup row>
@@ -170,8 +177,9 @@ class EditLeaveCategory extends Component {
                 <Button
                   type="button"
                   color="primary"
-                  onClick={this.handleSubmit}
+                  onClick={this.toggleApprove}
                   className="largeButtonOverride"
+                  disabled={this.validateFields()}
                 >
                   Save
                 </Button>
@@ -183,8 +191,6 @@ class EditLeaveCategory extends Component {
                 >
                   Cancel
                 </Button>
-                
-
                 <div>
                   <Modal
                     isOpen={this.state.modalApprove}
@@ -196,17 +202,15 @@ class EditLeaveCategory extends Component {
                       margin: "220px auto"
                     }}
                   >
-                    <ModalHeader>Approval Confirmation</ModalHeader>
+                    <ModalHeader>Edit Confirmation</ModalHeader>
                     <ModalBody>
-                      Are you sure you want to Approve this Leave Request?
+                      Are you sure you want to edit this item?
                     </ModalBody>
                     <ModalFooter>
                       <Button
                         type="submit"
                         color="primary"
-                        onClick={event =>
-                          this.updateAppliedLeaveStatus(event, "APPRV")
-                        }
+                        onClick={this.handleSubmit}
                         className="largeButtonOverride"
                       >
                         Confirm
@@ -217,9 +221,6 @@ class EditLeaveCategory extends Component {
                     </ModalFooter>
                   </Modal>
                 </div>
-
-
-
               </Col>
             </FormGroup>
           </Form>

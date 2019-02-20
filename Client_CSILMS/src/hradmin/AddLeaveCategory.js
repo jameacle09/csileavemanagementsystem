@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Form, FormGroup, Label, Input, Col, Button } from "reactstrap";
+import { Form, FormGroup, Label, Input, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from "reactstrap";
 import "../common/Styles.css";
 import { Redirect, withRouter } from 'react-router-dom';
 import { isHrRole } from '../util/APIUtils';
@@ -16,7 +16,15 @@ class AddLeaveCategory extends Component {
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.doNotSubmit = this.doNotSubmit.bind(this);
+    this.toggleApprove = this.toggleApprove.bind(this);
   }
+
+  toggleApprove = () => {
+    this.setState(prevState => ({
+      modalApprove: !prevState.modalApprove
+    }));
+  };
+
   handleCancel = () => {
     this.props.history.push("/leavecategory");
   };
@@ -24,6 +32,12 @@ class AddLeaveCategory extends Component {
   handleChange = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
+  };
+
+  validateFields = () => {
+    const { leaveCode, leaveDescr, entitlement } = this.state;
+    const isInvalid = !leaveCode || !leaveDescr || !entitlement;
+    return isInvalid;
   };
 
   // Do not submit form, unless user clicked on submit button
@@ -46,35 +60,43 @@ class AddLeaveCategory extends Component {
 
       console.log(JSON.stringify(editLeaveCategory));
 
-      // const {
-      //   leaveCode
-      // } = this.props.computedMatch.params;
-
       fetchData({
-        url: API_BASE_URL + "/leavecategory/",
+        url: API_BASE_URL + "/leavecategory",
         method: "POST",
         body: JSON.stringify(editLeaveCategory)
       })
       this.props.history.push("/leavecategory");
-      
+    }
+  }
+
+  validateLeaveEnt(leaveEnt) {
+    // Validate if input is a number
+    if (isNaN(leaveEnt)) {
+      return <Alert color="danger">Invalid number</Alert>;
     }
   }
 
   render() {
+    const {
+      leaveCode,
+      leaveDescr,
+      entitlement
+    } = this.state;
     if (!isHrRole(this.props.currentUser)) {
       return (<Redirect to='/forbidden' />);
     }
+
+    let leaveEntErrorMsg = this.validateLeaveEnt(entitlement);
 
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Add Leave Category</h3>
+            <h3 className="headerStyle">Edit Leave Category</h3>
           </span>
         </div>
-
         <div className="tableContainerFlex">
-          <Form>
+          <Form onSubmit={this.doNotSubmit}>
             <FormGroup row>
               <Label for="leaveCode" sm={2}>
                 Leave Code:
@@ -84,7 +106,9 @@ class AddLeaveCategory extends Component {
                   type="text"
                   name="leaveCode"
                   id="leaveCode"
-                  placeholder="Leave Code"
+                  value={leaveCode}
+                  onChange={this.handleChange}
+                  required
                 />
               </Col>
             </FormGroup>
@@ -95,9 +119,11 @@ class AddLeaveCategory extends Component {
               <Col sm={10}>
                 <Input
                   type="text"
-                  name="leaveDescription"
+                  name="leaveDescr"
                   id="leaveDescription"
-                  placeholder="Leave Description"
+                  value={leaveDescr}
+                  onChange={this.handleChange}
+                  required
                 />
               </Col>
             </FormGroup>
@@ -108,19 +134,22 @@ class AddLeaveCategory extends Component {
               <Col sm={10}>
                 <Input
                   type="text"
-                  name="leaveEntitlement"
+                  name="entitlement"
                   id="leaveEntitlement"
-                  placeholder="Leave Entitlement"
-                />
+                  value={entitlement}
+                  onChange={this.handleChange}
+                  required
+                /><span>{leaveEntErrorMsg}</span>
               </Col>
             </FormGroup>
             <FormGroup row>
               <Col sm={{ size: 10, offset: 2 }}>
-              <Button
+                <Button
                   type="button"
                   color="primary"
-                  onClick={this.handleSubmit}
+                  onClick={this.toggleApprove}
                   className="largeButtonOverride"
+                  disabled={this.validateFields()}
                 >
                   Save
                 </Button>
@@ -132,6 +161,36 @@ class AddLeaveCategory extends Component {
                 >
                   Cancel
                 </Button>
+                <div>
+                  <Modal
+                    isOpen={this.state.modalApprove}
+                    toggle={this.toggleApprove}
+                    className={this.props.className}
+                    style={{
+                      width: "360px",
+                      height: "300px",
+                      margin: "220px auto"
+                    }}
+                  >
+                    <ModalHeader>Add Confirmation</ModalHeader>
+                    <ModalBody>
+                      Are you sure you want to add this item?
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        type="submit"
+                        color="primary"
+                        onClick={this.handleSubmit}
+                        className="largeButtonOverride"
+                      >
+                        Confirm
+                      </Button>
+                      <Button color="secondary" onClick={this.toggleApprove}>
+                        Cancel
+                      </Button>
+                    </ModalFooter>
+                  </Modal>
+                </div>
               </Col>
             </FormGroup>
           </Form>
