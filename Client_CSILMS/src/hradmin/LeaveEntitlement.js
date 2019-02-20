@@ -156,7 +156,6 @@ class LeaveEntitlement extends Component {
             <h3 className="headerStyle">Leave Entitlement</h3>
           </span>
         </div>
-        <br />
         <div className="reactTableContainer">
         <ReactTable
             data={this.state.userData}
