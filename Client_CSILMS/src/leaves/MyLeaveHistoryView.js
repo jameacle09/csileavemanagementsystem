@@ -446,9 +446,9 @@ class MyLeaveHistoryView extends Component {
                       margin: "220px auto"
                     }}
                   >
-                    <ModalHeader>Approval Confirmation</ModalHeader>
+                    <ModalHeader>Cancel Leave Confirmation</ModalHeader>
                     <ModalBody>
-                      Are you sure you want to Approve this Leave Request?
+                      Are you sure you want to Cancel this Annual Leave Request?
                     </ModalBody>
                     <ModalFooter>
                       <Button
