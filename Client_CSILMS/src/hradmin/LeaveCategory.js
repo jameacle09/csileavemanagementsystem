@@ -77,7 +77,7 @@ class LeaveCategory extends Component {
       },
       {
         id: "editAction",
-        Header: "Edit",
+        Header: "Action",
         accessor: editButton => (
           <Button
             size="sm"

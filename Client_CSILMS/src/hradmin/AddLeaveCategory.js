@@ -52,18 +52,18 @@ class AddLeaveCategory extends Component {
 
     if (validForm) {
       // create JSON Object for Edit Leave Category
-      let editLeaveCategory = {
+      let addLeaveCategory = {
         leaveCode: this.state.leaveCode,
         leaveDescr: this.state.leaveDescr,
         entitlement: this.state.entitlement
       };
 
-      console.log(JSON.stringify(editLeaveCategory));
+      console.log(JSON.stringify(addLeaveCategory));
 
       fetchData({
         url: API_BASE_URL + "/leavecategory",
         method: "POST",
-        body: JSON.stringify(editLeaveCategory)
+        body: JSON.stringify(addLeaveCategory)
       })
       this.props.history.push("/leavecategory");
     }

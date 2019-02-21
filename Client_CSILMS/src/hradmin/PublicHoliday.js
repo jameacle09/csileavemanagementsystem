@@ -1,12 +1,12 @@
 import React, { Component } from "react";
-import { Row, Col, Button } from "reactstrap";
+import { Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
 import { Redirect, withRouter } from 'react-router-dom';
 import { isHrRole } from '../util/APIUtils';
 import { API_BASE_URL } from '../constants';
 import ReactTable from "react-table";
-import { fetchData, formatDateDMY } from "../util/APIUtils";
+import { fetchData, formatDateDMY, formatDateYMD  } from "../util/APIUtils";
 
 class PublicHoliday extends Component {
   constructor(props) {
@@ -15,6 +15,7 @@ class PublicHoliday extends Component {
       publicHolidayDetails: []
     };
     this.loadPublicHolidayDetails = this.loadPublicHolidayDetails.bind(this);
+    // this.handleDelete = this.handleDelete.bind(this);
   }
 
   loadPublicHolidayDetails() {
@@ -45,6 +46,27 @@ class PublicHoliday extends Component {
       this.loadPublicHolidayDetails();
     }
   }
+
+  // toggleDelete = () => {
+  //   this.setState(prevState => ({
+  //     modalDelete: !prevState.modalDelete
+  //   }));
+  // };
+
+  // handleDelete(event) {
+  //   event.preventDefault();
+
+  //   const {
+  //     holidayDate
+  //   } = this.props.computedMatch.params;
+
+  //   fetchData({
+  //     url: API_BASE_URL + "/publicholiday/" +
+  //     holidayDate,
+  //     method: "DELETE"
+  //   })
+  //   this.props.history.push("/publicholiday");
+  // }
 
   render() {
     if (!isHrRole(this.props.currentUser)) {
@@ -86,12 +108,12 @@ class PublicHoliday extends Component {
       },
       {
         id: "editAction",
-        Header: "Edit",
+        Header: "Action",
         accessor: editButton => (
           <Button
             size="sm"
             tag={Link}
-            to={`/publicholiday/edit/${formatDateDMY(editButton.holidayDate)}`}
+            to={`/publicholiday/edit/${formatDateYMD(editButton.holidayDate)}`}
             className="smallButtonOverride"
           >
             <span className="fa fa-edit" /> Edit
@@ -103,25 +125,27 @@ class PublicHoliday extends Component {
         style: {
           textAlign: "center"
         }
-      },
-      {
-        id: "deleteAction",
-        Header: "Delete",
-        accessor: deleteButton => (
-          <Button
-            size="sm"
-            className="smallButtonOverride"
-          >
-            <span className="fa fa-trash" /> Delete
-          </Button>
-        ),
-        minWidth: 40,
-        sortable: false,
-        filterable: false,
-        style: {
-          textAlign: "center"
-        }
       }
+      // ,
+      // {
+      //   id: "deleteAction",
+      //   Header: "Delete",
+      //   accessor: deleteButton => (
+      //     <Button
+      //       size="sm"
+      //       className="smallButtonOverride"
+      //       // onClick={this.toggleDelete}
+      //     >
+      //       <span className="fa fa-trash" /> Delete
+      //     </Button>
+      //   ),
+      //   minWidth: 40,
+      //   sortable: false,
+      //   filterable: false,
+      //   style: {
+      //     textAlign: "center"
+      //   }
+      // }
     ];
 
     return (
@@ -172,6 +196,51 @@ class PublicHoliday extends Component {
             className="-striped"
           >
           </ReactTable>
+
+          
+
+
+
+
+
+          {/* <div>
+                  <Modal
+                    isOpen={this.state.modalDelete}
+                    toggle={this.toggleDelete}
+                    className={this.props.className}
+                    style={{
+                      width: "360px",
+                      height: "300px",
+                      margin: "220px auto"
+                    }}
+                  >
+                    <ModalHeader>Delete Confirmation</ModalHeader>
+                    <ModalBody>
+                      Are you sure you want to delete this item?
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        type="submit"
+                        color="danger"
+                        onClick={this.handleDelete}
+                      >
+                        Confirm
+                      </Button>
+                      <Button color="secondary" onClick={this.toggleDelete}>
+                        Cancel
+                      </Button>
+                    </ModalFooter>
+                  </Modal>
+                </div> */}
+
+
+
+
+
+
+
+
+
         </div>
       </div >
     );
