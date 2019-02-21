@@ -16,9 +16,12 @@ class LeaveRequestsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      leaveRequestData: []
+      leaveRequestData: [],
+      loading: true
     };
     this.loadLeaveRequestList = this.loadLeaveRequestList.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
   }
 
   componentDidMount() {
@@ -38,7 +41,8 @@ class LeaveRequestsList extends Component {
     })
       .then(data => {
         this.setState({
-          leaveRequestData: data
+          leaveRequestData: data,
+          loading: false
         });
       })
       .catch(err => {

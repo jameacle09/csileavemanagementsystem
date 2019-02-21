@@ -15,7 +15,7 @@ class LeaveEntitlement extends Component {
     super(props);
     this.state = {
       leaveEntitlementData: [],
-      loading: false
+      loading: true
     };
     this.loadLeaveEntitlement = this.loadLeaveEntitlement.bind(this);
   }
@@ -26,9 +26,10 @@ class LeaveEntitlement extends Component {
       url: API_BASE_URL + "/leaveentitlements",
       method: "GET"
     })
-      .then(response => {
+      .then(data => {
         this.setState({
-          leaveEntitlementData: response
+          leaveEntitlementData: data,
+          loading: false
         });
       })
       .catch(error => {
@@ -38,7 +39,7 @@ class LeaveEntitlement extends Component {
         let leaveEntitlementData = [];
         this.setState({
           leaveEntitlementData: leaveEntitlementData,
-          loading: true
+          loading: false
         });
         console.log(leaveEntitlementData);
       });

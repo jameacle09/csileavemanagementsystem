@@ -18,9 +18,14 @@ class LeaveHistoryList extends Component {
     super(props);
 
     this.state = {
-      leaveHistoryData: []
+      leaveHistoryData: [],
+      loading: true
     };
+    this.loadHistoryData = this.loadHistoryData.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
   }
+
   loadHistoryData() {
     // fetch leave request from API
     const thisYear = new Date().getFullYear();
@@ -29,24 +34,28 @@ class LeaveHistoryList extends Component {
       method: "GET"
     })
       .then(data => {
-        this.setState({ leaveHistoryData: data });
+        this.setState({ leaveHistoryData: data, loading: false });
       })
       .catch(err => {
         // if unable to fetch data, assign default (spaces) to values
         let leaveHistory = [];
-        this.setState({ leaveHistoryData: leaveHistory });
+        this.setState({ leaveHistoryData: leaveHistory, loading: false });
       });
   }
+
   componentDidMount() {
     this.loadHistoryData();
   }
+
   componentDidUpdate() {
     this.loadHistoryData();
   }
+
   render() {
     if (!isManagerRole(this.props.currentUser)) {
       return <Redirect to="/forbidden" />;
     }
+
     const showFullStatus = strStatus => {
       if (strStatus === "PNAPV") {
         return "Pending Approve";
