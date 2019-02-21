@@ -333,12 +333,10 @@ class ApplyLeave extends Component {
       body: data
     })
       .then(res => {  
-          alert(res)
           this.setState({attachedFileName: res.file})
       })
       .catch(err => {
           console.log(err)
-          alert(err)
       });
   }
 
