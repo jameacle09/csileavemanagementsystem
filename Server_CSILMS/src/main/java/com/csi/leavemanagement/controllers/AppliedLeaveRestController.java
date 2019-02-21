@@ -278,7 +278,7 @@ public class AppliedLeaveRestController {
 		return count;
 	}	
 
-	@RequestMapping(value="/appliedleave/count/{approver}/pendingapproval", method=RequestMethod.GET)
+/*	@RequestMapping(value="/appliedleave/count/{approver}/pendingapproval", method=RequestMethod.GET)
 	public long doCountPendingApproverApproval(@PathVariable("approver") String approver) {
 		long count = this.appliedLeaveService.countByApproverAndLeaveStatus(approver, "PNAPV");
 		return count;
@@ -288,7 +288,7 @@ public class AppliedLeaveRestController {
 	public List<AppliedLeave> doFindPendingApproverApproval(@PathVariable("approver") String approver) {
 		List<AppliedLeave> appliedLeaveList = this.appliedLeaveService.findByApproverAndLeaveStatus(approver, "PNAPV");
 		return appliedLeaveList;
-	}
+	} */
 	
 
 	@RequestMapping(value="/appliedleave/me", method=RequestMethod.GET)
