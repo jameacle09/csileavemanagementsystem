@@ -42,43 +42,42 @@ class ApplyLeave extends Component {
       attachedFile: null,
       approverId: ""
     };
-
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleDetailsChange = this.handleDetailsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.doNotSubmit = this.doNotSubmit.bind(this);
   }
 
-  toggleSave = () => {
-    this.setState(prevState => ({
-      modalSave: !prevState.modalSave
-    }));
-  };
-
-  toggleCancel = () => {
-    this.setState(prevState => ({
-      modalCancel: !prevState.modalCancel
-    }));
-  };
-
-  handleCancel = () => {
-    this.props.history.push("/");
-  }; 
-
-  // clickdiscard = () => {
-  //   confirmAlert({
-  //     message: "Do you want to cancel this request?",
-  //     buttons: [
-  //       {
-  //         label: "Yes",
-  //         onClick: () => this.props.history.push("/")
-  //       },
-  //       {
-  //         label: "No"
-  //       }
-  //     ]
-  //   });
+  // toggleSave = () => {
+  //   this.setState(prevState => ({
+  //     modalSave: !prevState.modalSave
+  //   }));
   // };
+
+  // toggleCancel = () => {
+  //   this.setState(prevState => ({
+  //     modalCancel: !prevState.modalCancel
+  //   }));
+  // };
+
+  // handleCancel = () => {
+  //   this.props.history.push("/");
+  // }; 
+
+  clickdiscard = () => {
+    confirmAlert({
+      message: "Do you want to cancel this request?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => this.props.history.push("/")
+        },
+        {
+          label: "No"
+        }
+      ]
+    });
+  };
 
   componentDidMount() {
 
@@ -387,7 +386,7 @@ class ApplyLeave extends Component {
           </span>
         </div>
         <div className="tableContainerFlex">
-          <h5>Annual Leave Balance: {staffLeave["availableLeave"]} Days</h5>
+          <h5>Annual Leave Balance: {staffLeave["balanceLeave"]} Days</h5>
         </div>
         <div className="tableContainerFlex">
           <Form onSubmit={this.doNotSubmit}>
@@ -545,23 +544,14 @@ class ApplyLeave extends Component {
             </FormGroup>
             <FormGroup row>
             <Col sm={{ size: 10, offset: 2 }}>
-            <Button color="primary" style={{ backgroundColor: '#3F51B5', color: 'white' }} onClick={this.toggleSave}>
+            <Button color="primary" style={{ backgroundColor: '#3F51B5', color: 'white' }} onClick={this.handleSubmit}>
               Submit
             </Button>
             <span> </span>
-            <Button onClick={this.handleCancel}>
+            <Button onClick={this.clickdiscard}>
               Cancel
             </Button>
-
-
-
-
-
-
-
-
-
-            <div>
+            {/* <div>
                   <Modal
                     isOpen={this.state.modalSave}
                     toggle={this.toggleSave}
@@ -590,49 +580,7 @@ class ApplyLeave extends Component {
                       </Button>
                     </ModalFooter>
                   </Modal>
-                </div>
-
-
-
-                {/* <div>
-                  <Modal
-                    isOpen={this.state.modalCancel}
-                    toggle={this.toggleCancel}
-                    className={this.props.className}
-                    style={{
-                      width: "360px",
-                      height: "300px",
-                      margin: "220px auto"
-                    }}
-                  >
-                    <ModalHeader>Cancel Confirmation</ModalHeader>
-                    <ModalBody>
-                      Are you sure you want to  cancel this request?
-                    </ModalBody>
-                    <ModalFooter>
-                      <Button
-                        type="submit"
-                        color="danger"
-                        onClick={this.handleCancel}
-                      >
-                        Confirm
-                      </Button>
-                      <Button color="secondary" onClick={this.toggleCancel}>
-                        Cancel
-                      </Button>
-                    </ModalFooter>
-                  </Modal>
                 </div> */}
-
-
-
-
-
-
-
-
-
-
             </Col>
             </FormGroup>
           </Form>
