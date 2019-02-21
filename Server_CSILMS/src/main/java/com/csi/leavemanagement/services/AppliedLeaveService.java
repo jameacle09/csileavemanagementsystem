@@ -236,12 +236,12 @@ public class AppliedLeaveService {
 				(emplid, leaveCode, leaveStatus, startDate, endDate);		
 	}
 		
-	public long countByApproverAndLeaveStatus(String approver, String leaveStatus) {
-		return appliedLeaveRepository.countByApproverAndLeaveStatus(approver, leaveStatus);
+	public long countByApproverAndLeaveStatusIn(String approver, List<String> leaveStatus) {
+		return appliedLeaveRepository.countByApproverAndLeaveStatusIn(approver, leaveStatus);
 	}
 	
-	public List<AppliedLeave> findByApproverAndLeaveStatus(String approver, String leaveStatus) {
-		return appliedLeaveRepository.findByApproverAndLeaveStatus(approver, leaveStatus);
+	public List<AppliedLeave> findByApproverAndLeaveStatusIn(String approver, List<String> leaveStatus) {
+		return appliedLeaveRepository.findByApproverAndLeaveStatusIn(approver, leaveStatus);
 	}
 	
 	/*

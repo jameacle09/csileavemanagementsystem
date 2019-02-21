@@ -1,6 +1,7 @@
 package com.csi.leavemanagement.controllers;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -24,6 +25,8 @@ import com.csi.leavemanagement.models.AppliedLeave;
 import com.csi.leavemanagement.security.CurrentUser;
 import com.csi.leavemanagement.security.UserPrincipal;
 import com.csi.leavemanagement.services.AppliedLeaveService;
+import com.csi.leavemanagement.storage.FileSystemStorageService;
+import com.csi.leavemanagement.storage.StorageService;
 
 @RestController
 @RequestMapping("/api")
@@ -31,10 +34,12 @@ import com.csi.leavemanagement.services.AppliedLeaveService;
 public class AppliedLeaveRestController {
 
 	private AppliedLeaveService appliedLeaveService;
+	private StorageService storageService;
 
 	@Autowired
-	public AppliedLeaveRestController(AppliedLeaveService appliedLeaveService) {
+	public AppliedLeaveRestController(AppliedLeaveService appliedLeaveService, FileSystemStorageService storageService) {
 		this.appliedLeaveService = appliedLeaveService;
+		this.storageService = storageService;
 	}
 	
 	@RequestMapping(value="/appliedleave", method=RequestMethod.GET)
@@ -70,11 +75,13 @@ public class AppliedLeaveRestController {
 		return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.CREATED );		
 	}
 
-	@RequestMapping(value="/appliedleave/{emplid}", method=RequestMethod.DELETE)
-	public String doDeleteAppliedLeaveById(@PathVariable("emplid") String emplid,  
-										   @RequestParam("effDate") String effDateStr, 
-										   @RequestParam("startDate") String startDateStr,
-										   @RequestParam("leavecode") String leaveCode) {
+	@RequestMapping(value="/appliedleave/{emplid}/{effDate}/{startDate}/{leavecode}", method=RequestMethod.DELETE)
+	public ResponseEntity<?> doDeleteAppliedLeaveById(@PathVariable("emplid") String emplid,  
+										   @PathVariable("effDate") String effDateStr, 
+										   @PathVariable("startDate") String startDateStr,
+										   @PathVariable("leavecode") String leaveCode) {
+		
+		Map <String, String> responseEntityMessage = new HashMap<String, String> ();
 				
 		// If both dates are not null, parse and create Date objects
 		Date startDate = null, effDate = null;
@@ -93,14 +100,32 @@ public class AppliedLeaveRestController {
 			}
 		}
 		
-		if(!dateValid)
-			return "Unabled to Delete Applied leave";
+		if(!dateValid) {
+			responseEntityMessage.put("message","Invalid Date supplied");
+			return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.BAD_REQUEST);
+		}
+		
+		// Retrieve Applied Leave, and attachment file name
+		AppliedLeave appliedLeave = this.appliedLeaveService.findById(emplid, effDate, startDate, leaveCode);
+		if(appliedLeave == null) {
+			responseEntityMessage.put("message","Leave application not found");
+			return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.NOT_FOUND);
+		} 
+		
+		String attachedFileName = appliedLeave.getAttachment();
 		
 		boolean result = this.appliedLeaveService.deleteById(emplid, effDate, startDate, leaveCode);
-		if(!result)
-			return "Unable to Delete Applied leave";
+		if(!result) {
+			responseEntityMessage.put("message","Unable to delete leave applied");
+			return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.INTERNAL_SERVER_ERROR);
+		}
 		
-		return "Successfully Deleted Applied leave";
+		// If Applied Leave deleted, also delete attachment
+		if(attachedFileName != "")
+			this.storageService.delete(attachedFileName);
+		
+		responseEntityMessage.put("message","Leave application deleted");
+		return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.OK);
 	}
 
 	@RequestMapping(value="/appliedleave/{emplid}", method=RequestMethod.PATCH)
@@ -277,17 +302,23 @@ public class AppliedLeaveRestController {
 		return count;
 	}	
 
-	@RequestMapping(value="/appliedleave/count/{approver}/pendingapproval", method=RequestMethod.GET)
+/*	@RequestMapping(value="/appliedleave/count/{approver}/pendingapproval", method=RequestMethod.GET)
 	public long doCountPendingApproverApproval(@PathVariable("approver") String approver) {
-		long count = this.appliedLeaveService.countByApproverAndLeaveStatus(approver, "PNAPV");
+		List<String> leaveStatusList = new ArrayList<String> ();
+		leaveStatusList.add("PNAPV");
+		leaveStatusList.add("PNCLD");
+		long count = this.appliedLeaveService.countByApproverAndLeaveStatusIn(approver, leaveStatusList);
 		return count;
 	}	
 
 	@RequestMapping(value="/appliedleave/{approver}/pendingapproval", method=RequestMethod.GET)
 	public List<AppliedLeave> doFindPendingApproverApproval(@PathVariable("approver") String approver) {
-		List<AppliedLeave> appliedLeaveList = this.appliedLeaveService.findByApproverAndLeaveStatus(approver, "PNAPV");
+		List<String> leaveStatusList = new ArrayList<String> ();
+		leaveStatusList.add("PNAPV");
+		leaveStatusList.add("PNCLD");
+		List<AppliedLeave> appliedLeaveList = this.appliedLeaveService.findByApproverAndLeaveStatusIn(approver, leaveStatusList);
 		return appliedLeaveList;
-	}
+	} */
 	
 
 	@RequestMapping(value="/appliedleave/me", method=RequestMethod.GET)
@@ -365,7 +396,10 @@ public class AppliedLeaveRestController {
     @PreAuthorize("hasAuthority('EMPLOYEE')")
 	public long doCountPendingMyApproval(@CurrentUser UserPrincipal currentUser) {
 		String approver = currentUser.getId();
-		long count = this.appliedLeaveService.countByApproverAndLeaveStatus(approver, "PNAPV");
+		List<String> leaveStatusList = new ArrayList<String> ();
+		leaveStatusList.add("PNAPV");
+		leaveStatusList.add("PNCLD");
+		long count = this.appliedLeaveService.countByApproverAndLeaveStatusIn(approver, leaveStatusList);
 		return count;
 	}	
 
@@ -373,7 +407,10 @@ public class AppliedLeaveRestController {
     @PreAuthorize("hasAuthority('EMPLOYEE')")
 	public List<AppliedLeave> doFindPendingMyApproval(@CurrentUser UserPrincipal currentUser) {
 		String approver = currentUser.getId();
-		List<AppliedLeave> appliedLeaveList = this.appliedLeaveService.findByApproverAndLeaveStatus(approver, "PNAPV");
+		List<String> leaveStatusList = new ArrayList<String> ();
+		leaveStatusList.add("PNAPV");
+		leaveStatusList.add("PNCLD");
+		List<AppliedLeave> appliedLeaveList = this.appliedLeaveService.findByApproverAndLeaveStatusIn(approver, leaveStatusList);
 		return appliedLeaveList;
 	}	
 	

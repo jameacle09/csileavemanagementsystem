@@ -40,12 +40,14 @@ class ApplyLeave extends Component {
       leaveCategory: "",
       leaveReason: "",
       attachedFile: null,
-      approverId: ""
+      approverId: "",
+      attachedFileName: ""
     };
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleDetailsChange = this.handleDetailsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.doNotSubmit = this.doNotSubmit.bind(this);
+    this.uploadFile = this.uploadFile.bind(this);
   }
 
   // toggleSave = () => {
@@ -259,7 +261,7 @@ class ApplyLeave extends Component {
   }
 
   // create JSON object with form data, and call API
-  handleSubmit(event) {
+  async handleSubmit(event) {
     event.preventDefault();
     let validForm = true;
 
@@ -268,6 +270,11 @@ class ApplyLeave extends Component {
     if (durationError !== "") validForm = false;
 
     if (validForm) {
+
+      // upload file to server
+      if(this.state.attachedFile != null)
+        await this.uploadFile(this.state.attachedFile);
+      
       // create JSON Object for new Leave Request
       let newLeaveRequest = {
         id: {
@@ -289,9 +296,9 @@ class ApplyLeave extends Component {
         approver: this.state.approverId,
         reason: this.state.leaveReason,
         approverDate: null,
-        attachment: ''
+        attachment: this.state.attachedFileName
       };
-
+      
       console.log(JSON.stringify(newLeaveRequest));
 
       fetchData({
@@ -312,16 +319,41 @@ class ApplyLeave extends Component {
           });
         })
         .catch(err => {
-          confirmAlert({
-            message: err.message,
-            buttons: [
-              {
-                label: "Ok"
-              }
-            ]
-          });
+          
+            // delete the previously uploaded file
+            fetchData({
+              url: API_BASE_URL + "/attachment/deletefile/" + this.state.attachedFileName,
+              method: "DELETE"
+            }).catch(err => {})
+
+            confirmAlert({
+              message: err.message,
+              buttons: [
+                {
+                  label: "Ok"
+                }
+              ]
+            });
         });
     }
+  }
+
+  async uploadFile(attachedFile) {
+    let data = new FormData();
+    data.append("file", attachedFile)
+    
+    await fetchData({
+      url: API_BASE_URL + "/attachment/uploadfile",
+      method: "POST",
+      custom_no_headers : "no_header",
+      body: data
+    })
+      .then(res => {  
+          this.setState({attachedFileName: res.file})
+      })
+      .catch(err => {
+          console.log(err)
+      });
   }
 
   validateLeaveDuration(newLeaveDuration) {
