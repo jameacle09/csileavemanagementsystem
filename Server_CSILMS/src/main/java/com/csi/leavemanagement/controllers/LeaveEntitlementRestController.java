@@ -124,6 +124,18 @@ public class LeaveEntitlementRestController {
 		LeaveEntitlement newLeaveEntitlement = this.leaveEntitlementService.save(leaveEntitlement);
 		return newLeaveEntitlement;
 	}
+
+	@RequestMapping(value="/leaveentitlement/bulk", method=RequestMethod.POST)
+	public int doSaveLeaveEntitlementArray(@RequestBody LeaveEntitlement[] leaveEntitlementArray) {
+		
+		int successCount = 0;
+		for(LeaveEntitlement leaveEntitlement : leaveEntitlementArray) {
+			
+			if( this.leaveEntitlementService.save(leaveEntitlement) != null)
+				successCount ++;			
+		}
+		return successCount;
+	}
 	
 	@RequestMapping(value="/leaveentitlement/{emplid}", method=RequestMethod.DELETE)
 	public String doDeleteLeaveEntitlementById(@PathVariable("emplid") String emplid,  
@@ -137,10 +149,10 @@ public class LeaveEntitlementRestController {
 		return "Successfully Deleted Leave Entitlement";
 	}
 	
-	@RequestMapping(value="/leaveentitlement/{emplid}", method=RequestMethod.PATCH)
+	@RequestMapping(value="/leaveentitlement/{emplid}/{year}/{leavecode}", method=RequestMethod.PATCH)
 	public LeaveEntitlement doUpdateLeaveEntitlementById(@PathVariable("emplid") String emplid,  
-												    	 @RequestParam("year") int year,
-													     @RequestParam("leavecode") String leaveCode,
+														 @PathVariable("year") int year,
+														 @PathVariable("leavecode") String leaveCode,
 													     @RequestBody LeaveEntitlement leaveEntitlement) {
 		
 		LeaveEntitlement newLeaveEntitlement = this.leaveEntitlementService.save(leaveEntitlement);

@@ -257,7 +257,8 @@ class ApplyLeave extends Component {
     if (validForm) {
 
       // upload file to server
-      await this.uploadFile(this.state.attachedFile);
+      if(this.state.attachedFile != null)
+        await this.uploadFile(this.state.attachedFile);
       
       // create JSON Object for new Leave Request
       let newLeaveRequest = {
@@ -329,16 +330,14 @@ class ApplyLeave extends Component {
     await fetchData({
       url: API_BASE_URL + "/attachment/uploadfile",
       method: "POST",
-      preHeaders : "has_header",
+      custom_no_headers : "no_header",
       body: data
     })
       .then(res => {  
-          alert(res)
           this.setState({attachedFileName: res.file})
       })
       .catch(err => {
           console.log(err)
-          alert(err)
       });
   }
 
