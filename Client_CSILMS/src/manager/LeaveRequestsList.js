@@ -16,9 +16,12 @@ class LeaveRequestsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      leaveRequestData: []
+      leaveRequestData: [],
+      loading: true
     };
     this.loadLeaveRequestList = this.loadLeaveRequestList.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
   }
 
   componentDidMount() {
@@ -38,7 +41,8 @@ class LeaveRequestsList extends Component {
     })
       .then(data => {
         this.setState({
-          leaveRequestData: data
+          leaveRequestData: data,
+          loading: false
         });
       })
       .catch(err => {
@@ -114,7 +118,10 @@ class LeaveRequestsList extends Component {
         accessor: str => showFullString(str.halfDay),
         minWidth: 140,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "Duration",
@@ -122,7 +129,10 @@ class LeaveRequestsList extends Component {
         accessor: str => str.leaveDuration + " day(s)",
         minWidth: 140,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "Action",
