@@ -128,7 +128,6 @@ public class LeaveEntitlementRestController {
 	@RequestMapping(value="/leaveentitlement/bulk", method=RequestMethod.POST)
 	public int doSaveLeaveEntitlementArray(@RequestBody LeaveEntitlement[] leaveEntitlementArray) {
 		
-		LeaveEntitlement newLeaveEntitlement;
 		int successCount = 0;
 		for(LeaveEntitlement leaveEntitlement : leaveEntitlementArray) {
 			

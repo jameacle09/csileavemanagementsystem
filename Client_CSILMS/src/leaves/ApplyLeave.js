@@ -329,7 +329,7 @@ class ApplyLeave extends Component {
     await fetchData({
       url: API_BASE_URL + "/attachment/uploadfile",
       method: "POST",
-      preHeaders : "has_header",
+      custom_no_headers : "no_header",
       body: data
     })
       .then(res => {  
