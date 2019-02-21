@@ -262,8 +262,8 @@ class MyLeaveHistoryView extends Component {
         return "Rejected";
       }
     };
-    const showButtonByStatus = myStatus => {
-      if (myStatus === "PNAPV") {
+    const showButtonByStatus = leaveStatus => {
+      if (leaveStatus === "PNAPV") {
         return <Button
         type="button"
         color="primary"
@@ -273,7 +273,7 @@ class MyLeaveHistoryView extends Component {
         Delete Leave
       </Button> 
       }
-      else if (myStatus === "APPRV") {
+      else if (leaveStatus === "APPRV") {
         return <Button
         type="button"
         color="primary"
@@ -281,7 +281,7 @@ class MyLeaveHistoryView extends Component {
         className="largeButtonOverride"
       >
         Cancel Leave
-      </Button> 
+      </Button>
       }
     };
     return (
@@ -439,9 +439,7 @@ class MyLeaveHistoryView extends Component {
                 >
                   Cancel Leave
                 </Button> */}
-                {showButtonByStatus("APPRV")}
-                <span> </span>
-                {showButtonByStatus("APPRV")}
+                { showButtonByStatus(leaveStatus) }
                 {/* <Button
                   type="button"
                   color="primary"
