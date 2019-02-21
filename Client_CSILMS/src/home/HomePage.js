@@ -87,7 +87,7 @@ class HomePage extends Component {
             <h1 className="display-3">Hello, {userData["name"]}!</h1>
             <p className="lead">Welcome to CSI Leave Management System.</p>
             <p>You have {pendingApproval} leave request by your staff to be approve.
-            <NavLink to="/managerapproval"><Button>Click</Button></NavLink> to approve/reject the leave request.</p>
+            <NavLink to="/leaverequests"><Button>Click</Button></NavLink> to approve/reject the leave request.</p>
           </Jumbotron>
           <Dashboard currentUser={this.props.currentUser} />
         </div>

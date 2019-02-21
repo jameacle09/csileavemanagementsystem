@@ -27,13 +27,6 @@ class EditStaffProfile extends Component {
         roleName: ""
       }]
     };
-    this.toggleCancel = this.toggleCancel.bind(this);
-  }
-
-  toggleCancel() {
-    this.setState(prevState => ({
-      modalCancel: !prevState.modalCancel
-    }));
   }
 
   componentDidMount() {
@@ -75,6 +68,10 @@ class EditStaffProfile extends Component {
         console.log(err);
       });
   }
+
+  handleCancel = () => {
+    this.props.history.push("/liststaffprofile");
+  };
 
   handleChange = event => {
     const { name, value } = event.target;
@@ -249,7 +246,7 @@ class EditStaffProfile extends Component {
               Save
                 </Button>
             &nbsp;&nbsp;
-            <Button color="secondary" onClick={this.toggleCancel}>
+            <Button color="secondary" onClick={this.handleCancel}>
               Cancel
             </Button>
           </Form>

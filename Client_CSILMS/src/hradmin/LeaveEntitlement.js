@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+<<<<<<< HEAD
 import { Table, Row, Col, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
@@ -9,6 +10,17 @@ import { isHrRole } from "../util/APIUtils";
 import { fetchData } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import ExportToExcel from "./LeaveEntitlementToExcel";
+=======
+import { Button } from "reactstrap";
+import ReactTable from "react-table";
+import { Link } from "react-router-dom";
+import "../common/Styles.css";
+import { Redirect, withRouter } from 'react-router-dom';
+import { isHrRole } from '../util/APIUtils';
+import { API_BASE_URL } from '../constants';
+import "react-table/react-table.css";
+import { fetchData } from "../util/APIUtils";
+>>>>>>> master
 
 class LeaveEntitlement extends Component {
   constructor(props) {
@@ -63,37 +75,33 @@ class LeaveEntitlement extends Component {
     if (!isHrRole(this.props.currentUser)) {
       return <Redirect to="/forbidden" />;
     }
-
     const leaveEntitlementCols = [
       {
-        id: "emplId",
-        Header: "Employee ID",
+        id: "emplid",
+        Header: "CSI Staff ID",
         accessor: "id.emplid",
-        width: 110,
+        minWidth: 100,
         sortable: true,
         filterable: true
       },
       {
         id: "name",
-        Header: "Employee Name",
+        Header: "Staff Name",
         accessor: "employeeDetails.name",
-        minWidth: 160,
+        minWidth: 140,
         sortable: true,
         filterable: true
       },
       {
-        id: "year",
-        Header: "Leave Year",
+        id: "leaveYear",
+        Header: "Year",
         accessor: "id.year",
-        // minWidth: 120,
+        minWidth: 50,
         sortable: true,
-        filterable: true,
-        style: {
-          textAlign: "center"
-        }
+        filterable: true
       },
       {
-        id: "leaveDescr",
+        id: "leaveType",
         Header: "Leave Type",
         accessor: "leaveCategory.leaveDescr",
         minWidth: 180,

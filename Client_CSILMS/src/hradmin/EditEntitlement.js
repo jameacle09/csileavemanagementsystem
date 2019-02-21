@@ -9,7 +9,6 @@ import "../common/Styles.css";
 class EditEntitlement extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       emplId: "",
       name: "",
