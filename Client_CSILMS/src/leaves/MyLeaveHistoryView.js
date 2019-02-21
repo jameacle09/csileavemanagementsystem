@@ -277,7 +277,7 @@ class MyLeaveHistoryView extends Component {
         return <Button
         type="button"
         color="primary"
-        onClick={this.toggleDeleteLeave}
+        onClick={this.toggleCancelLeave}
         className="largeButtonOverride"
       >
         Cancel Leave
@@ -439,8 +439,9 @@ class MyLeaveHistoryView extends Component {
                 >
                   Cancel Leave
                 </Button> */}
-                {showButtonByStatus}
-                {/* <span> </span> */}
+                {showButtonByStatus("APPRV")}
+                <span> </span>
+                {showButtonByStatus("APPRV")}
                 {/* <Button
                   type="button"
                   color="primary"
@@ -449,7 +450,7 @@ class MyLeaveHistoryView extends Component {
                 >
                   Delete Leave
                 </Button> */}
-                {/* <span> </span> */}
+                <span> </span>
                 <Button
                   color="primary"
                   onClick={this.handleBackToMain}
