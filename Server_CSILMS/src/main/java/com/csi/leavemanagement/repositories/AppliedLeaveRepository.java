@@ -63,6 +63,12 @@ public interface AppliedLeaveRepository extends CrudRepository<AppliedLeave, App
 	
 	// Retrieve applied leave by Approver ID and Leave Status
 	List<AppliedLeave> findByApproverAndLeaveStatus(String approver, String leaveStatus);
+
+	// Count number of applied leave by Approver ID and Leave Status
+	long countByApproverAndLeaveStatusIn(String approver, List<String> leaveStatus);
+	
+	// Retrieve applied leave by Approver ID and Leave Status
+	List<AppliedLeave> findByApproverAndLeaveStatusIn(String approver, List<String> leaveStatus);
 	
 	/*
 	 * METHODS for retrieving by List of Employee ID
