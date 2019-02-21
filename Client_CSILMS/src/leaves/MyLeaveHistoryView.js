@@ -262,7 +262,28 @@ class MyLeaveHistoryView extends Component {
         return "Rejected";
       }
     };
-
+    const showButtonByStatus = myStatus => {
+      if (myStatus === "PNAPV") {
+        return <Button
+        type="button"
+        color="primary"
+        onClick={this.toggleDeleteLeave}
+        className="largeButtonOverride"
+      >
+        Delete Leave
+      </Button> 
+      }
+      else if (myStatus === "APPRV") {
+        return <Button
+        type="button"
+        color="primary"
+        onClick={this.toggleDeleteLeave}
+        className="largeButtonOverride"
+      >
+        Cancel Leave
+      </Button> 
+      }
+    };
     return (
       <div className="mainContainerLeavePages">
         <div className="headerContainerFlex">
@@ -410,24 +431,25 @@ class MyLeaveHistoryView extends Component {
             </FormGroup>
             <FormGroup row>
               <Col sm={{ size: 10, offset: 2 }}>
-              <Button
+              {/* <Button
                   type="button"
                   color="primary"
                   onClick={this.toggleCancelLeave}
                   className="largeButtonOverride"
                 >
                   Cancel Leave
-                </Button>
-                <span> </span>
-                <Button
+                </Button> */}
+                {showButtonByStatus}
+                {/* <span> </span> */}
+                {/* <Button
                   type="button"
                   color="primary"
                   onClick={this.toggleDeleteLeave}
                   className="largeButtonOverride"
                 >
                   Delete Leave
-                </Button>
-                <span> </span>
+                </Button> */}
+                {/* <span> </span> */}
                 <Button
                   color="primary"
                   onClick={this.handleBackToMain}
