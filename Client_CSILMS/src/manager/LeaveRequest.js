@@ -328,7 +328,6 @@ class LeaveRequest extends Component {
             <FormGroup row>
               <Col sm={{ size: 10, offset: 2 }}>
                 <Button
-                  type="button"
                   color="primary"
                   onClick={this.toggleApprove}
                   className="largeButtonOverride"
@@ -336,19 +335,11 @@ class LeaveRequest extends Component {
                   Approve
                 </Button>
                 <span> </span>
-                <Button
-                  type="button"
-                  color="danger"
-                  onClick={this.toggleReject}
-                >
+                <Button color="danger" onClick={this.toggleReject}>
                   Reject
                 </Button>
                 <span> </span>
-                <Button
-                  type="button"
-                  color="secondary"
-                  onClick={this.handleCancel}
-                >
+                <Button color="secondary" onClick={this.handleCancel}>
                   Cancel
                 </Button>
                 <div>
