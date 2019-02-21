@@ -153,7 +153,7 @@ class EditPublicHoliday extends Component {
                   id="phDate"
                   value={formatDateYMD(holidayDate)}
                   onChange={this.handleChange}
-                  required
+                  disabled={true}
                 />
               </Col>
             </FormGroup>
@@ -209,7 +209,6 @@ class EditPublicHoliday extends Component {
                   type="button"
                   color="danger"
                   onClick={this.toggleDelete}
-                  // disabled={this.validateDelete()}
                 >
                   Delete
                 </Button>
