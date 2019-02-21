@@ -70,11 +70,11 @@ public class AppliedLeaveRestController {
 		return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.CREATED );		
 	}
 
-	@RequestMapping(value="/appliedleave/{emplid}", method=RequestMethod.DELETE)
+	@RequestMapping(value="/appliedleave/{emplid}/{effDate}/{startDate}/{leavecode}", method=RequestMethod.DELETE)
 	public String doDeleteAppliedLeaveById(@PathVariable("emplid") String emplid,  
-										   @RequestParam("effDate") String effDateStr, 
-										   @RequestParam("startDate") String startDateStr,
-										   @RequestParam("leavecode") String leaveCode) {
+										   @PathVariable("effDate") String effDateStr, 
+										   @PathVariable("startDate") String startDateStr,
+										   @PathVariable("leavecode") String leaveCode) {
 				
 		// If both dates are not null, parse and create Date objects
 		Date startDate = null, effDate = null;
