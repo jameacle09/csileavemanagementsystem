@@ -1,5 +1,4 @@
 import React, { Component } from "react";
-<<<<<<< HEAD
 import { Table, Row, Col, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
@@ -10,17 +9,6 @@ import { isHrRole } from "../util/APIUtils";
 import { fetchData } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import ExportToExcel from "./LeaveEntitlementToExcel";
-=======
-import { Button } from "reactstrap";
-import ReactTable from "react-table";
-import { Link } from "react-router-dom";
-import "../common/Styles.css";
-import { Redirect, withRouter } from 'react-router-dom';
-import { isHrRole } from '../util/APIUtils';
-import { API_BASE_URL } from '../constants';
-import "react-table/react-table.css";
-import { fetchData } from "../util/APIUtils";
->>>>>>> master
 
 class LeaveEntitlement extends Component {
   constructor(props) {
