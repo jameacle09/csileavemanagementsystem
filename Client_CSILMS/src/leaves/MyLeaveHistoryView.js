@@ -270,7 +270,7 @@ class MyLeaveHistoryView extends Component {
         onClick={this.toggleDeleteLeave}
         className="largeButtonOverride"
       >
-        Delete Leave
+        Cancel Leave
       </Button> 
       }
       else if (leaveStatus === "APPRV") {
