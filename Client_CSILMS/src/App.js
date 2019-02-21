@@ -21,6 +21,7 @@ import EditStaffProfile from "./staffprofile/EditStaffProfile";
 import PublicHoliday from "./hradmin/PublicHoliday";
 import AddPublicHoliday from "./hradmin/AddPublicHoliday";
 import EditPublicHoliday from "./hradmin/EditPublicHoliday";
+import UploadHoliday from "./hradmin/UploadHoliday";
 import LeaveCategory from "./hradmin/LeaveCategory";
 import AddLeaveCategory from "./hradmin/AddLeaveCategory";
 import EditLeaveCategory from "./hradmin/EditLeaveCategory";
@@ -287,7 +288,13 @@ class App extends Component {
                     title="Edit Public Holiday"
                     component={EditPublicHoliday}
                   />
-
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/publicholiday/uploadholiday"
+                    title="Upload Public Holiday"
+                    component={UploadHoliday}
+                  />
                   <PrivateRoute
                     exact
                     authenticated={this.state.isAuthenticated}

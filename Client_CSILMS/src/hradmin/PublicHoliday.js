@@ -1,40 +1,53 @@
 import React, { Component } from "react";
-import { Row, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from "reactstrap";
+import {
+  Row,
+  Col,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Alert
+} from "reactstrap";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
-import { Redirect, withRouter } from 'react-router-dom';
-import { isHrRole } from '../util/APIUtils';
-import { API_BASE_URL } from '../constants';
+import { Redirect, withRouter } from "react-router-dom";
+import { isHrRole } from "../util/APIUtils";
+import { API_BASE_URL } from "../constants";
 import ReactTable from "react-table";
-import { fetchData, formatDateDMY, formatDateYMD  } from "../util/APIUtils";
+import { fetchData, formatDateDMY, formatDateYMD } from "../util/APIUtils";
+import ExportToExcel from "./PublicHolidayToExcel";
 
 class PublicHoliday extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      publicHolidayDetails: []
+      publicHolidayDetails: [],
+      loading: true
     };
     this.loadPublicHolidayDetails = this.loadPublicHolidayDetails.bind(this);
-    // this.handleDelete = this.handleDelete.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
   }
 
   loadPublicHolidayDetails() {
     fetchData({
       url: API_BASE_URL + "/publicholidays",
-      method: 'GET'
-    }).then(data => {
-      //console.log("Results:", data);
-      this.setState({
-        publicHolidayDetails: data
+      method: "GET"
+    })
+      .then(data => {
+        this.setState({
+          publicHolidayDetails: data,
+          loading: false
+        });
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+        let userData = [];
+        this.setState({ userData: userData });
       });
-    }).catch(error => {
-      if (error.status === 401) {
-        this.props.history.push("/login");
-      }
-      let userData = [];
-      this.setState({ userData: userData });
-      console.log(userData);
-    });
   }
 
   componentDidMount() {
@@ -47,30 +60,9 @@ class PublicHoliday extends Component {
     }
   }
 
-  // toggleDelete = () => {
-  //   this.setState(prevState => ({
-  //     modalDelete: !prevState.modalDelete
-  //   }));
-  // };
-
-  // handleDelete(event) {
-  //   event.preventDefault();
-
-  //   const {
-  //     holidayDate
-  //   } = this.props.computedMatch.params;
-
-  //   fetchData({
-  //     url: API_BASE_URL + "/publicholiday/" +
-  //     holidayDate,
-  //     method: "DELETE"
-  //   })
-  //   this.props.history.push("/publicholiday");
-  // }
-
   render() {
     if (!isHrRole(this.props.currentUser)) {
-      return (<Redirect to='/forbidden' />);
+      return <Redirect to="/forbidden" />;
     }
 
     const PublicHolidayCols = [
@@ -126,41 +118,26 @@ class PublicHoliday extends Component {
           textAlign: "center"
         }
       }
-      // ,
-      // {
-      //   id: "deleteAction",
-      //   Header: "Delete",
-      //   accessor: deleteButton => (
-      //     <Button
-      //       size="sm"
-      //       className="smallButtonOverride"
-      //       // onClick={this.toggleDelete}
-      //     >
-      //       <span className="fa fa-trash" /> Delete
-      //     </Button>
-      //   ),
-      //   minWidth: 40,
-      //   sortable: false,
-      //   filterable: false,
-      //   style: {
-      //     textAlign: "center"
-      //   }
-      // }
     ];
 
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Public Holiday</h3>
+            <h3 className="headerStyle">Public Holidays List</h3>
           </span>
         </div>
         <div className="reactTableContainer">
           <Row style={{ height: "50px" }}>
             <Col md="6" xs="6">
+              <ExportToExcel
+                publicHolidayDetails={this.state.publicHolidayDetails}
+              />
+            </Col>
+            <Col md="6" xs="6" style={{ textAlign: "right" }}>
               <Button
                 tag={Link}
-                to={`#`}
+                to={`/publicholiday/uploadholiday`}
                 className="largeButtonOverride"
               >
                 <span
@@ -168,9 +145,8 @@ class PublicHoliday extends Component {
                   style={{ margin: "0px 10px 0px 0px" }}
                 />
                 Upload Holiday
-            </Button>
-            </Col>
-            <Col md="6" xs="6" style={{ textAlign: "right" }}>
+              </Button>
+              <span> </span>
               <Button
                 tag={Link}
                 to={`/publicholiday/add`}
@@ -194,14 +170,7 @@ class PublicHoliday extends Component {
             multiSort={true}
             noDataText="No data available."
             className="-striped"
-          >
-          </ReactTable>
-
-          
-
-
-
-
+          />
 
           {/* <div>
                   <Modal
@@ -232,17 +201,8 @@ class PublicHoliday extends Component {
                     </ModalFooter>
                   </Modal>
                 </div> */}
-
-
-
-
-
-
-
-
-
         </div>
-      </div >
+      </div>
     );
   }
 }
