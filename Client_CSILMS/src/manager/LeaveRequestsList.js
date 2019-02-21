@@ -116,7 +116,7 @@ class LeaveRequestsList extends Component {
         id: "halfDay",
         Header: "Half Day",
         accessor: str => showFullString(str.halfDay),
-        minWidth: 140,
+        minWidth: 70,
         sortable: true,
         filterable: true,
         style: {
@@ -133,6 +133,14 @@ class LeaveRequestsList extends Component {
         style: {
           textAlign: "center"
         }
+      },
+      {
+        id: "leaveStatus",
+        Header: "Leave Status",
+        accessor: str => showFullStatus(str.leaveStatus),
+        minWidth: 120,
+        sortable: true,
+        filterable: true
       },
       {
         id: "Action",
@@ -162,6 +170,20 @@ class LeaveRequestsList extends Component {
         }
       }
     ];
+
+    const showFullStatus = strStatus => {
+      if (strStatus === "PNAPV") {
+        return "Pending Approve";
+      } else if (strStatus === "APPRV") {
+        return "Approved";
+      } else if (strStatus === "CANCL") {
+        return "Cancelled";
+      } else if (strStatus === "PNCLD") {
+        return "Pending Cancel";
+      } else if (strStatus === "REJCT") {
+        return "Rejected";
+      }
+    };
 
     return (
       <div className="mainContainerFlex">
