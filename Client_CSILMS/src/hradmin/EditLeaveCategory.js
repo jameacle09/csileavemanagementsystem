@@ -73,7 +73,7 @@ class EditLeaveCategory extends Component {
   };
 
   validateDelete = () => {
-    const { leaveCode, leaveDescr } = this.state;
+    const { leaveCode } = this.state;
     const isInvalid = (leaveCode === "AL") || (leaveCode === "SL")
     return isInvalid;
   }
