@@ -1,47 +1,56 @@
 import React, { Component } from "react";
-import { Table } from "reactstrap";
-import Button from "@material-ui/core/Button";
+import { Table, Row, Col, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
-import { Redirect, withRouter } from 'react-router-dom';
-import { isHrRole } from '../util/APIUtils';
-import { fetchData } from '../util/APIUtils';
-import { API_BASE_URL } from '../constants';
+import { Redirect, withRouter } from "react-router-dom";
+import ReactTable from "react-table";
+import "react-table/react-table.css";
+import { isHrRole } from "../util/APIUtils";
+import { fetchData } from "../util/APIUtils";
+import { API_BASE_URL } from "../constants";
+import ExportToExcel from "./LeaveEntitlementToExcel";
 
 class LeaveEntitlement extends Component {
-
   constructor(props) {
     super(props);
     this.state = {
-      userData: [
-        // {
-        //   joinDate: ""
-        // }
-      ]
+      leaveEntitlementData: [],
+      loading: false
     };
     this.loadLeaveEntitlement = this.loadLeaveEntitlement.bind(this);
   }
+  _isMounted = false;
 
   loadLeaveEntitlement() {
     fetchData({
       url: API_BASE_URL + "/leaveentitlements",
-      method: 'GET'
-    }).then(response => {
-      this.setState({
-        userData: response
+      method: "GET"
+    })
+      .then(response => {
+        this.setState({
+          leaveEntitlementData: response
+        });
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+        let leaveEntitlementData = [];
+        this.setState({
+          leaveEntitlementData: leaveEntitlementData,
+          loading: true
+        });
+        console.log(leaveEntitlementData);
       });
-    }).catch(error => {
-      if (error.status === 401) {
-        this.props.history.push("/login");
-      }
-      let userData = [];
-      this.setState({ userData: userData });
-      console.log(userData);
-    });
   }
 
   componentDidMount() {
+    this._isMounted = true;
     this.loadLeaveEntitlement();
+  }
+
+  componentWillMount() {
+    this._isMounted = false;
   }
 
   componentDidUpdate(nextProps) {
@@ -52,77 +61,171 @@ class LeaveEntitlement extends Component {
 
   render() {
     if (!isHrRole(this.props.currentUser)) {
-      return (<Redirect to='/forbidden' />);
+      return <Redirect to="/forbidden" />;
     }
+
+    const leaveEntitlementCols = [
+      {
+        id: "emplId",
+        Header: "Employee ID",
+        accessor: "id.emplid",
+        width: 110,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "name",
+        Header: "Employee Name",
+        accessor: "employeeDetails.name",
+        minWidth: 160,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "year",
+        Header: "Leave Year",
+        accessor: "id.year",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "leaveDescr",
+        Header: "Leave Type",
+        accessor: "leaveCategory.leaveDescr",
+        minWidth: 180,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "carryForward",
+        Header: "Carried Forward",
+        accessor: str => str.carryForward + " day(s)",
+        minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "entitlement",
+        Header: "Entitlement",
+        accessor: str => str.entitlement + " day(s)",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "availableLeave",
+        Header: "Available Leave",
+        accessor: str => str.availableLeave + " day(s)",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "takenLeave",
+        Header: "Taken Leave",
+        accessor: str => str.takenLeave + " day(s)",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "balanceLeave",
+        Header: "Balance Leave",
+        accessor: str => str.balanceLeave + " day(s)",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "Action",
+        Header: "Action",
+        accessor: editButton => (
+          <Button
+            color="primary"
+            size="sm"
+            tag={Link}
+            to={`/leaveentitlement/edit/${editButton.id.emplid}/${
+              editButton.id.year
+            }/${editButton.leaveCategory.leaveCode}`}
+            activeclassname="active"
+            className="smallButtonOverride"
+          >
+            <span className="fa fa-edit" style={{ color: "white" }} />
+            &nbsp;Edit
+          </Button>
+        ),
+        minWidth: 72,
+        sortable: false,
+        filterable: false,
+        style: {
+          textAlign: "center"
+        }
+      }
+    ];
 
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Leave Entitlement</h3>
+            <h3 className="headerStyle">Leave Entitlements List</h3>
           </span>
         </div>
-        <br />
-        <div className="tableContainerFlex">
-          <div style={{ textAlign: "right" }}>
-            <Button
-              variant="contained"
-              color="primary"
-              style={{ textTransform: "none", color: "white" }}
-            >
-              <span
-                className="fa fa-upload"
-                style={{ margin: "0px 10px 0px 0px" }}
-              />{" "}
-              Upload Entitlement
-            </Button>
-            <br />
-            <br />
-          </div>
-          <Table responsive>
-            <thead>
-              <tr>
-                <th>CSI Staff ID</th>
-                <th>Staff Name</th>
-                <th>Leave Year</th>
-                <th>Leave Type</th>
-                <th>Carried Forward</th>
-                <th>Entitlement</th>
-                <th>Available Leave</th>
-                <th>Taken Leave</th>
-                <th>Balance Leave</th>
-                <th>Edit</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                this.state.userData.map(function (item, key) {
-                  return (
-                    <tr key={key}> 
-                      <td>{item.id.emplid}</td>
-                      <td>{item.employeeDetails.name}</td>
-                      <td>{item.id.year}</td>
-                      <td>{item.leaveCategory.leaveDescr}</td>
-                      <td>{item.carryForward} days</td>
-                      <td>{item.entitlement} days</td>
-                      <td>{item.availableLeave} days</td>
-                      <td>{item.takenLeave} days</td>
-                      <td>{item.balanceLeave} days</td>
-                      <td><Button
-                        component={Link}
-                        to={`/leaveentitlement/edit/${item.id.emplid}`}
-                        variant="contained"
-                        color="primary"
-                        style={{ textTransform: "none", color: "white" }}
-                      >
-                        <span className="fa fa-edit" />
-                      </Button></td>
-                    </tr>
-                  )
-                })
-              }
-            </tbody>
-          </Table>
+        <div className="reactTableContainer">
+          <Row style={{ height: "50px" }}>
+            <Col md="6" xs="6">
+              <ExportToExcel
+                leaveEntitlementData={this.state.leaveEntitlementData}
+              />
+            </Col>
+            <Col md="6" xs="6" style={{ textAlign: "right" }}>
+              <Button
+                variant="contained"
+                color="primary"
+                className="largeButtonOverride"
+                component={Link}
+                tag={Link}
+                to={`/leaveentitlement/uploadentitlement`}
+              >
+                <span
+                  className="fa fa-upload"
+                  style={{ margin: "0px 10px 0px 0px" }}
+                />
+                Upload Entitlement
+              </Button>
+            </Col>
+          </Row>
+          <ReactTable
+            data={this.state.leaveEntitlementData}
+            columns={leaveEntitlementCols}
+            defaultPageSize={10}
+            pages={this.state.pages}
+            loading={this.state.loading}
+            filterable={true}
+            sortable={true}
+            multiSort={true}
+            loadingText="Loading Leave Entitlements..."
+            noDataText="No data available."
+            className="-striped"
+          />
         </div>
       </div>
     );

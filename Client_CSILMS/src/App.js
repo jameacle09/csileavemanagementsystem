@@ -26,6 +26,7 @@ import AddLeaveCategory from "./hradmin/AddLeaveCategory";
 import EditLeaveCategory from "./hradmin/EditLeaveCategory";
 import LeaveEntitlement from "./hradmin/LeaveEntitlement";
 import EditEntitlement from "./hradmin/EditEntitlement";
+import UploadEntitlement from "./hradmin/UploadEntitlement";
 import LoginDetails from "./hradmin/LoginDetails";
 import AddLoginDetails from "./hradmin/AddLoginDetails";
 import EditLoginDetails from "./hradmin/EditLoginDetails";
@@ -241,6 +242,7 @@ class App extends Component {
                   />
 
                   <PrivateRoute
+                    exact
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
                     path="/leaveentitlement"
@@ -250,9 +252,16 @@ class App extends Component {
                   <PrivateRoute
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
-                    path="/leaveentitlement/edit/:emplId"
+                    path="/leaveentitlement/edit/:emplId/:year/:leaveCode"
                     title="Edit Entitlement"
                     component={EditEntitlement}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/leaveentitlement/uploadentitlement"
+                    title="Upload Entitlement"
+                    component={UploadEntitlement}
                   />
                   <PrivateRoute
                     exact

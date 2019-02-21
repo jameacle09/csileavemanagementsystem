@@ -114,7 +114,10 @@ class LeaveRequestsList extends Component {
         accessor: str => showFullString(str.halfDay),
         minWidth: 140,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "Duration",
@@ -122,7 +125,10 @@ class LeaveRequestsList extends Component {
         accessor: str => str.leaveDuration + " day(s)",
         minWidth: 140,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "Action",
