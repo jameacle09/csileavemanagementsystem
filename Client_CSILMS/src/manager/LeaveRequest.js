@@ -31,6 +31,7 @@ class LeaveRequest extends Component {
       isHalfDay: "N",
       leaveDuration: "1 day(s)",
       leaveReason: "",
+      leaveStatus: "",
       modalApprove: false,
       modalReject: false
     };
@@ -81,7 +82,8 @@ class LeaveRequest extends Component {
           endDate: data.endDate,
           isHalfDay: data.halfDay,
           leaveDuration: data.leaveDuration + " day(s)",
-          leaveReason: data.reason
+          leaveReason: data.reason,
+          leaveStatus: data.leaveStatus
         });
       })
       .catch(err => {
@@ -173,7 +175,8 @@ class LeaveRequest extends Component {
       endDate,
       isHalfDay,
       leaveDuration,
-      leaveReason
+      leaveReason,
+      leaveStatus
     } = this.state;
 
     const BooleanHalfDay = strHalfDay => {
@@ -193,6 +196,20 @@ class LeaveRequest extends Component {
         &times;
       </button>
     );
+
+    const showFullStatus = strStatus => {
+      if (strStatus === "PNAPV") {
+        return "Pending Approve";
+      } else if (strStatus === "APPRV") {
+        return "Approved";
+      } else if (strStatus === "CANCL") {
+        return "Cancelled";
+      } else if (strStatus === "PNCLD") {
+        return "Pending Cancel";
+      } else if (strStatus === "REJCT") {
+        return "Rejected";
+      }
+    };
 
     return (
       <div className="mainContainerLeavePages">
@@ -323,6 +340,20 @@ class LeaveRequest extends Component {
               </Label>
               <Col sm={10}>
                 <FormText color="muted">No attachment uploaded.</FormText>
+              </Col>
+            </FormGroup>
+            <FormGroup row>
+              <Label for="leaveStatus" sm={2}>
+                Leave Status:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="text"
+                  name="leaveStatus"
+                  id="leaveStatus"
+                  value={showFullStatus(leaveStatus)}
+                  disabled={true}
+                />
               </Col>
             </FormGroup>
             <FormGroup row>
