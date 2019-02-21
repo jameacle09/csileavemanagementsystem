@@ -1,6 +1,7 @@
 package com.csi.leavemanagement.controllers;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -365,7 +366,10 @@ public class AppliedLeaveRestController {
     @PreAuthorize("hasAuthority('EMPLOYEE')")
 	public long doCountPendingMyApproval(@CurrentUser UserPrincipal currentUser) {
 		String approver = currentUser.getId();
-		long count = this.appliedLeaveService.countByApproverAndLeaveStatus(approver, "PNAPV");
+		List<String> leaveStatusList = new ArrayList<String> ();
+		leaveStatusList.add("PNAPV");
+		leaveStatusList.add("PNCLD");
+		long count = this.appliedLeaveService.countByApproverAndLeaveStatusIn(approver, leaveStatusList);
 		return count;
 	}	
 
@@ -373,7 +377,10 @@ public class AppliedLeaveRestController {
     @PreAuthorize("hasAuthority('EMPLOYEE')")
 	public List<AppliedLeave> doFindPendingMyApproval(@CurrentUser UserPrincipal currentUser) {
 		String approver = currentUser.getId();
-		List<AppliedLeave> appliedLeaveList = this.appliedLeaveService.findByApproverAndLeaveStatus(approver, "PNAPV");
+		List<String> leaveStatusList = new ArrayList<String> ();
+		leaveStatusList.add("PNAPV");
+		leaveStatusList.add("PNCLD");
+		List<AppliedLeave> appliedLeaveList = this.appliedLeaveService.findByApproverAndLeaveStatusIn(approver, leaveStatusList);
 		return appliedLeaveList;
 	}	
 	
