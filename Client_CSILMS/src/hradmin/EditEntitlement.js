@@ -113,17 +113,17 @@ class EditEntitlement extends Component {
       body: JSON.stringify(postRequest)
     })
       .then(response => {
-        if (response.ok) {
-          confirmAlert({
-            message: "Leave Entitlement has been successfully updated!",
-            buttons: [
-              {
-                label: "OK",
-                onClick: () => this.props.history.push("/leaveentitlement")
-              }
-            ]
-          });
-        }
+        // if (response.status === 200) {
+        confirmAlert({
+          message: "Leave Entitlement has been successfully updated!",
+          buttons: [
+            {
+              label: "OK",
+              onClick: () => this.props.history.push("/leaveentitlement")
+            }
+          ]
+        });
+        // }
       })
       .catch(error => {
         if (error.status === 401) {
@@ -164,9 +164,9 @@ class EditEntitlement extends Component {
   };
 
   render() {
-    // if (!isHrRole(this.props.currentUser)) {
-    //   return <Redirect to="/forbidden" />;
-    // }
+    if (!isHrRole(this.props.currentUser)) {
+      return <Redirect to="/forbidden" />;
+    }
 
     const {
       emplId,
