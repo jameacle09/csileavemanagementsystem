@@ -31,12 +31,14 @@ class LeaveRequest extends Component {
       isHalfDay: "N",
       leaveDuration: "1 day(s)",
       leaveReason: "",
+      leaveStatus: "",
       modalApprove: false,
       modalReject: false
     };
     this.toggleApprove = this.toggleApprove.bind(this);
     this.toggleReject = this.toggleReject.bind(this);
     this.updateAppliedLeaveStatus = this.updateAppliedLeaveStatus.bind(this);
+    this.updateAppliedLeaveStatusCancel = this.updateAppliedLeaveStatusCancel.bind(this);
   }
 
   toggleApprove = () => {
@@ -81,7 +83,8 @@ class LeaveRequest extends Component {
           endDate: data.endDate,
           isHalfDay: data.halfDay,
           leaveDuration: data.leaveDuration + " day(s)",
-          leaveReason: data.reason
+          leaveReason: data.reason,
+          leaveStatus: data.leaveStatus
         });
       })
       .catch(err => {
@@ -107,7 +110,78 @@ class LeaveRequest extends Component {
     if (leaveStatus === "APPRV") {
       this.toggleApprove();
     } else {
-      this.toggleReject();
+      this.handleCancel();
+    }
+
+    fetchData({
+      url:
+        API_BASE_URL +
+        "/appliedleave/" +
+        emplId +
+        "/" +
+        effDate +
+        "/" +
+        startDate +
+        "/" +
+        leaveCode +
+        "/" +
+        leaveStatus,
+      method: "PATCH"
+    })
+      .then(response => {
+        if (response.message === "Success") {
+          confirmAlert({
+            message: "Leave Application has been successfully updated!",
+            buttons: [
+              {
+                label: "OK",
+                onClick: () => this.props.history.push("/leaverequests")
+              }
+            ]
+          });
+        } else {
+          confirmAlert({
+            message: "An error occurred. You may try again later...",
+            buttons: [
+              {
+                label: "OK",
+                onClick: () => this.props.history.push("/leaverequests")
+              }
+            ]
+          });
+        }
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
+
+  updateAppliedLeaveStatusCancel = (event, strLeaveStatus) => {
+    const {
+      emplId,
+      effDate,
+      startDate,
+      leaveCode
+    } = this.props.computedMatch.params;
+    const leaveStatus = strLeaveStatus;
+
+    event.preventDefault();
+
+    if (leaveStatus === "PNCLD") {
+      this.toggleApprove();
+    } else {
+      this.handleCancel();
     }
 
     fetchData({
@@ -173,7 +247,8 @@ class LeaveRequest extends Component {
       endDate,
       isHalfDay,
       leaveDuration,
-      leaveReason
+      leaveReason,
+      leaveStatus
     } = this.state;
 
     const BooleanHalfDay = strHalfDay => {
@@ -193,6 +268,150 @@ class LeaveRequest extends Component {
         &times;
       </button>
     );
+
+    const showFullStatus = strStatus => {
+      if (strStatus === "PNAPV") {
+        return "Pending Approve";
+      } else if (strStatus === "APPRV") {
+        return "Approved";
+      } else if (strStatus === "CANCL") {
+        return "Cancelled";
+      } else if (strStatus === "PNCLD") {
+        return "Pending Cancel";
+      } else if (strStatus === "REJCT") {
+        return "Rejected";
+      }
+    };
+
+    const showModalApproveByStatus = leaveStatus => {
+      if (leaveStatus === "PNAPV") {
+        return <Modal
+          isOpen={this.state.modalApprove}
+          toggle={this.toggleApprove}
+          className={this.props.className}
+          style={{
+            width: "360px",
+            height: "300px",
+            margin: "220px auto"
+          }}
+        > <ModalHeader>Approval Confirmation</ModalHeader>
+          <ModalBody>
+            Are you sure you want to Approve this Leave Request?
+        </ModalBody>
+          <ModalFooter>
+            <Button
+              type="submit"
+              color="primary"
+              onClick={event =>
+                this.updateAppliedLeaveStatus(event, "APPRV")
+              }
+              className="largeButtonOverride"
+            >
+              Confirm
+          </Button>
+            <Button color="secondary" onClick={this.toggleApprove}>
+              Cancel
+          </Button>
+          </ModalFooter>
+        </Modal>
+      }
+      else if (leaveStatus === "PNCLD") {
+        return <Modal
+          isOpen={this.state.modalApprove}
+          toggle={this.toggleApprove}
+          className={this.props.className}
+          style={{
+            width: "360px",
+            height: "300px",
+            margin: "220px auto"
+          }}
+        > <ModalHeader>Approval Confirmation</ModalHeader>
+          <ModalBody>
+            Are you sure you want to change the status of this Leave Request to Cancel?
+        </ModalBody>
+          <ModalFooter>
+            <Button
+              type="submit"
+              color="primary"
+              onClick={event =>
+                this.updateAppliedLeaveStatusCancel(event, "CANCL")
+              }
+              className="largeButtonOverride"
+            >
+              Confirm
+          </Button>
+            <Button color="secondary" onClick={this.toggleApprove}>
+              Cancel
+          </Button>
+          </ModalFooter>
+        </Modal>
+      }
+    };
+
+    const showModalRejectByStatus = leaveStatus => {
+      if (leaveStatus === "PNAPV") {
+        return <Modal
+          isOpen={this.state.modalReject}
+          toggle={this.toggleReject}
+          className={this.props.className}
+          style={{
+            width: "360px",
+            height: "300px",
+            margin: "220px auto"
+          }}
+        >
+          <ModalHeader>Rejection Confirmation</ModalHeader>
+          <ModalBody>
+            Are you sure you want to Reject this Leave Request?
+        </ModalBody>
+          <ModalFooter>
+            <Button
+              type="submit"
+              color="danger"
+              onClick={event =>
+                this.updateAppliedLeaveStatus(event, "REJCT")
+              }
+            >
+              Confirm
+          </Button>
+            <Button color="secondary" onClick={this.toggleReject}>
+              Cancel
+          </Button>
+          </ModalFooter>
+        </Modal>
+      }
+      else if (leaveStatus === "PNCLD") {
+        return <Modal
+          isOpen={this.state.modalReject}
+          toggle={this.toggleReject}
+          className={this.props.className}
+          style={{
+            width: "360px",
+            height: "300px",
+            margin: "220px auto"
+          }}
+        >
+          <ModalHeader>Rejection Confirmation</ModalHeader>
+          <ModalBody>
+            Are you sure you want to Reject this Pending Cancel Request?
+        </ModalBody>
+          <ModalFooter>
+            <Button
+              type="submit"
+              color="danger"
+              onClick={event =>
+                this.updateAppliedLeaveStatus(event, "APPRV")
+              }
+            >
+              Confirm
+          </Button>
+            <Button color="secondary" onClick={this.toggleReject}>
+              Cancel
+          </Button>
+          </ModalFooter>
+        </Modal>
+      }
+    };
 
     return (
       <div className="mainContainerLeavePages">
@@ -326,6 +545,20 @@ class LeaveRequest extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
+              <Label for="leaveStatus" sm={2}>
+                Leave Status:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="text"
+                  name="leaveStatus"
+                  id="leaveStatus"
+                  value={showFullStatus(leaveStatus)}
+                  disabled={true}
+                />
+              </Col>
+            </FormGroup>
+            <FormGroup row>
               <Col sm={{ size: 10, offset: 2 }}>
                 <Button
                   color="primary"
@@ -343,7 +576,8 @@ class LeaveRequest extends Component {
                   Cancel
                 </Button>
                 <div>
-                  <Modal
+                  {showModalApproveByStatus(leaveStatus)}
+                  {/* <Modal
                     isOpen={this.state.modalApprove}
                     toggle={this.toggleApprove}
                     className={this.props.className}
@@ -352,8 +586,9 @@ class LeaveRequest extends Component {
                       height: "300px",
                       margin: "220px auto"
                     }}
-                  >
-                    <ModalHeader>Approval Confirmation</ModalHeader>
+                  > */}
+
+                  {/* <ModalHeader>Approval Confirmation</ModalHeader>
                     <ModalBody>
                       Are you sure you want to Approve this Leave Request?
                     </ModalBody>
@@ -371,11 +606,12 @@ class LeaveRequest extends Component {
                       <Button color="secondary" onClick={this.toggleApprove}>
                         Cancel
                       </Button>
-                    </ModalFooter>
-                  </Modal>
+                    </ModalFooter> */}
+                  {/* </Modal> */}
                 </div>
                 <div>
-                  <Modal
+                  {showModalRejectByStatus(leaveStatus)}
+                  {/* <Modal
                     isOpen={this.state.modalReject}
                     toggle={this.toggleReject}
                     className={this.props.className}
@@ -403,7 +639,7 @@ class LeaveRequest extends Component {
                         Cancel
                       </Button>
                     </ModalFooter>
-                  </Modal>
+                  </Modal> */}
                 </div>
               </Col>
             </FormGroup>
