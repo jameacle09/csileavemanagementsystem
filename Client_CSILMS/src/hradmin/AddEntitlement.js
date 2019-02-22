@@ -6,14 +6,13 @@ import { API_BASE_URL } from "../constants";
 import { confirmAlert } from "react-confirm-alert";
 import "../common/Styles.css";
 
-class EditEntitlement extends Component {
+class AddEntitlement extends Component {
   constructor(props) {
     super(props);
     this.state = {
       emplId: "",
       name: "",
       year: "",
-      leaveCode: "",
       leaveDescr: "",
       carryForward: 0,
       entitlement: 0,
@@ -25,7 +24,7 @@ class EditEntitlement extends Component {
   }
 
   componentDidMount() {
-    this.loadLeaveEntitlement();
+    // this.loadLeaveEntitlement();
   }
 
   loadLeaveEntitlement() {
@@ -43,12 +42,11 @@ class EditEntitlement extends Component {
       method: "GET"
     })
       .then(data => {
-        console.log(data);
+        // console.log(data);
         this.setState({
-          emplId: data.id.emplid,
+          emplId: data.employeeDetails.emplid,
           name: data.employeeDetails.name,
           year: data.id.year,
-          leaveCode: data.id.leaveCode,
           leaveDescr: data.leaveCategory.leaveDescr,
           carryForward: data.carryForward,
           entitlement: data.entitlement,
@@ -62,111 +60,14 @@ class EditEntitlement extends Component {
       });
   }
 
-  handleChangeLeaveEntitlement = event => {
-    const { name, value } = event.target;
-    this.setState({ [name]: value });
-  };
-
-  submitLeaveEntitlement(event) {
-    event.preventDefault();
-    const {
-      emplId,
-      name,
-      year,
-      leaveCode,
-      leaveDescr,
-      carryForward,
-      entitlement,
-      availableLeave,
-      takenLeave,
-      balanceLeave
-    } = this.state;
-    const jsonRowValues = {
-      id: {
-        emplid: emplId,
-        year: year,
-        leaveCode: leaveCode
-      },
-      employeeDetails: {
-        emplId: emplId
-      },
-      leaveCategory: {
-        leaveCode: leaveCode
-      },
-      carryForward: carryForward,
-      entitlement: entitlement,
-      availableLeave: availableLeave,
-      takenLeave: takenLeave,
-      balanceLeave: balanceLeave
-    };
-    const postRequest = Object.assign({}, jsonRowValues);
-    fetchData({
-      url:
-        API_BASE_URL +
-        "/leaveentitlement/" +
-        emplId +
-        "/" +
-        year +
-        "/" +
-        leaveCode,
-      method: "PATCH",
-      body: JSON.stringify(postRequest)
-    })
-      .then(response => {
-        // if (response.status === 200) {
-        confirmAlert({
-          message: "Leave Entitlement has been successfully updated!",
-          buttons: [
-            {
-              label: "OK",
-              onClick: () => this.props.history.push("/leaveentitlement")
-            }
-          ]
-        });
-        // }
-      })
-      .catch(error => {
-        if (error.status === 401) {
-          this.props.history.push("/login");
-        } else {
-          confirmAlert({
-            message: error.status + " : " + error.message,
-            buttons: [
-              {
-                label: "OK"
-              }
-            ]
-          });
-        }
-      });
-  }
-
-  cancelLeaveEntitlement = () => {
+  handleCancel = () => {
     this.props.history.push("/leaveentitlement");
   };
 
-  validateLeaveEntitlementFields = () => {
-    const {
-      carryForward,
-      entitlement,
-      availableLeave,
-      takenLeave,
-      balanceLeave
-    } = this.state;
-
-    const isInvalid =
-      !carryForward ||
-      !entitlement ||
-      !availableLeave ||
-      !takenLeave ||
-      !balanceLeave;
-    return isInvalid;
-  };
-
   render() {
-    if (!isHrRole(this.props.currentUser)) {
-      return <Redirect to="/forbidden" />;
-    }
+    // if (!isHrRole(this.props.currentUser)) {
+    //   return <Redirect to="/forbidden" />;
+    // }
 
     const {
       emplId,
@@ -187,7 +88,7 @@ class EditEntitlement extends Component {
           </span>
         </div>
         <div className="tableContainerFlex">
-          <Form onSubmit={event => this.submitLeaveEntitlement(event)}>
+          <Form onSubmit={this.handleFormSubmit}>
             <FormGroup row>
               <Label for="emplId" sm={2}>
                 Employee ID:
@@ -199,7 +100,6 @@ class EditEntitlement extends Component {
                   id="emplId"
                   placeholder="Employee ID"
                   value={emplId}
-                  disabled={true}
                 />
               </Col>
             </FormGroup>
@@ -229,7 +129,6 @@ class EditEntitlement extends Component {
                   id="year"
                   placeholder="Leave Year"
                   value={year}
-                  disabled={true}
                 />
               </Col>
             </FormGroup>
@@ -244,7 +143,6 @@ class EditEntitlement extends Component {
                   id="leaveDescr"
                   placeholder="Leave Category"
                   value={leaveDescr}
-                  disabled={true}
                 />
               </Col>
             </FormGroup>
@@ -259,7 +157,6 @@ class EditEntitlement extends Component {
                   id="carryForward"
                   placeholder="Carried Forward"
                   value={carryForward}
-                  onChange={this.handleChangeLeaveEntitlement}
                 />
               </Col>
               <Label sm={2}>day(s)</Label>
@@ -275,7 +172,6 @@ class EditEntitlement extends Component {
                   id="entitlement"
                   placeholder="Entitlement"
                   value={entitlement}
-                  onChange={this.handleChangeLeaveEntitlement}
                 />
               </Col>
               <Label sm={2}>day(s)</Label>
@@ -291,7 +187,6 @@ class EditEntitlement extends Component {
                   id="availableLeave"
                   placeholder="Available Leave"
                   value={availableLeave}
-                  onChange={this.handleChangeLeaveEntitlement}
                 />
               </Col>
               <Label sm={2}>day(s)</Label>
@@ -307,7 +202,6 @@ class EditEntitlement extends Component {
                   id="takenLeave"
                   placeholder="Taken Leave"
                   value={takenLeave}
-                  onChange={this.handleChangeLeaveEntitlement}
                 />
               </Col>
               <Label sm={2}>day(s)</Label>
@@ -323,7 +217,6 @@ class EditEntitlement extends Component {
                   id="balanceLeave"
                   placeholder="Balance Leave"
                   value={balanceLeave}
-                  onChange={this.handleChangeLeaveEntitlement}
                 />
               </Col>
               <Label sm={2}>day(s)</Label>
@@ -331,16 +224,14 @@ class EditEntitlement extends Component {
             <FormGroup row>
               <Col sm={{ size: 10, offset: 2 }}>
                 <Button
-                  type="submit"
                   variant="contained"
                   color="primary"
                   className="largeButtonOverride"
-                  disabled={this.validateLeaveEntitlementFields()}
                 >
                   Save
                 </Button>
                 <span> </span>
-                <Button color="secondary" onClick={this.cancelLeaveEntitlement}>
+                <Button color="secondary" onClick={this.handleCancel}>
                   Cancel
                 </Button>
               </Col>
@@ -352,4 +243,4 @@ class EditEntitlement extends Component {
   }
 }
 
-export default withRouter(EditEntitlement);
+export default withRouter(AddEntitlement);

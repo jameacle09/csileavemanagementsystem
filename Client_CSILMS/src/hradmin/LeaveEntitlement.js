@@ -208,6 +208,18 @@ class LeaveEntitlement extends Component {
                 />
                 Upload Entitlement
               </Button>
+              <span> </span>
+              <Button
+                tag={Link}
+                to={`/leaveentitlement/add`}
+                className="largeButtonOverride"
+              >
+                <span
+                  className="fa fa-plus"
+                  style={{ margin: "0px 5px 0px 0px" }}
+                />
+                Add Entitlement
+              </Button>
             </Col>
           </Row>
           <ReactTable
