@@ -340,7 +340,7 @@ class UploadHoliday extends Component {
 }
 
 UploadHoliday.propTypes = {
-  Date: PropTypes.date,
+  Date: PropTypes.string,
   Day: PropTypes.string,
   Holiday: PropTypes.string,
   State: PropTypes.string
