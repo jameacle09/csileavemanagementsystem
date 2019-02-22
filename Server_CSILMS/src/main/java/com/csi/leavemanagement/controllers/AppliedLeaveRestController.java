@@ -124,7 +124,7 @@ public class AppliedLeaveRestController {
 		if(! attachedFileName.contentEquals(""))
 			this.storageService.delete(attachedFileName);
 		
-		responseEntityMessage.put("message","Leave application deleted");
+		responseEntityMessage.put("message","Success");
 		return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.OK);
 	}
 

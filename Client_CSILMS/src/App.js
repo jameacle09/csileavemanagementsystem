@@ -198,6 +198,8 @@ class App extends Component {
                     title="View Leave Request"
                     component={LeaveRequest}
                   />
+
+                  
                   <PrivateRoute
                     exact
                     authenticated={this.state.isAuthenticated}
@@ -213,6 +215,7 @@ class App extends Component {
                     title="Employee Leave History"
                     component={LeaveHistoryView}
                   />
+
 
                   <PrivateRoute
                     authenticated={this.state.isAuthenticated}
@@ -244,6 +247,7 @@ class App extends Component {
                     component={EditStaffProfile}
                   />
 
+
                   <PrivateRoute
                     exact
                     authenticated={this.state.isAuthenticated}
@@ -266,7 +270,6 @@ class App extends Component {
                     title="Edit Entitlement"
                     component={EditEntitlement}
                   />
-
                   <PrivateRoute
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
@@ -274,6 +277,8 @@ class App extends Component {
                     title="Upload Entitlement"
                     component={UploadEntitlement}
                   />
+
+
                   <PrivateRoute
                     exact
                     authenticated={this.state.isAuthenticated}
@@ -303,6 +308,8 @@ class App extends Component {
                     title="Upload Public Holiday"
                     component={UploadHoliday}
                   />
+
+
                   <PrivateRoute
                     exact
                     authenticated={this.state.isAuthenticated}
@@ -326,6 +333,7 @@ class App extends Component {
                     component={EditLeaveCategory}
                   />
 
+
                   <PrivateRoute
                     exact
                     authenticated={this.state.isAuthenticated}
@@ -348,6 +356,7 @@ class App extends Component {
                     title="Edit User Login Details"
                     component={EditLoginDetails}
                   />
+
 
                   <PrivateRoute
                     authenticated={this.state.isAuthenticated}
