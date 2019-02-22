@@ -72,7 +72,10 @@ class PublicHoliday extends Component {
         accessor: d => formatDateDMY(d.holidayDate),
         width: 100,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "holidayDay",
