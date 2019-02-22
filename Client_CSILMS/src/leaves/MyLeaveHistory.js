@@ -4,7 +4,8 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { fetchData, formatDateYMD, formatDateDMY } from "../util/APIUtils";
 import { Link } from "react-router-dom";
-import { Button } from "reactstrap";
+import { Button, Row, Col } from "reactstrap";
+import MyLeaveHistoryToExcel from './MyLeaveHistoryToExcel';
 
 class MyLeaveHistory extends Component {
   constructor(props) {
@@ -152,6 +153,14 @@ class MyLeaveHistory extends Component {
           </span>
         </div>
         <div className="reactTableContainer">
+          <Row style={{ height: "50px" }}>
+            <Col md="6" xs="6">
+              <MyLeaveHistoryToExcel userData={this.state.userData} />
+            </Col>
+            <Col md="6" xs="6" style={{ textAlign: "right" }}>
+              <span> </span>
+            </Col>
+          </Row>                    
           <ReactTable
             data={this.state.userData}
             columns={myLeaveHistoryCols}
@@ -166,40 +175,6 @@ class MyLeaveHistory extends Component {
             noDataText="No data available."
             className="-striped"
           />
-          {/* <Table responsive>
-            <thead>
-              <tr>
-                <th>No.</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-                <th>Duration</th>
-                <th>Leave Type</th>
-                <th>Reason</th>
-                <th>Applied Date</th>
-                <th>Status</th>
-                <th>Action</th>
-              </tr>
-            </thead>
-            <tbody>
-            {
-                this.state.userData.map(function (item, key) {
-                  return (
-                    <tr key={key}>
-                      <td></td>
-                      <td><Moment format="YYYY/MM/DD">{item.id.startDate}</Moment></td>
-                      <td><Moment format="YYYY/MM/DD">{item.endDate}</Moment></td>
-                      <td>{item.leaveDuration}</td>
-                      <td>{item.leaveCategory.leaveDescr}</td>
-                      <td>{item.reason}</td>
-                      <td><Moment format="YYYY/MM/DD">{item.id.effDate}</Moment></td>
-                      <td>{item.leaveStatus}</td>
-                      <td></td>
-                    </tr>
-                  )
-                })
-              }
-            </tbody>
-          </Table> */}
         </div>
       </div>
     );
