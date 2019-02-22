@@ -1,18 +1,16 @@
 import React, { Component } from "react";
 import ReactTable from "react-table";
-import { API_BASE_URL } from '../constants';
-import { withRouter } from 'react-router-dom';
+import { API_BASE_URL } from "../constants";
+import { withRouter } from "react-router-dom";
 import "react-table/react-table.css";
-import {
-  fetchData,
-  formatDateDMY
-} from "../util/APIUtils";
+import { fetchData, formatDateDMY } from "../util/APIUtils";
 
 class MyLeaveDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userData: []
+      userData: [],
+      loading: true
     };
     this.loadMyLeaveDetails = this.loadMyLeaveDetails.bind(this);
   }
@@ -20,18 +18,24 @@ class MyLeaveDetails extends Component {
   loadMyLeaveDetails() {
     fetchData({
       url: API_BASE_URL + "/leaveentitlement/me",
-      method: 'GET'
-    }).then(response => {
-      this.setState({
-        userData: response
+      method: "GET"
+    })
+      .then(data => {
+        this.setState({
+          userData: data,
+          loading: false
+        });
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+        let userData = [];
+        this.setState({
+          userData: userData,
+          loading: false
+        });
       });
-    }).catch(error => {
-      if (error.status === 401) {
-        this.props.history.push("/login");
-      }
-      let userData = [];
-      this.setState({ userData: userData });
-    });
   }
 
   componentDidMount() {
@@ -60,7 +64,10 @@ class MyLeaveDetails extends Component {
         accessor: str => str.entitlement + " day(s)",
         minWidth: 94,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "carryForward",
@@ -68,7 +75,10 @@ class MyLeaveDetails extends Component {
         accessor: str => str.carryForward + " day(s)",
         minWidth: 140,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "availableLeave",
@@ -76,7 +86,10 @@ class MyLeaveDetails extends Component {
         accessor: str => str.availableLeave + " day(s)",
         minWidth: 140,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "takenLeave",
@@ -84,7 +97,10 @@ class MyLeaveDetails extends Component {
         accessor: str => str.takenLeave + " day(s)",
         minWidth: 140,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "balanceLeave",
@@ -92,9 +108,12 @@ class MyLeaveDetails extends Component {
         accessor: str => str.balanceLeave + " day(s)",
         minWidth: 140,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       }
-    ]
+    ];
     return (
       <div className="mainContainerLeavePages">
         <div className="headerContainerFlex">
@@ -102,9 +121,8 @@ class MyLeaveDetails extends Component {
             <h3 className="headerStyle">My Leave Details</h3>
           </span>
         </div>
-        <br />
         <div className="reactTableContainer">
-        <ReactTable
+          <ReactTable
             data={this.state.userData}
             columns={myLeaveDetailsCols}
             defaultPageSize={10}
@@ -114,7 +132,7 @@ class MyLeaveDetails extends Component {
             sortable={true}
             multiSort={true}
             // rowsText="Rows per page"
-            loadingText="Loading Leave History..."
+            loadingText="Loading Leave Details..."
             noDataText="No data available."
             className="-striped"
           />
