@@ -18,6 +18,7 @@ import { fetchData, formatDateYMD } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import "../common/Styles.css";
 import { Redirect, withRouter } from "react-router-dom";
+import { confirmAlert } from "react-confirm-alert";
 
 class MyLeaveHistoryView extends Component {
   constructor(props) {
@@ -34,7 +35,22 @@ class MyLeaveHistoryView extends Component {
       leaveStatus: "",
       approvedDate: ""
     };
+    this.toggleCancelLeave = this.toggleCancelLeave.bind(this);
+    this.toggleDeleteLeave = this.toggleDeleteLeave.bind(this);
+    this.updateAppliedLeaveStatus = this.updateAppliedLeaveStatus.bind(this);
   }
+
+  toggleCancelLeave = () => {
+    this.setState(prevState => ({
+      modalCancelLeave: !prevState.modalCancelLeave
+    }));
+  };
+
+  toggleDeleteLeave = () => {
+    this.setState(prevState => ({
+      modalDeleteLeave: !prevState.modalDeleteLeave
+    }));
+  };
 
   componentDidMount() {
     const {
@@ -80,6 +96,146 @@ class MyLeaveHistoryView extends Component {
     this.props.history.push("/myleavehistory");
   };
 
+  updateAppliedLeaveStatus = (event, strLeaveStatus) => {
+    const {
+      emplId,
+      effDate,
+      startDate,
+      leaveCode
+    } = this.props.computedMatch.params;
+    const leaveStatus = strLeaveStatus;
+
+    event.preventDefault();
+
+    if (leaveStatus === "PNCLD") {
+      this.toggleCancelLeave();
+    } else {
+      this.handleBackToMain();
+    }
+
+    fetchData({
+      url:
+        API_BASE_URL +
+        "/appliedleave/" +
+        emplId +
+        "/" +
+        effDate +
+        "/" +
+        startDate +
+        "/" +
+        leaveCode +
+        "/" +
+        leaveStatus,
+      method: "PATCH"
+    })
+      .then(response => {
+        if (response.message === "Success") {
+          confirmAlert({
+            message: "Leave Application has been successfully updated to Pending Cancel!",
+            buttons: [
+              {
+                label: "OK",
+                onClick: () => this.props.history.push("/myleavehistory")
+              }
+            ]
+          });
+        } else {
+          confirmAlert({
+            message: "An error occurred. You may try again later...",
+            buttons: [
+              {
+                label: "OK",
+                onClick: () => this.props.history.push("/myleavehistory")
+              }
+            ]
+          });
+        }
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
+
+  deleteAppliedLeaveStatus = (event, strLeaveStatus) => {
+    const {
+      emplId,
+      effDate,
+      startDate,
+      leaveCode
+    } = this.props.computedMatch.params;
+    const leaveStatus = strLeaveStatus;
+
+    event.preventDefault();
+
+    if (leaveStatus === "PNAPV") {
+      this.toggleDeleteLeave();
+    } else {
+      this.handleBackToMain();
+    }
+
+    fetchData({
+      url:
+        API_BASE_URL +
+        "/appliedleave/" +
+        emplId +
+        "/" +
+        effDate +
+        "/" +
+        startDate +
+        "/" +
+        leaveCode,
+      method: "DELETE"
+    })
+      .then(response => {
+        if (response.message === "Success") {
+          confirmAlert({
+            message: "Leave Application has been successfully deleted!",
+            buttons: [
+              {
+                label: "OK",
+                onClick: () => this.props.history.push("/myleavehistory")
+              }
+            ]
+          });
+        } else {
+          confirmAlert({
+            message: "An error occurred. You may try again later...",
+            buttons: [
+              {
+                label: "OK",
+                onClick: () => this.props.history.push("/myleavehistory")
+              }
+            ]
+          });
+        }
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
+
   render() {
     const {
       emplId,
@@ -106,7 +262,28 @@ class MyLeaveHistoryView extends Component {
         return "Rejected";
       }
     };
-
+    const showButtonByStatus = leaveStatus => {
+      if (leaveStatus === "PNAPV") {
+        return <Button
+        type="button"
+        color="primary"
+        onClick={this.toggleDeleteLeave}
+        className="largeButtonOverride"
+      >
+        Cancel Leave
+      </Button> 
+      }
+      else if (leaveStatus === "APPRV") {
+        return <Button
+        type="button"
+        color="primary"
+        onClick={this.toggleCancelLeave}
+        className="largeButtonOverride"
+      >
+        Cancel Leave
+      </Button>
+      }
+    };
     return (
       <div className="mainContainerLeavePages">
         <div className="headerContainerFlex">
@@ -254,6 +431,24 @@ class MyLeaveHistoryView extends Component {
             </FormGroup>
             <FormGroup row>
               <Col sm={{ size: 10, offset: 2 }}>
+              {/* <Button
+                  type="button"
+                  color="primary"
+                  onClick={this.toggleCancelLeave}
+                  className="largeButtonOverride"
+                >
+                  Cancel Leave
+                </Button> */}
+                { showButtonByStatus(leaveStatus) }
+                {/* <Button
+                  type="button"
+                  color="primary"
+                  onClick={this.toggleDeleteLeave}
+                  className="largeButtonOverride"
+                >
+                  Delete Leave
+                </Button> */}
+                <span> </span>
                 <Button
                   color="primary"
                   onClick={this.handleBackToMain}
@@ -261,6 +456,68 @@ class MyLeaveHistoryView extends Component {
                 >
                   Back
                 </Button>
+                <div>
+                  <Modal
+                    isOpen={this.state.modalCancelLeave}
+                    toggle={this.toggleCancelLeave}
+                    className={this.props.className}
+                    style={{
+                      width: "360px",
+                      height: "300px",
+                      margin: "220px auto"
+                    }}
+                  >
+                    <ModalHeader>Cancel Leave Confirmation</ModalHeader>
+                    <ModalBody>
+                      Are you sure you want to Cancel this Annual Leave Request?
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        type="submit"
+                        color="primary"
+                        onClick={event =>
+                          this.updateAppliedLeaveStatus(event, "PNCLD")
+                        }
+                        className="largeButtonOverride"
+                      >
+                        Confirm
+                      </Button>
+                      <Button color="secondary" onClick={this.toggleCancelLeave}>
+                        Cancel
+                      </Button>
+                    </ModalFooter>
+                  </Modal>
+                </div>
+                <div>
+                  <Modal
+                    isOpen={this.state.modalDeleteLeave}
+                    toggle={this.toggleDeleteLeave}
+                    className={this.props.className}
+                    style={{
+                      width: "360px",
+                      height: "300px",
+                      margin: "220px auto"
+                    }}
+                  >
+                    <ModalHeader>Approval Confirmation</ModalHeader>
+                    <ModalBody>
+                      Are you sure you want to Delete this Leave Request?
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        type="submit"
+                        color="primary"
+                        onClick={this.deleteAppliedLeaveStatus}
+                        className="largeButtonOverride"
+                      >
+                        Confirm
+                      </Button>
+                      <Button color="secondary" onClick={this.toggleDeleteLeave}>
+                        Cancel
+                      </Button>
+                    </ModalFooter>
+                  </Modal>
+                </div>
               </Col>
             </FormGroup>
           </Form>

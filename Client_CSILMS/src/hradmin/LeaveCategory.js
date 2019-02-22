@@ -2,17 +2,18 @@ import React, { Component } from "react";
 import { Row, Col, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
-import { Redirect, withRouter } from 'react-router-dom';
-import { isHrRole } from '../util/APIUtils';
-import { fetchData } from '../util/APIUtils';
-import { API_BASE_URL } from '../constants';
+import { Redirect, withRouter } from "react-router-dom";
+import { isHrRole } from "../util/APIUtils";
+import { fetchData } from "../util/APIUtils";
+import { API_BASE_URL } from "../constants";
 import ReactTable from "react-table";
 
 class LeaveCategory extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      leaveCategoryDetails: []
+      leaveCategoryDetails: [],
+      loading: true
     };
     this.loadleaveCategoryDetails = this.loadleaveCategoryDetails.bind(this);
   }
@@ -20,19 +21,24 @@ class LeaveCategory extends Component {
   loadleaveCategoryDetails() {
     fetchData({
       url: API_BASE_URL + "/leavecategories",
-      method: 'GET'
-    }).then(response => {
-      this.setState({
-        leaveCategoryDetails: response
+      method: "GET"
+    })
+      .then(data => {
+        this.setState({
+          leaveCategoryDetails: data,
+          loading: false
+        });
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+        let userData = [];
+        this.setState({
+          leaveCategoryDetails: userData,
+          loading: false
+        });
       });
-    }).catch(error => {
-      if (error.status === 401) {
-        this.props.history.push("/login");
-      }
-      let userData = [];
-      this.setState({ userData: userData });
-      console.log(userData);
-    });
   }
 
   componentDidMount() {
@@ -47,7 +53,7 @@ class LeaveCategory extends Component {
 
   render() {
     if (!isHrRole(this.props.currentUser)) {
-      return (<Redirect to='/forbidden' />);
+      return <Redirect to="/forbidden" />;
     }
 
     const LeaveCategoryCols = [
@@ -57,7 +63,10 @@ class LeaveCategory extends Component {
         accessor: "leaveCode",
         minWidth: 40,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "leaveDescr",
@@ -70,10 +79,13 @@ class LeaveCategory extends Component {
       {
         id: "entitlement",
         Header: "Entitlement",
-        accessor: "entitlement",
+        accessor: str => str.entitlement + " day(s)",
         minWidth: 40,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "editAction",
@@ -106,9 +118,7 @@ class LeaveCategory extends Component {
         </div>
         <div className="reactTableContainer">
           <Row style={{ height: "50px" }}>
-            <Col md="6" xs="6">
-              
-            </Col>
+            <Col md="6" xs="6" />
             <Col md="6" xs="6" style={{ textAlign: "right" }}>
               <Button
                 tag={Link}
@@ -133,11 +143,8 @@ class LeaveCategory extends Component {
             multiSort={true}
             noDataText="No data available."
             className="-striped"
-          >
-          </ReactTable>
+          />
         </div>
-
-
 
         {/* <br />
         <div className="tableContainerFlex">
@@ -190,9 +197,6 @@ class LeaveCategory extends Component {
               }
             </tbody>
           </Table> */}
-
-
-
       </div>
     );
   }

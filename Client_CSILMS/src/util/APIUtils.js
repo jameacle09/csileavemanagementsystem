@@ -4,9 +4,10 @@ const request = options => {
 
   let headers;
 
-  if(options.hasOwnProperty("preHeaders"))
+  if(options.hasOwnProperty("custom_no_headers")) {
       headers = new Headers({ });
-  else 
+      delete options.custom_no_headers;
+  }else 
       headers = new Headers({
         "Content-Type": "application/json"
       });
