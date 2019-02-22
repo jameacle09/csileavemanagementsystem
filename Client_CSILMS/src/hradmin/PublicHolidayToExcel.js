@@ -11,7 +11,7 @@ class ExportToExcel extends Component {
           id="test-table-xls-button"
           className="exportToExcelButton"
           table="table-to-xls"
-          filename="PublicHolidays"
+          filename="Public Holidays"
           sheet="PublicHolidays"
           buttonText="Export to Excel"
         />
