@@ -21,10 +21,12 @@ import EditStaffProfile from "./staffprofile/EditStaffProfile";
 import PublicHoliday from "./hradmin/PublicHoliday";
 import AddPublicHoliday from "./hradmin/AddPublicHoliday";
 import EditPublicHoliday from "./hradmin/EditPublicHoliday";
+import UploadHoliday from "./hradmin/UploadHoliday";
 import LeaveCategory from "./hradmin/LeaveCategory";
 import AddLeaveCategory from "./hradmin/AddLeaveCategory";
 import EditLeaveCategory from "./hradmin/EditLeaveCategory";
 import LeaveEntitlement from "./hradmin/LeaveEntitlement";
+import AddEntitlement from "./hradmin/AddEntitlement";
 import EditEntitlement from "./hradmin/EditEntitlement";
 import UploadEntitlement from "./hradmin/UploadEntitlement";
 import LoginDetails from "./hradmin/LoginDetails";
@@ -253,6 +255,13 @@ class App extends Component {
                   <PrivateRoute
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
+                    path="/leaveentitlement/add"
+                    title="Add Entitlement"
+                    component={AddEntitlement}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
                     path="/leaveentitlement/edit/:emplId/:year/:leaveCode"
                     title="Edit Entitlement"
                     component={EditEntitlement}
@@ -287,7 +296,13 @@ class App extends Component {
                     title="Edit Public Holiday"
                     component={EditPublicHoliday}
                   />
-
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/publicholiday/uploadholiday"
+                    title="Upload Public Holiday"
+                    component={UploadHoliday}
+                  />
                   <PrivateRoute
                     exact
                     authenticated={this.state.isAuthenticated}

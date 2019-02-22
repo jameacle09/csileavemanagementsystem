@@ -1,12 +1,8 @@
 import React, { Component } from "react";
-import { API_BASE_URL } from '../constants';
+import { API_BASE_URL } from "../constants";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import {
-  fetchData,
-  formatDateYMD,
-  formatDateDMY
-} from "../util/APIUtils";
+import { fetchData, formatDateYMD, formatDateDMY } from "../util/APIUtils";
 import { Link } from "react-router-dom";
 import { Button } from "reactstrap";
 
@@ -22,19 +18,21 @@ class MyLeaveHistory extends Component {
   loadMyLeaveHistory() {
     fetchData({
       url: API_BASE_URL + "/appliedleave/me",
-      method: 'GET'
-    }).then(response => {
-      this.setState({
-        userData: response
+      method: "GET"
+    })
+      .then(response => {
+        this.setState({
+          userData: response
+        });
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+        let userData = [];
+        this.setState({ userData: userData });
+        console.log(userData);
       });
-    }).catch(error => {
-      if (error.status === 401) {
-        this.props.history.push("/login");
-      }
-      let userData = [];
-      this.setState({ userData: userData });
-      console.log(userData);
-    });
   }
 
   componentDidMount() {
@@ -47,7 +45,6 @@ class MyLeaveHistory extends Component {
     }
   }
 
-  
   render() {
     const showFullString = strStatus => {
       if (strStatus === "PNAPV") {
@@ -146,7 +143,7 @@ class MyLeaveHistory extends Component {
         }
       }
     ];
-    
+
     return (
       <div className="mainContainerLeavePages">
         <div className="headerContainerFlex">
@@ -154,9 +151,8 @@ class MyLeaveHistory extends Component {
             <h3 className="headerStyle">My Leave History</h3>
           </span>
         </div>
-        <br />
         <div className="reactTableContainer">
-        <ReactTable
+          <ReactTable
             data={this.state.userData}
             columns={myLeaveHistoryCols}
             defaultPageSize={10}
