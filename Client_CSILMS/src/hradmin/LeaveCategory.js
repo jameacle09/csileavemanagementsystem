@@ -7,6 +7,7 @@ import { isHrRole } from "../util/APIUtils";
 import { fetchData } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import ReactTable from "react-table";
+import ExportToExcel from "./LeaveCategoryToExcel";
 
 class LeaveCategory extends Component {
   constructor(props) {
@@ -118,7 +119,11 @@ class LeaveCategory extends Component {
         </div>
         <div className="reactTableContainer">
           <Row style={{ height: "50px" }}>
-            <Col md="6" xs="6" />
+          <Col md="6" xs="6">
+              <ExportToExcel
+               leaveCategoryDetails={this.state.leaveCategoryDetails}
+              />
+            </Col>
             <Col md="6" xs="6" style={{ textAlign: "right" }}>
               <Button
                 tag={Link}
@@ -145,58 +150,6 @@ class LeaveCategory extends Component {
             className="-striped"
           />
         </div>
-
-        {/* <br />
-        <div className="tableContainerFlex">
-          <div style={{ textAlign: "right" }}>
-            <Button
-              component={Link}
-              to="/leavecategory/add"
-              variant="contained"
-              color="primary"
-              style={{ textTransform: "none", color: "white" }}
-            >
-              <span
-                className="fa fa-plus"
-                style={{ margin: "0px 10px 0px 0px" }}
-              />{" "}
-              New
-            </Button>
-            <br />
-            <br />
-          </div>
-          <Table responsive>
-            <thead>
-              <tr>
-                <th>Leave Code</th>
-                <th>Description</th>
-                <th>Entitlement</th>
-                <th>Edit</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                this.state.userData.map(function (item, key) {
-                  return (
-                    <tr key={key}>
-                      <td>{item.leaveCode}</td>
-                      <td>{item.leaveDescr}</td>
-                      <td>{item.entitlement}</td>
-                      <td><Button
-                        component={Link}
-                        to={`/leavecategory/edit/${item.leaveCode}`}
-                        variant="contained"
-                        color="primary"
-                        style={{ textTransform: "none", color: "white" }}
-                      >
-                        <span className="fa fa-edit" />
-                      </Button></td>
-                    </tr>
-                  )
-                })
-              }
-            </tbody>
-          </Table> */}
       </div>
     );
   }
