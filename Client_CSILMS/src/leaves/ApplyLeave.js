@@ -1,16 +1,29 @@
 import React, { Component } from "react";
-import { Button, Form, FormGroup, Label, Input, FormText, Col, Alert } from "reactstrap";
+import {
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  FormText,
+  Col,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Alert
+} from "reactstrap";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import { fetchData } from '../util/APIUtils';
-import { API_BASE_URL } from '../constants'; 
+import { fetchData } from "../util/APIUtils";
+import { API_BASE_URL } from "../constants";
 
 class ApplyLeave extends Component {
   constructor(props) {
     super(props);
 
     let initialDate = new Date();
-    initialDate.setUTCHours(0,0,0,0);
+    initialDate.setUTCHours(0, 0, 0, 0);
 
     this.state = {
       userData: {
@@ -43,13 +56,28 @@ class ApplyLeave extends Component {
       approverId: "",
       attachedFileName: ""
     };
-
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleDetailsChange = this.handleDetailsChange.bind(this);
     this.handleSubmit = this.handleSubmit.bind(this);
     this.doNotSubmit = this.doNotSubmit.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
   }
+
+  // toggleSave = () => {
+  //   this.setState(prevState => ({
+  //     modalSave: !prevState.modalSave
+  //   }));
+  // };
+
+  // toggleCancel = () => {
+  //   this.setState(prevState => ({
+  //     modalCancel: !prevState.modalCancel
+  //   }));
+  // };
+
+  // handleCancel = () => {
+  //   this.props.history.push("/");
+  // };
 
   clickdiscard = () => {
     confirmAlert({
@@ -67,12 +95,11 @@ class ApplyLeave extends Component {
   };
 
   componentDidMount() {
-    
     // fetch CSI Staff ID and Name from API
     fetchData({
       url: API_BASE_URL + "/employeedetail/me",
-      method: 'GET'
-      })
+      method: "GET"
+    })
       .then(data => {
         this.setState({ userData: data });
         if (data["reportsTo"] != null)
@@ -91,13 +118,16 @@ class ApplyLeave extends Component {
     // fetch leave category from API
     fetchData({
       url: API_BASE_URL + "/leavecategories",
-      method: 'GET'
-      })
+      method: "GET"
+    })
       .then(data =>
-        this.setState({ leaveCategoryList: data, leaveCategory: data[0]["leaveCode"] })
+        this.setState({
+          leaveCategoryList: data,
+          leaveCategory: data[0]["leaveCode"]
+        })
       )
       .catch(err => {
-        console.log(err)
+        console.log(err);
         // if unable to fetch data, assign default (spaces) to values
         let leaveCategoryData = [
           {
@@ -112,8 +142,8 @@ class ApplyLeave extends Component {
     const thisYear = new Date().getFullYear();
     fetchData({
       url: API_BASE_URL + "/leaveentitlement/me/" + thisYear + "/AL",
-      method: 'GET'
-      })
+      method: "GET"
+    })
       .then(data => this.setState({ staffLeave: data }))
       .catch(err => {
         // if unable to fetch data, assign default (spaces) to values
@@ -122,12 +152,12 @@ class ApplyLeave extends Component {
         };
         this.setState({ staffLeave: staffLeaveData });
       });
-    
+
     // fetch approvers from API
     fetchData({
       url: API_BASE_URL + "/leaveapprovers",
-      method: 'GET'
-      })
+      method: "GET"
+    })
       .then(data => this.setState({ approverList: data }))
       .catch(err => {
         // if unable to fetch data, assign default (spaces) to values
@@ -255,13 +285,13 @@ class ApplyLeave extends Component {
     if (durationError !== "") validForm = false;
 
     if (validForm) {
-
       // upload file to server
-      await this.uploadFile(this.state.attachedFile);
-      
+      if (this.state.attachedFile != null)
+        await this.uploadFile(this.state.attachedFile);
+
       // create JSON Object for new Leave Request
       let newLeaveRequest = {
-        id: { 
+        id: {
           emplid: this.state.userData["emplId"],
           effDate: new Date(),
           startDate: this.state.startDate,
@@ -274,15 +304,15 @@ class ApplyLeave extends Component {
           leaveCode: this.state.leaveCategory
         },
         endDate: this.state.endDate,
-        halfDay: this.state.isHalfDay? 'Y' : 'N',
+        halfDay: this.state.isHalfDay ? "Y" : "N",
         leaveDuration: this.state.leaveDuration,
-        leaveStatus: 'PNAPV',
+        leaveStatus: "PNAPV",
         approver: this.state.approverId,
         reason: this.state.leaveReason,
         approverDate: null,
         attachment: this.state.attachedFileName
       };
-      
+
       console.log(JSON.stringify(newLeaveRequest));
 
       fetchData({
@@ -290,55 +320,55 @@ class ApplyLeave extends Component {
         method: "POST",
         body: JSON.stringify(newLeaveRequest)
       })
-        .then(res => {  
+        .then(res => {
           //if (res.hasOwnProperty("id") && res["id"] != null)
-            confirmAlert({
-              message: "Your leave request is submitted.",
-              buttons: [
-                {
-                  label: "Ok",
-                  onClick: () => this.props.history.push("/myleavehistory")
-                }
-              ]
-            });
+          confirmAlert({
+            message: "Your leave request is submitted.",
+            buttons: [
+              {
+                label: "Ok",
+                onClick: () => this.props.history.push("/myleavehistory")
+              }
+            ]
+          });
         })
         .catch(err => {
-          
-            // delete the previously uploaded file
-            fetchData({
-              url: API_BASE_URL + "/attachment/deletefile/" + this.state.attachedFileName,
-              method: "DELETE"
-            }).catch(err => {})
+          // delete the previously uploaded file
+          fetchData({
+            url:
+              API_BASE_URL +
+              "/attachment/deletefile/" +
+              this.state.attachedFileName,
+            method: "DELETE"
+          }).catch(err => {});
 
-            confirmAlert({
-              message: err.message,
-              buttons: [
-                {
-                  label: "Ok"
-                }
-              ]
-            });
+          confirmAlert({
+            message: err.message,
+            buttons: [
+              {
+                label: "Ok"
+              }
+            ]
+          });
         });
     }
   }
 
   async uploadFile(attachedFile) {
     let data = new FormData();
-    data.append("file", attachedFile)
-    
+    data.append("file", attachedFile);
+
     await fetchData({
       url: API_BASE_URL + "/attachment/uploadfile",
       method: "POST",
-      preHeaders : "has_header",
+      custom_no_headers: "no_header",
       body: data
     })
-      .then(res => {  
-          alert(res)
-          this.setState({attachedFileName: res.file})
+      .then(res => {
+        this.setState({ attachedFileName: res.file });
       })
       .catch(err => {
-          console.log(err)
-          alert(err)
+        console.log(err);
       });
   }
 
@@ -403,76 +433,96 @@ class ApplyLeave extends Component {
             <h3 className="headerStyle">Apply Leave</h3>
           </span>
         </div>
-        <br />
         <div className="tableContainerFlex">
-          <h5>Annual Leave Balance: {staffLeave["availableLeave"]} Days</h5>
+          <h5>Annual Leave Balance: {staffLeave["balanceLeave"]} Days</h5>
         </div>
-        <br />
         <div className="tableContainerFlex">
           <Form onSubmit={this.doNotSubmit}>
-            <FormGroup>
-              <Label for="csiStaffId">CSI Staff ID</Label>
-              <Input
-                type="text"
-                name="csiStaffId"
-                id="csiStaffId"
-                value={userData["emplId"]}
-                disabled={true}
-              />
+            <FormGroup row>
+              <Label for="csiStaffId" sm={2}>
+                Employee ID:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="text"
+                  name="csiStaffId"
+                  id="csiStaffId"
+                  value={userData["emplId"]}
+                  disabled={true}
+                />
+              </Col>
             </FormGroup>
-            <FormGroup>
-              <Label for="staffName">Staff Name</Label>
-              <Input
-                type="text"
-                name="staffName"
-                id="staffName"
-                value={userData["name"]}
-                disabled={true}
-              />
+            <FormGroup row>
+              <Label for="staffName" sm={2}>
+                Employee Name:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="text"
+                  name="staffName"
+                  id="staffName"
+                  value={userData["name"]}
+                  disabled={true}
+                />
+              </Col>
             </FormGroup>
-            <FormGroup>
-              <Label for="leaveCategory">Leave Category</Label>
-              <Input
-                type="select"
-                name="leaveCategory"
-                id="leaveCategory"
-                onChange={this.handleDetailsChange}
-                value={leaveCategory}
-              >
-                {leaveCategoryList.map(leaveCategory => {
-                  return (
-                    <option
-                      key={leaveCategory["leaveCode"]}
-                      value={leaveCategory["leaveCode"]}
-                    >
-                      {leaveCategory["leaveDescr"]}
-                    </option>
-                  );
-                })}
-              </Input>
+            <FormGroup row>
+              <Label for="leaveCategory" sm={2}>
+                Leave Category:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="select"
+                  name="leaveCategory"
+                  id="leaveCategory"
+                  onChange={this.handleDetailsChange}
+                  value={leaveCategory}
+                >
+                  {leaveCategoryList.map(leaveCategory => {
+                    return (
+                      <option
+                        key={leaveCategory["leaveCode"]}
+                        value={leaveCategory["leaveCode"]}
+                      >
+                        {leaveCategory["leaveDescr"]}
+                      </option>
+                    );
+                  })}
+                </Input>
+              </Col>
             </FormGroup>
-            <FormGroup>
-              <Label for="startDate">Start Date</Label>
-              <Input
-                type="date"
-                name="startDate"
-                id="startDate"
-                value={startDate.toISOString().substr(0, 10)}
-                onChange={this.handleDateChange}
-              />
+            <FormGroup row>
+              <Label for="startDate" sm={2}>
+                Start Date:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="date"
+                  name="startDate"
+                  id="startDate"
+                  value={startDate.toISOString().substr(0, 10)}
+                  onChange={this.handleDateChange}
+                />
+              </Col>
             </FormGroup>
-            <FormGroup>
-              <Label for="endDate">End Date</Label>
-              <Input
-                type="date"
-                name="endDate"
-                id="endDate"
-                value={endDate.toISOString().substr(0, 10)}
-                onChange={this.handleDateChange}
-              />
+            <FormGroup row>
+              <Label for="endDate" sm={2}>
+                End Date:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="date"
+                  name="endDate"
+                  id="endDate"
+                  value={endDate.toISOString().substr(0, 10)}
+                  onChange={this.handleDateChange}
+                />
+              </Col>
             </FormGroup>
-            <FormGroup check>
-              <Label check>
+            <FormGroup row>
+              <Label check sm={2} />
+              <Col sm={10}>
+                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <Input
                   type="checkbox"
                   name="isHalfDay"
@@ -487,9 +537,8 @@ class ApplyLeave extends Component {
                   checked={isHalfDay}
                 />{" "}
                 Check the box if you are taking half day leave.
-              </Label>
+              </Col>
             </FormGroup>
-            <br />
             <FormGroup row>
               <Label xs={2} for="leaveDuration">
                 Leave Duration:{" "}
@@ -507,56 +556,105 @@ class ApplyLeave extends Component {
               </Col>
               <Col xs={8}>{durationErrorMsg}</Col>
             </FormGroup>
-            <FormGroup>
-              <Label for="leaveReason">Leave Reason</Label>
-              <Input
-                type="textarea"
-                name="leaveReason"
-                id="leaveReason"
-                onChange={this.handleDetailsChange}
-              />
+            <FormGroup row>
+              <Label for="leaveReason" sm={2}>
+                Leave Reason:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="textarea"
+                  name="leaveReason"
+                  id="leaveReason"
+                  onChange={this.handleDetailsChange}
+                />
+              </Col>
             </FormGroup>
-            <FormGroup>
-              <Label for="attachment">File</Label>
-              <Input
-                type="file"
-                name="attachment"
-                id="attachment"
-                onChange={this.handleDetailsChange}
-              />
-              <FormText color="muted">Please attach your document.</FormText>
+            <FormGroup row>
+              <Label for="attachment" sm={2}>
+                File:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="file"
+                  name="attachment"
+                  id="attachment"
+                  onChange={this.handleDetailsChange}
+                />
+                <FormText color="muted">Please attach your document.</FormText>
+              </Col>
             </FormGroup>
-            <FormGroup>
-              <Label for="approverId">Approver</Label>
-              <Input
-                type="select"
-                name="approverId"
-                id="approverId"
-                onChange={this.handleDetailsChange}
-                value={approverId}
-              >
-                {approverList.map(approver => {
-                  if(approver["emplId"] !== userData["emplId"]) {
-                    return (
-                      <option key={approver["emplId"]} value={approver["emplId"]}>
-                        {approver["name"]}
-                      </option>
-                    );
-                  }
-                })}
-              </Input>
+            <FormGroup row>
+              <Label for="approverId" sm={2}>
+                Approver:
+              </Label>
+              <Col sm={10}>
+                <Input
+                  type="select"
+                  name="approverId"
+                  id="approverId"
+                  onChange={this.handleDetailsChange}
+                  value={approverId}
+                >
+                  {approverList.map(approver => {
+                    if (approver["emplId"] !== userData["emplId"]) {
+                      return (
+                        <option
+                          key={approver["emplId"]}
+                          value={approver["emplId"]}
+                        >
+                          {approver["name"]}
+                        </option>
+                      );
+                    }
+                  })}
+                </Input>
+              </Col>
             </FormGroup>
-            <br />
-            <Button color="primary" style={{ backgroundColor: '#3F51B5', color: 'white' }} onClick={this.handleSubmit}>
-              Submit
-            </Button>
-            <span> </span>
-            <Button onClick={this.clickdiscard}>
-              Discard
-            </Button>
+            <FormGroup row>
+              <Col sm={{ size: 10, offset: 2 }}>
+                <Button
+                  color="primary"
+                  style={{ backgroundColor: "#3F51B5", color: "white" }}
+                  onClick={this.handleSubmit}
+                >
+                  Submit
+                </Button>
+                <span> </span>
+                <Button onClick={this.clickdiscard}>Cancel</Button>
+                {/* <div>
+                  <Modal
+                    isOpen={this.state.modalSave}
+                    toggle={this.toggleSave}
+                    className={this.props.className}
+                    style={{
+                      width: "360px",
+                      height: "300px",
+                      margin: "220px auto"
+                    }}
+                  >
+                    <ModalHeader>Submit Confirmation</ModalHeader>
+                    <ModalBody>
+                      Are you sure you want to submit this request?
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        type="submit"
+                        color="primary"
+                        onClick={this.handleSubmit}
+                        className="largeButtonOverride"
+                      >
+                        Confirm
+                      </Button>
+                      <Button color="secondary" onClick={this.toggleSave}>
+                        Cancel
+                      </Button>
+                    </ModalFooter>
+                  </Modal>
+                </div> */}
+              </Col>
+            </FormGroup>
           </Form>
         </div>
-        <br />
       </div>
     );
   }

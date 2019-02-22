@@ -16,9 +16,12 @@ class LeaveRequestsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      leaveRequestData: []
+      leaveRequestData: [],
+      loading: true
     };
     this.loadLeaveRequestList = this.loadLeaveRequestList.bind(this);
+    this.componentDidMount = this.componentDidMount.bind(this);
+    this.componentDidUpdate = this.componentDidUpdate.bind(this);
   }
 
   componentDidMount() {
@@ -38,7 +41,8 @@ class LeaveRequestsList extends Component {
     })
       .then(data => {
         this.setState({
-          leaveRequestData: data
+          leaveRequestData: data,
+          loading: false
         });
       })
       .catch(err => {
@@ -112,15 +116,29 @@ class LeaveRequestsList extends Component {
         id: "halfDay",
         Header: "Half Day",
         accessor: str => showFullString(str.halfDay),
-        minWidth: 140,
+        minWidth: 70,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "Duration",
         Header: "Duration",
         accessor: str => str.leaveDuration + " day(s)",
         minWidth: 140,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "leaveStatus",
+        Header: "Leave Status",
+        accessor: str => showFullStatus(str.leaveStatus),
+        minWidth: 120,
         sortable: true,
         filterable: true
       },
@@ -152,6 +170,20 @@ class LeaveRequestsList extends Component {
         }
       }
     ];
+
+    const showFullStatus = strStatus => {
+      if (strStatus === "PNAPV") {
+        return "Pending Approve";
+      } else if (strStatus === "APPRV") {
+        return "Approved";
+      } else if (strStatus === "CANCL") {
+        return "Cancelled";
+      } else if (strStatus === "PNCLD") {
+        return "Pending Cancel";
+      } else if (strStatus === "REJCT") {
+        return "Rejected";
+      }
+    };
 
     return (
       <div className="mainContainerFlex">
