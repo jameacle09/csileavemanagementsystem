@@ -14,7 +14,8 @@ public class TranslateitemId implements Serializable {
 	
 	@Column(name="fieldvalue")
 	private String fieldvalue;
-		
+	
+	
 	public TranslateitemId() {
 		
 	}

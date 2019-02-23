@@ -39,7 +39,14 @@ public class TranslateitemRestController {
 		List<Translateitem> translateitem = this.translateitemService.findByFieldname(fieldname);
 		return translateitem;
 	}
-		
+	
+	@RequestMapping(value="/translateitem/{fieldname}/{fieldvalue}", method=RequestMethod.GET)
+	public Translateitem doGetTranslateitemById(@PathVariable("fieldname") String fieldname,
+													  @PathVariable("fieldvalue") String fieldvalue) {
+		Translateitem translateitem = this.translateitemService.findByIdFieldnameAndIdFieldvalue(fieldname, fieldvalue);
+		return translateitem;
+	} 
+	
 	@RequestMapping(value="/translateitem", method=RequestMethod.POST)
 	public Translateitem doSaveTranslateitem(@RequestBody Translateitem translateitem) {
 		Translateitem newTranslateitem = this.translateitemService.save(translateitem);
@@ -54,11 +61,20 @@ public class TranslateitemRestController {
 		return "Successfully Deleted";
 	}
 	
-	@RequestMapping(value="/translateitem/{fieldname}", method=RequestMethod.PATCH)
-	public Translateitem doUpdateTranslateitemById(@PathVariable("fieldname") TranslateitemId id,													
+//	@RequestMapping(value="/translateitem/{fieldname}", method=RequestMethod.PATCH)
+//	public Translateitem doUpdateTranslateitemById(@PathVariable("fieldname") TranslateitemId id,													
+//													@RequestBody Translateitem translateitem) {
+//		translateitem.setId(id);
+//		Translateitem newTranslateitem = this.translateitemService.save(translateitem);
+//		return newTranslateitem;
+//	}	
+	
+	@RequestMapping(value="/translateitem/{fieldname}/{fieldvalue}", method=RequestMethod.PATCH)
+	public Translateitem doUpdateTranslateitemById(@PathVariable("fieldname") String fieldname,
+													@PathVariable("fieldvalue") String fieldvalue,
 													@RequestBody Translateitem translateitem) {
-		translateitem.setId(id);
+		
 		Translateitem newTranslateitem = this.translateitemService.save(translateitem);
 		return newTranslateitem;
-	}	
+	}
 }

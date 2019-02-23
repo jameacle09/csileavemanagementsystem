@@ -13,6 +13,7 @@ import com.csi.leavemanagement.models.TranslateitemId;
 public interface TranslateitemRepository extends CrudRepository<Translateitem, TranslateitemId> {
 
 	List<Translateitem> findByIdFieldname(String fieldname);
+	Translateitem findByIdFieldnameAndIdFieldvalue(String fieldname, String fieldvalue);
 	//List<Translateitem> findByFieldnameAndEffStatus(String fieldname, String effStatus);
 
 }

@@ -5,6 +5,8 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.csi.leavemanagement.models.LeaveEntitlement;
+import com.csi.leavemanagement.models.LeaveEntitlementId;
 import com.csi.leavemanagement.models.Translateitem;
 import com.csi.leavemanagement.models.TranslateitemId;
 import com.csi.leavemanagement.repositories.TranslateitemRepository;
@@ -42,6 +44,12 @@ public class TranslateitemService {
 	public List<Translateitem> findByFieldname(String fieldname) {
 		return translateitemRepository.findByIdFieldname(fieldname);		
 	}
+	
+	public Translateitem findByIdFieldnameAndIdFieldvalue(String fieldname, String fieldvalue) {
+		TranslateitemId id = new TranslateitemId(fieldname, fieldvalue);
+		return translateitemRepository.findByIdFieldnameAndIdFieldvalue(fieldname, fieldvalue);		
+	} 
+	
 	
 	/*public List<Translateitem> findByFieldnameAndEffStatus(String fieldname, String effStatus) {
 		return translateitemRepository.findByFieldnameAndEffStatus(fieldname, effStatus);		
