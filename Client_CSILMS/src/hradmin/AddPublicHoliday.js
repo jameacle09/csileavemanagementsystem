@@ -1,8 +1,20 @@
 import React, { Component } from "react";
-import { Form, FormGroup, Label, Input, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from "reactstrap";
+import {
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Col,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Alert
+} from "reactstrap";
 import "../common/Styles.css";
-import  { Redirect, withRouter } from 'react-router-dom';
-import { isHrRole } from '../util/APIUtils';
+import { Redirect, withRouter } from "react-router-dom";
+import { isHrRole, getWeekDay } from "../util/APIUtils";
 import { fetchData, formatDateYMD } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 
@@ -33,11 +45,15 @@ class AddPublicHoliday extends Component {
   handleChange = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
+    if (name === "holidayDate") {
+      this.setState({ holidayDay: getWeekDay(value) });
+    }
   };
 
   validateFields = () => {
     const { holidayDate, holidayDay, holidayDescr, holidayState } = this.state;
-    const isInvalid = !holidayDate || !holidayDay || !holidayDescr || !holidayState;
+    const isInvalid =
+      !holidayDate || !holidayDay || !holidayDescr || !holidayState;
     return isInvalid;
   };
 
@@ -66,23 +82,18 @@ class AddPublicHoliday extends Component {
         url: API_BASE_URL + "/publicholiday",
         method: "POST",
         body: JSON.stringify(AddPublicHoliday)
-      })
+      });
       this.props.history.push("/publicholiday");
     }
   }
 
   render() {
-    const {
-      holidayDate,
-      holidayDay,
-      holidayDescr,
-      holidayState
-    } = this.state;
+    const { holidayDate, holidayDay, holidayDescr, holidayState } = this.state;
 
-    if(!isHrRole(this.props.currentUser)){
-      return(<Redirect to='/forbidden'  />);
+    if (!isHrRole(this.props.currentUser)) {
+      return <Redirect to="/forbidden" />;
     }
-    
+
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -91,9 +102,11 @@ class AddPublicHoliday extends Component {
           </span>
         </div>
         <div className="tableContainerFlex">
-        <Form onSubmit={this.doNotSubmit}>
+          <Form onSubmit={this.doNotSubmit}>
             <FormGroup row>
-              <Label for="phDate" sm={2}>Date</Label>
+              <Label for="phDate" sm={2}>
+                Date:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="date"
@@ -106,19 +119,24 @@ class AddPublicHoliday extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="phDay" sm={2}>Day</Label>
+              <Label for="phDay" sm={2}>
+                Day:
+              </Label>
               <Col sm={10}>
-                <Input 
-                  type="text" 
-                  name="holidayDay" 
-                  id="phDay" 
+                <Input
+                  type="text"
+                  name="holidayDay"
+                  id="phDay"
                   value={holidayDay}
                   onChange={this.handleChange}
+                  disabled
                 />
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="holiday" sm={2}>Holiday</Label>
+              <Label for="holiday" sm={2}>
+                Holiday:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="text"
@@ -130,12 +148,14 @@ class AddPublicHoliday extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="state" sm={2}>State</Label>
+              <Label for="state" sm={2}>
+                State(s):
+              </Label>
               <Col sm={10}>
-                <Input 
-                  type="text" 
-                  name="holidayState" 
-                  id="state" 
+                <Input
+                  type="text"
+                  name="holidayState"
+                  id="state"
                   value={holidayState}
                   onChange={this.handleChange}
                 />
@@ -190,7 +210,6 @@ class AddPublicHoliday extends Component {
                     </ModalFooter>
                   </Modal>
                 </div>
-
               </Col>
             </FormGroup>
           </Form>

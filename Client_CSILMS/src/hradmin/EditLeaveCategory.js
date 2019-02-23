@@ -1,8 +1,20 @@
 import React, { Component } from "react";
-import { Form, FormGroup, Label, Input, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from "reactstrap";
+import {
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Col,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Alert
+} from "reactstrap";
 import "../common/Styles.css";
-import { Redirect, withRouter } from 'react-router-dom';
-import { isHrRole } from '../util/APIUtils';
+import { Redirect, withRouter } from "react-router-dom";
+import { isHrRole } from "../util/APIUtils";
 import { fetchData } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 
@@ -21,15 +33,10 @@ class EditLeaveCategory extends Component {
   }
 
   componentDidMount() {
-    const {
-      leaveCode
-    } = this.props.computedMatch.params;
+    const { leaveCode } = this.props.computedMatch.params;
 
     fetchData({
-      url:
-        API_BASE_URL +
-        "/leavecategory/" +
-        leaveCode,
+      url: API_BASE_URL + "/leavecategory/" + leaveCode,
       method: "GET"
     })
       .then(data => {
@@ -74,9 +81,9 @@ class EditLeaveCategory extends Component {
 
   validateDelete = () => {
     const { leaveCode } = this.state;
-    const isInvalid = (leaveCode === "AL") || (leaveCode === "SL")
+    const isInvalid = leaveCode === "AL" || leaveCode === "SL";
     return isInvalid;
-  }
+  };
 
   // Do not submit form, unless user clicked on submit button
   doNotSubmit(event) {
@@ -97,33 +104,26 @@ class EditLeaveCategory extends Component {
 
       console.log(JSON.stringify(editLeaveCategory));
 
-      const {
-        leaveCode
-      } = this.props.computedMatch.params;
+      const { leaveCode } = this.props.computedMatch.params;
 
       fetchData({
-        url: API_BASE_URL + "/leavecategory/" +
-          leaveCode,
+        url: API_BASE_URL + "/leavecategory/" + leaveCode,
         method: "PATCH",
         body: JSON.stringify(editLeaveCategory)
-      })
+      });
       this.props.history.push("/leavecategory");
-
     }
   }
 
   handleDelete(event) {
     event.preventDefault();
 
-    const {
-      leaveCode
-    } = this.props.computedMatch.params;
+    const { leaveCode } = this.props.computedMatch.params;
 
     fetchData({
-      url: API_BASE_URL + "/leavecategory/" +
-        leaveCode,
+      url: API_BASE_URL + "/leavecategory/" + leaveCode,
       method: "DELETE"
-    })
+    });
     this.props.history.push("/leavecategory");
   }
 
@@ -135,13 +135,9 @@ class EditLeaveCategory extends Component {
   }
 
   render() {
-    const {
-      leaveCode,
-      leaveDescr,
-      entitlement
-    } = this.state;
+    const { leaveCode, leaveDescr, entitlement } = this.state;
     if (!isHrRole(this.props.currentUser)) {
-      return (<Redirect to='/forbidden' />);
+      return <Redirect to="/forbidden" />;
     }
 
     let leaveEntErrorMsg = this.validateLeaveEnt(entitlement);
@@ -192,13 +188,14 @@ class EditLeaveCategory extends Component {
               </Label>
               <Col sm={10}>
                 <Input
-                  type="text"
+                  type="number"
                   name="entitlement"
                   id="leaveEntitlement"
                   value={entitlement}
                   onChange={this.handleChange}
                   required
-                /><span>{leaveEntErrorMsg}</span>
+                />
+                <span>{leaveEntErrorMsg}</span>
               </Col>
             </FormGroup>
             <FormGroup row>

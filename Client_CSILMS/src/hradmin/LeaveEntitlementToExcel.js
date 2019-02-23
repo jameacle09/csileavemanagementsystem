@@ -23,7 +23,8 @@ class ExportToExcel extends Component {
               <th>Business Unit</th>
               <th>Department ID</th>
               <th>Leave Year</th>
-              <th>Leave Type</th>
+              <th>Leave Code</th>
+              <th>Leave Description</th>
               <th>Carried Forward</th>
               <th>Entitlement</th>
               <th>Available Leave</th>
@@ -41,6 +42,7 @@ class ExportToExcel extends Component {
                   <td>{leaveEntitlement.employeeDetails.businessUnit}</td>
                   <td>{leaveEntitlement.employeeDetails.deptId}</td>
                   <td>{leaveEntitlement.id.year}</td>
+                  <td>{leaveEntitlement.leaveCategory.leaveCode}</td>
                   <td>{leaveEntitlement.leaveCategory.leaveDescr}</td>
                   <td>{leaveEntitlement.carryForward}</td>
                   <td>{leaveEntitlement.entitlement}</td>

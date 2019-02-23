@@ -95,7 +95,7 @@ class PublicHoliday extends Component {
       },
       {
         id: "holidayState",
-        Header: "State",
+        Header: "State(s)",
         accessor: "holidayState",
         minWidth: 290,
         sortable: true,

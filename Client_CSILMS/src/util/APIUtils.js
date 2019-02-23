@@ -1,16 +1,15 @@
 import { API_BASE_URL, ACCESS_TOKEN } from "../constants";
 
 const request = options => {
-
   let headers;
 
-  if(options.hasOwnProperty("custom_no_headers")) {
-      headers = new Headers({ });
-      delete options.custom_no_headers;
-  }else 
-      headers = new Headers({
-        "Content-Type": "application/json"
-      });
+  if (options.hasOwnProperty("custom_no_headers")) {
+    headers = new Headers({});
+    delete options.custom_no_headers;
+  } else
+    headers = new Headers({
+      "Content-Type": "application/json"
+    });
 
   if (localStorage.getItem(ACCESS_TOKEN)) {
     headers.append(
@@ -18,7 +17,7 @@ const request = options => {
       "Bearer " + localStorage.getItem(ACCESS_TOKEN)
     );
   }
-  
+
   const defaults = { headers: headers };
   options = Object.assign({}, defaults, options);
 
@@ -113,4 +112,18 @@ export function formatDateYMD(strDate) {
   if (day.length < 2) day = "0" + day;
 
   return [year, month, day].join("-");
+}
+
+export function getWeekDay(strDate) {
+  var date = new Date(strDate),
+    weekday = new Array(7);
+  weekday[0] = "Sunday";
+  weekday[1] = "Monday";
+  weekday[2] = "Tuesday";
+  weekday[3] = "Wednesday";
+  weekday[4] = "Thursday";
+  weekday[5] = "Friday";
+  weekday[6] = "Saturday";
+
+  return weekday[date.getDay()];
 }

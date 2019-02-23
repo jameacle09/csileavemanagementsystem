@@ -8,7 +8,7 @@ import {
   Input,
   Col
 } from "reactstrap";
-import PropTypes from "prop-types";
+// import PropTypes from "prop-types";
 import { Redirect, withRouter, Link } from "react-router-dom";
 import { fetchData, isHrRole } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
@@ -158,17 +158,17 @@ class UploadEntitlement extends Component {
         body: JSON.stringify(postRequest)
       })
         .then(response => {
-          if (response.ok) {
-            //   confirmAlert({
-            //     message: "Entitlement has been successfully inserted!",
-            //     buttons: [
-            //       {
-            //         label: "OK",
-            //         onClick: () => this.props.history.push("/leaveentitlement")
-            //       }
-            //     ]
-            //   });
-          }
+          // if (response.ok) {
+          //   confirmAlert({
+          //     message: "Entitlement has been successfully inserted!",
+          //     buttons: [
+          //       {
+          //         label: "OK",
+          //         onClick: () => this.props.history.push("/leaveentitlement")
+          //       }
+          //     ]
+          //   });
+          // }
         })
         .catch(error => {
           if (error.status === 401) {
@@ -341,9 +341,7 @@ class UploadEntitlement extends Component {
                       background: "#b8e2fc",
                       border: "1px solid rgb(214, 209, 209)"
                     }}
-                  >
-                    Hello
-                  </Input>
+                  />
                   <FormText color="muted" style={{ fontFamily: "Helvetica" }}>
                     Please download the latest{" "}
                     <a href={ExcelUploadTemplate}>
@@ -404,12 +402,12 @@ class UploadEntitlement extends Component {
   }
 }
 
-UploadEntitlement.propTypes = {
-  CarriedForward: PropTypes.number,
-  Entitlement: PropTypes.number,
-  AvailableLeave: PropTypes.number,
-  TakenLeave: PropTypes.number,
-  BalanceLeave: PropTypes.number
-};
+// UploadEntitlement.propTypes = {
+//   CarriedForward: PropTypes.number,
+//   Entitlement: PropTypes.number,
+//   AvailableLeave: PropTypes.number,
+//   TakenLeave: PropTypes.number,
+//   BalanceLeave: PropTypes.number
+// };
 
 export default withRouter(UploadEntitlement);

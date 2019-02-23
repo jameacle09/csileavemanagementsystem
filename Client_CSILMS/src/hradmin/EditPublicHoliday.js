@@ -1,8 +1,20 @@
 import React, { Component } from "react";
-import { Form, FormGroup, Label, Input, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from "reactstrap";
+import {
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Col,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Alert
+} from "reactstrap";
 import "../common/Styles.css";
-import { Redirect, withRouter } from 'react-router-dom';
-import { isHrRole } from '../util/APIUtils';
+import { Redirect, withRouter } from "react-router-dom";
+import { isHrRole } from "../util/APIUtils";
 import { fetchData, formatDateYMD } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 
@@ -22,15 +34,10 @@ class EditPublicHoliday extends Component {
   }
 
   componentDidMount() {
-    const {
-      holidayDate
-    } = this.props.computedMatch.params;
+    const { holidayDate } = this.props.computedMatch.params;
 
     fetchData({
-      url:
-        API_BASE_URL +
-        "/publicholiday/" +
-        holidayDate,
+      url: API_BASE_URL + "/publicholiday/" + holidayDate,
       method: "GET"
     })
       .then(data => {
@@ -61,7 +68,7 @@ class EditPublicHoliday extends Component {
 
   handleCancel = () => {
     this.props.history.push("/publicholiday");
-  }; 
+  };
 
   handleChange = event => {
     const { name, value } = event.target;
@@ -70,14 +77,15 @@ class EditPublicHoliday extends Component {
 
   validateFields = () => {
     const { holidayDate, holidayDay, holidayDescr, holidayState } = this.state;
-    const isInvalid = !holidayDate || !holidayDay || !holidayDescr || !holidayState;
+    const isInvalid =
+      !holidayDate || !holidayDay || !holidayDescr || !holidayState;
     return isInvalid;
   };
 
   // Do not submit form, unless user clicked on submit button
   doNotSubmit(event) {
     event.preventDefault();
-  }  
+  }
 
   handleSubmit(event) {
     event.preventDefault();
@@ -85,7 +93,7 @@ class EditPublicHoliday extends Component {
 
     if (validForm) {
       // create JSON Object for Edit Public Holiday
-      let editPublicHoliday= {
+      let editPublicHoliday = {
         holidayDate: this.state.holidayDate,
         holidayDay: this.state.holidayDay,
         holidayDescr: this.state.holidayDescr,
@@ -94,16 +102,13 @@ class EditPublicHoliday extends Component {
 
       console.log(JSON.stringify(editPublicHoliday));
 
-      const {
-        holidayDate
-      } = this.props.computedMatch.params;
+      const { holidayDate } = this.props.computedMatch.params;
 
       fetchData({
-        url: API_BASE_URL + "/publicholiday/" +
-          holidayDate,
+        url: API_BASE_URL + "/publicholiday/" + holidayDate,
         method: "PATCH",
         body: JSON.stringify(editPublicHoliday)
-      })
+      });
       this.props.history.push("/publicholiday");
     }
   }
@@ -111,28 +116,20 @@ class EditPublicHoliday extends Component {
   handleDelete(event) {
     event.preventDefault();
 
-    const {
-      holidayDate
-    } = this.props.computedMatch.params;
+    const { holidayDate } = this.props.computedMatch.params;
 
     fetchData({
-      url: API_BASE_URL + "/publicholiday/" +
-      holidayDate,
+      url: API_BASE_URL + "/publicholiday/" + holidayDate,
       method: "DELETE"
-    })
+    });
     this.props.history.push("/publicholiday");
   }
 
   render() {
-    const {
-      holidayDate,
-      holidayDay,
-      holidayDescr,
-      holidayState
-    } = this.state;
+    const { holidayDate, holidayDay, holidayDescr, holidayState } = this.state;
 
     if (!isHrRole(this.props.currentUser)) {
-      return (<Redirect to='/forbidden' />);
+      return <Redirect to="/forbidden" />;
     }
 
     return (
@@ -145,7 +142,9 @@ class EditPublicHoliday extends Component {
         <div className="tableContainerFlex">
           <Form onSubmit={this.doNotSubmit}>
             <FormGroup row>
-              <Label for="phDate" sm={2}>Date:</Label>
+              <Label for="phDate" sm={2}>
+                Date:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="date"
@@ -158,19 +157,24 @@ class EditPublicHoliday extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="phDay" sm={2}>Day:</Label>
+              <Label for="phDay" sm={2}>
+                Day:
+              </Label>
               <Col sm={10}>
-                <Input 
-                  type="text" 
-                  name="holidayDay" 
-                  id="phDay" 
+                <Input
+                  type="text"
+                  name="holidayDay"
+                  id="phDay"
                   value={holidayDay}
                   onChange={this.handleChange}
+                  disabled
                 />
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="holiday" sm={2}>Holiday:</Label>
+              <Label for="holiday" sm={2}>
+                Holiday:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="text"
@@ -182,12 +186,14 @@ class EditPublicHoliday extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="state" sm={2}>State:</Label>
+              <Label for="state" sm={2}>
+                State(s):
+              </Label>
               <Col sm={10}>
-                <Input 
-                  type="text" 
-                  name="holidayState" 
-                  id="state" 
+                <Input
+                  type="text"
+                  name="holidayState"
+                  id="state"
                   value={holidayState}
                   onChange={this.handleChange}
                 />

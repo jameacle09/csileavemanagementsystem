@@ -1,5 +1,16 @@
 import React, { Component } from "react";
-import { Button, Form, FormGroup, Label, Input, Col } from "reactstrap";
+import {
+  Button,
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Col,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter
+} from "reactstrap";
 import { Redirect, withRouter } from "react-router-dom";
 import { fetchData, isHrRole } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
@@ -19,7 +30,8 @@ class EditEntitlement extends Component {
       entitlement: 0,
       availableLeave: 0,
       takenLeave: 0,
-      balanceLeave: 0
+      balanceLeave: 0,
+      modalSubmit: false
     };
     this.loadLeaveEntitlement = this.loadLeaveEntitlement.bind(this);
   }
@@ -113,7 +125,7 @@ class EditEntitlement extends Component {
       body: JSON.stringify(postRequest)
     })
       .then(response => {
-        // if (response.status === 200) {
+        this.toggleConfirmSubmit();
         confirmAlert({
           message: "Leave Entitlement has been successfully updated!",
           buttons: [
@@ -123,7 +135,6 @@ class EditEntitlement extends Component {
             }
           ]
         });
-        // }
       })
       .catch(error => {
         if (error.status === 401) {
@@ -163,6 +174,12 @@ class EditEntitlement extends Component {
     return isInvalid;
   };
 
+  toggleConfirmSubmit = () => {
+    this.setState(prevState => ({
+      modalSubmit: !prevState.modalSubmit
+    }));
+  };
+
   render() {
     if (!isHrRole(this.props.currentUser)) {
       return <Redirect to="/forbidden" />;
@@ -187,7 +204,7 @@ class EditEntitlement extends Component {
           </span>
         </div>
         <div className="tableContainerFlex">
-          <Form onSubmit={event => this.submitLeaveEntitlement(event)}>
+          <Form>
             <FormGroup row>
               <Label for="emplId" sm={2}>
                 Employee ID:
@@ -224,7 +241,7 @@ class EditEntitlement extends Component {
               </Label>
               <Col sm={10}>
                 <Input
-                  type="text"
+                  type="number"
                   name="year"
                   id="year"
                   placeholder="Leave Year"
@@ -254,7 +271,7 @@ class EditEntitlement extends Component {
               </Label>
               <Col sm={8}>
                 <Input
-                  type="text"
+                  type="number"
                   name="carryForward"
                   id="carryForward"
                   placeholder="Carried Forward"
@@ -270,7 +287,7 @@ class EditEntitlement extends Component {
               </Label>
               <Col sm={8}>
                 <Input
-                  type="text"
+                  type="number"
                   name="entitlement"
                   id="entitlement"
                   placeholder="Entitlement"
@@ -286,7 +303,7 @@ class EditEntitlement extends Component {
               </Label>
               <Col sm={8}>
                 <Input
-                  type="text"
+                  type="number"
                   name="availableLeave"
                   id="availableLeave"
                   placeholder="Available Leave"
@@ -302,7 +319,7 @@ class EditEntitlement extends Component {
               </Label>
               <Col sm={8}>
                 <Input
-                  type="text"
+                  type="number"
                   name="takenLeave"
                   id="takenLeave"
                   placeholder="Taken Leave"
@@ -318,7 +335,7 @@ class EditEntitlement extends Component {
               </Label>
               <Col sm={8}>
                 <Input
-                  type="text"
+                  type="number"
                   name="balanceLeave"
                   id="balanceLeave"
                   placeholder="Balance Leave"
@@ -331,10 +348,10 @@ class EditEntitlement extends Component {
             <FormGroup row>
               <Col sm={{ size: 10, offset: 2 }}>
                 <Button
-                  type="submit"
                   variant="contained"
                   color="primary"
                   className="largeButtonOverride"
+                  onClick={this.toggleConfirmSubmit}
                   disabled={this.validateLeaveEntitlementFields()}
                 >
                   Save
@@ -343,6 +360,40 @@ class EditEntitlement extends Component {
                 <Button color="secondary" onClick={this.cancelLeaveEntitlement}>
                   Cancel
                 </Button>
+                <div>
+                  <Modal
+                    isOpen={this.state.modalSubmit}
+                    toggle={this.toggleConfirmSubmit}
+                    className={this.props.className}
+                    style={{
+                      width: "360px",
+                      height: "300px",
+                      margin: "220px auto"
+                    }}
+                  >
+                    <ModalHeader>Submit Confirmation</ModalHeader>
+                    <ModalBody>
+                      Are you sure you want to Save this Edited Leave
+                      Entitlement?
+                    </ModalBody>
+                    <ModalFooter>
+                      <Button
+                        type="submit"
+                        color="primary"
+                        onClick={event => this.submitLeaveEntitlement(event)}
+                        className="largeButtonOverride"
+                      >
+                        Confirm
+                      </Button>
+                      <Button
+                        color="secondary"
+                        onClick={this.toggleConfirmSubmit}
+                      >
+                        Cancel
+                      </Button>
+                    </ModalFooter>
+                  </Modal>
+                </div>
               </Col>
             </FormGroup>
           </Form>

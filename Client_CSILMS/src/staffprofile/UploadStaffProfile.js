@@ -10,34 +10,28 @@ import {
 } from "reactstrap";
 // import PropTypes from "prop-types";
 import { Redirect, withRouter, Link } from "react-router-dom";
-import {
-  fetchData,
-  isHrRole,
-  formatDateYMD,
-  formatDateDMY,
-  getWeekDay
-} from "../util/APIUtils";
+import { fetchData, isHrRole } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import { confirmAlert } from "react-confirm-alert";
 import "../common/Styles.css";
 import XLSX from "xlsx";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import ExcelUploadTemplate from "../templates/PublicHolidays.xlsx";
+import ExcelUploadTemplate from "../templates/Leaveprofile.xlsx";
 
-class UploadHoliday extends Component {
+class UploadStaffProfiles extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      holidayData: [],
+      profileData: [],
       filename: "",
       loading: false
     };
     this.handleExcelFileUpload = this.handleExcelFileUpload.bind(this);
-    this.handleHolidaySave = this.handleHolidaySave.bind(this);
+    this.handleProfileSave = this.handleProfileSave.bind(this);
     this.handleCancelUpload = this.handleCancelUpload.bind(this);
     this.validateUploadedRowsData = this.validateUploadedRowsData.bind(this);
-    this.completedHolidaySave = this.completedHolidaySave.bind(this);
+    this.completedProfileSave = this.completedProfileSave.bind(this);
   }
   _isMounted = false;
 
@@ -60,7 +54,7 @@ class UploadHoliday extends Component {
       const reader = new FileReader();
       const rABS = !!reader.readAsBinaryString;
       reader.onload = e => {
-        /* Parse Holiday Data */
+        /* Parse Profile Data */
         const bstr = e.target.result;
         const workbook = XLSX.read(bstr, { type: rABS ? "binary" : "array" });
         /* Get the second worksheet */
@@ -68,9 +62,9 @@ class UploadHoliday extends Component {
         const worksheet = workbook.Sheets[worksheetName];
         /* Convert array of arrays to JSON */
         const uploadData = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-        /* Update State's Holiday Data */
+        /* Update State's Profile Data */
         this.setState({
-          holidayData: uploadData,
+          ProfileData: uploadData,
           loading: true
         });
         this.validateUploadedRowsData();
@@ -79,7 +73,7 @@ class UploadHoliday extends Component {
       else reader.readAsArrayBuffer(file.target.files[0]);
     } else {
       this.setState({
-        holidayData: [],
+        profileData: [],
         filename: "",
         loading: false
       });
@@ -87,40 +81,45 @@ class UploadHoliday extends Component {
   }
 
   validateUploadedRowsData() {
-    // var DayOfTheWeek = [
-    //   "Sunday",
-    //   "Monday",
-    //   "Tuesday",
-    //   "Wednesday",
-    //   "Thursday",
-    //   "Friday",
-    //   "Saturday"
+    // var leaveTypes = [
+    //   "AL",
+    //   "CL",
+    //   "EL",
+    //   "HL",
+    //   "MR",
+    //   "MT",
+    //   "PL",
+    //   "PT",
+    //   "RL",
+    //   "SL"
     // ];
-    let updatedholidayData = this.state.holidayData.filter(
-      holRow =>
-        holRow.Date &&
-        // holRow.Day &&
-        holRow.Holiday &&
-        holRow.State
-      // DayOfTheWeek.indexOf(holRow.Day) > -1
-    );
-    updatedholidayData.forEach(function(e) {
-      e["Day"] = getWeekDay(e.Date);
-    });
-    this.setState({
-      holidayData: updatedholidayData,
-      loading: false
-    });
-    console.log(this.state);
+    // let updatedProfileData = this.state.profileData.filter(
+    //   entRow =>
+    //     entRow.EmployeeID &&
+    //     entRow.LeaveYear &&
+    //     entRow.LeaveType &&
+    //     leaveTypes.indexOf(entRow.LeaveType) > -1
+    // );
+    // updatedProfileData.map(entRow => {
+    //   if (!entRow.CarriedForward) entRow.CarriedForward = 0;
+    //   if (!entRow.Profile) entRow.Profile = 0;
+    //   if (!entRow.AvailableLeave) entRow.AvailableLeave = 0;
+    //   if (!entRow.TakenLeave) entRow.TakenLeave = 0;
+    //   if (!entRow.BalanceLeave) entRow.BalanceLeave = 0;
+    // });
+    // this.setState({
+    //   profileData: updatedprofileData,
+    //   loading: false
+    // });
   }
 
-  confirmHolidaySave(e) {
+  confirmProfileSave(e) {
     confirmAlert({
-      message: "Do you really want to save all uploaded Public Holidays?",
+      message: "Do you really want to save all uploaded Profiles?",
       buttons: [
         {
           label: "Yes",
-          onClick: () => this.handleHolidaySave(e)
+          onClick: () => this.handleProfileSave(e)
         },
         {
           label: "No"
@@ -129,30 +128,43 @@ class UploadHoliday extends Component {
     });
   }
 
-  handleHolidaySave(e) {
+  handleProfileSave(e) {
     // This is a temporary solution for saving Array of data, an API
     // for saving bulk of data should be created to speed up the saving
-    this.state.holidayData.map(holRow => {
+    this.state.profileData.map(entRow => {
       const jsonRowValues = {
-        holidayDate: holRow.Date,
-        holidayDay: holRow.Day,
-        holidayDescr: holRow.Holiday,
-        holidayState: holRow.State
+        id: {
+          emplid: entRow.EmployeeID,
+          year: entRow.LeaveYear,
+          leaveCode: entRow.LeaveType
+        },
+        employeeDetails: {
+          emplId: entRow.EmployeeID
+        },
+        leaveCategory: {
+          leaveCode: entRow.LeaveType
+        },
+        carryForward: entRow.CarriedForward,
+        profile: entRow.Profile,
+        availableLeave: entRow.AvailableLeave,
+        takenLeave: entRow.TakenLeave,
+        balanceLeave: entRow.BalanceLeave
       };
+
       const postRequest = Object.assign({}, jsonRowValues);
       fetchData({
-        url: API_BASE_URL + "/publicholiday",
+        url: API_BASE_URL + "/employeeprofile",
         method: "POST",
         body: JSON.stringify(postRequest)
       })
         .then(response => {
           if (response.ok) {
             //   confirmAlert({
-            //     message: "Holiday has been successfully inserted!",
+            //     message: "Profile has been successfully inserted!",
             //     buttons: [
             //       {
             //         label: "OK",
-            //         onClick: () => this.props.history.push("/publicholiday")
+            //         onClick: () => this.props.history.push("/employeeprofile")
             //       }
             //     ]
             //   });
@@ -173,33 +185,33 @@ class UploadHoliday extends Component {
           }
         });
     });
-    this.props.history.push("/publicholiday");
+    this.props.history.push("/employeeprofile");
   }
 
-  completedHolidaySave = e => {
+  completedProfileSave = e => {
     confirmAlert({
       message:
-        "All Public Holidays have been successfully saved to the Database!",
+        "All Employee Profiles have been successfully saved to the Database!",
       buttons: [
         {
           label: "OK",
-          onClick: () => this.props.history.push("/publicholiday")
+          onClick: () => this.props.history.push("/employeeprofile")
         }
       ]
     });
   };
 
   validateStateHasData = () => {
-    const isInvalid = !this.state.holidayData.length;
+    const isInvalid = !this.state.profileData.length;
     return isInvalid;
   };
 
   handleReset = () => {
-    this.setState({ holidayData: [], filename: "", loading: false });
+    this.setState({ profileData: [], filename: "", loading: false });
   };
 
   handleCancelUpload = () => {
-    this.props.history.push("/publicholiday");
+    this.props.history.push("/staffprofile");
   };
 
   render() {
@@ -207,45 +219,91 @@ class UploadHoliday extends Component {
       return <Redirect to="/forbidden" />;
     }
 
-    const publicHolidayCols = [
+    const employeeProfileCols = [
       {
-        id: "Date",
-        Header: "Date",
-        // accessor: d => formatDateYMD(d.Date),
-        accessor: d => formatDateDMY(d.Date),
-        width: 150,
-        sortable: true,
-        filterable: true,
-        style: {
-          textAlign: "center"
-        }
-      },
-      {
-        id: "Day",
-        Header: "Day",
-        accessor: str => getWeekDay(str.Date),
-        width: 160,
-        sortable: true,
-        filterable: true,
-        style: {
-          textAlign: "center"
-        }
-      },
-      {
-        id: "Holiday",
-        Header: "Holiday",
-        accessor: "Holiday",
-        width: 240,
+        id: "emplId",
+        Header: "Employee ID",
+        accessor: "EmployeeID",
+        width: 110,
         sortable: true,
         filterable: true
       },
       {
-        id: "State",
-        Header: "State",
-        accessor: "State",
+        id: "year",
+        Header: "Leave Year",
+        accessor: "LeaveYear",
         // minWidth: 120,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "leaveType",
+        Header: "Leave Type",
+        accessor: "LeaveType",
+        // minWidth: 180,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "carryForward",
+        Header: "Carried Forward",
+        accessor: "CarriedForward",
+        minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "profile",
+        Header: "profile",
+        accessor: "profile",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "availableLeave",
+        Header: "Available Leave",
+        accessor: "AvailableLeave",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "takenLeave",
+        Header: "Taken Leave",
+        accessor: "TakenLeave",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "balanceLeave",
+        Header: "Balance Leave",
+        accessor: "BalanceLeave",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       }
     ];
 
@@ -253,7 +311,7 @@ class UploadHoliday extends Component {
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Upload Public Holidays</h3>
+            <h3 className="headerStyle">Upload Employee Profile</h3>
           </span>
         </div>
         <div className="reactTableContainer">
@@ -283,11 +341,13 @@ class UploadHoliday extends Component {
                       background: "#b8e2fc",
                       border: "1px solid rgb(214, 209, 209)"
                     }}
-                  />
+                  >
+                    Hello
+                  </Input>
                   <FormText color="muted" style={{ fontFamily: "Helvetica" }}>
                     Please download the latest{" "}
                     <a href={ExcelUploadTemplate}>
-                      Public Holiday Upload Template
+                      Employee Profile Upload Template
                     </a>{" "}
                     for you to fill in the data.
                   </FormText>
@@ -296,7 +356,7 @@ class UploadHoliday extends Component {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={event => this.confirmHolidaySave(event)}
+                    onClick={event => this.confirmProfileSave(event)}
                     disabled={this.validateStateHasData()}
                     style={{ width: "100px" }}
                     className="largeButtonOverride"
@@ -325,15 +385,15 @@ class UploadHoliday extends Component {
               </FormGroup>
             </div>
             <ReactTable
-              data={this.state.holidayData}
-              columns={publicHolidayCols}
+              data={this.state.ProfileData}
+              columns={employeeProfileCols}
               defaultPageSize={10}
               pages={this.state.pages}
               loading={this.state.loading}
               filterable={true}
               sortable={true}
               multiSort={true}
-              loadingText="Loading Leave Holidays..."
+              loadingText="Loading Employee Profiles..."
               noDataText="No data available."
               className="-striped"
             />
@@ -344,11 +404,12 @@ class UploadHoliday extends Component {
   }
 }
 
-// UploadHoliday.propTypes = {
-//   Date: PropTypes.string,
-//   Day: PropTypes.string,
-//   Holiday: PropTypes.string,
-//   State: PropTypes.string
+// UploadProfile.propTypes = {
+//   CarriedForward: PropTypes.number,
+//   Profile: PropTypes.number,
+//   AvailableLeave: PropTypes.number,
+//   TakenLeave: PropTypes.number,
+//   BalanceLeave: PropTypes.number
 // };
 
-export default withRouter(UploadHoliday);
+export default withRouter(UploadStaffProfiles);

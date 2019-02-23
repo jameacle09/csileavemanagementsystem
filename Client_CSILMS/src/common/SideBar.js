@@ -106,6 +106,14 @@ class SideBar extends Component {
                 </NavLink>
               </li>
               <li>
+                <NavLink
+                  to="/translateitems"
+                  activeClassName="sidebarLinkActive"
+                >
+                  Translate Items
+                </NavLink>
+              </li>
+              <li>
                 <NavLink to="#" activeClassName="sidebarLinkActive">
                   Reports
                 </NavLink>

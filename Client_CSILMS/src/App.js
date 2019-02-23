@@ -25,6 +25,9 @@ import UploadHoliday from "./hradmin/UploadHoliday";
 import LeaveCategory from "./hradmin/LeaveCategory";
 import AddLeaveCategory from "./hradmin/AddLeaveCategory";
 import EditLeaveCategory from "./hradmin/EditLeaveCategory";
+import TranslateItems from "./hradmin/TranslateItems";
+import AddTranslateItem from "./hradmin/AddTranslateItem";
+import EditTranslateItem from "./hradmin/EditTranslateItem";
 import LeaveEntitlement from "./hradmin/LeaveEntitlement";
 import AddEntitlement from "./hradmin/AddEntitlement";
 import EditEntitlement from "./hradmin/EditEntitlement";
@@ -303,6 +306,7 @@ class App extends Component {
                     title="Upload Public Holiday"
                     component={UploadHoliday}
                   />
+
                   <PrivateRoute
                     exact
                     authenticated={this.state.isAuthenticated}
@@ -324,6 +328,29 @@ class App extends Component {
                     path="/leavecategory/edit/:leaveCode"
                     title="Edit Leave Category"
                     component={EditLeaveCategory}
+                  />
+
+                  <PrivateRoute
+                    exact
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/translateitems"
+                    title="Translate Items"
+                    component={TranslateItems}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/translateitems/add"
+                    title="Add Translate Item"
+                    component={AddTranslateItem}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/translateitems/edit/:fieldname/:fieldvalue"
+                    title="Edit Translate Item"
+                    component={EditTranslateItem}
                   />
 
                   <PrivateRoute

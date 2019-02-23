@@ -1,8 +1,20 @@
 import React, { Component } from "react";
-import { Form, FormGroup, Label, Input, Col, Button, Modal, ModalHeader, ModalBody, ModalFooter, Alert } from "reactstrap";
+import {
+  Form,
+  FormGroup,
+  Label,
+  Input,
+  Col,
+  Button,
+  Modal,
+  ModalHeader,
+  ModalBody,
+  ModalFooter,
+  Alert
+} from "reactstrap";
 import "../common/Styles.css";
-import { Redirect, withRouter } from 'react-router-dom';
-import { isHrRole } from '../util/APIUtils';
+import { Redirect, withRouter } from "react-router-dom";
+import { isHrRole } from "../util/APIUtils";
 import { fetchData } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 
@@ -64,7 +76,7 @@ class AddLeaveCategory extends Component {
         url: API_BASE_URL + "/leavecategory",
         method: "POST",
         body: JSON.stringify(addLeaveCategory)
-      })
+      });
       this.props.history.push("/leavecategory");
     }
   }
@@ -77,13 +89,9 @@ class AddLeaveCategory extends Component {
   }
 
   render() {
-    const {
-      leaveCode,
-      leaveDescr,
-      entitlement
-    } = this.state;
+    const { leaveCode, leaveDescr, entitlement } = this.state;
     if (!isHrRole(this.props.currentUser)) {
-      return (<Redirect to='/forbidden' />);
+      return <Redirect to="/forbidden" />;
     }
 
     let leaveEntErrorMsg = this.validateLeaveEnt(entitlement);
@@ -133,13 +141,14 @@ class AddLeaveCategory extends Component {
               </Label>
               <Col sm={10}>
                 <Input
-                  type="text"
+                  type="number"
                   name="entitlement"
                   id="leaveEntitlement"
                   value={entitlement}
                   onChange={this.handleChange}
                   required
-                /><span>{leaveEntErrorMsg}</span>
+                />
+                <span>{leaveEntErrorMsg}</span>
               </Col>
             </FormGroup>
             <FormGroup row>
