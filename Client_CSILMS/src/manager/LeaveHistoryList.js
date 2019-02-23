@@ -215,31 +215,6 @@ class LeaveHistoryList extends Component {
             noDataText="No data available."
             className="-striped"
           />
-
-          {/* <Table responsive>
-            <thead>
-              <tr>
-                <th>Name</th>
-                <th>Leave Type</th>
-                <th>Status</th>
-                <th>Start Date</th>
-                <th>End Date</th>
-              </tr>
-            </thead>
-            <tbody>
-              {this.state.leaveRequest.map(function(item, key) {
-                return (
-                  <tr key={key}>
-                    <td>{item.employeeDetails.name}</td>
-                    <td>{item.leaveCategory.leaveDescr}</td>
-                    <td>{item.leaveStatus}</td>
-                    <td>{formatDateDMY(item.id.startDate)}</td>
-                    <td>{formatDateDMY(item.endDate)}</td>
-                  </tr>
-                );
-              })}
-            </tbody>
-          </Table> */}
         </div>
       </div>
     );

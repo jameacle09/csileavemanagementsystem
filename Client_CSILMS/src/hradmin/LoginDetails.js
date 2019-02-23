@@ -81,7 +81,7 @@ class LoginDetails extends Component {
       .then(response => {
         confirmAlert({
           message:
-            "You have successfully reset password for employee " + emplId + "?",
+            "You have successfully reset password for employee " + emplId,
           buttons: [
             {
               label: "OK"
@@ -140,7 +140,7 @@ class LoginDetails extends Component {
     }
 
     const showFullString = strLocked => {
-      if (strLocked === "1") {
+      if (strLocked === 1) {
         return "Yes";
       } else {
         return "No";

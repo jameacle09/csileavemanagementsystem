@@ -22,7 +22,7 @@ import com.csi.leavemanagement.services.PublicHolidayService;
 @CrossOrigin
 public class PublicHolidayRestController {
     
-    private PublicHolidayService publicHolidayService;
+	private PublicHolidayService publicHolidayService;
 
     @Autowired
     private PublicHolidayRestController(PublicHolidayService publicHolidayService) {

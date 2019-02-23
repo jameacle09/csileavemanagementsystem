@@ -4,6 +4,8 @@ import { API_BASE_URL } from "../constants";
 import { withRouter } from "react-router-dom";
 import "react-table/react-table.css";
 import { fetchData, formatDateDMY } from "../util/APIUtils";
+import { Row, Col } from "reactstrap";
+import MyLeaveDetailsToExcel from "./MyLeaveDetailsToExcel";
 
 class MyLeaveDetails extends Component {
   constructor(props) {
@@ -122,6 +124,14 @@ class MyLeaveDetails extends Component {
           </span>
         </div>
         <div className="reactTableContainer">
+          <Row style={{ height: "50px" }}>
+            <Col md="6" xs="6">
+              <MyLeaveDetailsToExcel userData={this.state.userData} />
+            </Col>
+            <Col md="6" xs="6" style={{ textAlign: "right" }}>
+              <span> </span>
+            </Col>
+          </Row> 
           <ReactTable
             data={this.state.userData}
             columns={myLeaveDetailsCols}
@@ -137,36 +147,6 @@ class MyLeaveDetails extends Component {
             className="-striped"
           />
         </div>
-        {/* <div className="tableContainerFlex">
-          <Table responsive>
-            <thead>
-              <tr>
-                <th>Leave Type</th>
-                <th>Entitlement</th>
-                <th>Carry Forward</th>
-                <th>Available</th>
-                <th>Taken</th>
-                <th>Balance</th>
-              </tr>
-            </thead>
-            <tbody>
-              {
-                this.state.userData.map(function (item, key) {
-                  return (
-                    <tr key={key}>
-                      <td>{item.leaveCategory.leaveDescr}</td>
-                      <td>{item.entitlement} days</td>
-                      <td>{item.carryForward} days</td>
-                      <td>{item.availableLeave} days</td>
-                      <td>{item.takenLeave} days</td>
-                      <td>{item.balanceLeave} days</td>
-                    </tr>
-                  )
-                })
-              }
-            </tbody>
-          </Table>
-        </div> */}
       </div>
     );
   }

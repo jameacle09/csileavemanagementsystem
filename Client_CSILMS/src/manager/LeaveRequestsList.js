@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Button } from "reactstrap";
+import { Row, Col, Button } from "reactstrap";
 import { Link, Redirect, withRouter } from "react-router-dom";
 import {
   fetchData,
@@ -11,6 +11,7 @@ import { API_BASE_URL } from "../constants";
 import "../common/Styles.css";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
+import ExportToExcel from "./LeaveRequestListToExcel";
 
 class LeaveRequestsList extends Component {
   constructor(props) {
@@ -116,7 +117,7 @@ class LeaveRequestsList extends Component {
         id: "halfDay",
         Header: "Half Day",
         accessor: str => showFullString(str.halfDay),
-        minWidth: 140,
+        minWidth: 70,
         sortable: true,
         filterable: true,
         style: {
@@ -135,6 +136,14 @@ class LeaveRequestsList extends Component {
         }
       },
       {
+        id: "leaveStatus",
+        Header: "Leave Status",
+        accessor: str => showFullStatus(str.leaveStatus),
+        minWidth: 120,
+        sortable: true,
+        filterable: true
+      },
+      {
         id: "Action",
         Header: "Action",
         accessor: viewButton => (
@@ -146,7 +155,7 @@ class LeaveRequestsList extends Component {
               viewButton.id.effDate
             )}/${formatDateYMD(viewButton.id.startDate)}/${
               viewButton.id.leaveCode
-            }`}
+              }`}
             activeclassname="active"
             className="smallButtonOverride"
           >
@@ -163,6 +172,20 @@ class LeaveRequestsList extends Component {
       }
     ];
 
+    const showFullStatus = strStatus => {
+      if (strStatus === "PNAPV") {
+        return "Pending Approve";
+      } else if (strStatus === "APPRV") {
+        return "Approved";
+      } else if (strStatus === "CANCL") {
+        return "Cancelled";
+      } else if (strStatus === "PNCLD") {
+        return "Pending Cancel";
+      } else if (strStatus === "REJCT") {
+        return "Rejected";
+      }
+    };
+
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -171,21 +194,28 @@ class LeaveRequestsList extends Component {
           </span>
         </div>
         <div className="reactTableContainer">
-          <ReactTable
-            data={this.state.leaveRequestData}
-            columns={leaveRequestsCols}
-            defaultPageSize={10}
-            pages={this.state.pages}
-            loading={this.state.loading}
-            filterable={true}
-            sortable={true}
-            multiSort={true}
-            loadingText="Loading Employe Profiles..."
-            noDataText="No data available."
-            className="-striped"
-          />
-        </div>
+          <Row style={{ height: "50px" }}>
+            <Col md="6" xs="6">
+              <ExportToExcel
+                leaveRequestData={this.state.leaveRequestData}
+              />
+        </Col>
+        </Row>
+        <ReactTable
+          data={this.state.leaveRequestData}
+          columns={leaveRequestsCols}
+          defaultPageSize={10}
+          pages={this.state.pages}
+          loading={this.state.loading}
+          filterable={true}
+          sortable={true}
+          multiSort={true}
+          loadingText="Loading Employe Profiles..."
+          noDataText="No data available."
+          className="-striped"
+        />
       </div>
+      </div >
     );
   }
 }
