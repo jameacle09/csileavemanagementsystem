@@ -52,9 +52,9 @@ class TranslateItems extends Component {
   }
 
   render() {
-    // if (!isHrRole(this.props.currentUser)) {
-    //   return <Redirect to="/forbidden" />;
-    // }
+    if (!isHrRole(this.props.currentUser)) {
+      return <Redirect to="/forbidden" />;
+    }
 
     const showStatusDesc = strStatus => {
       if (strStatus === "A") {
@@ -139,7 +139,7 @@ class TranslateItems extends Component {
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">List of Translate Items</h3>
+            <h3 className="headerStyle">Translate Items</h3>
           </span>
         </div>
         <div className="reactTableContainer">

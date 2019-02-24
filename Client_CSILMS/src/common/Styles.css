@@ -97,7 +97,7 @@ ul ul a {
 .sidebarLinkActive {
   /* background: #004a9b; */
   /* background: rgb(39, 129, 247); */
-  background-image: linear-gradient(to right, #004a9b, rgb(39, 129, 247));
+  background-image: linear-gradient(to right, rgb(39, 129, 247), #004a9b);
   /* background: white; */
   /* color: #004a9b; */
   /* border: 1px inset white; */

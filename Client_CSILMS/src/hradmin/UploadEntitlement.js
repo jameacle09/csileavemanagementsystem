@@ -8,8 +8,7 @@ import {
   Input,
   Col
 } from "reactstrap";
-// import PropTypes from "prop-types";
-import { Redirect, withRouter, Link } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import { fetchData, isHrRole } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import { confirmAlert } from "react-confirm-alert";
@@ -24,26 +23,83 @@ class UploadEntitlement extends Component {
     super(props);
     this.state = {
       entitlementData: [],
+      employeeProfiles: [],
+      leaveCategories: [],
       filename: "",
+      isValid: false,
       loading: false
     };
-    this.handleExcelFileUpload = this.handleExcelFileUpload.bind(this);
-    this.handleEntitlementSave = this.handleEntitlementSave.bind(this);
-    this.handleCancelUpload = this.handleCancelUpload.bind(this);
-    this.validateUploadedRowsData = this.validateUploadedRowsData.bind(this);
-    this.completedEntitlementSave = this.completedEntitlementSave.bind(this);
   }
   _isMounted = false;
 
   componentDidMount() {
     this._isMounted = true;
+    this.loadEmployeeProfilesLookup();
+    this.loadLeaveCategoriesLookup();
   }
 
   componentWillUnmount() {
     this._isMounted = false;
   }
 
-  handleExcelFileUpload(file) {
+  loadEmployeeProfilesLookup = () => {
+    fetchData({
+      url: API_BASE_URL + "/employeedetails",
+      method: "GET"
+    })
+      .then(data => this.setState({ employeeProfiles: data }))
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
+
+  loadLeaveCategoriesLookup = () => {
+    fetchData({
+      url: API_BASE_URL + "/leavecategories",
+      method: "GET"
+    })
+      .then(data => this.setState({ leaveCategories: data }))
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
+
+  handleExcelFileUpload = file => {
+    if (file.target.files[0]) {
+      if (!file.target.files[0].name.match(/.(xls|xlsx)$/i)) {
+        return confirmAlert({
+          message:
+            "Invalid Template has been used for uploading Leave Entitlement! Please use the latest Upload Template available in this page...",
+          buttons: [
+            {
+              label: "OK"
+            }
+          ]
+        });
+      }
+    }
     if (this._isMounted && file.target.files[0]) {
       /* Update state values for filename and loading */
       this.setState({
@@ -75,45 +131,103 @@ class UploadEntitlement extends Component {
       this.setState({
         entitlementData: [],
         filename: "",
+        isValid: false,
         loading: false
       });
     }
-  }
+  };
 
-  validateUploadedRowsData() {
-    var leaveTypes = [
-      "AL",
-      "CL",
-      "EL",
-      "HL",
-      "MR",
-      "MT",
-      "PL",
-      "PT",
-      "RL",
-      "SL"
-    ];
+  validateUploadedRowsData = () => {
+    let employeeProfilesData = this.state.employeeProfiles;
+    let leaveCategoriesData = this.state.leaveCategories;
     let updatedEntitlementData = this.state.entitlementData.filter(
       entRow =>
         entRow.EmployeeID &&
-        entRow.LeaveYear &&
+        typeof entRow.LeaveYear === "number" &&
+        ("" + entRow.LeaveYear).length === 4 &&
         entRow.LeaveType &&
-        leaveTypes.indexOf(entRow.LeaveType) > -1
+        typeof entRow.CarriedForward === "number" &&
+        typeof entRow.Entitlement === "number" &&
+        typeof entRow.AvailableLeave === "number" &&
+        typeof entRow.TakenLeave === "number" &&
+        typeof entRow.BalanceLeave === "number" &&
+        employeeProfilesData.some(empProf => {
+          return empProf.emplId === entRow.EmployeeID;
+        }) &&
+        leaveCategoriesData.some(leave => {
+          return leave.leaveCode === entRow.LeaveType;
+        })
     );
-    updatedEntitlementData.map(entRow => {
-      if (!entRow.CarriedForward) entRow.CarriedForward = 0;
-      if (!entRow.Entitlement) entRow.Entitlement = 0;
-      if (!entRow.AvailableLeave) entRow.AvailableLeave = 0;
-      if (!entRow.TakenLeave) entRow.TakenLeave = 0;
-      if (!entRow.BalanceLeave) entRow.BalanceLeave = 0;
-    });
-    this.setState({
-      entitlementData: updatedEntitlementData,
-      loading: false
-    });
-  }
 
-  confirmEntitlementSave(e) {
+    if (
+      this.state.entitlementData.length === 0 ||
+      (this.state.entitlementData.length && updatedEntitlementData.length === 0)
+    ) {
+      this.setState({
+        isValid: false,
+        loading: false
+      });
+      confirmAlert({
+        message:
+          "No rows have been uploaded! Please verify that you are using the correct template and that it contains Leave Entitlement data...",
+        buttons: [
+          {
+            label: "OK"
+          }
+        ]
+      });
+    } else if (
+      this.state.entitlementData.length !== updatedEntitlementData.length
+    ) {
+      const arrInvalidRows = this.getRowsWithErrors(
+        this.state.entitlementData,
+        updatedEntitlementData
+      );
+      this.setState({
+        entitlementData: arrInvalidRows,
+        isValid: false,
+        loading: false
+      });
+      confirmAlert({
+        message:
+          "Invalid row(s) has/have been found from the uploaded Leave Entitlement data! Please find those invalid row(s) in the table and fix them in Excel Template, then re-try uploading...",
+        buttons: [
+          {
+            label: "OK"
+          }
+        ]
+      });
+    } else {
+      this.setState({
+        entitlementData: updatedEntitlementData,
+        isValid: true,
+        loading: false
+      });
+    }
+  };
+
+  getRowsWithErrors = (arrAll, arrValidated) => {
+    const arrDiff = [];
+    arrAll.forEach(arrAllRow => {
+      let arrAllIsPresentInArrVal = arrValidated.some(
+        arrValRow =>
+          arrValRow.EmployeeID === arrAllRow.EmployeeID &&
+          arrValRow.LeaveYear === arrAllRow.LeaveYear &&
+          arrValRow.LeaveType === arrAllRow.LeaveType &&
+          arrValRow.CarriedForward === arrAllRow.CarriedForward &&
+          arrValRow.Entitlement === arrAllRow.Entitlement &&
+          arrValRow.AvailableLeave === arrAllRow.AvailableLeave &&
+          arrValRow.TakenLeave === arrAllRow.TakenLeave &&
+          arrValRow.BalanceLeave === arrAllRow.BalanceLeave
+      );
+      if (!arrAllIsPresentInArrVal) {
+        arrDiff.push(arrAllRow);
+      }
+    });
+    return arrDiff;
+  };
+
+  confirmEntitlementSave = e => {
     confirmAlert({
       message: "Do you really want to save all uploaded Entitlements?",
       buttons: [
@@ -126,9 +240,9 @@ class UploadEntitlement extends Component {
         }
       ]
     });
-  }
+  };
 
-  handleEntitlementSave(e) {
+  handleEntitlementSave = e => {
     // This is a temporary solution for saving Array of data, an API
     // for saving bulk of data should be created to speed up the saving
     this.state.entitlementData.map(entRow => {
@@ -186,7 +300,7 @@ class UploadEntitlement extends Component {
         });
     });
     this.props.history.push("/leaveentitlement");
-  }
+  };
 
   completedEntitlementSave = e => {
     confirmAlert({
@@ -202,12 +316,17 @@ class UploadEntitlement extends Component {
   };
 
   validateStateHasData = () => {
-    const isInvalid = !this.state.entitlementData.length;
+    const isInvalid = !this.state.entitlementData.length || !this.state.isValid;
     return isInvalid;
   };
 
   handleReset = () => {
-    this.setState({ entitlementData: [], filename: "", loading: false });
+    this.setState({
+      entitlementData: [],
+      filename: "",
+      isValid: false,
+      loading: false
+    });
   };
 
   handleCancelUpload = () => {
@@ -219,6 +338,7 @@ class UploadEntitlement extends Component {
       return <Redirect to="/forbidden" />;
     }
 
+    console.log("State", this.state);
     const leaveEntitlementCols = [
       {
         id: "emplId",
@@ -401,13 +521,5 @@ class UploadEntitlement extends Component {
     );
   }
 }
-
-// UploadEntitlement.propTypes = {
-//   CarriedForward: PropTypes.number,
-//   Entitlement: PropTypes.number,
-//   AvailableLeave: PropTypes.number,
-//   TakenLeave: PropTypes.number,
-//   BalanceLeave: PropTypes.number
-// };
 
 export default withRouter(UploadEntitlement);

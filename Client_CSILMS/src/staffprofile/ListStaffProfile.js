@@ -139,7 +139,7 @@ class ListStaffProfile extends Component {
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Employee Profile</h3>
+            <h3 className="headerStyle">Employee Profiles</h3>
           </span>
         </div>
         <div className="reactTableContainer">

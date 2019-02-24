@@ -76,7 +76,7 @@ class AddPublicHoliday extends Component {
         holidayState: this.state.holidayState
       };
 
-      console.log(JSON.stringify(AddPublicHoliday));
+      // console.log(JSON.stringify(AddPublicHoliday));
 
       fetchData({
         url: API_BASE_URL + "/publicholiday",

@@ -41,7 +41,7 @@ class LeaveEntitlement extends Component {
           leaveEntitlementData: leaveEntitlementData,
           loading: false
         });
-        console.log(leaveEntitlementData);
+        // console.log(leaveEntitlementData);
       });
   }
 
@@ -183,7 +183,7 @@ class LeaveEntitlement extends Component {
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Leave Entitlements List</h3>
+            <h3 className="headerStyle">Leave Entitlements</h3>
           </span>
         </div>
         <div className="reactTableContainer">

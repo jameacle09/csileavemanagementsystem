@@ -43,7 +43,7 @@ class AddTranslateItem extends Component {
       method: "GET"
     })
       .then(data => {
-        console.log("Fetched Data", data);
+        // console.log("Fetched Data", data);
         this.setState({
           fieldname: data.id.fieldname,
           fieldvalue: data.id.fieldvalue,
@@ -51,7 +51,6 @@ class AddTranslateItem extends Component {
           xlatlongname: data.xlatlongname,
           xlatshortname: data.xlatshortname
         });
-        // console.log(this.state);
       })
       .catch(error => {
         if (error.status === 401) {
@@ -158,9 +157,9 @@ class AddTranslateItem extends Component {
   };
 
   render() {
-    // if (!isHrRole(this.props.currentUser)) {
-    //   return <Redirect to="/forbidden" />;
-    // }
+    if (!isHrRole(this.props.currentUser)) {
+      return <Redirect to="/forbidden" />;
+    }
 
     const {
       fieldname,

@@ -182,7 +182,7 @@ class LeaveHistoryList extends Component {
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Leave History List</h3>
+            <h3 className="headerStyle">Leave History</h3>
           </span>
         </div>
         <div className="reactTableContainer">

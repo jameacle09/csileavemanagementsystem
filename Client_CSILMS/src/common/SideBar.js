@@ -73,7 +73,7 @@ class SideBar extends Component {
                   to="/liststaffprofile"
                   activeClassName="sidebarLinkActive"
                 >
-                  Employee Profile
+                  Employee Profiles
                 </NavLink>
               </li>
               <li>
@@ -86,7 +86,7 @@ class SideBar extends Component {
                   to="/leaveentitlement"
                   activeClassName="sidebarLinkActive"
                 >
-                  Leave Entitlement
+                  Leave Entitlements
                 </NavLink>
               </li>
               <li>
@@ -94,7 +94,7 @@ class SideBar extends Component {
                   to="/publicholiday"
                   activeClassName="sidebarLinkActive"
                 >
-                  Public Holiday
+                  Public Holidays
                 </NavLink>
               </li>
               <li>
@@ -102,7 +102,7 @@ class SideBar extends Component {
                   to="/leavecategory"
                   activeClassName="sidebarLinkActive"
                 >
-                  Leave Category
+                  Leave Categories
                 </NavLink>
               </li>
               <li>
@@ -135,7 +135,7 @@ class SideBar extends Component {
                   to="/leaverequests"
                   activeClassName="sidebarLinkActive"
                 >
-                  Leave Requests List
+                  Leave Requests
                 </NavLink>
               </li>
               <li>

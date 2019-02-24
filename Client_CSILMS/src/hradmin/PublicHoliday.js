@@ -1,14 +1,5 @@
 import React, { Component } from "react";
-import {
-  Row,
-  Col,
-  Button,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
-  Alert
-} from "reactstrap";
+import { Row, Col, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
 import { Redirect, withRouter } from "react-router-dom";
@@ -127,7 +118,7 @@ class PublicHoliday extends Component {
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Public Holidays List</h3>
+            <h3 className="headerStyle">Public Holidays</h3>
           </span>
         </div>
         <div className="reactTableContainer">

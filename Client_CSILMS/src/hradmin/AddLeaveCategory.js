@@ -70,7 +70,7 @@ class AddLeaveCategory extends Component {
         entitlement: this.state.entitlement
       };
 
-      console.log(JSON.stringify(addLeaveCategory));
+      // console.log(JSON.stringify(addLeaveCategory));
 
       fetchData({
         url: API_BASE_URL + "/leavecategory",
@@ -100,7 +100,7 @@ class AddLeaveCategory extends Component {
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Edit Leave Category</h3>
+            <h3 className="headerStyle">Add Leave Category</h3>
           </span>
         </div>
         <div className="tableContainerFlex">

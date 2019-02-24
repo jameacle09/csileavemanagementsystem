@@ -41,7 +41,7 @@ class EditPublicHoliday extends Component {
       method: "GET"
     })
       .then(data => {
-        console.log("Fetched Data", data);
+        // console.log("Fetched Data", data);
         this.setState({
           holidayDate: data.holidayDate,
           holidayDay: data.holidayDay,

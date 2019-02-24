@@ -114,14 +114,14 @@ class LeaveCategory extends Component {
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">List of Leave Category</h3>
+            <h3 className="headerStyle">Leave Categories</h3>
           </span>
         </div>
         <div className="reactTableContainer">
           <Row style={{ height: "50px" }}>
-          <Col md="6" xs="6">
+            <Col md="6" xs="6">
               <ExportToExcel
-               leaveCategoryDetails={this.state.leaveCategoryDetails}
+                leaveCategoryDetails={this.state.leaveCategoryDetails}
               />
             </Col>
             <Col md="6" xs="6" style={{ textAlign: "right" }}>

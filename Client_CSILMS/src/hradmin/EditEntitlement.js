@@ -33,14 +33,13 @@ class EditEntitlement extends Component {
       balanceLeave: 0,
       modalSubmit: false
     };
-    this.loadLeaveEntitlement = this.loadLeaveEntitlement.bind(this);
   }
 
   componentDidMount() {
     this.loadLeaveEntitlement();
   }
 
-  loadLeaveEntitlement() {
+  loadLeaveEntitlement = () => {
     const { emplId, year, leaveCode } = this.props.computedMatch.params;
 
     fetchData({
@@ -55,7 +54,7 @@ class EditEntitlement extends Component {
       method: "GET"
     })
       .then(data => {
-        console.log(data);
+        // console.log(data);
         this.setState({
           emplId: data.id.emplid,
           name: data.employeeDetails.name,
@@ -72,14 +71,14 @@ class EditEntitlement extends Component {
       .catch(err => {
         console.log(err);
       });
-  }
+  };
 
   handleChangeLeaveEntitlement = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
   };
 
-  submitLeaveEntitlement(event) {
+  submitLeaveEntitlement = event => {
     event.preventDefault();
     const {
       emplId,
@@ -150,7 +149,7 @@ class EditEntitlement extends Component {
           });
         }
       });
-  }
+  };
 
   cancelLeaveEntitlement = () => {
     this.props.history.push("/leaveentitlement");
@@ -196,6 +195,7 @@ class EditEntitlement extends Component {
       takenLeave,
       balanceLeave
     } = this.state;
+
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">

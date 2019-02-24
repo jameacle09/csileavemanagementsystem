@@ -8,7 +8,6 @@ import {
   Input,
   Col
 } from "reactstrap";
-// import PropTypes from "prop-types";
 import { Redirect, withRouter, Link } from "react-router-dom";
 import {
   fetchData,
@@ -31,13 +30,9 @@ class UploadHoliday extends Component {
     this.state = {
       holidayData: [],
       filename: "",
+      isValid: false,
       loading: false
     };
-    this.handleExcelFileUpload = this.handleExcelFileUpload.bind(this);
-    this.handleHolidaySave = this.handleHolidaySave.bind(this);
-    this.handleCancelUpload = this.handleCancelUpload.bind(this);
-    this.validateUploadedRowsData = this.validateUploadedRowsData.bind(this);
-    this.completedHolidaySave = this.completedHolidaySave.bind(this);
   }
   _isMounted = false;
 
@@ -49,7 +44,20 @@ class UploadHoliday extends Component {
     this._isMounted = false;
   }
 
-  handleExcelFileUpload(file) {
+  handleExcelFileUpload = file => {
+    if (file.target.files[0]) {
+      if (!file.target.files[0].name.match(/.(xls|xlsx)$/i)) {
+        return confirmAlert({
+          message:
+            "Invalid Template has been used for uploading Public Holidays! Please use the latest Upload Template available in this page...",
+          buttons: [
+            {
+              label: "OK"
+            }
+          ]
+        });
+      }
+    }
     if (this._isMounted && file.target.files[0]) {
       /* Update state values for filename and loading */
       this.setState({
@@ -81,40 +89,86 @@ class UploadHoliday extends Component {
       this.setState({
         holidayData: [],
         filename: "",
+        isValid: false,
         loading: false
       });
     }
-  }
+  };
 
-  validateUploadedRowsData() {
-    // var DayOfTheWeek = [
-    //   "Sunday",
-    //   "Monday",
-    //   "Tuesday",
-    //   "Wednesday",
-    //   "Thursday",
-    //   "Friday",
-    //   "Saturday"
-    // ];
-    let updatedholidayData = this.state.holidayData.filter(
+  validateUploadedRowsData = () => {
+    let updatedHolidayData = this.state.holidayData.filter(
       holRow =>
         holRow.Date &&
-        // holRow.Day &&
+        !isNaN(Date.parse(holRow.Date)) &&
         holRow.Holiday &&
         holRow.State
-      // DayOfTheWeek.indexOf(holRow.Day) > -1
     );
-    updatedholidayData.forEach(function(e) {
+    updatedHolidayData.forEach(function(e) {
       e["Day"] = getWeekDay(e.Date);
     });
-    this.setState({
-      holidayData: updatedholidayData,
-      loading: false
-    });
-    console.log(this.state);
-  }
 
-  confirmHolidaySave(e) {
+    if (
+      this.state.holidayData.length === 0 ||
+      (this.state.holidayData.length && updatedHolidayData.length === 0)
+    ) {
+      this.setState({
+        isValid: false,
+        loading: false
+      });
+      confirmAlert({
+        message:
+          "No rows have been uploaded! Please verify that you are using the correct template and that it contains Public Holidays data...",
+        buttons: [
+          {
+            label: "OK"
+          }
+        ]
+      });
+    } else if (this.state.holidayData.length !== updatedHolidayData.length) {
+      const arrInvalidRows = this.getRowsWithErrors(
+        this.state.holidayData,
+        updatedHolidayData
+      );
+      this.setState({
+        holidayData: arrInvalidRows,
+        isValid: false,
+        loading: false
+      });
+      confirmAlert({
+        message:
+          "Invalid row(s) has/have been found from the uploaded Public Holiday data! Please find those invalid row(s) in the table and fix them in Excel Template, then re-try uploading...",
+        buttons: [
+          {
+            label: "OK"
+          }
+        ]
+      });
+    } else {
+      this.setState({
+        holidayData: updatedHolidayData,
+        isValid: true,
+        loading: false
+      });
+    }
+  };
+
+  getRowsWithErrors = (arrAll, arrValidated) => {
+    const arrDiff = [];
+    arrAll.forEach(arrAllRow => {
+      let arrAllIsPresentInArrVal = arrValidated.some(
+        arrValRow =>
+          arrValRow.Date === arrAllRow.Date &&
+          arrValRow.Holiday === arrAllRow.Holiday &&
+          arrValRow.State === arrAllRow.State
+      );
+      if (!arrAllIsPresentInArrVal) {
+        arrDiff.push(arrAllRow);
+      }
+    });
+    return arrDiff;
+  };
+
+  confirmHolidaySave = e => {
     confirmAlert({
       message: "Do you really want to save all uploaded Public Holidays?",
       buttons: [
@@ -127,9 +181,9 @@ class UploadHoliday extends Component {
         }
       ]
     });
-  }
+  };
 
-  handleHolidaySave(e) {
+  handleHolidaySave = e => {
     // This is a temporary solution for saving Array of data, an API
     // for saving bulk of data should be created to speed up the saving
     this.state.holidayData.map(holRow => {
@@ -174,7 +228,7 @@ class UploadHoliday extends Component {
         });
     });
     this.props.history.push("/publicholiday");
-  }
+  };
 
   completedHolidaySave = e => {
     confirmAlert({
@@ -190,7 +244,7 @@ class UploadHoliday extends Component {
   };
 
   validateStateHasData = () => {
-    const isInvalid = !this.state.holidayData.length;
+    const isInvalid = !this.state.holidayData.length || !this.state.isValid;
     return isInvalid;
   };
 
@@ -211,8 +265,14 @@ class UploadHoliday extends Component {
       {
         id: "Date",
         Header: "Date",
-        // accessor: d => formatDateYMD(d.Date),
-        accessor: d => formatDateDMY(d.Date),
+        accessor: d => {
+          if (this.state.isValid) {
+            return formatDateDMY(d.Date);
+          } else {
+            return d.Date;
+          }
+        },
+        // accessor: "Date",
         width: 150,
         sortable: true,
         filterable: true,
@@ -343,12 +403,5 @@ class UploadHoliday extends Component {
     );
   }
 }
-
-// UploadHoliday.propTypes = {
-//   Date: PropTypes.string,
-//   Day: PropTypes.string,
-//   Holiday: PropTypes.string,
-//   State: PropTypes.string
-// };
 
 export default withRouter(UploadHoliday);

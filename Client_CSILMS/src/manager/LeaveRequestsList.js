@@ -155,7 +155,7 @@ class LeaveRequestsList extends Component {
               viewButton.id.effDate
             )}/${formatDateYMD(viewButton.id.startDate)}/${
               viewButton.id.leaveCode
-              }`}
+            }`}
             activeclassname="active"
             className="smallButtonOverride"
           >
@@ -190,32 +190,30 @@ class LeaveRequestsList extends Component {
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Leave Requests List</h3>
+            <h3 className="headerStyle">Leave Requests</h3>
           </span>
         </div>
         <div className="reactTableContainer">
           <Row style={{ height: "50px" }}>
             <Col md="6" xs="6">
-              <ExportToExcel
-                leaveRequestData={this.state.leaveRequestData}
-              />
-        </Col>
-        </Row>
-        <ReactTable
-          data={this.state.leaveRequestData}
-          columns={leaveRequestsCols}
-          defaultPageSize={10}
-          pages={this.state.pages}
-          loading={this.state.loading}
-          filterable={true}
-          sortable={true}
-          multiSort={true}
-          loadingText="Loading Employe Profiles..."
-          noDataText="No data available."
-          className="-striped"
-        />
+              <ExportToExcel leaveRequestData={this.state.leaveRequestData} />
+            </Col>
+          </Row>
+          <ReactTable
+            data={this.state.leaveRequestData}
+            columns={leaveRequestsCols}
+            defaultPageSize={10}
+            pages={this.state.pages}
+            loading={this.state.loading}
+            filterable={true}
+            sortable={true}
+            multiSort={true}
+            loadingText="Loading Employe Profiles..."
+            noDataText="No data available."
+            className="-striped"
+          />
+        </div>
       </div>
-      </div >
     );
   }
 }

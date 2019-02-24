@@ -126,9 +126,9 @@ class AddTranslateItem extends Component {
   };
 
   render() {
-    // if (!isHrRole(this.props.currentUser)) {
-    //   return <Redirect to="/forbidden" />;
-    // }
+    if (!isHrRole(this.props.currentUser)) {
+      return <Redirect to="/forbidden" />;
+    }
 
     const {
       fieldname,

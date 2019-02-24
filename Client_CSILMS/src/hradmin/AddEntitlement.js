@@ -21,18 +21,8 @@ class AddEntitlement extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      employeeProfiles: [
-        {
-          emplId: "",
-          name: ""
-        }
-      ],
-      leaveCategories: [
-        {
-          leaveCode: "",
-          leaveDescr: ""
-        }
-      ],
+      employeeProfiles: [],
+      leaveCategories: [],
       emplId: "",
       name: "",
       year: "",
@@ -45,11 +35,6 @@ class AddEntitlement extends Component {
       balanceLeave: 0,
       modalSubmit: false
     };
-    this.loadEmployeeProfilesLookup = this.loadEmployeeProfilesLookup.bind(
-      this
-    );
-    this.loadLeaveCategoriesLookup = this.loadLeaveCategoriesLookup.bind(this);
-    this.submitLeaveEntitlement = this.submitLeaveEntitlement.bind(this);
   }
 
   componentDidMount() {
@@ -57,7 +42,7 @@ class AddEntitlement extends Component {
     this.loadLeaveCategoriesLookup();
   }
 
-  loadEmployeeProfilesLookup() {
+  loadEmployeeProfilesLookup = () => {
     fetchData({
       url: API_BASE_URL + "/employeedetails",
       method: "GET"
@@ -77,9 +62,9 @@ class AddEntitlement extends Component {
           });
         }
       });
-  }
+  };
 
-  loadLeaveCategoriesLookup() {
+  loadLeaveCategoriesLookup = () => {
     fetchData({
       url: API_BASE_URL + "/leavecategories",
       method: "GET"
@@ -99,7 +84,7 @@ class AddEntitlement extends Component {
           });
         }
       });
-  }
+  };
 
   handleChangeLeaveEntitlement = event => {
     const { name, value } = event.target;
@@ -130,7 +115,7 @@ class AddEntitlement extends Component {
     return isInvalid;
   };
 
-  submitLeaveEntitlement(event) {
+  submitLeaveEntitlement = event => {
     event.preventDefault();
     const {
       emplId,
@@ -197,7 +182,7 @@ class AddEntitlement extends Component {
           });
         }
       });
-  }
+  };
 
   handleCancel = () => {
     this.props.history.push("/leaveentitlement");
