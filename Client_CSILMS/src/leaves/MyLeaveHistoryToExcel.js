@@ -42,9 +42,9 @@ class MyLeaveHistoryToExcel extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.userData.map(leaveHistory => {
+            {this.props.userData.map((leaveHistory, index) => {
               return (
-                <tr>
+                <tr key={index}>
                 <td>{formatDateDMY(leaveHistory.id.startDate)}</td>
                 <td>{formatDateDMY(leaveHistory.endDate)}</td>                  
                 <td>{leaveHistory.leaveDuration} day(s)</td>

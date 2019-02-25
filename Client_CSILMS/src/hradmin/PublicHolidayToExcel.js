@@ -25,9 +25,9 @@ class ExportToExcel extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.publicHolidayDetails.map(publicHoliday => {
+            {this.props.publicHolidayDetails.map((publicHoliday, index) => {
               return (
-                <tr key={publicHoliday.holidayDate}>
+                <tr key={index}>
                   <td>{formatDateDMY(publicHoliday.holidayDate)}</td>
                   <td>{publicHoliday.holidayDay}</td>
                   <td>{publicHoliday.holidayDescr}</td>

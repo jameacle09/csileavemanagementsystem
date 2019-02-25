@@ -27,9 +27,9 @@ class MyLeaveDetailsToExcel extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.userData.map(leaveDetails => {
+            {this.props.userData.map((leaveDetails, index) => {
               return (
-                <tr>
+                <tr key={index}>
                   <td>{leaveDetails.leaveCategory.leaveDescr}</td>
                   <td>{leaveDetails.entitlement}</td>
                   <td>{leaveDetails.carryForward}</td>

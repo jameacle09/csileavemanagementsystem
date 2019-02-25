@@ -33,9 +33,9 @@ class ExportToExcel extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.leaveEntitlementData.map(leaveEntitlement => {
+            {this.props.leaveEntitlementData.map((leaveEntitlement, index) => {
               return (
-                <tr key={leaveEntitlement.employeeDetails.emplId}>
+                <tr key={index}>
                   <td>{leaveEntitlement.employeeDetails.emplId}</td>
                   <td>{leaveEntitlement.employeeDetails.name}</td>
                   <td>{leaveEntitlement.employeeDetails.jobTitle}</td>

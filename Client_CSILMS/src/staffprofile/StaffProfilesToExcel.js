@@ -30,9 +30,9 @@ class ExportToExcel extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.employeeProfiles.map(empProfile => {
+            {this.props.employeeProfiles.map((empProfile, index) => {
               return (
-                <tr key={empProfile.emplId}>
+                <tr key={index}>
                   <td>{empProfile.emplId}</td>
                   <td>{empProfile.name}</td>
                   <td>{empProfile.businessEmail}</td>
