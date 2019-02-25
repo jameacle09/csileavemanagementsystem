@@ -138,7 +138,7 @@ class PublicHoliday extends Component {
                   className="fa fa-upload"
                   style={{ margin: "0px 10px 0px 0px" }}
                 />
-                Upload Holiday
+                Upload Holidays
               </Button>
               <span> </span>
               <Button

@@ -336,6 +336,8 @@ ul ul a {
   margin: 0px auto;
   margin-bottom: 10px;
   width: 98%;
+  /* width: 1250px; */
+  /* overflow: hidden; */
   padding: 10px;
   flex-basis: auto;
   box-shadow: 5px 5px 5px rgb(95, 116, 136);
@@ -352,6 +354,11 @@ ul ul a {
   font-family: Helvetica;
   font-size: 16px;
 }
+/* .ReactTable .rt-table {
+  display: inline-block !important;
+  width: 100% !important;
+  overflow: auto !important;
+} */
 .ReactTable .rt-thead.-filters input,
 .ReactTable .rt-thead.-filters select,
 .ReactTable .-pagination .-pageJump input,

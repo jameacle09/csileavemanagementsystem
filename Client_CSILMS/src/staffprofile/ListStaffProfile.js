@@ -154,6 +154,21 @@ class ListStaffProfile extends Component {
             </Col>
             <Col md="6" xs="6" style={{ textAlign: "right" }}>
               <Button
+                variant="contained"
+                color="primary"
+                className="largeButtonOverride"
+                component={Link}
+                tag={Link}
+                to={`/liststaffprofile/uploadprofiles`}
+              >
+                <span
+                  className="fa fa-upload"
+                  style={{ margin: "0px 10px 0px 0px" }}
+                />
+                Upload Profiles
+              </Button>
+              <span> </span>
+              <Button
                 color="primary"
                 component={Link}
                 tag={Link}

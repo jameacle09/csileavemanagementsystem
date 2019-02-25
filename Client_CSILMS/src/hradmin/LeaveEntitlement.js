@@ -206,7 +206,7 @@ class LeaveEntitlement extends Component {
                   className="fa fa-upload"
                   style={{ margin: "0px 10px 0px 0px" }}
                 />
-                Upload Entitlement
+                Upload Entitlements
               </Button>
               <span> </span>
               <Button

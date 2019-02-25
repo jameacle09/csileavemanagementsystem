@@ -8,8 +8,7 @@ import {
   Input,
   Col
 } from "reactstrap";
-// import PropTypes from "prop-types";
-import { Redirect, withRouter, Link } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import { fetchData, isHrRole } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import { confirmAlert } from "react-confirm-alert";
@@ -17,33 +16,234 @@ import "../common/Styles.css";
 import XLSX from "xlsx";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import ExcelUploadTemplate from "../templates/Leaveprofile.xlsx";
+import ExcelUploadTemplate from "../templates/LeaveEntitlement.xlsx";
 
-class UploadStaffProfiles extends Component {
+class UploadEmployeeProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      profileData: [],
+      employeeProfileData: [],
+      genderLookup: [],
+      maritalStatusLookup: [],
+      jobTitleLookup: [],
+      businessUnitLookup: [],
+      departmentIdLookup: [],
+      employeeProfileLookup: [],
+      statusLookup: [],
+      roleLookup: [],
       filename: "",
+      isValid: false,
       loading: false
     };
-    this.handleExcelFileUpload = this.handleExcelFileUpload.bind(this);
-    this.handleProfileSave = this.handleProfileSave.bind(this);
-    this.handleCancelUpload = this.handleCancelUpload.bind(this);
-    this.validateUploadedRowsData = this.validateUploadedRowsData.bind(this);
-    this.completedProfileSave = this.completedProfileSave.bind(this);
   }
   _isMounted = false;
 
   componentDidMount() {
     this._isMounted = true;
+    this.loadGenderLookup();
+    this.loadMaritalStatusLookup();
+    this.loadJobTitleLookup();
+    this.loadBusinessUnitLookup();
+    this.loadDepartmentIdLookup();
+    this.loadEmployeeProfileLookup();
+    this.loadStatusLookup();
+    this.loadRoleLookup();
   }
 
   componentWillUnmount() {
     this._isMounted = false;
   }
 
-  handleExcelFileUpload(file) {
+  loadGenderLookup = () => {
+    fetchData({
+      url: API_BASE_URL + "/translateitem/gender",
+      method: "GET"
+    })
+      .then(data => this.setState({ genderLookup: data }))
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
+
+  loadMaritalStatusLookup = () => {
+    fetchData({
+      url: API_BASE_URL + "/translateitem/marriage_status",
+      method: "GET"
+    })
+      .then(data => this.setState({ maritalStatusLookup: data }))
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
+
+  loadJobTitleLookup = () => {
+    fetchData({
+      url: API_BASE_URL + "/translateitem/job_title",
+      method: "GET"
+    })
+      .then(data => this.setState({ jobTitleLookup: data }))
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
+
+  loadBusinessUnitLookup = () => {
+    fetchData({
+      url: API_BASE_URL + "/translateitem/business_unit",
+      method: "GET"
+    })
+      .then(data => this.setState({ businessUnitLookup: data }))
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
+
+  loadDepartmentIdLookup = () => {
+    fetchData({
+      url: API_BASE_URL + "/translateitem/dept_id",
+      method: "GET"
+    })
+      .then(data => this.setState({ departmentIdLookup: data }))
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
+
+  loadEmployeeProfileLookup = () => {
+    fetchData({
+      url: API_BASE_URL + "/employeedetails",
+      method: "GET"
+    })
+      .then(data => this.setState({ employeeProfileLookup: data }))
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
+
+  loadStatusLookup = () => {
+    fetchData({
+      url: API_BASE_URL + "/translateitem/status",
+      method: "GET"
+    })
+      .then(data => this.setState({ statusLookup: data }))
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
+
+  loadRoleLookup = () => {
+    fetchData({
+      url: API_BASE_URL + "/translateitem/role",
+      method: "GET"
+    })
+      .then(data => this.setState({ roleLookup: data }))
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
+
+  handleExcelFileUpload = file => {
+    if (file.target.files[0]) {
+      if (!file.target.files[0].name.match(/.(xls|xlsx)$/i)) {
+        return confirmAlert({
+          message:
+            "Invalid Template has been used for uploading Leave Entitlement! Please use the latest Upload Template available in this page...",
+          buttons: [
+            {
+              label: "OK"
+            }
+          ]
+        });
+      }
+    }
     if (this._isMounted && file.target.files[0]) {
       /* Update state values for filename and loading */
       this.setState({
@@ -54,7 +254,7 @@ class UploadStaffProfiles extends Component {
       const reader = new FileReader();
       const rABS = !!reader.readAsBinaryString;
       reader.onload = e => {
-        /* Parse Profile Data */
+        /* Parse Entitlement Data */
         const bstr = e.target.result;
         const workbook = XLSX.read(bstr, { type: rABS ? "binary" : "array" });
         /* Get the second worksheet */
@@ -62,9 +262,9 @@ class UploadStaffProfiles extends Component {
         const worksheet = workbook.Sheets[worksheetName];
         /* Convert array of arrays to JSON */
         const uploadData = XLSX.utils.sheet_to_json(worksheet, { raw: true });
-        /* Update State's Profile Data */
+        /* Update State's Entitlement Data */
         this.setState({
-          ProfileData: uploadData,
+          employeeProfileData: uploadData,
           loading: true
         });
         this.validateUploadedRowsData();
@@ -73,102 +273,214 @@ class UploadStaffProfiles extends Component {
       else reader.readAsArrayBuffer(file.target.files[0]);
     } else {
       this.setState({
-        profileData: [],
+        employeeProfileData: [],
         filename: "",
+        isValid: false,
         loading: false
       });
     }
-  }
+  };
 
-  validateUploadedRowsData() {
-    // var leaveTypes = [
-    //   "AL",
-    //   "CL",
-    //   "EL",
-    //   "HL",
-    //   "MR",
-    //   "MT",
-    //   "PL",
-    //   "PT",
-    //   "RL",
-    //   "SL"
-    // ];
-    // let updatedProfileData = this.state.profileData.filter(
-    //   entRow =>
-    //     entRow.EmployeeID &&
-    //     entRow.LeaveYear &&
-    //     entRow.LeaveType &&
-    //     leaveTypes.indexOf(entRow.LeaveType) > -1
-    // );
-    // updatedProfileData.map(entRow => {
-    //   if (!entRow.CarriedForward) entRow.CarriedForward = 0;
-    //   if (!entRow.Profile) entRow.Profile = 0;
-    //   if (!entRow.AvailableLeave) entRow.AvailableLeave = 0;
-    //   if (!entRow.TakenLeave) entRow.TakenLeave = 0;
-    //   if (!entRow.BalanceLeave) entRow.BalanceLeave = 0;
-    // });
-    // this.setState({
-    //   profileData: updatedprofileData,
-    //   loading: false
-    // });
-  }
+  validateUploadedRowsData = () => {
+    let arrGenderLookup = this.state.genderLookup;
+    let arrMaritalStatusLookup = this.state.maritalStatusLookup;
+    let arrJobTitleLookup = this.state.jobTitleLookup;
+    let arrBusinessUnitLookup = this.state.businessUnitLookup;
+    let arrDepartmentIdLookup = this.state.departmentIdLookup;
+    let arrEmployeeProfileLookup = this.state.employeeProfileLookup;
+    let arrStatusLookup = this.state.statusLookup;
+    let arrRoleLookup = this.state.roleLookup;
 
-  confirmProfileSave(e) {
+    let arrEmployeeProfileData = this.state.employeeProfileData.filter(
+      empRow =>
+        empRow.EmployeeID &&
+        empRow.EmployeeName &&
+        empRow.BusinessEmail &&
+        empRow.NRICPassportNo &&
+        empRow.Gender &&
+        arrGenderLookup.some(gender => {
+          return gender.id.fieldvalue === empRow.Gender;
+        }) &&
+        empRow.MaritalStatus &&
+        arrMaritalStatusLookup.some(maritalStatus => {
+          return maritalStatus.id.fieldvalue === empRow.MaritalStatus;
+        }) &&
+        empRow.DateMarried &&
+        !isNaN(Date.parse(empRow.DateMarried)) &&
+        typeof empRow.MarriedCount === "number" &&
+        typeof empRow.ChildrenCount === "number" &&
+        empRow.JobTitle &&
+        arrJobTitleLookup.some(jobTitle => {
+          return jobTitle.id.fieldvalue === empRow.JobTitle;
+        }) &&
+        empRow.MobileNo &&
+        empRow.BusinessUnit &&
+        arrBusinessUnitLookup.some(businessUnit => {
+          return businessUnit.id.fieldvalue === empRow.BusinessUnit;
+        }) &&
+        empRow.DepartmentID &&
+        arrDepartmentIdLookup.some(deptId => {
+          return deptId.id.fieldvalue === empRow.DepartmentID;
+        }) &&
+        empRow.LineManager &&
+        arrEmployeeProfileLookup.some(empProfile => {
+          return empProfile.emplId === empRow.LineManager;
+        }) &&
+        empRow.DottedLineManager &&
+        arrEmployeeProfileLookup.some(empProfile => {
+          return empProfile.emplId === empRow.DottedLineManager;
+        }) &&
+        empRow.DateJoined &&
+        !isNaN(Date.parse(empRow.DateJoined)) &&
+        empRow.Status &&
+        arrStatusLookup.some(status => {
+          return status.id.fieldvalue === empRow.Status;
+        }) &&
+        empRow.Role &&
+        arrRoleLookup.some(role => {
+          return role.id.fieldvalue === empRow.Role;
+        })
+    );
+    console.log("State", this.state.employeeProfileData);
+    console.log("Updated", arrEmployeeProfileData);
+    if (
+      this.state.employeeProfileData.length === 0 ||
+      (this.state.employeeProfileData.length &&
+        arrEmployeeProfileData.length === 0)
+    ) {
+      this.setState({
+        isValid: false,
+        loading: false
+      });
+      confirmAlert({
+        message:
+          "No rows have been uploaded! Please verify that you are using the correct template and that it contains Leave Entitlement data...",
+        buttons: [
+          {
+            label: "OK"
+          }
+        ]
+      });
+    } else if (
+      this.state.employeeProfileData.length !== arrEmployeeProfileData.length
+    ) {
+      const arrInvalidRows = this.getRowsWithErrors(
+        this.state.employeeProfileData,
+        arrEmployeeProfileData
+      );
+      this.setState({
+        employeeProfileData: arrInvalidRows,
+        isValid: false,
+        loading: false
+      });
+      confirmAlert({
+        message:
+          "Invalid row(s) has/have been found from the uploaded Leave Entitlement data! Please find those invalid row(s) in the table and fix them in Excel Template, then re-try uploading...",
+        buttons: [
+          {
+            label: "OK"
+          }
+        ]
+      });
+    } else {
+      this.setState({
+        employeeProfileData: arrEmployeeProfileData,
+        isValid: true,
+        loading: false
+      });
+    }
+  };
+
+  getRowsWithErrors = (arrAll, arrValidated) => {
+    const arrDiff = [];
+    arrAll.forEach(arrAllRow => {
+      let arrAllIsPresentInArrVal = arrValidated.some(
+        arrValRow =>
+          arrValRow.EmployeeID === arrAllRow.EmployeeID &&
+          arrValRow.EmployeeName === arrAllRow.EmployeeName &&
+          arrValRow.BusinessEmail === arrAllRow.BusinessEmail &&
+          arrValRow.NRICPassportNo === arrAllRow.NRICPassportNo &&
+          arrValRow.Gender === arrAllRow.Gender &&
+          arrValRow.MaritalStatus === arrAllRow.MaritalStatus &&
+          arrValRow.DateMarried === arrAllRow.DateMarried &&
+          arrValRow.MarriedCount === arrAllRow.MarriedCount &&
+          arrValRow.ChildrenCount === arrAllRow.ChildrenCount &&
+          arrValRow.JobTitle === arrAllRow.JobTitle &&
+          arrValRow.MobileNo === arrAllRow.MobileNo &&
+          arrValRow.BusinessUnit === arrAllRow.BusinessUnit &&
+          arrValRow.DepartmentID === arrAllRow.DepartmentID &&
+          arrValRow.LineManager === arrAllRow.LineManager &&
+          arrValRow.DottedLineManager === arrAllRow.DottedLineManager &&
+          arrValRow.DateJoined === arrAllRow.DateJoined &&
+          arrValRow.Status === arrAllRow.Status &&
+          arrValRow.Role === arrAllRow.Role
+      );
+      if (!arrAllIsPresentInArrVal) {
+        arrDiff.push(arrAllRow);
+      }
+    });
+    return arrDiff;
+  };
+
+  confirmEmployeeProfileSave = e => {
     confirmAlert({
-      message: "Do you really want to save all uploaded Profiles?",
+      message: "Do you really want to save all uploaded Employee Profiles?",
       buttons: [
         {
           label: "Yes",
-          onClick: () => this.handleProfileSave(e)
+          onClick: () => this.handleEmployeeProfileSave(e)
         },
         {
           label: "No"
         }
       ]
     });
-  }
+  };
 
-  handleProfileSave(e) {
+  handleEmployeeProfileSave = e => {
     // This is a temporary solution for saving Array of data, an API
     // for saving bulk of data should be created to speed up the saving
-    this.state.profileData.map(entRow => {
+    this.state.employeeProfileData.map(empRow => {
       const jsonRowValues = {
-        id: {
-          emplid: entRow.EmployeeID,
-          year: entRow.LeaveYear,
-          leaveCode: entRow.LeaveType
-        },
-        employeeDetails: {
-          emplId: entRow.EmployeeID
-        },
-        leaveCategory: {
-          leaveCode: entRow.LeaveType
-        },
-        carryForward: entRow.CarriedForward,
-        profile: entRow.Profile,
-        availableLeave: entRow.AvailableLeave,
-        takenLeave: entRow.TakenLeave,
-        balanceLeave: entRow.BalanceLeave
+        emplId: empRow.EmployeeID,
+        name: empRow.EmployeeName,
+        effectiveDate: empRow.effectiveDate,
+        reportsTo: empRow.LineManager,
+        reportDottedLine: empRow.DottedLineManager,
+        businessEmail: empRow.BusinessEmail,
+        nricPassport: empRow.NRICPassportNo,
+        gender: empRow.Gender,
+        marriageStatus: empRow.MaritalStatus,
+        marriageCount: empRow.MarriedCount,
+        marriageDate: empRow.DateMarried,
+        totalChildren: empRow.ChildrenCount,
+        jobTitle: empRow.JobTitle,
+        mobileNo: empRow.MobileNo,
+        businessUnit: empRow.BusinessUnit,
+        deptId: empRow.DepartmentID,
+        joinDate: empRow.DateJoined,
+        status: empRow.Status,
+        roles: empRow.Role
       };
 
       const postRequest = Object.assign({}, jsonRowValues);
       fetchData({
-        url: API_BASE_URL + "/employeeprofile",
+        url: API_BASE_URL + "/addEditEmployeeDetails",
         method: "POST",
         body: JSON.stringify(postRequest)
       })
         .then(response => {
-          if (response.ok) {
-            //   confirmAlert({
-            //     message: "Profile has been successfully inserted!",
-            //     buttons: [
-            //       {
-            //         label: "OK",
-            //         onClick: () => this.props.history.push("/employeeprofile")
-            //       }
-            //     ]
-            //   });
-          }
+          // if (response.ok) {
+          //   confirmAlert({
+          //     message: "Entitlement has been successfully inserted!",
+          //     buttons: [
+          //       {
+          //         label: "OK",
+          //         onClick: () => this.props.history.push("/leaveentitlement")
+          //       }
+          //     ]
+          //   });
+          // }
         })
         .catch(error => {
           if (error.status === 401) {
@@ -185,54 +497,53 @@ class UploadStaffProfiles extends Component {
           }
         });
     });
-    this.props.history.push("/employeeprofile");
-  }
+    this.props.history.push("/leaveentitlement");
+  };
 
-  completedProfileSave = e => {
+  completedEntitlementSave = e => {
     confirmAlert({
       message:
-        "All Employee Profiles have been successfully saved to the Database!",
+        "All Leave Entitlements have been successfully saved to the Database!",
       buttons: [
         {
           label: "OK",
-          onClick: () => this.props.history.push("/employeeprofile")
+          onClick: () => this.props.history.push("/leaveentitlement")
         }
       ]
     });
   };
 
   validateStateHasData = () => {
-    const isInvalid = !this.state.profileData.length;
+    const isInvalid =
+      !this.state.employeeProfileData.length || !this.state.isValid;
     return isInvalid;
   };
 
   handleReset = () => {
-    this.setState({ profileData: [], filename: "", loading: false });
+    this.setState({
+      employeeProfileData: [],
+      filename: "",
+      isValid: false,
+      loading: false
+    });
   };
 
   handleCancelUpload = () => {
-    this.props.history.push("/staffprofile");
+    this.props.history.push("/leaveentitlement");
   };
 
   render() {
-    if (!isHrRole(this.props.currentUser)) {
-      return <Redirect to="/forbidden" />;
-    }
+    // if (!isHrRole(this.props.currentUser)) {
+    //   return <Redirect to="/forbidden" />;
+    // }
 
+    console.log("State", this.state);
     const employeeProfileCols = [
       {
-        id: "emplId",
+        id: "EmployeeID",
         Header: "Employee ID",
         accessor: "EmployeeID",
-        width: 110,
-        sortable: true,
-        filterable: true
-      },
-      {
-        id: "year",
-        Header: "Leave Year",
-        accessor: "LeaveYear",
-        // minWidth: 120,
+        // width: 110,
         sortable: true,
         filterable: true,
         style: {
@@ -240,9 +551,17 @@ class UploadStaffProfiles extends Component {
         }
       },
       {
-        id: "leaveType",
-        Header: "Leave Type",
-        accessor: "LeaveType",
+        id: "EmployeeName",
+        Header: "Employee Name",
+        accessor: "EmployeeName",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "BusinessEmail",
+        Header: "Business Email",
+        accessor: "BusinessEmail",
         // minWidth: 180,
         sortable: true,
         filterable: true,
@@ -251,20 +570,9 @@ class UploadStaffProfiles extends Component {
         }
       },
       {
-        id: "carryForward",
-        Header: "Carried Forward",
-        accessor: "CarriedForward",
-        minWidth: 120,
-        sortable: true,
-        filterable: true,
-        style: {
-          textAlign: "center"
-        }
-      },
-      {
-        id: "profile",
-        Header: "profile",
-        accessor: "profile",
+        id: "NRICPassportNo",
+        Header: "NRIC/Passport#",
+        accessor: "NRICPassportNo",
         // minWidth: 120,
         sortable: true,
         filterable: true,
@@ -273,9 +581,9 @@ class UploadStaffProfiles extends Component {
         }
       },
       {
-        id: "availableLeave",
-        Header: "Available Leave",
-        accessor: "AvailableLeave",
+        id: "Gender",
+        Header: "Gender",
+        accessor: "Gender",
         // minWidth: 120,
         sortable: true,
         filterable: true,
@@ -284,9 +592,9 @@ class UploadStaffProfiles extends Component {
         }
       },
       {
-        id: "takenLeave",
-        Header: "Taken Leave",
-        accessor: "TakenLeave",
+        id: "MaritalStatus",
+        Header: "MS",
+        accessor: "MaritalStatus",
         // minWidth: 120,
         sortable: true,
         filterable: true,
@@ -295,9 +603,130 @@ class UploadStaffProfiles extends Component {
         }
       },
       {
-        id: "balanceLeave",
-        Header: "Balance Leave",
-        accessor: "BalanceLeave",
+        id: "DateMarried",
+        Header: "Date Married",
+        accessor: "DateMarried",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "MarriedCount",
+        Header: "Married#",
+        accessor: "MarriedCount",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "ChildrenCount",
+        Header: "Child#",
+        accessor: "ChildrenCount",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "JobTitle",
+        Header: "JobTitle",
+        accessor: "JobTitle",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "MobileNo",
+        Header: "MobileNo",
+        accessor: "MobileNo",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "BusinessUnit",
+        Header: "BU",
+        accessor: "BusinessUnit",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "DepartmentID",
+        Header: "DeptID",
+        accessor: "DepartmentID",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "LineManager",
+        Header: "LineManager",
+        accessor: "LineManager",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "DottedLineManager",
+        Header: "DottedLineMgr",
+        accessor: "DottedLineManager",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "DateJoined",
+        Header: "DateJoined",
+        accessor: "DateJoined",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "Status",
+        Header: "Status",
+        accessor: "Status",
+        // minWidth: 120,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "Role",
+        Header: "Role",
+        accessor: "Role",
         // minWidth: 120,
         sortable: true,
         filterable: true,
@@ -311,7 +740,7 @@ class UploadStaffProfiles extends Component {
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Upload Employee Profile</h3>
+            <h3 className="headerStyle">Upload Employee Profiles</h3>
           </span>
         </div>
         <div className="reactTableContainer">
@@ -341,9 +770,7 @@ class UploadStaffProfiles extends Component {
                       background: "#b8e2fc",
                       border: "1px solid rgb(214, 209, 209)"
                     }}
-                  >
-                    Hello
-                  </Input>
+                  />
                   <FormText color="muted" style={{ fontFamily: "Helvetica" }}>
                     Please download the latest{" "}
                     <a href={ExcelUploadTemplate}>
@@ -356,7 +783,7 @@ class UploadStaffProfiles extends Component {
                   <Button
                     variant="contained"
                     color="primary"
-                    onClick={event => this.confirmProfileSave(event)}
+                    onClick={event => this.confirmEmployeeProfileSave(event)}
                     disabled={this.validateStateHasData()}
                     style={{ width: "100px" }}
                     className="largeButtonOverride"
@@ -385,7 +812,7 @@ class UploadStaffProfiles extends Component {
               </FormGroup>
             </div>
             <ReactTable
-              data={this.state.ProfileData}
+              data={this.state.employeeProfileData}
               columns={employeeProfileCols}
               defaultPageSize={10}
               pages={this.state.pages}
@@ -404,12 +831,4 @@ class UploadStaffProfiles extends Component {
   }
 }
 
-// UploadProfile.propTypes = {
-//   CarriedForward: PropTypes.number,
-//   Profile: PropTypes.number,
-//   AvailableLeave: PropTypes.number,
-//   TakenLeave: PropTypes.number,
-//   BalanceLeave: PropTypes.number
-// };
-
-export default withRouter(UploadStaffProfiles);
+export default withRouter(UploadEmployeeProfile);
