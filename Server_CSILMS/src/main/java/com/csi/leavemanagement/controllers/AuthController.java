@@ -1,10 +1,13 @@
 package com.csi.leavemanagement.controllers;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Optional;
 
 import javax.validation.Valid;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.authentication.AuthenticationManager;
@@ -29,37 +32,42 @@ import com.csi.leavemanagement.security.UserPrincipal;
 @RequestMapping("/api/auth")
 public class AuthController {
 
-    @Autowired
-    AuthenticationManager authenticationManager;
-    
-    @Autowired
+	@Autowired
+	AuthenticationManager authenticationManager;
+
+	@Autowired
 	LoginDetailsRepository loginDetailsRepository;
 
-    @Autowired
-    JwtTokenProvider tokenProvider;
+	@Autowired
+	JwtTokenProvider tokenProvider;
 
-    @PostMapping("/signin")
-    public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
+	@PostMapping("/signin")
+	public ResponseEntity<?> authenticateUser(@Valid @RequestBody LoginRequest loginRequest) {
 
-        Authentication authentication = authenticationManager.authenticate(
-                new UsernamePasswordAuthenticationToken(
-                        loginRequest.getEmail(),
-                        loginRequest.getPassword()
-                )
-        );
+		Authentication authentication = authenticationManager.authenticate(
+				new UsernamePasswordAuthenticationToken(loginRequest.getEmail(), loginRequest.getPassword()));
 
-        SecurityContextHolder.getContext().setAuthentication(authentication);
+		LoginDetails loginDetails = loginDetailsRepository.findByUserIdAndLockAccount(loginRequest.getEmail(), 0)
+				.orElse(null);
+		
+		if(loginDetails == null) {
+			Map<String, String> mapResponse = new HashMap<String, String>();
+			mapResponse.put("message", "LOCKED");
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body(mapResponse);
+		}
 
-        String jwt = tokenProvider.generateToken(authentication);
-        return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
-    }
-    
-    @GetMapping("/user/me")
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
-    public LoginDetails getCurrentUser(@CurrentUser UserPrincipal currentUser) {
-        Optional<LoginDetails> loginDetails = loginDetailsRepository.findByEmplId(currentUser.getId());
-        
-        return loginDetails.get();
-    }
+		SecurityContextHolder.getContext().setAuthentication(authentication);
+
+		String jwt = tokenProvider.generateToken(authentication);
+		return ResponseEntity.ok(new JwtAuthenticationResponse(jwt));
+	}
+
+	@GetMapping("/user/me")
+	@PreAuthorize("hasAuthority('EMPLOYEE')")
+	public LoginDetails getCurrentUser(@CurrentUser UserPrincipal currentUser) {
+		Optional<LoginDetails> loginDetails = loginDetailsRepository.findByEmplId(currentUser.getId());
+
+		return loginDetails.get();
+	}
 
 }
