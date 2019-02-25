@@ -69,7 +69,7 @@ public class EmployeeDetails {
 	private String businessEmail;
 	
 	@Column(name = "total_children")
-	private int totolChildren;
+	private int totalChildren;
 	
 	@Column(name = "marriage_cnt")
 	private int marriageCount;
@@ -142,8 +142,8 @@ public class EmployeeDetails {
 		return businessEmail;
 	}
 
-	public int getTotolChildren() {
-		return totolChildren;
+	public int getTotalChildren() {
+		return totalChildren;
 	}
 
 	public int getMarriageCount() {
@@ -214,8 +214,8 @@ public class EmployeeDetails {
 		this.businessEmail = businessEmail;
 	}
 
-	public void setTotolChildren(int totolChildren) {
-		this.totolChildren = totolChildren;
+	public void setTotalChildren(int totalChildren) {
+		this.totalChildren = totalChildren;
 	}
 
 	public void setMarriageCount(int marriageCount) {
@@ -240,9 +240,7 @@ public class EmployeeDetails {
 				+ jobTitle + ", reportsTo=" + reportsTo + ", reportDottedLine=" + reportDottedLine + ", name=" + name
 				+ ", nricPassport=" + nricPassport + ", gender=" + gender + ", marriageStatus=" + marriageStatus
 				+ ", marriageDate=" + marriageDate + ", mobileNo=" + mobileNo + ", businessEmail=" + businessEmail
-				+ ", totolChildren=" + totolChildren + ", marriageCount=" + marriageCount + "]";
+				+ ", totalChildren=" + totalChildren + ", marriageCount=" + marriageCount + "]";
 	}
 	
-	
-
 }
