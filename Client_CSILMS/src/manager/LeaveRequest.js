@@ -109,6 +109,8 @@ class LeaveRequest extends Component {
 
     if (leaveStatus === "APPRV") {
       this.toggleApprove();
+    } else if (leaveStatus === "REJCT") {
+      this.toggleReject();
     } else {
       this.handleCancel();
     }
@@ -178,8 +180,15 @@ class LeaveRequest extends Component {
 
     event.preventDefault();
 
-    if (leaveStatus === "PNCLD") {
-      this.toggleApprove();
+    /* 
+      The leaveStatus is opposite when approving leave pending cancellation: 
+        CANCL means cancellation request is approved
+        APPRV means cancellation request is rejected
+    */
+    if (leaveStatus === "CANCL") {
+      this.toggleApprove();    
+    } else if (leaveStatus === "APPRV") {
+      this.toggleReject();
     } else {
       this.handleCancel();
     }
@@ -280,6 +289,8 @@ class LeaveRequest extends Component {
         return "Pending Cancel";
       } else if (strStatus === "REJCT") {
         return "Rejected";
+      } else {
+        return "";
       }
     };
 
@@ -400,7 +411,7 @@ class LeaveRequest extends Component {
               type="submit"
               color="danger"
               onClick={event =>
-                this.updateAppliedLeaveStatus(event, "APPRV")
+                this.updateAppliedLeaveStatusCancel(event, "APPRV")
               }
             >
               Confirm
