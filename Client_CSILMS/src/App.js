@@ -244,7 +244,7 @@ class App extends Component {
                     currentUser={this.state.currentUser}
                     path="/liststaffprofile/edit/:emplId"
                     title="Edit Staff Profile"
-                    component={EditStaffProfile}
+                    component={NewStaffProfile}
                   />
 
 

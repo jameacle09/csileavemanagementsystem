@@ -1,6 +1,7 @@
 package com.csi.leavemanagement.repositories;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -17,4 +18,6 @@ public interface EmployeeDetailsRepository extends JpaRepository<EmployeeDetails
 	List<EmployeeDetails> findAllManagers();
 	
 	List<EmployeeDetails> findByEmplIdNotIn(List<String> emplId);
+	
+	Optional<EmployeeDetails> findByBusinessEmail(String businessEmail);
 }
