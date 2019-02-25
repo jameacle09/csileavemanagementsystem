@@ -23,7 +23,7 @@ class ExportToExcel extends Component {
           sheet="tablexls"
           buttonText="Export to Excel"
         />
-        <table hidden="true" id="table-to-xls">
+        <table hidden={true} id="table-to-xls">
           <thead>
             <tr>
               <th>Employee ID</th>
@@ -40,9 +40,9 @@ class ExportToExcel extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.leaveHistoryData.map(leaveHistory => {
+            {this.props.leaveHistoryData.map((leaveHistory, index) => {
               return (
-                <tr key={leaveHistory.employeeDetails.emplId}>
+                <tr key={index}>
                   <td>{leaveHistory.employeeDetails.emplId}</td>
                   <td>{leaveHistory.employeeDetails.name}</td>
                   <td>{leaveHistory.leaveCategory.leaveDescr}</td>

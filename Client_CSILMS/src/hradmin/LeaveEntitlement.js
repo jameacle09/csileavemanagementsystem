@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Row, Col, Button } from "reactstrap";
+import { Row, Col, Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
 import { Redirect, withRouter } from "react-router-dom";
@@ -198,7 +198,7 @@ class LeaveEntitlement extends Component {
                 variant="contained"
                 color="primary"
                 className="largeButtonOverride"
-                component={Link}
+                // component={Link}
                 tag={Link}
                 to={`/leaveentitlement/uploadentitlement`}
               >

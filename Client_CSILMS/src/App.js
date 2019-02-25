@@ -17,7 +17,6 @@ import LeaveHistoryView from "./manager/LeaveHistoryView";
 import StaffProfileComponent from "./staffprofile/StaffProfileComponent";
 import ListStaffProfile from "./staffprofile/ListStaffProfile";
 import NewStaffProfile from "./staffprofile/NewStaffProfile";
-import EditStaffProfile from "./staffprofile/EditStaffProfile";
 import PublicHoliday from "./hradmin/PublicHoliday";
 import AddPublicHoliday from "./hradmin/AddPublicHoliday";
 import EditPublicHoliday from "./hradmin/EditPublicHoliday";

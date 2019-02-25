@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
-// import SideBar from "../hradmin/SideBar";
 import "../common/Styles.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 

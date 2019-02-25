@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
-import { formatDateDMY } from "../util/APIUtils";
 import "../common/Styles.css";
 
 class MyLeaveDetailsToExcel extends Component {
@@ -15,7 +14,7 @@ class MyLeaveDetailsToExcel extends Component {
           sheet="MyLeaveDetails"
           buttonText="Export to Excel"
         />
-        <table hidden="true" id="table-to-xls">
+        <table hidden={true} id="table-to-xls">
           <thead>
             <tr>
               <th>Leave Type</th>
@@ -27,9 +26,9 @@ class MyLeaveDetailsToExcel extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.userData.map(leaveDetails => {
+            {this.props.userData.map((leaveDetails, index) => {
               return (
-                <tr>
+                <tr key={index}>
                   <td>{leaveDetails.leaveCategory.leaveDescr}</td>
                   <td>{leaveDetails.entitlement}</td>
                   <td>{leaveDetails.carryForward}</td>
