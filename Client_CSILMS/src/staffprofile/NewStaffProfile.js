@@ -485,9 +485,15 @@ class NewStaffProfile extends Component {
                 required
               >
                 <option value="">Select Marital Status</option>
-                <option value="SIN">Single</option>
-                <option value="MAR">Married</option>
-                <option value="DVR">Divorced</option>
+                {this.state.translateItemList.map(item => {
+                  if(item.id.fieldname === "marriage_status"){
+                    return (
+                      <option key={item.id.fieldvalue} value={item.id.fieldvalue}>
+                        {item.xlatlongname}
+                      </option>
+                    );
+                  }
+              })}
               </Input>
             </FormGroup>
             <FormGroup>
@@ -542,7 +548,6 @@ class NewStaffProfile extends Component {
               {this.state.translateItemList.map(item => {
                   if(item.id.fieldname === "job_title"){
                     return (
-                      
                       <option key={item.id.fieldvalue} value={item.id.fieldvalue}>
                         {item.xlatlongname}
                       </option>
@@ -576,7 +581,6 @@ class NewStaffProfile extends Component {
                 {this.state.translateItemList.map(item => {
                   if(item.id.fieldname === "business_unit"){
                     return (
-                      
                       <option key={item.id.fieldvalue} value={item.id.fieldvalue}>
                         {item.xlatlongname}
                       </option>
@@ -599,7 +603,6 @@ class NewStaffProfile extends Component {
                 {this.state.translateItemList.map(item => {
                   if(item.id.fieldname === "dept_id"){
                     return (
-                      
                       <option key={item.id.fieldvalue} value={item.id.fieldvalue}>
                         {item.xlatlongname}
                       </option>
