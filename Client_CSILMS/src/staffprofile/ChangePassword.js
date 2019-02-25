@@ -3,8 +3,8 @@ import { Button, Form, FormGroup, Label, Input, Alert } from "reactstrap";
 import "../common/Styles.css";
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fetchData } from '../util/APIUtils';
-import { withRouter } from 'react-router-dom';
-import { API_BASE_URL } from '../constants'; 
+import { withRouter, Redirect } from 'react-router-dom';
+import { API_BASE_URL, FIRST_TIME, ACCESS_TOKEN } from '../constants'; 
 
 class ChangePassword extends React.Component {
   constructor(props) {
@@ -23,6 +23,14 @@ class ChangePassword extends React.Component {
     this.validatePassword = this.validatePassword.bind(this);
     this.submitForm = this.submitForm.bind(this);
     this.onDismiss = this.onDismiss.bind(this);
+    this.removedFirstTimeLogin = this.removedFirstTimeLogin.bind(this);
+  }
+
+  removedFirstTimeLogin(){
+    if(localStorage.getItem(FIRST_TIME) === "YES"){
+      localStorage.removeItem(FIRST_TIME);
+      this.props.history.push("/");
+    }
   }
 
   onDismiss() {
@@ -55,6 +63,7 @@ class ChangePassword extends React.Component {
                         currentPassword:"",
                         password:"",
                         confirmPassword:""});
+        this.removedFirstTimeLogin();
       }
     }).catch(error => {
       if(error.status === 401) {
@@ -102,6 +111,10 @@ class ChangePassword extends React.Component {
     }
   }
   render() {
+    if(!localStorage.getItem(ACCESS_TOKEN)){
+      return <Redirect to="/login" />
+    }
+
     const divStyle = {
       maxWidth: "600px",
       position: "relative",

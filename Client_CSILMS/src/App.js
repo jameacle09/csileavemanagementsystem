@@ -39,12 +39,13 @@ import EditLoginDetails from "./hradmin/EditLoginDetails";
 import ChangePassword from "./staffprofile/ChangePassword";
 import ResetPassword from "./staffprofile/ResetPassword";
 import "./common/Styles.css";
-import { getCurrentUser } from "./util/APIUtils";
+import { getCurrentUser, isFirstTimeLogin } from "./util/APIUtils";
 import Login from "./login/Login";
-import { ACCESS_TOKEN } from "./constants";
+import { ACCESS_TOKEN, FIRST_TIME } from "./constants";
 import PrivateRoute from "./common/PrivateRoute";
 import Forbidden from "./common/Forbidden";
 import NotFound from "./common/NotFound";
+import FirstTime from "./common/FirstTime";
 
 class App extends Component {
   constructor(props) {
@@ -56,6 +57,7 @@ class App extends Component {
     };
 
     this.loadCurrentUser = this.loadCurrentUser.bind(this);
+    this.checkFirstTimeLogin = this.checkFirstTimeLogin.bind(this);
     this.handleLogin = this.handleLogin.bind(this);
     this.handleLogout = this.handleLogout.bind(this);
   }
@@ -77,6 +79,15 @@ class App extends Component {
       });
   }
 
+  checkFirstTimeLogin() {
+    isFirstTimeLogin().then(response => {
+      if (response.message === "YES") {
+        localStorage.setItem(FIRST_TIME, response.message);
+        this.props.history.push("/firsttime");
+      }
+    });
+  }
+
   handleLogout(redirectTo = "/") {
     localStorage.removeItem(ACCESS_TOKEN);
 
@@ -90,11 +101,13 @@ class App extends Component {
 
   handleLogin() {
     this.loadCurrentUser();
+    this.checkFirstTimeLogin();
     this.props.history.push("/");
   }
 
   componentDidMount() {
     this.loadCurrentUser();
+    this.checkFirstTimeLogin();
   }
 
   render() {
@@ -114,26 +127,11 @@ class App extends Component {
               />
               <div className="mainContainerFlex">
                 <Switch>
-                  {/*<Route exact path="/" title="Home" component={HomePage} />*/}
-
-                  <Route
-                    exact
-                    path="/"
-                    title="Home"
-                    render={props => (
-                      <HomePage
-                        isAuthenticated={this.state.isAuthenticated}
-                        currentUser={this.state.currentUser}
-                        handleLogout={this.handleLogout}
-                        {...props}
-                      />
-                    )}
-                  />
-
                   <PrivateRoute
                     exact
                     authenticated={this.state.isAuthenticated}
                     path="/"
+                    title="Home"
                     component={HomePage}
                     currentUser={this.state.currentUser}
                     handleLogout={this.handleLogout}
@@ -180,7 +178,7 @@ class App extends Component {
                     title="My Profile"
                     component={MyProfile}
                   />
-                  <PrivateRoute
+                  <Route
                     authenticated={this.state.isAuthenticated}
                     currentUser={this.state.currentUser}
                     path="/changepassword"
@@ -403,6 +401,7 @@ class App extends Component {
                     component={ResetPassword}
                   />
                   <PrivateRoute path="/forbidden" component={Forbidden} />
+                  <Route path="/firsttime" component={FirstTime} />
                   <Route component={NotFound} />
                 </Switch>
               </div>

@@ -15,7 +15,7 @@ class ExportToExcel extends Component {
                     sheet="LeaveRequest"
                     buttonText="Export to Excel"
                 />
-                <table hidden="true" id="table-to-xls">
+                <table hidden={true} id="table-to-xls">
                     <thead>
                         <tr>
                             <th>Employee ID</th>
@@ -30,9 +30,9 @@ class ExportToExcel extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.props.leaveRequestData.map(LeaveRequest => {
+                        {this.props.leaveRequestData.map((LeaveRequest, index) => {
                             return (
-                                <tr key={LeaveRequest.id.emplid}>
+                                <tr key={index}>
                                     <td>{LeaveRequest.id.emplid}</td>
                                     <td>{LeaveRequest.employeeDetails.name}</td>
                                     <td>{LeaveRequest.employeeDetails.jobTitle}</td>

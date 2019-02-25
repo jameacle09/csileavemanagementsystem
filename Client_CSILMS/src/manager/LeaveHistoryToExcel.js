@@ -40,9 +40,9 @@ class ExportToExcel extends Component {
             </tr>
           </thead>
           <tbody>
-            {this.props.leaveHistoryData.map(leaveHistory => {
+            {this.props.leaveHistoryData.map((leaveHistory, index) => {
               return (
-                <tr key={leaveHistory.employeeDetails.emplId}>
+                <tr key={index}>
                   <td>{leaveHistory.employeeDetails.emplId}</td>
                   <td>{leaveHistory.employeeDetails.name}</td>
                   <td>{leaveHistory.leaveCategory.leaveDescr}</td>

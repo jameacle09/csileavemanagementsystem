@@ -23,9 +23,9 @@ class ExportToExcel extends Component {
                         </tr>
                     </thead>
                     <tbody>
-                        {this.props.leaveCategoryDetails.map(leaveCategory => {
+                        {this.props.leaveCategoryDetails.map((leaveCategory, index) => {
                             return (
-                                <tr key={leaveCategory.leaveCode}>
+                                <tr key={index}>
                                     <td>{leaveCategory.leaveCode}</td>
                                     <td>{leaveCategory.leaveDescr}</td>
                                     <td>{leaveCategory.entitlement}</td>
