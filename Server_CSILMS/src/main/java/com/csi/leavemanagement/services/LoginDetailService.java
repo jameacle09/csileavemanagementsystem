@@ -83,4 +83,20 @@ public class LoginDetailService {
 		mapResponse.put("message", "The password is successfully reset");
 		return ResponseEntity.ok(mapResponse);
 	}
+	
+	public ResponseEntity<?> isFirstTimeLogin(UserPrincipal currentUser){
+		Map<String, String> mapResponse = new HashMap<String, String>();
+		String emplId = currentUser.getId();
+		EmployeeDetails employee = employeeDetailsService.findById(emplId);
+		LoginDetails empLogin = loginDetailRepository.findByEmplId(emplId).orElse(null);
+		
+		if(passwordEncoder.matches(employee.getNricPassport(), empLogin.getPassword())) {
+			logger.info("User {} is using default password", currentUser.getId());
+			mapResponse.put("message", "YES");
+		} else {
+			mapResponse.put("message", "NO");
+		}
+		
+		return ResponseEntity.ok(mapResponse);
+	}
 }

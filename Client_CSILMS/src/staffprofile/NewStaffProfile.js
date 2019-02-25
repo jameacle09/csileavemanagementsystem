@@ -13,6 +13,7 @@ class NewStaffProfile extends Component {
 
     let initialDate = new Date();
     initialDate.setUTCHours(0,0,0,0);
+    this.loadTranslateItem = this.loadTranslateItem.bind(this);
     this.isHrRole = this.isHrRole.bind(this);
     this.isManagerRole = this.isManagerRole.bind(this);
     this.getManagerDetails = this.getManagerDetails.bind(this);
@@ -20,21 +21,18 @@ class NewStaffProfile extends Component {
     this.verifyEmailExists = this.verifyEmailExists.bind(this);
     this.handleChange = this.handleChange.bind(this);
     this.loadManagerList = this.loadManagerList.bind(this);
-    this.loadDeptList = this.loadDeptList.bind(this);
-    this.loadBuList = this.loadBuList.bind(this);
     this.loadProfile = this.loadProfile.bind(this);
     this.state = {
       emplIdExists:false,
       roles: [{role:"e", roleName:"EMPLOYEE"}],
       managerList: [ { emplId: "", name: "" } ],
-      deptList: [ { deptId: "", deptName: "" } ],
-      buList: [ { businessUnit: "", descr: ""  } ],
       emplId: "",
       name: "",
+      businessEmail: "",
       effectiveDate:null,
       reportsTo: { emplId: "", name: "" },
       reportDottedLine: "",
-      deptId: { deptId: "", deptName: "" },
+      deptId: "",
       nricPassport:"",
       gender: "",
       marriageStatus:"",
@@ -43,10 +41,15 @@ class NewStaffProfile extends Component {
       totalChildren:"",
       jobTitle:"",
       mobileNo:"",
-      businessUnit:{ businessUnit:"", descr: "" },
+      businessUnit:"",
       managerId:"",
       joinDate:initialDate,
-      status:"A"
+      status:"A",
+      translateItemList: [
+        { id: { fieldname: "", fieldvalue: "" }, 
+          effStatus: "", xlatlongname: "", xlatshortname: "" 
+        }
+      ]
     };
   }
 
@@ -119,24 +122,6 @@ class NewStaffProfile extends Component {
     return currManager[0];
   }
 
-  getDeptDetails(deptId) {
-    if (!deptId) return;
-      const currDept = this.state.deptList.filter(function(dept) {
-      return dept.deptId === deptId;
-    });
-
-    return currDept[0];
-  }
-
-  getBuDetails(buId) {
-    if (!buId) return;
-      const currBu = this.state.buList.filter(function(bu) {
-      return bu.businessUnit === buId;
-    });
-
-    return currBu[0];
-  }
-
   loadProfile(){
     let initialDate = new Date();
     initialDate.setUTCHours(0,0,0,0);
@@ -149,7 +134,7 @@ class NewStaffProfile extends Component {
         this.setState({
           emplId: data.emplId,
           name: data.name,
-          email: data.businessEmail,
+          businessEmail: data.businessEmail,
           nricPassport: data.nricPassport,
           gender: data.gender,
           marriageStatus: data.marriageStatus,
@@ -159,8 +144,8 @@ class NewStaffProfile extends Component {
           jobTitle: data.jobTitle,
           effectiveDate: data.effectiveDate,
           mobileNo: data.mobileNo,
-          deptId :{ deptId : data.deptId },
-          businessUnit: { businessUnit: data.businessUnit },
+          deptId : data.deptId,
+          businessUnit: data.businessUnit,
           reportsTo: data.reportsTo,
           joinDate: data.joinDate === null? initialDate : formatDateYMD(data.joinDate),
           status: data.status,
@@ -205,34 +190,14 @@ class NewStaffProfile extends Component {
     });
   }
 
-  loadDeptList(){
-    // fetch departments from API
+  loadTranslateItem(){
+    // fetch translate item from API
     fetchData({
-      url: API_BASE_URL + "/departments",
+      url: API_BASE_URL + "/translateitems",
       method: 'GET'
-    }).then(data => this.setState({ deptList: data }))
-    .catch(error => {
-        // if unable to fetch data, assign default (spaces) to values
-        let deptListData = [{deptId: "", deptName: ""}];
-        this.setState({ deptList: deptListData });
-
-        if (error.status === 401) {
-          this.props.history.push("/login");
-        }
-    });
-  }
-
-  loadBuList(){
-    // fetch business unit from API
-    fetchData({
-      url: API_BASE_URL + "/businessunit",
-      method: 'GET'
-    }).then(data => this.setState({ buList: data }))
-    .catch(error => {
-        // if unable to fetch data, assign default (spaces) to values
-        let buListData = [ { businessUnit: "", descr: "" } ];
-        this.setState({ buList: buListData });
-
+    }).then(data => { 
+      this.setState({translateItemList:data})
+    }).catch(error => {
         if (error.status === 401) {
           this.props.history.push("/login");
         }
@@ -248,7 +213,7 @@ class NewStaffProfile extends Component {
         this.setState({ name: event.target.value });
         break;
       case "email":
-        this.setState({ email: event.target.value });
+        this.setState({ businessEmail: event.target.value });
         break;
       case "icNumber":
         this.setState({ nricPassport: event.target.value });
@@ -280,20 +245,10 @@ class NewStaffProfile extends Component {
         this.setState({ jobTitle: event.target.value });
         break;
       case "businessUnit":
-        if(event.target.value !== ""){
-          let bu = this.getBuDetails(event.target.value);
-          this.setState({ businessUnit: bu });
-        } else {
-          this.setState({ businessUnit: {businessUnit:"", descr: ""} });
-        }
+        this.setState({ businessUnit: event.target.value });
         break;
       case "deptId":
-        if(event.target.value !== ""){
-          let dept = this.getDeptDetails(event.target.value);
-          this.setState({ deptId: dept });
-        } else {
-          this.setState({ deptId: {deptId:"", deptName: ""} });
-        }
+        this.setState({ deptId: event.target.value });
         break;
       case "managerId":
         if(event.target.value !== ""){
@@ -352,7 +307,7 @@ class NewStaffProfile extends Component {
       effectiveDate: this.state.effectiveDate,
       reportsTo: this.state.reportsTo,
       reportDottedLine: this.state.reportDottedLine,
-      businessEmail: this.state.email,
+      businessEmail: this.state.businessEmail,
       nricPassport: this.state.nricPassport,
       gender: this.state.gender,
       marriageStatus: this.state.marriageStatus,
@@ -361,8 +316,8 @@ class NewStaffProfile extends Component {
       totalChildren: this.state.totalChildren,
       jobTitle: this.state.jobTitle,
       mobileNo: this.state.mobileNo,
-      businessUnit: this.state.businessUnit.businessUnit,
-      deptId: this.state.deptId.deptId,
+      businessUnit: this.state.businessUnit,
+      deptId: this.state.deptId,
       joinDate: this.state.joinDate,
       status: this.state.status,
       roles: this.state.roles
@@ -393,8 +348,7 @@ class NewStaffProfile extends Component {
 
   componentDidMount() {
     this.loadManagerList();
-    this.loadDeptList();
-    this.loadBuList();
+    this.loadTranslateItem();
     
     if(this.props.computedMatch.params.emplId){
       this.loadProfile();
@@ -409,9 +363,7 @@ class NewStaffProfile extends Component {
           label: "Yes",
           onClick: () => this.props.history.push("/liststaffprofile")
         },
-        {
-          label: "No"
-        }
+        { label: "No" }
       ]
     });
   };
@@ -419,7 +371,7 @@ class NewStaffProfile extends Component {
   render() {
     const {emplId,
             name,
-            email,
+            businessEmail,
             nricPassport,
             gender,
             marriageStatus,
@@ -481,7 +433,7 @@ class NewStaffProfile extends Component {
                 placeholder="Email"
                 onChange={this.handleChange}
                 onBlur={this.verifyEmailExists}
-                value={email}
+                value={businessEmail}
                 required
               />
             </FormGroup>
@@ -509,8 +461,16 @@ class NewStaffProfile extends Component {
                 required
               >
                 <option value="">Select Gender</option>
-                <option value="M">Male</option>
-                <option value="F">Female</option>
+                {this.state.translateItemList.map(item => {
+                  if(item.id.fieldname === "gender"){
+                    return (
+                      
+                      <option key={item.id.fieldvalue} value={item.id.fieldvalue}>
+                        {item.xlatlongname}
+                      </option>
+                    );
+                  }
+              })}
               </Input>
             </FormGroup>
             <FormGroup>
@@ -525,9 +485,15 @@ class NewStaffProfile extends Component {
                 required
               >
                 <option value="">Select Marital Status</option>
-                <option value="SIN">Single</option>
-                <option value="MAR">Married</option>
-                <option value="DVR">Divorced</option>
+                {this.state.translateItemList.map(item => {
+                  if(item.id.fieldname === "marriage_status"){
+                    return (
+                      <option key={item.id.fieldvalue} value={item.id.fieldvalue}>
+                        {item.xlatlongname}
+                      </option>
+                    );
+                  }
+              })}
               </Input>
             </FormGroup>
             <FormGroup>
@@ -570,14 +536,25 @@ class NewStaffProfile extends Component {
             <FormGroup>
               <Label for="jobTitle">Job Title</Label>
               <Input
-                type="text"
+                type="select"
                 name="jobTitle"
                 id="jobTitle"
                 placeholder="Job Title"
                 onChange={this.handleChange}
                 value={jobTitle}
                 required
-              />
+              >
+              <option key="" value="">Select Job Title</option>
+              {this.state.translateItemList.map(item => {
+                  if(item.id.fieldname === "job_title"){
+                    return (
+                      <option key={item.id.fieldvalue} value={item.id.fieldvalue}>
+                        {item.xlatlongname}
+                      </option>
+                    );
+                  }
+              })}
+              </Input>
             </FormGroup>
             <FormGroup>
               <Label for="mobileNo">Mobile No.</Label>
@@ -598,17 +575,18 @@ class NewStaffProfile extends Component {
                 name="businessUnit"
                 id="businessUnit"
                 onChange={this.handleChange}
-                value={businessUnit.businessUnit}
+                value={businessUnit}
                 required
               >
-                <option key="" value="">Select Business Unit</option>
-                {this.state.buList.map(bu => {
+                {this.state.translateItemList.map(item => {
+                  if(item.id.fieldname === "business_unit"){
                     return (
-                      <option key={bu.businessUnit} value={bu.businessUnit}>
-                        {bu.descr}
+                      <option key={item.id.fieldvalue} value={item.id.fieldvalue}>
+                        {item.xlatlongname}
                       </option>
                     );
-                })}
+                  }
+              })}
               </Input>
             </FormGroup>
             <FormGroup>
@@ -618,17 +596,19 @@ class NewStaffProfile extends Component {
                 name="deptId"
                 id="deptId"
                 onChange={this.handleChange}
-                value={deptId.deptId}
+                value={deptId}
                 required
               >
                 <option key="" value="">Select Department</option>
-                {this.state.deptList.map(dept => {
+                {this.state.translateItemList.map(item => {
+                  if(item.id.fieldname === "dept_id"){
                     return (
-                      <option key={dept.deptId} value={dept.deptId}>
-                        {dept.deptName}
+                      <option key={item.id.fieldvalue} value={item.id.fieldvalue}>
+                        {item.xlatlongname}
                       </option>
                     );
-                })}
+                  }
+              })}
               </Input>
             </FormGroup>
             <FormGroup>
