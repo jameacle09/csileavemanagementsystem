@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button, Table, Input, Row, Col } from "reactstrap";
+import { Button } from "reactstrap";
 import { Link, Redirect, withRouter } from "react-router-dom";
 import "../common/Styles.css";
 import { fetchData, isHrRole } from "../util/APIUtils";

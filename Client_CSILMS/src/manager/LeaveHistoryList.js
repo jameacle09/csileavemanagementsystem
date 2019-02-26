@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Table, Button, Row, Col } from "reactstrap";
+import { Button, Row, Col } from "reactstrap";
 import { Link, Redirect, withRouter } from "react-router-dom";
 import {
   fetchData,
@@ -188,13 +188,6 @@ class LeaveHistoryList extends Component {
         <div className="reactTableContainer">
           <Row style={{ height: "50px" }}>
             <Col md="6" xs="6">
-              {/* <Button component={Link} to="" className="largeButtonOverride">
-                <span
-                  className="fa fa-file-excel"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-                Export to Excel
-              </Button> */}
               <ExportToExcel leaveHistoryData={this.state.leaveHistoryData} />
             </Col>
             <Col md="6" xs="6" style={{ textAlign: "right" }}>

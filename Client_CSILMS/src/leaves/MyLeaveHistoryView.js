@@ -7,8 +7,6 @@ import {
   Input,
   FormText,
   Col,
-  Alert,
-  CustomInput,
   Modal,
   ModalHeader,
   ModalBody,
@@ -17,7 +15,7 @@ import {
 import { fetchData, formatDateYMD } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import "../common/Styles.css";
-import { Redirect, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
 
 class MyLeaveHistoryView extends Component {

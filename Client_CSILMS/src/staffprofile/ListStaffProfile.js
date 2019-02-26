@@ -176,7 +176,7 @@ class ListStaffProfile extends Component {
               <span> </span>
               <Button
                 color="primary"
-                component={Link}
+                // component={Link}
                 tag={Link}
                 to={`/newstaffprofile/`}
                 className="largeButtonOverride"
