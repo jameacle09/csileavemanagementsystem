@@ -6,6 +6,7 @@ import { API_BASE_URL } from '../constants';
 import { withRouter } from 'react-router-dom';
 import { Hidden } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
+import BGURL from "../img/header.jpg";
 
 class HomePage extends Component {
   constructor(props) {
@@ -59,11 +60,10 @@ class HomePage extends Component {
   render() {
     const divStyle = {
       backgroundImage:
-        "url('http://www.chinasofti.com/en/styles/extends/about/images/header.jpg')",
+        `url(${BGURL})`,
       backgroundSize: "cover",
       marginTop: "-16px",
-      color: "#FFFFFF",
-      textShadow: "1px 1px #7A7974"
+      color: "#FFFFFF"
     };
 
     let userData = this.state.userData;
