@@ -7,10 +7,6 @@ import {
   Input,
   FormText,
   Col,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter,
   Alert
 } from "reactstrap";
 import { confirmAlert } from "react-confirm-alert";
@@ -419,8 +415,8 @@ class ApplyLeave extends Component {
       isHalfDay,
       leaveDuration,
       leaveCategory,
-      leaveReason,
-      attachedFile,
+      // leaveReason,
+      // attachedFile,
       approverId
     } = this.state;
 

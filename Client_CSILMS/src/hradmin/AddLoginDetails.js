@@ -5,14 +5,8 @@ import {
   FormGroup,
   Label,
   Input,
-  FormText,
   Col,
-  Alert,
-  CustomInput,
-  Modal,
-  ModalHeader,
-  ModalBody,
-  ModalFooter
+  CustomInput
 } from "reactstrap";
 // import Button from '@material-ui/core/Button';
 import "../common/Styles.css";

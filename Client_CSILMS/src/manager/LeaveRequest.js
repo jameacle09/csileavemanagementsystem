@@ -13,7 +13,7 @@ import {
   ModalBody,
   ModalFooter
 } from "reactstrap";
-import { Redirect, withRouter } from "react-router-dom";
+import { withRouter } from "react-router-dom";
 import { fetchData, formatDateYMD } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import { confirmAlert } from "react-confirm-alert";
@@ -268,15 +268,15 @@ class LeaveRequest extends Component {
       }
     };
 
-    const externalCloseBtn = (
-      <button
-        className="close"
-        style={{ position: "absolute", top: "15px", right: "15px" }}
-        onClick={this.toggle}
-      >
-        &times;
-      </button>
-    );
+    // const externalCloseBtn = (
+    //   <button
+    //     className="close"
+    //     style={{ position: "absolute", top: "15px", right: "15px" }}
+    //     onClick={this.toggle}
+    //   >
+    //     &times;
+    //   </button>
+    // );
 
     const showFullStatus = strStatus => {
       if (strStatus === "PNAPV") {
