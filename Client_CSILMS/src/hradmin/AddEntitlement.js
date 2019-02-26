@@ -11,8 +11,8 @@ import {
   ModalBody,
   ModalFooter
 } from "reactstrap";
-import { Redirect, withRouter } from "react-router-dom";
-import { fetchData, isHrRole } from "../util/APIUtils";
+import { withRouter } from "react-router-dom";
+import { fetchData } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import { confirmAlert } from "react-confirm-alert";
 import "../common/Styles.css";
@@ -119,10 +119,10 @@ class AddEntitlement extends Component {
     event.preventDefault();
     const {
       emplId,
-      name,
+      //name,
       year,
       leaveCode,
-      leaveDescr,
+      // leaveDescr,
       carryForward,
       entitlement,
       availableLeave,
@@ -203,10 +203,10 @@ class AddEntitlement extends Component {
       employeeProfiles,
       leaveCategories,
       emplId,
-      name,
+      // name,
       year,
       leaveCode,
-      leaveDescr,
+      // leaveDescr,
       carryForward,
       entitlement,
       availableLeave,

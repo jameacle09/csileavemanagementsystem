@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Col, Form, FormGroup, Label, Input, Button } from "reactstrap";
-// import Button from "@material-ui/core/Button";
 import { ACCESS_TOKEN } from "../constants";
 import { login } from "../util/APIUtils";
 import { withRouter } from "react-router-dom";
@@ -84,14 +83,23 @@ class Login extends Component {
         this.props.onLogin();
       })
       .catch(error => {
+        console.log(error.status + " " + error.message);
         let fieldValidationErrors = this.state.formErrors;
         if (error.status === 401) {
+          console.log(error.message);
           fieldValidationErrors.loginfailed =
             "Your Username or Password is incorrect. Please try again!";
           this.setState({ formErrors: fieldValidationErrors });
         } else {
-          fieldValidationErrors.loginfailed =
-            "Sorry! Something went wrong. Please try again!";
+          if(error.message === "LOCKED"){
+            fieldValidationErrors.loginfailed =
+              "Sorry! Your login account currently locked!";
+          } else {
+            fieldValidationErrors.loginfailed =
+              "Sorry! Something went wrong. Please try again!";
+          }
+
+          this.setState({ formErrors: fieldValidationErrors });
         }
       });
   }

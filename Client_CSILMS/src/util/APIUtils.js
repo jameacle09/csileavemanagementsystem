@@ -42,6 +42,17 @@ export function getCurrentUser() {
   });
 }
 
+export function isFirstTimeLogin() {
+  if (!localStorage.getItem(ACCESS_TOKEN)) {
+    return Promise.reject("No access token set.");
+  }
+
+  return request({
+    url: API_BASE_URL + "/firstTime",
+    method: "GET"
+  });
+}
+
 export function login(loginRequest) {
   return request({
     url: API_BASE_URL + "/auth/signin",

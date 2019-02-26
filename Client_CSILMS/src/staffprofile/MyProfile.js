@@ -102,6 +102,7 @@ class MyProfile extends Component {
               padding: "0"
             }}
           >
+          <tbody>
             <tr>
               <td
                 className="listStaffName"
@@ -110,13 +111,14 @@ class MyProfile extends Component {
                 {userData["name"]}
               </td>
               <td style={{ width: "15%", verticalAlign: "top" }}>
-                CSI Staff ID
+                Employee ID
                 <p className="profileText">{userData["emplId"]}</p>
               </td>
               <td style={{ width: "25%", verticalAlign: "top" }}>
                 Job Title <p className="profileText">{userData["jobTitle"]}</p>
               </td>
             </tr>
+            </tbody>
           </table>
         </div>
 
@@ -127,11 +129,11 @@ class MyProfile extends Component {
                 <b>My Profile</b>
               </ListGroupItem>
               <ListGroupItem>
-                CSI Staff ID:
+              Employee ID:
                 <p className="profileDataText">{userData["emplId"]}</p>
               </ListGroupItem>
               <ListGroupItem>
-                Name: <p className="profileDataText">{userData["name"]}</p>
+              Employee Name: <p className="profileDataText">{userData["name"]}</p>
               </ListGroupItem>
               <ListGroupItem>
                 NRIC / Passport No:

@@ -14,7 +14,7 @@ class ExportToExcel extends Component {
           sheet="LeaveEntitlements"
           buttonText="Export to Excel"
         />
-        <table hidden="true" id="table-to-xls">
+        <table hidden={true} id="table-to-xls">
           <thead>
             <tr>
               <th>Employee ID</th>

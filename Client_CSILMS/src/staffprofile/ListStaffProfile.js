@@ -155,7 +155,7 @@ class ListStaffProfile extends Component {
             <Col md="6" xs="6" style={{ textAlign: "right" }}>
               <Button
                 color="primary"
-                component={Link}
+                // component={Link}
                 tag={Link}
                 to={`/newstaffprofile/`}
                 className="largeButtonOverride"
