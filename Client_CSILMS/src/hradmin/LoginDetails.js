@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import { Button } from "reactstrap";
-import { Link, Redirect, withRouter } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import "../common/Styles.css";
 import { fetchData, isHrRole } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
@@ -8,53 +8,77 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { confirmAlert } from "react-confirm-alert";
 
-class Login extends Component {
-  render() {
-    return (
-      <tr key={this.props.key}>
-        <td>{this.props.item.userId}</td>
-        <td>{this.props.item.emplId}</td>
-        <td>{this.props.item.lockAccount}</td>
-        <td>
-          <Button
-            onClick={this.props.confirmResetPassword}
-            variant="contained"
-            color="primary"
-            style={{ textTransform: "none", color: "white" }}
-          >
-            {/*<span className="fa fa-edit" />*/}
-            Reset Password
-          </Button>
-        </td>
-        <td>
-          <Button
-            component={Link}
-            to={`/logindetails/delete/${this.props.item.userId}`}
-            variant="contained"
-            color="primary"
-            style={{ textTransform: "none", color: "white" }}
-          >
-            <span className="fa fa-trash" />
-          </Button>
-        </td>
-      </tr>
-    );
-  }
-}
-
 class LoginDetails extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      userData: []
+      userData: [],
+      loading: true
     };
     this.loadLoginDetails = this.loadLoginDetails.bind(this);
     this.resetPassword = this.resetPassword.bind(this);
     this.confirmResetPassword = this.confirmResetPassword.bind(this);
+    this.lockAccount = this.lockAccount.bind(this);
+    this.confirmLockAccount = this.confirmLockAccount.bind(this);
+  }
+
+  lockAccount(e, emplId, lockAccount){
+    const lock = lockAccount === 1? "0":"1";
+    const values = { emplId: emplId,
+                    lockAccount: lock};
+    const request = Object.assign({}, values);
+    
+    fetchData({
+      url: API_BASE_URL + "/lockAccount",
+      method: "POST",
+      body: JSON.stringify(request)
+    })
+      .then(response => {
+        if(response.emplId){
+          confirmAlert({
+            message:
+              "You have " + (response.lockAccount === 0? "un-locked" : "locked") 
+              + " login account for employee " + emplId,
+              buttons: [{ label: "OK" }]
+          });
+          
+          this.setState({userData:[],
+                  loading: true});
+          this.loadLoginDetails();
+        }
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  }
+
+  confirmLockAccount(e, emplId, lockAccount) {
+    confirmAlert({
+      message: "Do you want to " + (lockAccount === 0? "lock" : "un-lock") +" login account for employee " + emplId + "?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => this.lockAccount(e, emplId, lockAccount)
+        },
+        {
+          label: "No"
+        }
+      ]
+    });
   }
 
   confirmResetPassword(e, emplId) {
-    console.log(emplId);
     confirmAlert({
       message: "Do you want to reset password for employee " + emplId + "?",
       buttons: [
@@ -112,7 +136,8 @@ class LoginDetails extends Component {
     })
       .then(response => {
         this.setState({
-          userData: response
+          userData: response,
+          loading:false
         });
       })
       .catch(error => {
@@ -139,26 +164,16 @@ class LoginDetails extends Component {
       return <Redirect to="/forbidden" />;
     }
 
-    const showFullString = strLocked => {
-      if (strLocked === 1) {
-        return "Yes";
+    const lock = <i class="fas fa-lock" color="red" title="Locked"/>;
+    const unlock = <i class="fas fa-lock-open" color="green" title="Un-Locked"/>;
+
+    const showAsIcon = str => {
+      if (str.lockAccount === 1) {
+        return lock;
       } else {
-        return "No";
+        return unlock;
       }
     };
-
-    const loginDetailsViews = [];
-    this.state.userData.forEach((item, key) => {
-      loginDetailsViews.push(
-        <Login
-          key={key}
-          item={item}
-          confirmResetPassword={event =>
-            this.confirmResetPassword(event, item.emplId)
-          }
-        />
-      );
-    });
 
     const loginDetailsCols = [
       {
@@ -184,7 +199,14 @@ class LoginDetails extends Component {
       {
         id: "lockAccount",
         Header: "Account Locked?",
-        accessor: str => showFullString(str.lockAccount),
+        accessor: str => (<Button
+          variant="contained"
+          color="link"
+          onClick={event =>
+            this.confirmLockAccount(event, str.emplId, str.lockAccount)
+          }
+        >
+          {showAsIcon(str)}</Button>),
         minWidth: 80,
         sortable: false,
         filterable: false,
@@ -217,29 +239,6 @@ class LoginDetails extends Component {
           textAlign: "center"
         }
       }
-      // {
-      //   id: "Action",
-      //   Header: "Action",
-      //   accessor: editButton => (
-      //     <Button
-      //       color="primary"
-      //       size="sm"
-      //       tag={Link}
-      //       to={`/logindetails/edit/${editButton.userId}`}
-      //       activeclassname="active"
-      //       className="smallButtonOverride"
-      //     >
-      //       <span className="fa fa-edit" style={{ color: "white" }} />
-      //       &nbsp;Edit
-      //     </Button>
-      //   ),
-      //   minWidth: 72,
-      //   sortable: false,
-      //   filterable: false,
-      //   style: {
-      //     textAlign: "center"
-      //   }
-      // }
     ];
 
     return (
@@ -250,27 +249,6 @@ class LoginDetails extends Component {
           </span>
         </div>
         <div className="reactTableContainer">
-          {/* <Row style={{ height: "50px" }}>
-            <Col md="6" xs="6">
-              <span> </span>
-            </Col>
-            <Col md="6" xs="6" style={{ textAlign: "right" }}>
-              <Button
-                color="primary"
-                component={Link}
-                tag={Link}
-                to="/logindetails/add"
-                className="largeButtonOverride"
-                activeclassname="active"
-              >
-                <span
-                  className="fa fa-plus"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-                Add User
-              </Button>
-            </Col>
-          </Row> */}
           <ReactTable
             data={this.state.userData}
             columns={loginDetailsCols}
@@ -285,47 +263,6 @@ class LoginDetails extends Component {
             noDataText="No data available."
             className="-striped"
           />
-          {/* <Row>
-            <Col md="6" xs="6" className="search">
-              <Input
-                type="text"
-                maxlength="50"
-                placeholder="Search Employee"
-                style={{ width: "35%" }}
-              />
-              <Button variant="contained" color="primary" type="submit">
-                <span className="fa fa-search" />
-              </Button>
-            </Col>
-            <Col md="6" xs="6" style={{ textAlign: "right" }}>
-              <Button
-                component={Link}
-                to="/logindetails/add"
-                variant="contained"
-                color="primary"
-                style={{ textTransform: "none", color: "white" }}
-              >
-                <span
-                  className="fa fa-plus"
-                  style={{ margin: "0px 10px 0px 0px" }}
-                />
-                Add User
-              </Button>
-            </Col>
-          </Row>
-          <Table responsive>
-            <thead>
-              <tr>
-                <th>User ID</th>
-                <th>Employee ID</th>
-                <th>Employee Name</th>
-                <th>Account Locked?</th>
-                <th>Edit</th>
-                <th>Delete</th>
-              </tr>
-            </thead>
-            <tbody>{loginDetailsViews}</tbody>
-          </Table> */}
         </div>
       </div>
     );
