@@ -35,9 +35,8 @@ class NewStaffProfile extends Component {
       deptId: "",
       nricPassport: "",
       gender: "",
-<<<<<<< HEAD
       marriageStatus: "",
-      marriageDate: initialDate,
+      marriageDate: "",
       marriageCount: "",
       totalChildren: "",
       jobTitle: "",
@@ -46,18 +45,6 @@ class NewStaffProfile extends Component {
       managerId: "",
       joinDate: initialDate,
       status: "A",
-=======
-      marriageStatus:"",
-      marriageDate:"",
-      marriageCount:"",
-      totalChildren:"",
-      jobTitle:"",
-      mobileNo:"",
-      businessUnit:"",
-      managerId:"",
-      joinDate:initialDate,
-      status:"A",
->>>>>>> refs/heads/unlock_logindetails
       translateItemList: [
         {
           id: { fieldname: "", fieldvalue: "" },
