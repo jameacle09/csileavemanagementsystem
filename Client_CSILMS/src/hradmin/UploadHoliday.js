@@ -96,22 +96,31 @@ class UploadHoliday extends Component {
   };
 
   validateUploadedRowsData = () => {
-    let updatedHolidayData = this.state.holidayData.filter(
-      holRow =>
-        holRow.Date &&
-        !isNaN(Date.parse(holRow.Date)) &&
-        holRow.Holiday &&
-        holRow.State
-    );
-    updatedHolidayData.forEach(function(e) {
-      e["Day"] = getWeekDay(e.Date);
+    let arrHolidayData = this.state.holidayData;
+
+    arrHolidayData.forEach(function(e) {
+      e["ValidateStatus"] = "Passed";
+      e["Day"] = "";
     });
 
-    if (
-      this.state.holidayData.length === 0 ||
-      (this.state.holidayData.length && updatedHolidayData.length === 0)
-    ) {
+    arrHolidayData.forEach(holRow => {
+      if (!holRow.Date) holRow.ValidateStatus = "Date cannot be blank.";
+      if (holRow.Date && isNaN(Date.parse(holRow.Date))) {
+        holRow.ValidateStatus = "Date value is invalid.";
+      } else {
+        holRow.Day = getWeekDay(holRow.Date);
+      }
+      if (!holRow.Holiday) holRow.ValidateStatus = "Holiday cannot be blank.";
+      if (!holRow.State) holRow.ValidateStatus = "State(s) cannot be blank.";
+    });
+
+    let arrErrHolidayData = arrHolidayData.filter(
+      entRow => entRow.ValidateStatus !== "Passed"
+    );
+
+    if (arrHolidayData.length === 0) {
       this.setState({
+        HolidayData: arrHolidayData,
         isValid: false,
         loading: false
       });
@@ -124,48 +133,37 @@ class UploadHoliday extends Component {
           }
         ]
       });
-    } else if (this.state.holidayData.length !== updatedHolidayData.length) {
-      const arrInvalidRows = this.getRowsWithErrors(
-        this.state.holidayData,
-        updatedHolidayData
-      );
+    } else if (arrErrHolidayData.length > 0) {
       this.setState({
-        holidayData: arrInvalidRows,
+        HolidayData: arrErrHolidayData,
         isValid: false,
         loading: false
       });
       confirmAlert({
         message:
-          "Invalid row(s) has/have been found from the uploaded Public Holiday data! Please find those invalid row(s) in the table and fix them in Excel Template, then re-try uploading...",
+          "Invalid row(s) has/have been detected from the uploaded Public Holidays data! Please find those invalid row(s) in the table and fix them in Excel Template, then re-try uploading...",
         buttons: [
           {
             label: "OK"
           }
         ]
       });
-    } else {
+    } else if (arrErrHolidayData.length === 0 && arrHolidayData.length > 0) {
       this.setState({
-        holidayData: updatedHolidayData,
+        HolidayData: arrHolidayData,
         isValid: true,
         loading: false
       });
+      confirmAlert({
+        message:
+          "All uploaded Public Holidays data have successfully passed the validation process...",
+        buttons: [
+          {
+            label: "OK"
+          }
+        ]
+      });
     }
-  };
-
-  getRowsWithErrors = (arrAll, arrValidated) => {
-    const arrDiff = [];
-    arrAll.forEach(arrAllRow => {
-      let arrAllIsPresentInArrVal = arrValidated.some(
-        arrValRow =>
-          arrValRow.Date === arrAllRow.Date &&
-          arrValRow.Holiday === arrAllRow.Holiday &&
-          arrValRow.State === arrAllRow.State
-      );
-      if (!arrAllIsPresentInArrVal) {
-        arrDiff.push(arrAllRow);
-      }
-    });
-    return arrDiff;
   };
 
   confirmHolidaySave = e => {
@@ -257,11 +255,35 @@ class UploadHoliday extends Component {
   };
 
   render() {
-    if (!isHrRole(this.props.currentUser)) {
-      return <Redirect to="/forbidden" />;
+    // if (!isHrRole(this.props.currentUser)) {
+    //   return <Redirect to="/forbidden" />;
+    // }
+
+    let textHeaderValue = "",
+      textColorValStatus = "",
+      colWidthValStatus = 0;
+    if (this.state.isValid) {
+      textHeaderValue = "Validation";
+      textColorValStatus = "#004a9b";
+      colWidthValStatus = 70;
+    } else {
+      textHeaderValue = "Validation Status";
+      textColorValStatus = "red";
+      colWidthValStatus = 200;
     }
 
     const publicHolidayCols = [
+      {
+        id: "ValidateStatus",
+        Header: textHeaderValue,
+        accessor: "ValidateStatus",
+        minWidth: colWidthValStatus,
+        sortable: true,
+        filterable: false,
+        style: {
+          color: textColorValStatus
+        }
+      },
       {
         id: "Date",
         Header: "Date",
@@ -295,15 +317,15 @@ class UploadHoliday extends Component {
         id: "Holiday",
         Header: "Holiday",
         accessor: "Holiday",
-        width: 240,
+        minWidth: 220,
         sortable: true,
         filterable: true
       },
       {
         id: "State",
-        Header: "State",
+        Header: "State(s)",
         accessor: "State",
-        // minWidth: 120,
+        minWidth: 380,
         sortable: true,
         filterable: true
       }

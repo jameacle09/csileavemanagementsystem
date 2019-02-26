@@ -14,7 +14,8 @@ class ListStaffProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      employeeProfiles: []
+      employeeProfiles: [],
+      loading: true
     };
     this.loadEmployeeDetails = this.loadEmployeeDetails.bind(this);
   }
@@ -25,12 +26,17 @@ class ListStaffProfile extends Component {
       method: "GET"
     }).then(data => {
       this.setState({
-        employeeProfiles: data
+        employeeProfiles: data,
+        loading: false
       });
     });
   }
 
   componentDidMount() {
+    this.loadEmployeeDetails();
+  }
+
+  componentDidUpdate() {
     this.loadEmployeeDetails();
   }
 
@@ -192,7 +198,7 @@ class ListStaffProfile extends Component {
             filterable={true}
             sortable={true}
             multiSort={true}
-            loadingText="Loading Employe Profiles..."
+            loadingText="Loading Employee Profiles..."
             noDataText="No data available."
             className="-striped"
           />
