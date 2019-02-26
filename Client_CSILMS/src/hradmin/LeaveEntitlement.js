@@ -67,7 +67,7 @@ class LeaveEntitlement extends Component {
     const leaveEntitlementCols = [
       {
         id: "emplid",
-        Header: "CSI Staff ID",
+        Header: "Employee ID",
         accessor: "id.emplid",
         minWidth: 100,
         sortable: true,
@@ -75,7 +75,7 @@ class LeaveEntitlement extends Component {
       },
       {
         id: "name",
-        Header: "Staff Name",
+        Header: "Employee Name",
         accessor: "employeeDetails.name",
         minWidth: 140,
         sortable: true,
