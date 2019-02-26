@@ -15,7 +15,7 @@ class ExportToExcel extends Component {
           sheet="PublicHolidays"
           buttonText="Export to Excel"
         />
-        <table hidden="true" id="table-to-xls">
+        <table hidden={true} id="table-to-xls">
           <thead>
             <tr>
               <th>Date</th>

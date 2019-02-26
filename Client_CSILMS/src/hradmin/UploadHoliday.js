@@ -8,11 +8,10 @@ import {
   Input,
   Col
 } from "reactstrap";
-import { Redirect, withRouter, Link } from "react-router-dom";
+import { Redirect, withRouter } from "react-router-dom";
 import {
   fetchData,
   isHrRole,
-  formatDateYMD,
   formatDateDMY,
   getWeekDay
 } from "../util/APIUtils";

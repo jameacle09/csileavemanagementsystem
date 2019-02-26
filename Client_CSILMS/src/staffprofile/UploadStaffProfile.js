@@ -8,7 +8,6 @@ import {
   Input,
   Col
 } from "reactstrap";
-// import PropTypes from "prop-types";
 import { Redirect, withRouter, Link } from "react-router-dom";
 import { fetchData, isHrRole } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";

@@ -102,6 +102,7 @@ class MyProfile extends Component {
               padding: "0"
             }}
           >
+          <tbody>
             <tr>
               <td
                 className="listStaffName"
@@ -117,6 +118,7 @@ class MyProfile extends Component {
                 Job Title <p className="profileText">{userData["jobTitle"]}</p>
               </td>
             </tr>
+            </tbody>
           </table>
         </div>
 

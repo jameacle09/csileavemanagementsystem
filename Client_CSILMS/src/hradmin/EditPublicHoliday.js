@@ -9,8 +9,7 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter,
-  Alert
+  ModalFooter
 } from "reactstrap";
 import "../common/Styles.css";
 import { Redirect, withRouter } from "react-router-dom";
