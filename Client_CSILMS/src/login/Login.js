@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Col, Form, FormGroup, Label, Input, Button } from "reactstrap";
-// import Button from "@material-ui/core/Button";
 import { ACCESS_TOKEN } from "../constants";
 import { login } from "../util/APIUtils";
 import { withRouter } from "react-router-dom";

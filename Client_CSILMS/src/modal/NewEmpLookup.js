@@ -1,6 +1,5 @@
 import React from "react";
-import { Button, Table, Input } from "reactstrap";
-//import Button from "@material-ui/core/Button";
+import { Button, Table } from "reactstrap";
 import "./Modal.css";
 
 class Modal extends React.Component {
