@@ -9,8 +9,7 @@ import {
   Modal,
   ModalHeader,
   ModalBody,
-  ModalFooter,
-  Alert
+  ModalFooter
 } from "reactstrap";
 import "../common/Styles.css";
 import { Redirect, withRouter } from "react-router-dom";
@@ -39,7 +38,7 @@ class AddTranslateItem extends Component {
     const { fieldname, fieldvalue } = this.props.computedMatch.params;
 
     fetchData({
-      url: API_BASE_URL + "/translateitem" + "/" + fieldname + "/" + fieldvalue,
+      url: API_BASE_URL + "/translateitem/" + fieldname + "/" + fieldvalue,
       method: "GET"
     })
       .then(data => {
@@ -91,7 +90,7 @@ class AddTranslateItem extends Component {
     const postRequest = Object.assign({}, jsonRowValues);
 
     fetchData({
-      url: API_BASE_URL + "/translateitem" + "/" + fieldname + "/" + fieldvalue,
+      url: API_BASE_URL + "/translateitem/" + fieldname + "/" + fieldvalue,
       method: "PATCH",
       body: JSON.stringify(postRequest)
     })
@@ -251,7 +250,7 @@ class AddTranslateItem extends Component {
                   <option key="A" value="A">
                     Active
                   </option>
-                  <option key="A" value="I">
+                  <option key="I" value="I">
                     Inactive
                   </option>
                 </Input>

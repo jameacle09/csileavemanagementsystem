@@ -7,6 +7,7 @@ import { isHrRole } from "../util/APIUtils";
 import { fetchData } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import ReactTable from "react-table";
+import TranslateitemToExcel from "./TranslateitemToExcel";
 
 class TranslateItems extends Component {
   constructor(props) {
@@ -144,7 +145,9 @@ class TranslateItems extends Component {
         </div>
         <div className="reactTableContainer">
           <Row style={{ height: "50px" }}>
-            <Col md="6" xs="6" />
+            <Col md="6" xs="6">
+              <TranslateitemToExcel translateItemsData={this.state.translateItemsData} />
+            </Col>                    
             <Col md="6" xs="6" style={{ textAlign: "right" }}>
               <Button
                 tag={Link}
