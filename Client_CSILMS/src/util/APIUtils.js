@@ -31,6 +31,21 @@ const request = options => {
   );
 };
 
+const requestFileUnparsed = options => {
+  let headers = new Headers();
+  if (localStorage.getItem(ACCESS_TOKEN)) {
+    headers.append(
+      "Authorization",
+      "Bearer " + localStorage.getItem(ACCESS_TOKEN)
+    );
+  }
+
+  const defaults = { headers: headers };
+  options = Object.assign({}, defaults, options);
+
+  return fetch(options.url, options).then(response => response);
+}
+
 export function getCurrentUser() {
   if (!localStorage.getItem(ACCESS_TOKEN)) {
     return Promise.reject("No access token set.");
@@ -63,6 +78,10 @@ export function login(loginRequest) {
 
 export function fetchData(options) {
   return request(options);
+}
+
+export function fetchFile(options) {
+  return requestFileUnparsed(options);
 }
 
 export function displayByRole(props, roleName) {
