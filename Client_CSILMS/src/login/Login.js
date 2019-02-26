@@ -84,10 +84,8 @@ class Login extends Component {
         this.props.onLogin();
       })
       .catch(error => {
-        console.log(error.status + " " + error.message);
         let fieldValidationErrors = this.state.formErrors;
         if (error.status === 401) {
-          console.log(error.message);
           fieldValidationErrors.loginfailed =
             "Your Username or Password is incorrect. Please try again!";
           this.setState({ formErrors: fieldValidationErrors });
