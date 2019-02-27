@@ -9,7 +9,7 @@ import {
   Col,
   CustomInput
 } from "reactstrap";
-import { fetchData, formatDateYMD } from "../util/APIUtils";
+import { fetchData, formatDateYMD, fetchFile } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import "../common/Styles.css";
 
@@ -27,7 +27,8 @@ class LeaveHistoryView extends Component {
       leaveReason: "",
       approver: "",
       leaveStatus: "",
-      approvedDate: ""
+      approvedDate: "",
+      attachment: ""
     };
   }
 
@@ -64,12 +65,39 @@ class LeaveHistoryView extends Component {
           leaveReason: data.reason,
           approver: data.approver,
           leaveStatus: data.leaveStatus,
-          approvedDate: data.approvedDate
+          approvedDate: data.approvedDate,
+          attachment: data.attachment
         });
       })
       .catch(err => {
         console.log(err);
       });
+  }
+
+  getAttachement = () => {
+    if(this.state.attachment != ""){
+      fetchFile({
+        url: API_BASE_URL + "/attachment/files/" + this.state.attachment,
+        method: "GET"
+      })
+      .then(response => response.blob())
+      .then(blob => {
+        // 2. Create blob link to download
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', this.state.attachment);
+        // 3. Append to html page
+        document.body.appendChild(link);
+        // 4. Force download
+        link.click();
+        // 5. Clean up and remove the link
+        link.parentNode.removeChild(link);
+      })
+      .catch(err => {
+        alert(err)
+      } )
+    }
   }
 
   handleBackToMain = () => {
@@ -88,7 +116,8 @@ class LeaveHistoryView extends Component {
       leaveReason,
       approver,
       leaveStatus,
-      approvedDate
+      approvedDate,
+      attachment
     } = this.state;
 
     const BooleanHalfDay = strHalfDay => {
@@ -112,6 +141,14 @@ class LeaveHistoryView extends Component {
         return "Rejected";
       }
     };
+
+    const showAttachment = attachment => {
+      if(attachment !== "") {
+        return <Button color="link" onClick={this.getAttachement}> {attachment}</Button>
+      } else {
+        return <FormText color="muted"> No attachment uploaded. </FormText>
+      }
+    }
 
     return (
       <div className="mainContainerLeavePages">
@@ -251,7 +288,7 @@ class LeaveHistoryView extends Component {
                 File Attachment:
               </Label>
               <Col sm={10}>
-                <FormText color="muted">No attachment uploaded.</FormText>
+                {showAttachment(attachment)}
               </Col>
             </FormGroup>
             <FormGroup row>

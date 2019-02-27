@@ -36,7 +36,7 @@ class NewStaffProfile extends Component {
       nricPassport: "",
       gender: "",
       marriageStatus: "",
-      marriageDate: initialDate,
+      marriageDate: "",
       marriageCount: "",
       totalChildren: "",
       jobTitle: "",
@@ -340,10 +340,31 @@ class NewStaffProfile extends Component {
           ]
         });
       }
-    }).catch(error => {
-      if (error.status === 401) {
-        this.props.history.push("/login");
+
+      if(response.emplId === null && values.status === "I"){
+        confirmAlert({
+          message: "Employee " + values.emplId + " is successfully save and deactivated",
+          buttons: [
+            {
+              label: "OK",
+              onClick: () => this.props.history.push("/liststaffprofile")
+            }
+          ]
+        });
       }
+    }).catch(error => {
+      if(error.status === 401) {
+         this.props.history.push("/login");    
+      } else {
+        confirmAlert({
+          message: error.status + " : " + error.message,
+          buttons: [
+            {
+              label: "OK"
+            }
+          ]
+        });
+      } 
     });
   };
 
@@ -357,6 +378,7 @@ class NewStaffProfile extends Component {
   }
 
   clickdiscard = () => {
+    this.props.history.push("/liststaffprofile");
     confirmAlert({
       message: "Do you want to cancel this request?",
       buttons: [

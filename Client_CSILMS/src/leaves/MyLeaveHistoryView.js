@@ -12,7 +12,7 @@ import {
   ModalBody,
   ModalFooter
 } from "reactstrap";
-import { fetchData, formatDateYMD } from "../util/APIUtils";
+import { fetchData, formatDateYMD, fetchFile } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import "../common/Styles.css";
 import { withRouter } from "react-router-dom";
@@ -31,6 +31,7 @@ class MyLeaveHistoryView extends Component {
       leaveReason: "",
       approver: "",
       leaveStatus: "",
+      attachment: "",
       approvedDate: ""
     };
     this.toggleCancelLeave = this.toggleCancelLeave.bind(this);
@@ -82,12 +83,39 @@ class MyLeaveHistoryView extends Component {
           leaveDuration: data.leaveDuration + " day(s)",
           leaveReason: data.reason,
           approver: data.approver,
-          leaveStatus: data.leaveStatus
+          leaveStatus: data.leaveStatus,
+          attachment: data.attachment
         });
       })
       .catch(err => {
         console.log(err);
       });
+  }
+
+  getAttachement = () => {
+    if(this.state.attachment != ""){
+      fetchFile({
+        url: API_BASE_URL + "/attachment/files/" + this.state.attachment,
+        method: "GET"
+      })
+      .then(response => response.blob())
+      .then(blob => {
+        // 2. Create blob link to download
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', this.state.attachment);
+        // 3. Append to html page
+        document.body.appendChild(link);
+        // 4. Force download
+        link.click();
+        // 5. Clean up and remove the link
+        link.parentNode.removeChild(link);
+      })
+      .catch(err => {
+        alert(err)
+      } )
+    }
   }
 
   handleBackToMain = () => {
@@ -244,7 +272,8 @@ class MyLeaveHistoryView extends Component {
       leaveDuration,
       leaveReason,
       approver,
-      leaveStatus
+      leaveStatus,
+      attachment
     } = this.state;
 
     const showFullStatus = strStatus => {
@@ -282,6 +311,14 @@ class MyLeaveHistoryView extends Component {
       </Button>
       }
     };
+    const showAttachment = attachment => {
+        if(attachment !== "") {
+          return <Button color="link" onClick={this.getAttachement}> {attachment}</Button>
+        } else {
+          return <FormText color="muted"> No attachment uploaded. </FormText>
+        }
+    }
+
     return (
       <div className="mainContainerLeavePages">
         <div className="headerContainerFlex">
@@ -396,7 +433,7 @@ class MyLeaveHistoryView extends Component {
                 File Attachment:
               </Label>
               <Col sm={10}>
-                <FormText color="muted">No attachment uploaded.</FormText>
+                {showAttachment(attachment)}
               </Col>
             </FormGroup>
             <FormGroup row>
