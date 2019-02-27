@@ -7,6 +7,10 @@ import { API_BASE_URL } from "../constants";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { confirmAlert } from "react-confirm-alert";
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faLock } from '@fortawesome/free-solid-svg-icons';
+import { faLockOpen } from '@fortawesome/free-solid-svg-icons';
 
 class LoginDetails extends Component {
   constructor(props) {
@@ -20,6 +24,8 @@ class LoginDetails extends Component {
     this.confirmResetPassword = this.confirmResetPassword.bind(this);
     this.lockAccount = this.lockAccount.bind(this);
     this.confirmLockAccount = this.confirmLockAccount.bind(this);
+    library.add(faLock);
+    library.add(faLockOpen);
   }
 
   lockAccount(e, emplId, lockAccount){
@@ -164,14 +170,18 @@ class LoginDetails extends Component {
       return <Redirect to="/forbidden" />;
     }
 
-    const lock = <i class="fas fa-lock" color="red" title="Locked"/>;
-    const unlock = <i class="fas fa-lock-open" color="green" title="Un-Locked"/>;
-
+    const showTitle = str => {
+      if (str.lockAccount === 1) {
+        return "Locked";
+      } else {
+        return "Un-Locked";
+      }
+    };
     const showAsIcon = str => {
       if (str.lockAccount === 1) {
-        return lock;
+        return <FontAwesomeIcon icon="lock" style={{ color: 'red' }}/>;
       } else {
-        return unlock;
+        return <FontAwesomeIcon icon="lock-open" style={{ color: 'green' }}/>;
       }
     };
 
@@ -201,6 +211,7 @@ class LoginDetails extends Component {
         Header: "Account Locked?",
         accessor: str => (<Button
           variant="contained"
+          title={showTitle(str)}
           color="link"
           onClick={event =>
             this.confirmLockAccount(event, str.emplId, str.lockAccount)
