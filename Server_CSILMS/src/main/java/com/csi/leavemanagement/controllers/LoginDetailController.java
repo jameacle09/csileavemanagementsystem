@@ -102,4 +102,10 @@ public class LoginDetailController {
 	public ResponseEntity<?> checkFirstTimeLogin(@CurrentUser UserPrincipal currentUser){
 		return loginDetailService.isFirstTimeLogin(currentUser);
 	}
+	
+	@PreAuthorize("hasAuthority('HR')")
+	@PostMapping("/lockAccount")
+	public LoginDetails lockAccount(@RequestBody Map<String, String> params, @CurrentUser UserPrincipal currentUser){
+		return loginDetailService.lockAccount(params, currentUser);
+	}
 }
