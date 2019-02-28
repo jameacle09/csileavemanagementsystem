@@ -14,7 +14,7 @@ import {
   ModalFooter
 } from "reactstrap";
 import { withRouter } from "react-router-dom";
-import { fetchData, formatDateYMD } from "../util/APIUtils";
+import { fetchData, formatDateYMD, fetchFile } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import { confirmAlert } from "react-confirm-alert";
 import "../common/Styles.css";
@@ -32,6 +32,7 @@ class LeaveRequest extends Component {
       leaveDuration: "1 day(s)",
       leaveReason: "",
       leaveStatus: "",
+      attachment: "",
       modalApprove: false,
       modalReject: false
     };
@@ -84,7 +85,8 @@ class LeaveRequest extends Component {
           isHalfDay: data.halfDay,
           leaveDuration: data.leaveDuration + " day(s)",
           leaveReason: data.reason,
-          leaveStatus: data.leaveStatus
+          leaveStatus: data.leaveStatus,
+          attachment: data.attachment
         });
       })
       .catch(err => {
@@ -247,6 +249,32 @@ class LeaveRequest extends Component {
       });
   };
 
+  getAttachement = () => {
+    if(this.state.attachment != ""){
+      fetchFile({
+        url: API_BASE_URL + "/attachment/files/" + this.state.attachment,
+        method: "GET"
+      })
+      .then(response => response.blob())
+      .then(blob => {
+        // 2. Create blob link to download
+        const url = window.URL.createObjectURL(new Blob([blob]));
+        const link = document.createElement('a');
+        link.href = url;
+        link.setAttribute('download', this.state.attachment);
+        // 3. Append to html page
+        document.body.appendChild(link);
+        // 4. Force download
+        link.click();
+        // 5. Clean up and remove the link
+        link.parentNode.removeChild(link);
+      })
+      .catch(err => {
+        alert(err)
+      } )
+    }
+  }
+
   render() {
     const {
       emplId,
@@ -257,7 +285,8 @@ class LeaveRequest extends Component {
       isHalfDay,
       leaveDuration,
       leaveReason,
-      leaveStatus
+      leaveStatus,
+      attachment
     } = this.state;
 
     const BooleanHalfDay = strHalfDay => {
@@ -424,6 +453,14 @@ class LeaveRequest extends Component {
       }
     };
 
+    const showAttachment = attachment => {
+      if(attachment !== "") {
+        return <Button color="link" onClick={this.getAttachement}> {attachment}</Button>
+      } else {
+        return <FormText color="muted"> No attachment uploaded. </FormText>
+      }
+    }
+
     return (
       <div className="mainContainerLeavePages">
         <div className="headerContainerFlex">
@@ -552,7 +589,7 @@ class LeaveRequest extends Component {
                 File Attachment:
               </Label>
               <Col sm={10}>
-                <FormText color="muted">No attachment uploaded.</FormText>
+                {showAttachment(attachment)}
               </Col>
             </FormGroup>
             <FormGroup row>
