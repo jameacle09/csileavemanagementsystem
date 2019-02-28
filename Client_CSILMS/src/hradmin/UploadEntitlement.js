@@ -142,57 +142,58 @@ class UploadEntitlement extends Component {
     let leaveCategoriesData = this.state.leaveCategories;
     let arrEntitlementData = this.state.entitlementData;
     arrEntitlementData.forEach(function(e) {
-      e["ValidateStatus"] = "Passed";
+      e["ValidateStatus"] = "Passed!";
       e["EmployeeName"] = "";
     });
 
     arrEntitlementData.forEach(entRow => {
-      // Employee ID
-      if (!entRow.EmployeeID)
+      if (!entRow.EmployeeID) {
+        // Employee ID
         entRow.ValidateStatus = "Employee ID cannot be blank.";
-      if (
+      } else if (
         entRow.EmployeeID &&
         !employeeProfilesData.some(empProf => {
           if (empProf.emplId === entRow.EmployeeID)
             entRow.EmployeeName = empProf.name;
           return empProf.emplId === entRow.EmployeeID;
         })
-      )
+      ) {
         entRow.ValidateStatus = "Employee ID value does not exist.";
-      // Leave Year
-      if (typeof entRow.LeaveYear !== "number")
+      } else if (typeof entRow.LeaveYear !== "number") {
+        // Leave Year
         entRow.ValidateStatus = "Leave Year value is invalid.";
-      if (("" + entRow.LeaveYear).length !== 4)
+      } else if (("" + entRow.LeaveYear).length !== 4) {
         entRow.ValidateStatus = "Leave Year value length must be 4.";
-      // Leave Type
-      if (!entRow.LeaveType)
+      } else if (!entRow.LeaveType) {
+        // Leave Type
         entRow.ValidateStatus = "Leave Type cannot be blank.";
-      if (
+      } else if (
         entRow.LeaveType &&
         !leaveCategoriesData.some(leave => {
           return leave.leaveCode === entRow.LeaveType;
         })
-      )
+      ) {
         entRow.ValidateStatus = "Leave Type value does not exist.";
-      // Carried Forward
-      if (typeof entRow.CarriedForward !== "number")
+      } else if (typeof entRow.CarriedForward !== "number") {
+        // Carried Forward
         entRow.ValidateStatus = "Carried Forward value is invalid.";
-      // Entitlement
-      if (typeof entRow.Entitlement !== "number")
+      } else if (typeof entRow.Entitlement !== "number") {
+        // Entitlement
         entRow.ValidateStatus = "Entitlement value is invalid.";
-      // Available Leave
-      if (typeof entRow.AvailableLeave !== "number")
+      } else if (typeof entRow.AvailableLeave !== "number") {
+        // Available Leave
         entRow.ValidateStatus = "Available Leave value is invalid.";
-      // Taken Leave
-      if (typeof entRow.TakenLeave !== "number")
+      } else if (typeof entRow.TakenLeave !== "number") {
+        // Taken Leave
         entRow.ValidateStatus = "Taken Leave value is invalid.";
-      // Balance Leave
-      if (typeof entRow.BalanceLeave !== "number")
+      } else if (typeof entRow.BalanceLeave !== "number") {
+        // Balance Leave
         entRow.ValidateStatus = "Balance Leave value is invalid.";
+      }
     });
 
     let arrErrEntitlementData = arrEntitlementData.filter(
-      entRow => entRow.ValidateStatus !== "Passed"
+      entRow => entRow.ValidateStatus !== "Passed!"
     );
 
     if (arrEntitlementData.length === 0) {

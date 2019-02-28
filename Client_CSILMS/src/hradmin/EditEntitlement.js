@@ -165,11 +165,11 @@ class EditEntitlement extends Component {
     } = this.state;
 
     const isInvalid =
-      !carryForward ||
-      !entitlement ||
-      !availableLeave ||
-      !takenLeave ||
-      !balanceLeave;
+      carryForward === "" ||
+      entitlement === "" ||
+      availableLeave === "" ||
+      takenLeave === "" ||
+      balanceLeave === "";
     return isInvalid;
   };
 

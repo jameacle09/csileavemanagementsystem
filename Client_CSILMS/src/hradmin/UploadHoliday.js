@@ -98,23 +98,26 @@ class UploadHoliday extends Component {
     let arrHolidayData = this.state.holidayData;
 
     arrHolidayData.forEach(function(e) {
-      e["ValidateStatus"] = "Passed";
+      e["ValidateStatus"] = "Passed!";
       e["Day"] = "";
     });
 
     arrHolidayData.forEach(holRow => {
-      if (!holRow.Date) holRow.ValidateStatus = "Date cannot be blank.";
-      if (holRow.Date && isNaN(Date.parse(holRow.Date))) {
+      if (!holRow.Date) {
+        holRow.ValidateStatus = "Date cannot be blank.";
+      } else if (holRow.Date && isNaN(Date.parse(holRow.Date))) {
         holRow.ValidateStatus = "Date value is invalid.";
-      } else {
-        holRow.Day = getWeekDay(holRow.Date);
+      } else if (!holRow.Holiday) {
+        holRow.ValidateStatus = "Holiday cannot be blank.";
+      } else if (!holRow.State) {
+        holRow.ValidateStatus = "State(s) cannot be blank.";
       }
-      if (!holRow.Holiday) holRow.ValidateStatus = "Holiday cannot be blank.";
-      if (!holRow.State) holRow.ValidateStatus = "State(s) cannot be blank.";
+      if (holRow.Date && !isNaN(Date.parse(holRow.Date)))
+        holRow.Day = getWeekDay(holRow.Date);
     });
 
     let arrErrHolidayData = arrHolidayData.filter(
-      entRow => entRow.ValidateStatus !== "Passed"
+      entRow => entRow.ValidateStatus !== "Passed!"
     );
 
     if (arrHolidayData.length === 0) {
