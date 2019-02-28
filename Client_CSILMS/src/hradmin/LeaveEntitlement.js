@@ -17,11 +17,10 @@ class LeaveEntitlement extends Component {
       leaveEntitlementData: [],
       loading: true
     };
-    this.loadLeaveEntitlement = this.loadLeaveEntitlement.bind(this);
   }
   _isMounted = false;
 
-  loadLeaveEntitlement() {
+  loadLeaveEntitlement = () => {
     fetchData({
       url: API_BASE_URL + "/leaveentitlements",
       method: "GET"
@@ -43,7 +42,7 @@ class LeaveEntitlement extends Component {
         });
         // console.log(leaveEntitlementData);
       });
-  }
+  };
 
   componentDidMount() {
     this._isMounted = true;
@@ -206,7 +205,7 @@ class LeaveEntitlement extends Component {
                   className="fa fa-upload"
                   style={{ margin: "0px 10px 0px 0px" }}
                 />
-                Upload Entitlement
+                Upload Entitlements
               </Button>
               <span> </span>
               <Button

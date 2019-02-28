@@ -14,30 +14,61 @@ class ListStaffProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      employeeProfiles: []
+      employeeProfiles: [],
+      loading: true
     };
-    this.loadEmployeeDetails = this.loadEmployeeDetails.bind(this);
   }
+  _isMounted = false;
 
-  loadEmployeeDetails() {
+  loadEmployeeDetails = () => {
     fetchData({
       url: API_BASE_URL + "/employeedetails",
       method: "GET"
-    }).then(data => {
-      this.setState({
-        employeeProfiles: data
+    })
+      .then(data => {
+        this.setState({
+          employeeProfiles: data,
+          loading: false
+        });
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+        this.setState({
+          employeeProfiles: [],
+          loading: false
+        });
       });
-    });
-  }
+  };
 
   componentDidMount() {
+    this._isMounted = true;
     this.loadEmployeeDetails();
+  }
+
+  componentWillMount() {
+    this._isMounted = false;
+  }
+
+  componentDidUpdate(nextProps) {
+    if (this.props.isAuthenticated !== nextProps.isAuthenticated) {
+      this.loadEmployeeDetails();
+    }
   }
 
   render() {
     if (!isHrRole(this.props.currentUser)) {
       return <Redirect to="/forbidden" />;
     }
+
+    const showStatusDesc = strStatus => {
+      if (strStatus === "A") {
+        return "Active";
+      } else {
+        return "Inactive";
+      }
+    };
 
     const EmplProfileCols = [
       {
@@ -64,22 +95,25 @@ class ListStaffProfile extends Component {
         sortable: true,
         filterable: true
       },
-      {
-        id: "nricPassport",
-        Header: () => (
-          <span className="tableHeaderStyle">NRIC/Passport No.</span>
-        ),
-        accessor: "nricPassport",
-        sortable: true,
-        filterable: true
-      },
+      // {
+      //   id: "nricPassport",
+      //   Header: () => (
+      //     <span className="tableHeaderStyle">NRIC/Passport No.</span>
+      //   ),
+      //   accessor: "nricPassport",
+      //   sortable: true,
+      //   filterable: true
+      // },
       {
         id: "jobTitle",
         Header: "Job Title",
         accessor: "jobTitle",
-        minWidth: 110,
+        minWidth: 80,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "mobileNo",
@@ -111,6 +145,17 @@ class ListStaffProfile extends Component {
         minWidth: 94,
         sortable: true,
         filterable: true
+      },
+      {
+        id: "status",
+        Header: "Status",
+        accessor: str => showStatusDesc(str.status),
+        minWidth: 60,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "Action",
@@ -154,6 +199,21 @@ class ListStaffProfile extends Component {
             </Col>
             <Col md="6" xs="6" style={{ textAlign: "right" }}>
               <Button
+                variant="contained"
+                color="primary"
+                className="largeButtonOverride"
+                component={Link}
+                tag={Link}
+                to={`/liststaffprofile/uploadprofiles`}
+              >
+                <span
+                  className="fa fa-upload"
+                  style={{ margin: "0px 10px 0px 0px" }}
+                />
+                Upload Profiles
+              </Button>
+              <span> </span>
+              <Button
                 color="primary"
                 // component={Link}
                 tag={Link}
@@ -177,7 +237,7 @@ class ListStaffProfile extends Component {
             filterable={true}
             sortable={true}
             multiSort={true}
-            loadingText="Loading Employe Profiles..."
+            loadingText="Loading Employee Profiles..."
             noDataText="No data available."
             className="-striped"
           />

@@ -140,36 +140,86 @@ class UploadEntitlement extends Component {
   validateUploadedRowsData = () => {
     let employeeProfilesData = this.state.employeeProfiles;
     let leaveCategoriesData = this.state.leaveCategories;
-    let updatedEntitlementData = this.state.entitlementData.filter(
-      entRow =>
+    let arrEntitlementData = this.state.entitlementData;
+    arrEntitlementData.forEach(function(e) {
+      e["ValidateStatus"] = "Passed!";
+      e["EmployeeName"] = "";
+    });
+
+    arrEntitlementData.forEach(entRow => {
+      if (!entRow.EmployeeID) {
+        // Employee ID
+        entRow.ValidateStatus = "Employee ID cannot be blank.";
+      } else if (
         entRow.EmployeeID &&
-        typeof entRow.LeaveYear === "number" &&
-        ("" + entRow.LeaveYear).length === 4 &&
-        entRow.LeaveType &&
-        typeof entRow.CarriedForward === "number" &&
-        typeof entRow.Entitlement === "number" &&
-        typeof entRow.AvailableLeave === "number" &&
-        typeof entRow.TakenLeave === "number" &&
-        typeof entRow.BalanceLeave === "number" &&
-        employeeProfilesData.some(empProf => {
+        !employeeProfilesData.some(empProf => {
+          if (empProf.emplId === entRow.EmployeeID)
+            entRow.EmployeeName = empProf.name;
           return empProf.emplId === entRow.EmployeeID;
-        }) &&
-        leaveCategoriesData.some(leave => {
+        })
+      ) {
+        entRow.ValidateStatus = "Employee ID value does not exist.";
+      } else if (typeof entRow.LeaveYear !== "number") {
+        // Leave Year
+        entRow.ValidateStatus = "Leave Year value is invalid.";
+      } else if (("" + entRow.LeaveYear).length !== 4) {
+        entRow.ValidateStatus = "Leave Year value length must be 4.";
+      } else if (!entRow.LeaveType) {
+        // Leave Type
+        entRow.ValidateStatus = "Leave Type cannot be blank.";
+      } else if (
+        entRow.LeaveType &&
+        !leaveCategoriesData.some(leave => {
           return leave.leaveCode === entRow.LeaveType;
         })
+      ) {
+        entRow.ValidateStatus = "Leave Type value does not exist.";
+      } else if (typeof entRow.CarriedForward !== "number") {
+        // Carried Forward
+        entRow.ValidateStatus = "Carried Forward value is invalid.";
+      } else if (typeof entRow.Entitlement !== "number") {
+        // Entitlement
+        entRow.ValidateStatus = "Entitlement value is invalid.";
+      } else if (typeof entRow.AvailableLeave !== "number") {
+        // Available Leave
+        entRow.ValidateStatus = "Available Leave value is invalid.";
+      } else if (typeof entRow.TakenLeave !== "number") {
+        // Taken Leave
+        entRow.ValidateStatus = "Taken Leave value is invalid.";
+      } else if (typeof entRow.BalanceLeave !== "number") {
+        // Balance Leave
+        entRow.ValidateStatus = "Balance Leave value is invalid.";
+      }
+    });
+
+    let arrErrEntitlementData = arrEntitlementData.filter(
+      entRow => entRow.ValidateStatus !== "Passed!"
     );
 
-    if (
-      this.state.entitlementData.length === 0 ||
-      (this.state.entitlementData.length && updatedEntitlementData.length === 0)
-    ) {
+    if (arrEntitlementData.length === 0) {
       this.setState({
+        entitlementData: arrEntitlementData,
         isValid: false,
         loading: false
       });
       confirmAlert({
         message:
-          "No rows have been uploaded! Please verify that you are using the correct template and that it contains Leave Entitlement data...",
+          "No rows have been uploaded! Please verify that you are using the correct template and that it contains Leave Entitlements data...",
+        buttons: [
+          {
+            label: "OK"
+          }
+        ]
+      });
+    } else if (arrErrEntitlementData.length > 0) {
+      this.setState({
+        entitlementData: arrErrEntitlementData,
+        isValid: false,
+        loading: false
+      });
+      confirmAlert({
+        message:
+          "Invalid row(s) has/have been detected from the uploaded Leave Entitlements data! Please find those invalid row(s) in the table and fix them in Excel Template, then re-try uploading...",
         buttons: [
           {
             label: "OK"
@@ -177,59 +227,29 @@ class UploadEntitlement extends Component {
         ]
       });
     } else if (
-      this.state.entitlementData.length !== updatedEntitlementData.length
+      arrErrEntitlementData.length === 0 &&
+      arrEntitlementData.length > 0
     ) {
-      const arrInvalidRows = this.getRowsWithErrors(
-        this.state.entitlementData,
-        updatedEntitlementData
-      );
       this.setState({
-        entitlementData: arrInvalidRows,
-        isValid: false,
+        entitlementData: arrEntitlementData,
+        isValid: true,
         loading: false
       });
       confirmAlert({
         message:
-          "Invalid row(s) has/have been found from the uploaded Leave Entitlement data! Please find those invalid row(s) in the table and fix them in Excel Template, then re-try uploading...",
+          "All uploaded Leave Entitlements data have successfully passed the validation process...",
         buttons: [
           {
             label: "OK"
           }
         ]
       });
-    } else {
-      this.setState({
-        entitlementData: updatedEntitlementData,
-        isValid: true,
-        loading: false
-      });
     }
-  };
-
-  getRowsWithErrors = (arrAll, arrValidated) => {
-    const arrDiff = [];
-    arrAll.forEach(arrAllRow => {
-      let arrAllIsPresentInArrVal = arrValidated.some(
-        arrValRow =>
-          arrValRow.EmployeeID === arrAllRow.EmployeeID &&
-          arrValRow.LeaveYear === arrAllRow.LeaveYear &&
-          arrValRow.LeaveType === arrAllRow.LeaveType &&
-          arrValRow.CarriedForward === arrAllRow.CarriedForward &&
-          arrValRow.Entitlement === arrAllRow.Entitlement &&
-          arrValRow.AvailableLeave === arrAllRow.AvailableLeave &&
-          arrValRow.TakenLeave === arrAllRow.TakenLeave &&
-          arrValRow.BalanceLeave === arrAllRow.BalanceLeave
-      );
-      if (!arrAllIsPresentInArrVal) {
-        arrDiff.push(arrAllRow);
-      }
-    });
-    return arrDiff;
   };
 
   confirmEntitlementSave = e => {
     confirmAlert({
-      message: "Do you really want to save all uploaded Entitlements?",
+      message: "Do you really want to save all uploaded Leave Entitlements?",
       buttons: [
         {
           label: "Yes",
@@ -305,7 +325,7 @@ class UploadEntitlement extends Component {
   completedEntitlementSave = e => {
     confirmAlert({
       message:
-        "All Leave Entitlements have been successfully saved to the Database!",
+        "All new Leave Entitlements have been successfully saved to the Database!",
       buttons: [
         {
           label: "OK",
@@ -338,13 +358,44 @@ class UploadEntitlement extends Component {
       return <Redirect to="/forbidden" />;
     }
 
-    console.log("State", this.state);
+    let textHeaderValue = "",
+      textColorValStatus = "",
+      colWidthValStatus = 0;
+    if (this.state.isValid) {
+      textHeaderValue = "Validation";
+      textColorValStatus = "#004a9b";
+      colWidthValStatus = 70;
+    } else {
+      textHeaderValue = "Validation Status";
+      textColorValStatus = "red";
+      colWidthValStatus = 260;
+    }
+
     const leaveEntitlementCols = [
+      {
+        id: "ValidateStatus",
+        Header: textHeaderValue,
+        accessor: "ValidateStatus",
+        minWidth: colWidthValStatus,
+        sortable: true,
+        filterable: false,
+        style: {
+          color: textColorValStatus
+        }
+      },
       {
         id: "emplId",
         Header: "Employee ID",
         accessor: "EmployeeID",
-        width: 110,
+        minWidth: 110,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "EmployeeName",
+        Header: "Employee Name",
+        accessor: "EmployeeName",
+        minWidth: 110,
         sortable: true,
         filterable: true
       },
@@ -352,7 +403,7 @@ class UploadEntitlement extends Component {
         id: "year",
         Header: "Leave Year",
         accessor: "LeaveYear",
-        // minWidth: 120,
+        minWidth: 70,
         sortable: true,
         filterable: true,
         style: {
@@ -363,7 +414,7 @@ class UploadEntitlement extends Component {
         id: "leaveType",
         Header: "Leave Type",
         accessor: "LeaveType",
-        // minWidth: 180,
+        minWidth: 70,
         sortable: true,
         filterable: true,
         style: {
@@ -374,7 +425,7 @@ class UploadEntitlement extends Component {
         id: "carryForward",
         Header: "Carried Forward",
         accessor: "CarriedForward",
-        minWidth: 120,
+        minWidth: 70,
         sortable: true,
         filterable: true,
         style: {
@@ -385,7 +436,7 @@ class UploadEntitlement extends Component {
         id: "entitlement",
         Header: "Entitlement",
         accessor: "Entitlement",
-        // minWidth: 120,
+        minWidth: 70,
         sortable: true,
         filterable: true,
         style: {
@@ -396,7 +447,7 @@ class UploadEntitlement extends Component {
         id: "availableLeave",
         Header: "Available Leave",
         accessor: "AvailableLeave",
-        // minWidth: 120,
+        minWidth: 70,
         sortable: true,
         filterable: true,
         style: {
@@ -407,7 +458,7 @@ class UploadEntitlement extends Component {
         id: "takenLeave",
         Header: "Taken Leave",
         accessor: "TakenLeave",
-        // minWidth: 120,
+        minWidth: 70,
         sortable: true,
         filterable: true,
         style: {
@@ -418,7 +469,7 @@ class UploadEntitlement extends Component {
         id: "balanceLeave",
         Header: "Balance Leave",
         accessor: "BalanceLeave",
-        // minWidth: 120,
+        minWidth: 70,
         sortable: true,
         filterable: true,
         style: {
@@ -431,7 +482,7 @@ class UploadEntitlement extends Component {
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Upload Leave Entitlement</h3>
+            <h3 className="headerStyle">Upload Leave Entitlements</h3>
           </span>
         </div>
         <div className="reactTableContainer">

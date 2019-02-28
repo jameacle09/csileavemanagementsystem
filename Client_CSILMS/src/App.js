@@ -17,6 +17,8 @@ import LeaveHistoryView from "./manager/LeaveHistoryView";
 import StaffProfileComponent from "./staffprofile/StaffProfileComponent";
 import ListStaffProfile from "./staffprofile/ListStaffProfile";
 import NewStaffProfile from "./staffprofile/NewStaffProfile";
+import EditStaffProfile from "./staffprofile/EditStaffProfile";
+import UploadEmployeeProfile from "./staffprofile/UploadStaffProfile";
 import PublicHoliday from "./hradmin/PublicHoliday";
 import AddPublicHoliday from "./hradmin/AddPublicHoliday";
 import EditPublicHoliday from "./hradmin/EditPublicHoliday";
@@ -77,13 +79,13 @@ class App extends Component {
       });
   }
 
-  checkFirstTimeLogin(){
+  checkFirstTimeLogin() {
     isFirstTimeLogin().then(response => {
-      if(response.message === "YES"){
+      if (response.message === "YES") {
         localStorage.setItem(FIRST_TIME, response.message);
         this.props.history.push("/firsttime");
       }
-    })
+    });
   }
 
   handleLogout(redirectTo = "/") {
@@ -247,6 +249,13 @@ class App extends Component {
                     path="/liststaffprofile/edit/:emplId"
                     title="Edit Employee Profile"
                     component={NewStaffProfile}
+                  />
+                  <PrivateRoute
+                    authenticated={this.state.isAuthenticated}
+                    currentUser={this.state.currentUser}
+                    path="/liststaffprofile/uploadprofiles"
+                    title="Upload Employee Profile"
+                    component={UploadEmployeeProfile}
                   />
 
                   {/* Leave Entitlements */}
