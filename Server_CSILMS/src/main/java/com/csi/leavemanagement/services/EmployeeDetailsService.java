@@ -131,24 +131,30 @@ public class EmployeeDetailsService {
 		this.jobDetailsRepository.save(jobDetails);
 		
 		boolean isUpdate = false;
+		int lockAccount = employeeDetails.getStatus().equals("A") ? 0:1;
 		LoginDetails loginDetails = loginDetailRepository.findByEmplId(employeeDetails.getEmplId()).orElse(null);
 		if (loginDetails == null) {
 			loginDetails = new LoginDetails();
 			loginDetails.setEmplId(employeeDetails.getEmplId());
 			loginDetails.setUserId(employeeDetails.getBusinessEmail());
 			loginDetails.setPassword(this.passwordEncoder.encode(employeeDetails.getNricPassport()));
-			loginDetails.setLockAccount(0);
+			loginDetails.setLockAccount(lockAccount);
 			loginDetails.setRoles(employeeDetails.getRoles());
 		} else {
 			isUpdate = true;
 			loginDetails.setUserId(employeeDetails.getBusinessEmail());
+			loginDetails.setLockAccount(lockAccount);
 			loginDetails.setRoles(employeeDetails.getRoles());
 		}
 
 		this.loginDetailRepository.save(loginDetails);
 		
 		logger.info("User {} has successfully {} by User {}", employeeDetails.getEmplId(),isUpdate ? "update" : "added", currentUser.getId());
-		return employeeDetailRepository.findByEmplId(employeeDetails.getEmplId());
-
+		employeeDetails = employeeDetailRepository.findByEmplId(employeeDetails.getEmplId());
+		if(employeeDetails == null) {
+			employeeDetails = new EmployeeDetails();
+		}
+		
+		return employeeDetails;
 	}
 }

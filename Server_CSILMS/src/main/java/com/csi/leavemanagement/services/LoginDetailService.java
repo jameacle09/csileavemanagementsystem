@@ -22,7 +22,7 @@ public class LoginDetailService {
 
 	@Autowired
 	private LoginDetailsRepository loginDetailRepository;
-	
+
 	@Autowired
 	private EmployeeDetailsService employeeDetailsService;
 
@@ -32,23 +32,23 @@ public class LoginDetailService {
 	private static final Logger logger = LoggerFactory.getLogger(LoginDetailService.class);
 
 	public List<LoginDetails> findAll() {
-		List<LoginDetails> loginDetails = (List<LoginDetails>)this.loginDetailRepository.findAll();
+		List<LoginDetails> loginDetails = (List<LoginDetails>) this.loginDetailRepository.findAll();
 		return loginDetails;
 	}
-	
+
 	public LoginDetails save(LoginDetails loginDetail) {
 		return this.loginDetailRepository.save(loginDetail);
 	}
-	
+
 	public LoginDetails findByEmplId(String emplId) {
 		LoginDetails loginDetail = this.loginDetailRepository.findByEmplId(emplId).orElse(null);
-		return loginDetail;		
+		return loginDetail;
 	}
-	
+
 	public void deleteByEmplId(String emplId) {
-		this.loginDetailRepository.deleteByEmplId(emplId);		
+		this.loginDetailRepository.deleteByEmplId(emplId);
 	}
-	
+
 	public ResponseEntity<?> changePassword(String password, String newPassword, UserPrincipal currentUser)
 			throws Exception {
 		Optional<LoginDetails> loginDetails = loginDetailRepository
@@ -70,33 +70,48 @@ public class LoginDetailService {
 			return ResponseEntity.ok(mapResponse);
 		}
 	}
-	
-	public ResponseEntity<?> resetPassword(String emplId, UserPrincipal currentUser){
+
+	public ResponseEntity<?> resetPassword(String emplId, UserPrincipal currentUser) {
 		Map<String, String> mapResponse = new HashMap<String, String>();
 		EmployeeDetails employee = employeeDetailsService.findById(emplId);
 		LoginDetails empLogin = loginDetailRepository.findByEmplId(emplId).get();
-		
+
 		empLogin.setPassword(passwordEncoder.encode(employee.getNricPassport()));
 		loginDetailRepository.save(empLogin);
-		
-		logger.info("User {} has successfully reset password for User {}", currentUser.getId(),  empLogin.getEmplId());
+
+		logger.info("User {} has successfully reset password for User {}", currentUser.getId(), empLogin.getEmplId());
 		mapResponse.put("message", "The password is successfully reset");
 		return ResponseEntity.ok(mapResponse);
 	}
-	
-	public ResponseEntity<?> isFirstTimeLogin(UserPrincipal currentUser){
+
+	public ResponseEntity<?> isFirstTimeLogin(UserPrincipal currentUser) {
 		Map<String, String> mapResponse = new HashMap<String, String>();
 		String emplId = currentUser.getId();
 		EmployeeDetails employee = employeeDetailsService.findById(emplId);
 		LoginDetails empLogin = loginDetailRepository.findByEmplId(emplId).orElse(null);
-		
-		if(passwordEncoder.matches(employee.getNricPassport(), empLogin.getPassword())) {
+
+		if (passwordEncoder.matches(employee.getNricPassport(), empLogin.getPassword())) {
 			logger.info("User {} is using default password", currentUser.getId());
 			mapResponse.put("message", "YES");
 		} else {
 			mapResponse.put("message", "NO");
 		}
-		
+
 		return ResponseEntity.ok(mapResponse);
+	}
+
+	public LoginDetails lockAccount(Map<String, String> params, UserPrincipal currentUser) {
+		String emplId = params.get("emplId");
+		int lockAccount = Integer.parseInt(params.get("lockAccount"));
+		LoginDetails empLogin = loginDetailRepository.findByEmplId(emplId).orElse(null);
+
+		if (empLogin != null) {
+			empLogin.setLockAccount(lockAccount);
+			logger.info("User {} has {} login account for User {}", currentUser.getId(),
+					lockAccount == 1 ? "locked" : "un-locked", emplId);
+			loginDetailRepository.save(empLogin);
+		}
+
+		return empLogin;
 	}
 }
