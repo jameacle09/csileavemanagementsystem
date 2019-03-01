@@ -95,7 +95,7 @@ class MyLeaveDetails extends Component {
       },
       {
         id: "takenLeave",
-        Header: "Taken Leave",
+        Header: "Leave Taken",
         accessor: str => str.takenLeave + " day(s)",
         minWidth: 140,
         sortable: true,
@@ -106,7 +106,7 @@ class MyLeaveDetails extends Component {
       },
       {
         id: "balanceLeave",
-        Header: "Balance Leave",
+        Header: "Leave Balance",
         accessor: str => str.balanceLeave + " day(s)",
         minWidth: 140,
         sortable: true,
