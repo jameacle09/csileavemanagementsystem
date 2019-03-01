@@ -401,9 +401,9 @@ class AddEntitlement extends Component {
                     }}
                   >
                     <ModalHeader>Submit Confirmation</ModalHeader>
-                    <ModalBody>
+                    {/* <ModalBody>
                       Are you sure you want to Save this New Leave Entitlement?
-                    </ModalBody>
+                    </ModalBody> */}
                     <ModalFooter>
                       <Button
                         type="submit"

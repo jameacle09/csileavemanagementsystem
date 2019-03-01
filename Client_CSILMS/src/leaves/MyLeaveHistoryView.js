@@ -503,9 +503,9 @@ class MyLeaveHistoryView extends Component {
                     }}
                   >
                     <ModalHeader>Cancel Leave Confirmation</ModalHeader>
-                    <ModalBody>
+                    {/* <ModalBody>
                       Are you sure you want to Cancel this Annual Leave Request?
-                    </ModalBody>
+                    </ModalBody> */}
                     <ModalFooter>
                       <Button
                         type="submit"
@@ -535,9 +535,9 @@ class MyLeaveHistoryView extends Component {
                     }}
                   >
                     <ModalHeader>Recall Leave Confirmation</ModalHeader>
-                    <ModalBody>
+                    {/* <ModalBody>
                       Are you sure you want to Delete this Leave Request?
-                    </ModalBody>
+                    </ModalBody> */}
                     <ModalFooter>
                       <Button
                         type="submit"

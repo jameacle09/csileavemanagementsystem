@@ -335,9 +335,9 @@ class LeaveRequest extends Component {
             margin: "220px auto"
           }}
         > <ModalHeader>Approval Confirmation</ModalHeader>
-          <ModalBody>
+          {/* <ModalBody>
             Are you sure you want to Approve this Leave Request?
-        </ModalBody>
+        </ModalBody> */}
           <ModalFooter>
             <Button
               type="submit"
@@ -366,9 +366,9 @@ class LeaveRequest extends Component {
             margin: "220px auto"
           }}
         > <ModalHeader>Approval Confirmation</ModalHeader>
-          <ModalBody>
+          {/* <ModalBody>
             Are you sure you want to change the status of this Leave Request to Cancel?
-        </ModalBody>
+        </ModalBody> */}
           <ModalFooter>
             <Button
               type="submit"
@@ -400,10 +400,10 @@ class LeaveRequest extends Component {
             margin: "220px auto"
           }}
         >
-          <ModalHeader>Rejection Confirmation</ModalHeader>
-          <ModalBody>
+          <ModalHeader>Reject Confirmation</ModalHeader>
+          {/* <ModalBody>
             Are you sure you want to Reject this Leave Request?
-        </ModalBody>
+        </ModalBody> */}
           <ModalFooter>
             <Button
               type="submit"
@@ -431,10 +431,10 @@ class LeaveRequest extends Component {
             margin: "220px auto"
           }}
         >
-          <ModalHeader>Rejection Confirmation</ModalHeader>
-          <ModalBody>
+          <ModalHeader>Reject Confirmation</ModalHeader>
+          {/* <ModalBody>
             Are you sure you want to Reject this Pending Cancel Request?
-        </ModalBody>
+        </ModalBody> */}
           <ModalFooter>
             <Button
               type="submit"
@@ -669,7 +669,7 @@ class LeaveRequest extends Component {
                       margin: "220px auto"
                     }}
                   >
-                    <ModalHeader>Rejection Confirmation</ModalHeader>
+                    <ModalHeader>Reject Confirmation</ModalHeader>
                     <ModalBody>
                       Are you sure you want to Reject this Leave Request?
                     </ModalBody>

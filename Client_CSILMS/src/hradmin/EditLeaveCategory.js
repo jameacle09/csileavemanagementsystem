@@ -238,9 +238,9 @@ class EditLeaveCategory extends Component {
                     }}
                   >
                     <ModalHeader>Edit Confirmation</ModalHeader>
-                    <ModalBody>
+                    {/* <ModalBody>
                       Are you sure you want to edit this item?
-                    </ModalBody>
+                    </ModalBody> */}
                     <ModalFooter>
                       <Button
                         type="submit"
@@ -268,9 +268,9 @@ class EditLeaveCategory extends Component {
                     }}
                   >
                     <ModalHeader>Delete Confirmation</ModalHeader>
-                    <ModalBody>
+                    {/* <ModalBody>
                       Are you sure you want to delete this item?
-                    </ModalBody>
+                    </ModalBody> */}
                     <ModalFooter>
                       <Button
                         type="submit"

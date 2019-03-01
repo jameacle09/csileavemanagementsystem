@@ -372,10 +372,10 @@ class EditEntitlement extends Component {
                     }}
                   >
                     <ModalHeader>Submit Confirmation</ModalHeader>
-                    <ModalBody>
+                    {/* <ModalBody>
                       Are you sure you want to Save this Edited Leave
                       Entitlement?
-                    </ModalBody>
+                    </ModalBody> */}
                     <ModalFooter>
                       <Button
                         type="submit"
