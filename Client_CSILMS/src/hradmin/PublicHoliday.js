@@ -16,12 +16,9 @@ class PublicHoliday extends Component {
       publicHolidayDetails: [],
       loading: true
     };
-    this.loadPublicHolidayDetails = this.loadPublicHolidayDetails.bind(this);
-    this.componentDidMount = this.componentDidMount.bind(this);
-    this.componentDidUpdate = this.componentDidUpdate.bind(this);
   }
 
-  loadPublicHolidayDetails() {
+  loadPublicHolidayDetails = () => {
     fetchData({
       url: API_BASE_URL + "/publicholidays",
       method: "GET"
@@ -39,7 +36,7 @@ class PublicHoliday extends Component {
         let userData = [];
         this.setState({ userData: userData });
       });
-  }
+  };
 
   componentDidMount() {
     this.loadPublicHolidayDetails();
@@ -159,42 +156,14 @@ class PublicHoliday extends Component {
             columns={PublicHolidayCols}
             defaultPageSize={10}
             pages={this.state.pages}
+            loading={this.state.loading}
             filterable={true}
             sortable={true}
             multiSort={true}
+            loadingText="Loading Public Holidays..."
             noDataText="No data available."
             className="-striped"
           />
-
-          {/* <div>
-                  <Modal
-                    isOpen={this.state.modalDelete}
-                    toggle={this.toggleDelete}
-                    className={this.props.className}
-                    style={{
-                      width: "360px",
-                      height: "300px",
-                      margin: "220px auto"
-                    }}
-                  >
-                    <ModalHeader>Delete Confirmation</ModalHeader>
-                    <ModalBody>
-                      Are you sure you want to delete this item?
-                    </ModalBody>
-                    <ModalFooter>
-                      <Button
-                        type="submit"
-                        color="danger"
-                        onClick={this.handleDelete}
-                      >
-                        Confirm
-                      </Button>
-                      <Button color="secondary" onClick={this.toggleDelete}>
-                        Cancel
-                      </Button>
-                    </ModalFooter>
-                  </Modal>
-                </div> */}
         </div>
       </div>
     );

@@ -35,12 +35,10 @@ class LeaveEntitlement extends Component {
         if (error.status === 401) {
           this.props.history.push("/login");
         }
-        let leaveEntitlementData = [];
         this.setState({
-          leaveEntitlementData: leaveEntitlementData,
+          leaveEntitlementData: [],
           loading: false
         });
-        // console.log(leaveEntitlementData);
       });
   };
 

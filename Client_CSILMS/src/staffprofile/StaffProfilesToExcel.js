@@ -5,43 +5,102 @@ import "../common/Styles.css";
 
 class ExportToExcel extends Component {
   render() {
+    const borderStyle = {
+      border: "1px solid black"
+    };
+
     return (
       <div style={{ marginRight: "25px" }}>
         <ReactHTMLTableToExcel
           id="test-table-xls-button"
           className="exportToExcelButton"
           table="table-to-xls"
-          filename="Employee Profile"
-          sheet="tablexls"
+          filename="EmployeeProfiles"
+          sheet="EmployeeProfiles"
           buttonText="Export to Excel"
         />
         <table hidden={true} id="table-to-xls">
           <thead>
             <tr>
-              <th>Employee ID</th>
-              <th>Employee Name</th>
-              <th>Business Email</th>
-              <th>NRIC/Passport No.</th>
-              <th>Job Title</th>
-              <th>Mobile No.</th>
-              <th>Business Unit</th>
-              <th>Line Manager</th>
-              <th>Join Date</th>
+              <th colspan="17" style={{ fontSize: "28px", textAlign: "left" }}>
+                Employee Profiles List
+              </th>
+            </tr>
+            <tr>
+              <th colspan="17" align="left">
+                Report Extracted on {formatDateDMY(new Date())}
+              </th>
+            </tr>
+            <tr>
+              <th colspan="17" />
+            </tr>
+            <tr>
+              <th style={borderStyle}>Employee ID</th>
+              <th style={borderStyle}>Employee Name</th>
+              <th style={borderStyle}>Business Email</th>
+              <th style={borderStyle}>Gender</th>
+              <th style={borderStyle}>NRIC/Passport No.</th>
+              <th style={borderStyle}>Married Status</th>
+              <th style={borderStyle}>Date Married</th>
+              <th style={borderStyle}>MarriedCnt</th>
+              <th style={borderStyle}>ChildrenCnt</th>
+              <th style={borderStyle}>Job Title</th>
+              <th style={borderStyle}>Mobile No.</th>
+              <th style={borderStyle}>Business Unit</th>
+              <th style={borderStyle}>Department ID</th>
+              <th style={borderStyle}>Line Manager ID</th>
+              <th style={borderStyle}>Line Manager Name</th>
+              <th style={borderStyle}>Join Date</th>
+              <th style={borderStyle}>Status</th>
             </tr>
           </thead>
           <tbody>
             {this.props.employeeProfiles.map((empProfile, index) => {
               return (
                 <tr key={index}>
-                  <td>{empProfile.emplId}</td>
-                  <td>{empProfile.name}</td>
-                  <td>{empProfile.businessEmail}</td>
-                  <td>{empProfile.nricPassport}</td>
-                  <td>{empProfile.jobTitle}</td>
-                  <td>{empProfile.mobileNo}</td>
-                  <td>{empProfile.businessUnit}</td>
-                  <td>{empProfile.reportsTo.name}</td>
-                  <td>{formatDateDMY(empProfile.joinDate)}</td>
+                  <td style={borderStyle}>{empProfile.emplId}</td>
+                  <td style={borderStyle}>{empProfile.name}</td>
+                  <td style={borderStyle}>{empProfile.businessEmail}</td>
+                  <td align="center" style={borderStyle}>
+                    {empProfile.gender}
+                  </td>
+                  <td align="center" style={borderStyle}>
+                    {empProfile.nricPassport}
+                  </td>
+                  <td align="center" style={borderStyle}>
+                    {empProfile.marriageStatus}
+                  </td>
+                  <td align="center" style={borderStyle}>
+                    {formatDateDMY(empProfile.marriageDate)}
+                  </td>
+                  <td align="center" style={borderStyle}>
+                    {empProfile.marriageCount}
+                  </td>
+                  <td align="center" style={borderStyle}>
+                    {empProfile.totalChildren}
+                  </td>
+                  <td align="center" style={borderStyle}>
+                    {empProfile.jobTitle}
+                  </td>
+                  <td align="center" style={borderStyle}>
+                    {empProfile.mobileNo}
+                  </td>
+                  <td align="center" style={borderStyle}>
+                    {empProfile.businessUnit}
+                  </td>
+                  <td align="center" style={borderStyle}>
+                    {empProfile.deptId}
+                  </td>
+                  <td align="center" style={borderStyle}>
+                    {empProfile.reportsTo.emplId}
+                  </td>
+                  <td style={borderStyle}>{empProfile.reportsTo.name}</td>
+                  <td align="center" style={borderStyle}>
+                    {formatDateDMY(empProfile.joinDate)}
+                  </td>
+                  <td align="center" style={borderStyle}>
+                    {empProfile.status}
+                  </td>
                 </tr>
               );
             })}
