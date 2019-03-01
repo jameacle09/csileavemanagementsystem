@@ -28,7 +28,7 @@ class ExportToExcel extends Component {
             </tr>
             <tr>
               <th colspan="17" align="left">
-                Report Exracted on {formatDateDMY(new Date())}
+                Report Extracted on {formatDateDMY(new Date())}
               </th>
             </tr>
             <tr>

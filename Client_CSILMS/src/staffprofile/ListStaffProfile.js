@@ -129,7 +129,10 @@ class ListStaffProfile extends Component {
         accessor: "businessUnit",
         minWidth: 80,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "reportsTo",
@@ -217,7 +220,7 @@ class ListStaffProfile extends Component {
                 color="primary"
                 // component={Link}
                 tag={Link}
-                to={`/newstaffprofile/`}
+                to={`/liststaffprofile/add`}
                 className="largeButtonOverride"
               >
                 <span
