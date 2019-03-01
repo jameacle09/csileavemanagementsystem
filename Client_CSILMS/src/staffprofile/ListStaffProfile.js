@@ -121,7 +121,10 @@ class ListStaffProfile extends Component {
         accessor: "mobileNo",
         minWidth: 110,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "businessUnit",
@@ -147,7 +150,10 @@ class ListStaffProfile extends Component {
         accessor: d => formatDateDMY(d.joinDate),
         minWidth: 94,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "status",

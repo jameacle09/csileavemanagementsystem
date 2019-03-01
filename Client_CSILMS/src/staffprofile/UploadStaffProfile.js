@@ -551,8 +551,11 @@ class UploadEmployeeProfile extends Component {
         empRow.ValidateStatus = "Date Married cannot be blank.";
       } else if (typeof arrEmployeeProfileData[index].JobTitle !== "string") {
         empRow.ValidateStatus = "Job Title cannot be blank.";
-      } else if (typeof arrEmployeeProfileData[index].MobileNo !== "number") {
-        empRow.ValidateStatus = "Mobile No. cannot be blank.";
+      } else if (
+        !arrEmployeeProfileData[index].MobileNo &&
+        typeof arrEmployeeProfileData[index].MobileNo !== "string"
+      ) {
+        empRow.ValidateStatus = "Mobile Number cannot be blank.";
       } else if (
         typeof arrEmployeeProfileData[index].BusinessUnit !== "string"
       ) {
