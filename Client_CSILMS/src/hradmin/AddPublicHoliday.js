@@ -191,9 +191,9 @@ class AddPublicHoliday extends Component {
                     }}
                   >
                     <ModalHeader>Add Confirmation</ModalHeader>
-                    <ModalBody>
+                    {/* <ModalBody>
                       Are you sure you want to add this item?
-                    </ModalBody>
+                    </ModalBody> */}
                     <ModalFooter>
                       <Button
                         type="submit"

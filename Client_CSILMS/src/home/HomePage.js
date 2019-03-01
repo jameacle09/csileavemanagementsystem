@@ -4,9 +4,10 @@ import Dashboard from "./Dashboard";
 import { fetchData } from '../util/APIUtils';
 import { API_BASE_URL } from '../constants';
 import { withRouter } from 'react-router-dom';
-import { Hidden } from "@material-ui/core";
+// import { Hidden } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import BGURL from "../img/header.jpg";
+// import Countdown from "../common/Countdown.js"
 
 class HomePage extends Component {
   constructor(props) {
@@ -73,8 +74,9 @@ class HomePage extends Component {
         <div>
           <Jumbotron style={divStyle}>
 
-            <h1 className="display-3">Hello, {userData["name"]}!</h1>
+            <h1 className="display-3">Hello, {userData["name"]}</h1>
             <p className="lead">Welcome to CSI Leave Management System.</p>
+            {/* <Countdown /> */}
           </Jumbotron>
           <Dashboard currentUser={this.props.currentUser} />
         </div>
@@ -84,10 +86,11 @@ class HomePage extends Component {
         <div>
           <Jumbotron style={divStyle}>
 
-            <h1 className="display-3">Hello, {userData["name"]}!</h1>
+            <h1 className="display-3">Hello, {userData["name"]}</h1>
             <p className="lead">Welcome to CSI Leave Management System.</p>
-            <p>You have {pendingApproval} leave request by your staff to be approve.
+            <p>You have <b style={{ fontSize: "2rem" }}>{pendingApproval}</b> leave request by your staff to be approve.
             <NavLink to="/leaverequests"><Button>Click</Button></NavLink> to approve/reject the leave request.</p>
+            {/* <Countdown /> */}
           </Jumbotron>
           <Dashboard currentUser={this.props.currentUser} />
         </div>

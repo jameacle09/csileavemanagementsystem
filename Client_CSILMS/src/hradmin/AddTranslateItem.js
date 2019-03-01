@@ -258,9 +258,9 @@ class AddTranslateItem extends Component {
                     }}
                   >
                     <ModalHeader>Submit Confirmation</ModalHeader>
-                    <ModalBody>
+                    {/* <ModalBody>
                       Are you sure you want to Save this New Translate Item?
-                    </ModalBody>
+                    </ModalBody> */}
                     <ModalFooter>
                       <Button
                         type="submit"
