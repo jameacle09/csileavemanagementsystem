@@ -13,7 +13,8 @@ import {
   fetchData,
   isHrRole,
   formatDateDMY,
-  getWeekDay
+  getWeekDay,
+  formatDateYMD
 } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import { confirmAlert } from "react-confirm-alert";
@@ -28,6 +29,7 @@ class UploadHoliday extends Component {
     super(props);
     this.state = {
       holidayData: [],
+      holidayLookup: [],
       filename: "",
       isValid: false,
       loading: false
@@ -37,11 +39,31 @@ class UploadHoliday extends Component {
 
   componentDidMount() {
     this._isMounted = true;
+    this.loadPublicHolidayLookup();
   }
 
   componentWillUnmount() {
     this._isMounted = false;
   }
+
+  loadPublicHolidayLookup = () => {
+    fetchData({
+      url: API_BASE_URL + "/publicholidays",
+      method: "GET"
+    })
+      .then(data => {
+        this.setState({
+          holidayLookup: data,
+          loading: false
+        });
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+        this.setState({ holidayLookup: [] });
+      });
+  };
 
   handleExcelFileUpload = file => {
     if (file.target.files[0]) {
@@ -95,34 +117,73 @@ class UploadHoliday extends Component {
   };
 
   validateUploadedRowsData = () => {
+    let arrHolidayLookup = this.state.holidayLookup;
+    let arrHolidayDataLookup = this.state.holidayData;
     let arrHolidayData = this.state.holidayData;
 
-    arrHolidayData.forEach(function(e) {
-      e["ValidateStatus"] = "Passed!";
-      e["Day"] = "";
+    arrHolidayData.forEach(holRow => {
+      holRow["ValidateStatus"] = "Passed!";
+      holRow["Day"] = "";
     });
 
+    // Remove Leading and Trailing Spaces
+    arrHolidayData.map(holRow => {
+      if (holRow.Date) holRow.Date = holRow.Date.trim();
+      if (holRow.Holiday) holRow.Holiday = holRow.Holiday.trim();
+      if (holRow.State) holRow.State = holRow.State.trim();
+    });
+
+    // Column Values Validations on each Row
     arrHolidayData.forEach(holRow => {
       if (!holRow.Date) {
         holRow.ValidateStatus = "Date cannot be blank.";
       } else if (holRow.Date && isNaN(Date.parse(holRow.Date))) {
         holRow.ValidateStatus = "Date value is invalid.";
+      } else if (
+        holRow.Date != "" &&
+        typeof holRow.Date === "string" &&
+        arrHolidayDataLookup.filter(dupRow => dupRow.Date === holRow.Date)
+          .length > 1
+      ) {
+        holRow.ValidateStatus = "Date has duplicate entry.";
+      } else if (
+        holRow.Date != "" &&
+        arrHolidayLookup.some(holiday => {
+          return (
+            formatDateYMD(holiday.holidayDate) === formatDateYMD(holRow.Date)
+          );
+        })
+      ) {
+        holRow.ValidateStatus = "Date value already exist.";
       } else if (!holRow.Holiday) {
         holRow.ValidateStatus = "Holiday cannot be blank.";
       } else if (!holRow.State) {
         holRow.ValidateStatus = "State(s) cannot be blank.";
       }
-      if (holRow.Date && !isNaN(Date.parse(holRow.Date)))
+
+      if (holRow.Date && !isNaN(Date.parse(holRow.Date))) {
+        holRow.Date = formatDateYMD(holRow.Date);
         holRow.Day = getWeekDay(holRow.Date);
+      }
+    });
+
+    // Detecting for disappeared Column Names due to empty values
+    arrHolidayData.map((holRow, index) => {
+      if (typeof arrHolidayData[index].Date !== "string")
+        holRow.ValidateStatus = "Date cannot be blank.";
+      if (typeof arrHolidayData[index].Holiday !== "string")
+        holRow.ValidateStatus = "Holiday cannot be blank.";
+      if (typeof arrHolidayData[index].State !== "string")
+        holRow.ValidateStatus = "State(s) cannot be blank.";
     });
 
     let arrErrHolidayData = arrHolidayData.filter(
-      entRow => entRow.ValidateStatus !== "Passed!"
+      holRow => holRow.ValidateStatus !== "Passed!"
     );
 
     if (arrHolidayData.length === 0) {
       this.setState({
-        HolidayData: arrHolidayData,
+        HolidayData: arrErrHolidayData,
         isValid: false,
         loading: false
       });
@@ -227,7 +288,8 @@ class UploadHoliday extends Component {
           }
         });
     });
-    this.props.history.push("/publicholiday");
+    // this.props.history.push("/publicholiday");
+    this.handleReset();
   };
 
   completedHolidaySave = e => {
@@ -257,9 +319,9 @@ class UploadHoliday extends Component {
   };
 
   render() {
-    // if (!isHrRole(this.props.currentUser)) {
-    //   return <Redirect to="/forbidden" />;
-    // }
+    if (!isHrRole(this.props.currentUser)) {
+      return <Redirect to="/forbidden" />;
+    }
 
     let textHeaderValue = "",
       textColorValStatus = "",
