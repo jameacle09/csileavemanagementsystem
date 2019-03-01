@@ -18,8 +18,9 @@ class MyLeaveDetails extends Component {
   }
 
   loadMyLeaveDetails() {
+    const thisYear = new Date().getFullYear();
     fetchData({
-      url: API_BASE_URL + "/leaveentitlement/me",
+      url: API_BASE_URL + "/leaveentitlement/me?year=" + thisYear,
       method: "GET"
     })
       .then(data => {
@@ -141,6 +142,8 @@ class MyLeaveDetails extends Component {
             filterable={true}
             sortable={true}
             multiSort={true}
+            minRows={10}
+            pageSizeOptions={[10, 20, 50, 100]}
             // rowsText="Rows per page"
             loadingText="Loading Leave Details..."
             noDataText="No data available."
