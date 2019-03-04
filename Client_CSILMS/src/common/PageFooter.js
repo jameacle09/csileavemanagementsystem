@@ -1,13 +1,12 @@
 import React, { Component } from "react";
 import "./Styles.css";
 
-class Footer extends Component {
+class PageFooter extends Component {
   constructor(props) {
     super(props);
     this.date = new Date();
     this.footerMessage = `CSI Interfusion Sdn. Bhd. All rights reserved.`;
   }
-
   render() {
     return (
       <div className="footerContainer">
@@ -19,4 +18,4 @@ class Footer extends Component {
   }
 }
 
-export default Footer;
+export default PageFooter;

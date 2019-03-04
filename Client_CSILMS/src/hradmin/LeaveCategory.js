@@ -62,7 +62,7 @@ class LeaveCategory extends Component {
         id: "leaveCode",
         Header: "Leave Code",
         accessor: "leaveCode",
-        minWidth: 40,
+        minWidth: 110,
         sortable: true,
         filterable: true,
         style: {
@@ -73,7 +73,7 @@ class LeaveCategory extends Component {
         id: "leaveDescr",
         Header: "Leave Description",
         accessor: "leaveDescr",
-        minWidth: 130,
+        minWidth: 180,
         sortable: true,
         filterable: true
       },
@@ -81,7 +81,7 @@ class LeaveCategory extends Component {
         id: "entitlement",
         Header: "Entitlement",
         accessor: str => str.entitlement + " day(s)",
-        minWidth: 40,
+        minWidth: 100,
         sortable: true,
         filterable: true,
         style: {
@@ -101,7 +101,7 @@ class LeaveCategory extends Component {
             <span className="fa fa-edit" /> Edit
           </Button>
         ),
-        minWidth: 40,
+        minWidth: 80,
         sortable: false,
         filterable: false,
         style: {
@@ -118,26 +118,28 @@ class LeaveCategory extends Component {
           </span>
         </div>
         <div className="reactTableContainer">
-          <Row style={{ height: "50px" }}>
-            <Col md="6" xs="6">
+          <div className="mainListBtnContainer">
+            <div className="SubListBtnLeftContainer">
               <ExportToExcel
                 leaveCategoryDetails={this.state.leaveCategoryDetails}
               />
-            </Col>
-            <Col md="6" xs="6" style={{ textAlign: "right" }}>
-              <Button
-                tag={Link}
-                to={`/leavecategory/add`}
-                className="largeButtonOverride"
-              >
-                <span
-                  className="fa fa-plus"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-                Add Category
-              </Button>
-            </Col>
-          </Row>
+            </div>
+            <div className="SubListBtnRightContainer">
+              <div>
+                <Button
+                  tag={Link}
+                  to={`/leavecategory/add`}
+                  className="largeButtonOverride"
+                >
+                  <span
+                    className="fa fa-plus"
+                    style={{ margin: "0px 5px 0px 0px" }}
+                  />
+                  Add Leave Category
+                </Button>
+              </div>
+            </div>
+          </div>
           <ReactTable
             data={this.state.leaveCategoryDetails}
             columns={LeaveCategoryCols}

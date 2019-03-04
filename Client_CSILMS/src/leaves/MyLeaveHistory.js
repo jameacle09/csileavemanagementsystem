@@ -65,7 +65,7 @@ class MyLeaveHistory extends Component {
         id: "startDate",
         Header: "Start Date",
         accessor: d => formatDateDMY(d.id.startDate),
-        minWidth: 70,
+        minWidth: 90,
         sortable: true,
         filterable: true,
         style: {
@@ -76,7 +76,7 @@ class MyLeaveHistory extends Component {
         id: "endDate",
         Header: "End Date",
         accessor: d => formatDateDMY(d.endDate),
-        minWidth: 70,
+        minWidth: 90,
         sortable: true,
         filterable: true,
         style: {
@@ -87,7 +87,7 @@ class MyLeaveHistory extends Component {
         id: "leaveDuration",
         Header: "Duration",
         accessor: str => str.leaveDuration + " day(s)",
-        minWidth: 60,
+        minWidth: 90,
         sortable: true,
         filterable: true,
         style: {
@@ -114,7 +114,7 @@ class MyLeaveHistory extends Component {
         id: "effDate",
         Header: "Applied Date",
         accessor: d => formatDateDMY(d.id.effDate),
-        minWidth: 70,
+        minWidth: 90,
         sortable: true,
         filterable: true,
         style: {
@@ -125,7 +125,7 @@ class MyLeaveHistory extends Component {
         id: "leaveStatus",
         Header: "Status",
         accessor: d => showFullString(d.leaveStatus),
-        minWidth: 100,
+        minWidth: 120,
         sortable: true,
         filterable: true
       },
@@ -148,7 +148,7 @@ class MyLeaveHistory extends Component {
             &nbsp;View
           </Button>
         ),
-        minWidth: 60,
+        minWidth: 90,
         sortable: false,
         filterable: false,
         style: {
@@ -158,21 +158,18 @@ class MyLeaveHistory extends Component {
     ];
 
     return (
-      <div className="mainContainerLeavePages">
+      <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span>
             <h3 className="headerStyle">My Leave History</h3>
           </span>
         </div>
         <div className="reactTableContainer">
-          <Row style={{ height: "50px" }}>
-            <Col md="6" xs="6">
+          <div className="mainListBtnContainer">
+            <div className="SubListBtnSingleContainer">
               <MyLeaveHistoryToExcel userData={this.state.userData} />
-            </Col>
-            <Col md="6" xs="6" style={{ textAlign: "right" }}>
-              <span> </span>
-            </Col>
-          </Row>
+            </div>
+          </div>
           <ReactTable
             data={this.state.userData}
             columns={myLeaveHistoryCols}

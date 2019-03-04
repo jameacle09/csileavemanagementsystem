@@ -423,7 +423,7 @@ class ApplyLeave extends Component {
     let durationErrorMsg = this.validateLeaveDuration(leaveDuration);
 
     return (
-      <div className="mainContainerLeavePages">
+      <div className="mainContainerFlex ">
         <div className="headerContainerFlex">
           <span>
             <h3 className="headerStyle">Apply Leave</h3>

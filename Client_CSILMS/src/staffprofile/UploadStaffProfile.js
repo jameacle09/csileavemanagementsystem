@@ -656,6 +656,7 @@ class UploadEmployeeProfile extends Component {
     // This is a temporary solution for saving Array of data, an API
     // for saving bulk of data should be created to speed up the saving
     this.state.employeeProfileData.map(empRow => {
+      if (!empRow.DottedLineManager) empRow.DottedLineManager = " ";
       const jsonRowValues = {
         emplId: empRow.EmployeeID,
         name: empRow.EmployeeName,
@@ -856,7 +857,13 @@ class UploadEmployeeProfile extends Component {
       {
         id: "DateMarried",
         Header: "Date Married",
-        accessor: d => formatDateDMY(d.DateMarried),
+        accessor: d => {
+          if (d.DateMarried) {
+            return formatDateDMY(d.DateMarried);
+          } else {
+            return " ";
+          }
+        },
         minWidth: 100,
         sortable: true,
         filterable: true,
@@ -955,7 +962,13 @@ class UploadEmployeeProfile extends Component {
       {
         id: "DateJoined",
         Header: "DateJoined",
-        accessor: d => formatDateDMY(d.DateJoined),
+        accessor: d => {
+          if (d.DateMarried) {
+            return formatDateDMY(d.DateJoined);
+          } else {
+            return " ";
+          }
+        },
         minWidth: 100,
         sortable: true,
         filterable: true,
@@ -996,47 +1009,55 @@ class UploadEmployeeProfile extends Component {
         </div>
         <div className="reactTableContainer">
           <Form>
-            <div>
-              <FormGroup
-                row
-                style={{
-                  fontFamily: "Helvetica",
-                  size: "16",
-                  fontWeight: "bold"
-                }}
-              >
-                <Label for="excelFileName" sm={2}>
-                  Upload Excel File:
-                </Label>
-
-                <Col sm={{ size: 6 }}>
-                  <Input
-                    type="file"
-                    name="filename"
-                    id="filename"
-                    accept=".xls,.xlsx"
-                    value={this.state.filename}
-                    onChange={this.handleExcelFileUpload.bind(this)}
+            <div className="mainListBtnContainer">
+              <div className="SubUploadListLeftContainer">
+                <div className="SubUploadListLeftContainerA">
+                  <Label
+                    for="excelFileName"
                     style={{
-                      background: "#b8e2fc",
-                      border: "1px solid rgb(214, 209, 209)"
+                      textAlign: "left",
+                      fontFamily: "Helvetica",
+                      size: "16",
+                      fontWeight: "bold"
                     }}
-                  />
-                  <FormText color="muted" style={{ fontFamily: "Helvetica" }}>
-                    Please download the latest{" "}
-                    <a href={ExcelUploadTemplate}>
-                      Employee Profile Upload Template
-                    </a>{" "}
-                    for you to fill in the data.
-                  </FormText>
-                </Col>
-                <Col sm={4} align="right">
+                  >
+                    Upload Excel File:
+                  </Label>
+                </div>
+                <div className="SubUploadListLeftContainerB">
+                  <Col>
+                    <Input
+                      type="file"
+                      name="filename"
+                      id="filename"
+                      accept=".xls,.xlsx"
+                      value={this.state.filename}
+                      onChange={this.handleExcelFileUpload.bind(this)}
+                      style={{
+                        fontFamily: "Helvetica",
+                        size: "16",
+                        background: "#b8e2fc",
+                        border: "1px solid rgb(214, 209, 209)"
+                      }}
+                    />
+                    <FormText color="muted" style={{ fontFamily: "Helvetica" }}>
+                      Please download the latest{" "}
+                      <a href={ExcelUploadTemplate}>
+                        Employee Profile Upload Template
+                      </a>{" "}
+                      for you to fill in the data.
+                    </FormText>
+                  </Col>
+                </div>
+              </div>
+              <div className="SubUploadListRightContainer">
+                <div>
                   <Button
                     variant="contained"
                     color="primary"
                     onClick={event => this.confirmEmployeeProfileSave(event)}
                     disabled={this.validateStateHasData()}
-                    style={{ width: "100px" }}
+                    style={{ width: "94px", marginBottom: "2px" }}
                     className="largeButtonOverride"
                   >
                     Save
@@ -1046,7 +1067,7 @@ class UploadEmployeeProfile extends Component {
                     variant="contained"
                     color="primary"
                     onClick={this.handleReset}
-                    style={{ width: "100px" }}
+                    style={{ width: "94px", marginBottom: "2px" }}
                     className="largeButtonOverride"
                   >
                     Reset
@@ -1054,14 +1075,15 @@ class UploadEmployeeProfile extends Component {
                   <span> </span>
                   <Button
                     color="secondary"
-                    width="80px"
                     onClick={this.handleCancelUpload}
+                    style={{ width: "94px", marginBottom: "2px" }}
                   >
-                    Back to Main
+                    Back
                   </Button>
-                </Col>
-              </FormGroup>
+                </div>
+              </div>
             </div>
+
             <div className="reactTableSubContainer">
               <ReactTable
                 data={this.state.employeeProfileData}

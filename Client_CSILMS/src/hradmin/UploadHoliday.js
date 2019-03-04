@@ -444,7 +444,7 @@ class UploadHoliday extends Component {
                     color="primary"
                     onClick={event => this.confirmHolidaySave(event)}
                     disabled={this.validateStateHasData()}
-                    style={{ width: "100px" }}
+                    style={{ width: "94px", marginBottom: "2px" }}
                     className="largeButtonOverride"
                   >
                     Save
@@ -454,7 +454,7 @@ class UploadHoliday extends Component {
                     variant="contained"
                     color="primary"
                     onClick={this.handleReset}
-                    style={{ width: "100px" }}
+                    style={{ width: "94px", marginBottom: "2px" }}
                     className="largeButtonOverride"
                   >
                     Reset
@@ -462,10 +462,10 @@ class UploadHoliday extends Component {
                   <span> </span>
                   <Button
                     color="secondary"
-                    width="80px"
                     onClick={this.handleCancelUpload}
+                    style={{ width: "94px", marginBottom: "2px" }}
                   >
-                    Back to Main
+                    Back
                   </Button>
                 </Col>
               </FormGroup>

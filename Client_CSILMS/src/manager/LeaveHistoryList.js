@@ -83,7 +83,7 @@ class LeaveHistoryList extends Component {
         id: "emplId",
         Header: "Employee ID",
         accessor: "id.emplid",
-        width: 110,
+        width: 120,
         sortable: true,
         filterable: true
       },
@@ -91,7 +91,7 @@ class LeaveHistoryList extends Component {
         id: "name",
         Header: "Employee Name",
         accessor: "employeeDetails.name",
-        minWidth: 140,
+        minWidth: 180,
         sortable: true,
         filterable: true
       },
@@ -99,7 +99,7 @@ class LeaveHistoryList extends Component {
         id: "leaveType",
         Header: "Leave Type",
         accessor: "leaveCategory.leaveDescr",
-        minWidth: 120,
+        minWidth: 150,
         sortable: true,
         filterable: true
       },
@@ -107,23 +107,29 @@ class LeaveHistoryList extends Component {
         id: "startDate",
         Header: "Start Date",
         accessor: d => formatDateDMY(d.id.startDate),
-        minWidth: 94,
+        minWidth: 100,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "endDate",
         Header: "End Date",
         accessor: d => formatDateDMY(d.endDate),
-        minWidth: 94,
+        minWidth: 100,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "halfDay",
         Header: "Half Day",
         accessor: str => showFullString(str.halfDay),
-        minWidth: 140,
+        minWidth: 90,
         sortable: true,
         filterable: true,
         style: {
@@ -134,7 +140,7 @@ class LeaveHistoryList extends Component {
         id: "Duration",
         Header: "Duration",
         accessor: str => str.leaveDuration + " day(s)",
-        minWidth: 140,
+        minWidth: 120,
         sortable: true,
         filterable: true,
         style: {
@@ -145,7 +151,7 @@ class LeaveHistoryList extends Component {
         id: "leaveStatus",
         Header: "Leave Status",
         accessor: str => showFullStatus(str.leaveStatus),
-        minWidth: 120,
+        minWidth: 140,
         sortable: true,
         filterable: true
       },
@@ -169,7 +175,7 @@ class LeaveHistoryList extends Component {
             &nbsp;View
           </Button>
         ),
-        minWidth: 72,
+        minWidth: 90,
         sortable: false,
         filterable: false,
         style: {
@@ -186,14 +192,11 @@ class LeaveHistoryList extends Component {
           </span>
         </div>
         <div className="reactTableContainer">
-          <Row style={{ height: "50px" }}>
-            <Col md="6" xs="6">
+          <div className="mainListBtnContainer">
+            <div className="SubListBtnSingleContainer">
               <ExportToExcel leaveHistoryData={this.state.leaveHistoryData} />
-            </Col>
-            <Col md="6" xs="6" style={{ textAlign: "right" }}>
-              <span> </span>
-            </Col>
-          </Row>
+            </div>
+          </div>
           <ReactTable
             data={this.state.leaveHistoryData}
             columns={leaveHistoryCols}

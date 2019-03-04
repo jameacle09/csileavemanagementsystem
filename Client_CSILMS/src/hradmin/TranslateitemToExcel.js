@@ -13,14 +13,14 @@ class TranslateitemToExcel extends Component {
     };
 
     return (
-      <div style={{ marginRight: "25px" }}>
+      <div>
         <ReactHTMLTableToExcel
           id="test-table-xls-button"
           className="exportToExcelButton"
           table="table-to-xls"
           filename="Translateitem"
           sheet="Translateitem"
-          buttonText="Export to Excel"
+          buttonText="Export List to Excel"
         />
         <table hidden="true" id="table-to-xls">
           <thead>
@@ -37,14 +37,14 @@ class TranslateitemToExcel extends Component {
               return (
                 <tr key={index}>
                   <td>{translateitem.id.fieldname}</td>
-                  <td>{translateitem.id.fieldvalue}</td>                
+                  <td>{translateitem.id.fieldvalue}</td>
                   <td>{translateitem.xlatlongname}</td>
                   <td>{translateitem.xlatshortname}</td>
                   <td>{showStatusDesc(translateitem.effStatus)}</td>
                 </tr>
               );
             })}
-          </tbody>	
+          </tbody>
         </table>
       </div>
     );

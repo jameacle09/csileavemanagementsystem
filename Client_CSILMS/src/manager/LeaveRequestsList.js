@@ -69,7 +69,7 @@ class LeaveRequestsList extends Component {
         id: "emplId",
         Header: "Employee ID",
         accessor: "id.emplid",
-        width: 110,
+        width: 120,
         sortable: true,
         filterable: true
       },
@@ -77,7 +77,7 @@ class LeaveRequestsList extends Component {
         id: "name",
         Header: "Employee Name",
         accessor: "employeeDetails.name",
-        minWidth: 140,
+        minWidth: 180,
         sortable: true,
         filterable: true
       },
@@ -87,29 +87,38 @@ class LeaveRequestsList extends Component {
         accessor: "employeeDetails.jobTitle",
         minWidth: 120,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "startDate",
         Header: "Start Date",
         accessor: d => formatDateDMY(d.id.startDate),
-        minWidth: 94,
+        minWidth: 100,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "endDate",
         Header: "End Date",
         accessor: d => formatDateDMY(d.endDate),
-        minWidth: 94,
+        minWidth: 100,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "leaveType",
         Header: "Leave Type",
         accessor: "leaveCategory.leaveDescr",
-        minWidth: 140,
+        minWidth: 150,
         sortable: true,
         filterable: true
       },
@@ -117,7 +126,7 @@ class LeaveRequestsList extends Component {
         id: "halfDay",
         Header: "Half Day",
         accessor: str => showFullString(str.halfDay),
-        minWidth: 70,
+        minWidth: 90,
         sortable: true,
         filterable: true,
         style: {
@@ -128,7 +137,7 @@ class LeaveRequestsList extends Component {
         id: "Duration",
         Header: "Duration",
         accessor: str => str.leaveDuration + " day(s)",
-        minWidth: 140,
+        minWidth: 120,
         sortable: true,
         filterable: true,
         style: {
@@ -139,7 +148,7 @@ class LeaveRequestsList extends Component {
         id: "leaveStatus",
         Header: "Leave Status",
         accessor: str => showFullStatus(str.leaveStatus),
-        minWidth: 120,
+        minWidth: 150,
         sortable: true,
         filterable: true
       },
@@ -163,7 +172,7 @@ class LeaveRequestsList extends Component {
             &nbsp;View
           </Button>
         ),
-        minWidth: 72,
+        minWidth: 90,
         sortable: false,
         filterable: false,
         style: {
@@ -194,11 +203,11 @@ class LeaveRequestsList extends Component {
           </span>
         </div>
         <div className="reactTableContainer">
-          <Row style={{ height: "50px" }}>
-            <Col md="6" xs="6">
+          <div className="mainListBtnContainer">
+            <div className="SubListBtnSingleContainer">
               <ExportToExcel leaveRequestData={this.state.leaveRequestData} />
-            </Col>
-          </Row>
+            </div>
+          </div>
           <ReactTable
             data={this.state.leaveRequestData}
             columns={leaveRequestsCols}

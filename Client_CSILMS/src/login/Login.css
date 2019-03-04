@@ -13,6 +13,15 @@
   height: 100%;
   position: relative;
 }
+.loginSystemTitleContainer {
+  position: absolute;
+  font: Helvetica;
+  color: white;
+  font-size: xx-large;
+  font-weight: bold;
+  width: 100%;
+}
+
 .loginTextSubContainer {
   font: Helvetica;
   color: white;
@@ -99,5 +108,8 @@
   }
   .loginTextMessageContainer {
     display: none;
+  }
+  .loginSystemTitleContainer {
+    font-size: x-large;
   }
 }

@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import { NavLink, Link } from "react-router-dom";
-import "./Styles.css";
+import "./SideBarHeader.css";
 import CSILogo from "../img/CSI_Logo.png";
 import { displayByRole } from "../util/APIUtils";
 
-class SideBar extends Component {
+class PageSideBar extends Component {
   constructor(props) {
     super(props);
     this.handleLogout = this.handleLogout.bind(this);
@@ -21,7 +21,7 @@ class SideBar extends Component {
     }
 
     return (
-      <nav id="sidebar">
+      <div id="PageSidebar" className="sidebar">
         <Link to="/" title="Home">
           <img
             src={CSILogo}
@@ -39,7 +39,7 @@ class SideBar extends Component {
         <p align="center">Leave Management System</p>
         <ul className="list-unstyled components">
           <li>
-            <NavLink to="/" activeClassName="sidebarLinkActive">
+            <NavLink to="/" exact activeClassName="sidebarLinkActive">
               Home
             </NavLink>
           </li>
@@ -185,9 +185,9 @@ class SideBar extends Component {
             </ul>
           </li>
         </ul>
-      </nav>
+      </div>
     );
   }
 }
 
-export default SideBar;
+export default PageSideBar;

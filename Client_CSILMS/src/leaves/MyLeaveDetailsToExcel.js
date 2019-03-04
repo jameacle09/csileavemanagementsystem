@@ -5,14 +5,14 @@ import "../common/Styles.css";
 class MyLeaveDetailsToExcel extends Component {
   render() {
     return (
-      <div style={{ marginRight: "25px" }}>
+      <div>
         <ReactHTMLTableToExcel
           id="test-table-xls-button"
           className="exportToExcelButton"
           table="table-to-xls"
           filename="My Leave Details"
           sheet="MyLeaveDetails"
-          buttonText="Export to Excel"
+          buttonText="Export List to Excel"
         />
         <table hidden={true} id="table-to-xls">
           <thead>
