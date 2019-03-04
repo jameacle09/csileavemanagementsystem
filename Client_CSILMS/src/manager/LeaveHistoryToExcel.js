@@ -14,14 +14,14 @@ class ExportToExcel extends Component {
     };
 
     return (
-      <div style={{ marginRight: "25px" }}>
+      <div>
         <ReactHTMLTableToExcel
           id="test-table-xls-button"
           className="exportToExcelButton"
           table="table-to-xls"
           filename="Employee Leave History"
           sheet="tablexls"
-          buttonText="Export to Excel"
+          buttonText="Export List to Excel"
         />
         <table hidden={true} id="table-to-xls">
           <thead>

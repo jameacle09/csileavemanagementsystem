@@ -118,21 +118,18 @@ class MyLeaveDetails extends Component {
       }
     ];
     return (
-      <div className="mainContainerLeavePages">
+      <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span>
             <h3 className="headerStyle">My Leave Details</h3>
           </span>
         </div>
         <div className="reactTableContainer">
-          <Row style={{ height: "50px" }}>
-            <Col md="6" xs="6">
+          <div className="mainListBtnContainer">
+            <div className="SubListBtnSingleContainer">
               <MyLeaveDetailsToExcel userData={this.state.userData} />
-            </Col>
-            <Col md="6" xs="6" style={{ textAlign: "right" }}>
-              <span> </span>
-            </Col>
-          </Row>
+            </div>
+          </div>
           <ReactTable
             data={this.state.userData}
             columns={myLeaveDetailsCols}

@@ -70,7 +70,7 @@ class TranslateItems extends Component {
         id: "fieldname",
         Header: "Field Name",
         accessor: "id.fieldname",
-        width: 170,
+        width: 120,
         sortable: true,
         filterable: true
       },
@@ -78,7 +78,7 @@ class TranslateItems extends Component {
         id: "fieldvalue",
         Header: "Field Value",
         accessor: "id.fieldvalue",
-        width: 150,
+        width: 120,
         sortable: true,
         filterable: true,
         style: {
@@ -89,7 +89,7 @@ class TranslateItems extends Component {
         id: "xlatlongname",
         Header: "Field Long Name",
         accessor: "xlatlongname",
-        // minWidth: 40,
+        minWidth: 180,
         sortable: true,
         filterable: true
       },
@@ -97,7 +97,7 @@ class TranslateItems extends Component {
         id: "xlatshortname",
         Header: "Field Short Name",
         accessor: "xlatshortname",
-        // minWidth: 40,
+        minWidth: 150,
         sortable: true,
         filterable: true
       },
@@ -105,7 +105,7 @@ class TranslateItems extends Component {
         id: "effStatus",
         Header: "Effective Status",
         accessor: str => showStatusDesc(str.effStatus),
-        width: 150,
+        minWidth: 100,
         sortable: true,
         filterable: true,
         style: {
@@ -127,7 +127,7 @@ class TranslateItems extends Component {
             <span className="fa fa-edit" /> Edit
           </Button>
         ),
-        minWidth: 40,
+        minWidth: 80,
         sortable: false,
         filterable: false,
         style: {
@@ -144,24 +144,28 @@ class TranslateItems extends Component {
           </span>
         </div>
         <div className="reactTableContainer">
-          <Row style={{ height: "50px" }}>
-            <Col md="6" xs="6">
-              <TranslateitemToExcel translateItemsData={this.state.translateItemsData} />
-            </Col>                    
-            <Col md="6" xs="6" style={{ textAlign: "right" }}>
-              <Button
-                tag={Link}
-                to={`/translateitems/add`}
-                className="largeButtonOverride"
-              >
-                <span
-                  className="fa fa-plus"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-                Add Translate Item
-              </Button>
-            </Col>
-          </Row>
+          <div className="mainListBtnContainer">
+            <div className="SubListBtnLeftContainer">
+              <TranslateitemToExcel
+                translateItemsData={this.state.translateItemsData}
+              />
+            </div>
+            <div className="SubListBtnRightContainer">
+              <div>
+                <Button
+                  tag={Link}
+                  to={`/translateitems/add`}
+                  className="largeButtonOverride"
+                >
+                  <span
+                    className="fa fa-plus"
+                    style={{ margin: "0px 5px 0px 0px" }}
+                  />
+                  Add Translate Item
+                </Button>
+              </div>
+            </div>
+          </div>
           <ReactTable
             data={this.state.translateItemsData}
             columns={TranslateItemsCols}

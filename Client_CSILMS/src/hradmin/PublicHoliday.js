@@ -69,7 +69,7 @@ class PublicHoliday extends Component {
         id: "holidayDay",
         Header: "Day",
         accessor: "holidayDay",
-        minWidth: 60,
+        minWidth: 100,
         sortable: true,
         filterable: true
       },
@@ -77,7 +77,7 @@ class PublicHoliday extends Component {
         id: "holidayDescr",
         Header: "Holiday",
         accessor: "holidayDescr",
-        minWidth: 130,
+        minWidth: 160,
         sortable: true,
         filterable: true
       },
@@ -119,38 +119,41 @@ class PublicHoliday extends Component {
           </span>
         </div>
         <div className="reactTableContainer">
-          <Row style={{ height: "50px" }}>
-            <Col md="6" xs="6">
+          <div className="mainListBtnContainer">
+            <div className="SubListBtnLeftContainer">
               <ExportToExcel
                 publicHolidayDetails={this.state.publicHolidayDetails}
               />
-            </Col>
-            <Col md="6" xs="6" style={{ textAlign: "right" }}>
-              <Button
-                tag={Link}
-                to={`/publicholiday/uploadholiday`}
-                className="largeButtonOverride"
-              >
-                <span
-                  className="fa fa-upload"
-                  style={{ margin: "0px 10px 0px 0px" }}
-                />
-                Upload Holidays
-              </Button>
-              <span> </span>
-              <Button
-                tag={Link}
-                to={`/publicholiday/add`}
-                className="largeButtonOverride"
-              >
-                <span
-                  className="fa fa-plus"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-                Add Holiday
-              </Button>
-            </Col>
-          </Row>
+            </div>
+            <div className="SubListBtnRightContainer">
+              <div>
+                <Button
+                  tag={Link}
+                  to={`/publicholiday/uploadholiday`}
+                  className="largeButtonOverride"
+                >
+                  <span
+                    className="fa fa-upload"
+                    style={{ margin: "0px 5px 0px 0px" }}
+                  />
+                  Upload Holidays
+                </Button>
+              </div>
+              <div style={{ paddingLeft: "4px" }}>
+                <Button
+                  tag={Link}
+                  to={`/publicholiday/add`}
+                  className="largeButtonOverride"
+                >
+                  <span
+                    className="fa fa-plus"
+                    style={{ margin: "0px 5px 0px 0px" }}
+                  />
+                  Add Holiday
+                </Button>
+              </div>
+            </div>
+          </div>
           <ReactTable
             data={this.state.publicHolidayDetails}
             columns={PublicHolidayCols}

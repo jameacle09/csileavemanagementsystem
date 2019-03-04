@@ -75,7 +75,7 @@ class ListStaffProfile extends Component {
         id: "emplId",
         Header: "Employee ID",
         accessor: "emplId",
-        width: 110,
+        width: 120,
         sortable: true,
         filterable: true
       },
@@ -83,7 +83,7 @@ class ListStaffProfile extends Component {
         id: "name",
         Header: "Employee Name",
         accessor: "name",
-        minWidth: 140,
+        minWidth: 180,
         sortable: true,
         filterable: true
       },
@@ -91,7 +91,7 @@ class ListStaffProfile extends Component {
         id: "businessEmail",
         Header: "Business Email",
         accessor: "businessEmail",
-        minWidth: 170,
+        minWidth: 200,
         sortable: true,
         filterable: true
       },
@@ -141,6 +141,7 @@ class ListStaffProfile extends Component {
         id: "reportsTo",
         Header: "Line Manager",
         accessor: "reportsTo.name",
+        minWidth: 180,
         sortable: true,
         filterable: true
       },
@@ -148,7 +149,7 @@ class ListStaffProfile extends Component {
         id: "joinDate",
         Header: "Join Date",
         accessor: d => formatDateDMY(d.joinDate),
-        minWidth: 94,
+        minWidth: 100,
         sortable: true,
         filterable: true,
         style: {
@@ -159,7 +160,7 @@ class ListStaffProfile extends Component {
         id: "status",
         Header: "Status",
         accessor: str => showStatusDesc(str.status),
-        minWidth: 60,
+        minWidth: 80,
         sortable: true,
         filterable: true,
         style: {
@@ -197,46 +198,49 @@ class ListStaffProfile extends Component {
           </span>
         </div>
         <div className="reactTableContainer">
-          <Row style={{ height: "50px" }}>
-            <Col md="6" xs="6">
+          <div className="mainListBtnContainer">
+            <div className="SubListBtnLeftContainer">
               <ExportToExcel employeeProfiles={this.state.employeeProfiles}>
                 <span
                   className="fa fa-file-excel"
                   style={{ margin: "0px 5px 0px 0px" }}
                 />
               </ExportToExcel>
-            </Col>
-            <Col md="6" xs="6" style={{ textAlign: "right" }}>
-              <Button
-                variant="contained"
-                color="primary"
-                className="largeButtonOverride"
-                component={Link}
-                tag={Link}
-                to={`/liststaffprofile/uploadprofiles`}
-              >
-                <span
-                  className="fa fa-upload"
-                  style={{ margin: "0px 10px 0px 0px" }}
-                />
-                Upload Profiles
-              </Button>
-              <span> </span>
-              <Button
-                color="primary"
-                // component={Link}
-                tag={Link}
-                to={`/liststaffprofile/add`}
-                className="largeButtonOverride"
-              >
-                <span
-                  className="fa fa-plus"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-                Add Employee
-              </Button>
-            </Col>
-          </Row>
+            </div>
+            <div className="SubListBtnRightContainer">
+              <div>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className="largeButtonOverride"
+                  component={Link}
+                  tag={Link}
+                  to={`/liststaffprofile/uploadprofiles`}
+                >
+                  <span
+                    className="fa fa-upload"
+                    style={{ margin: "0px 5px 0px 0px" }}
+                  />
+                  Upload Profiles
+                </Button>
+              </div>
+              <div style={{ paddingLeft: "4px" }}>
+                <Button
+                  color="primary"
+                  // component={Link}
+                  tag={Link}
+                  to={`/liststaffprofile/add`}
+                  className="largeButtonOverride"
+                >
+                  <span
+                    className="fa fa-plus"
+                    style={{ margin: "0px 5px 0px 0px" }}
+                  />
+                  Add Employee
+                </Button>
+              </div>
+            </div>
+          </div>
           <ReactTable
             data={this.state.employeeProfiles}
             columns={EmplProfileCols}

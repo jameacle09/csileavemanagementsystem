@@ -196,7 +196,7 @@ class LoginDetails extends Component {
         id: "userId",
         Header: "User ID (Email)",
         accessor: "userId",
-        minWidth: 140,
+        minWidth: 200,
         sortable: true,
         filterable: true
       },
@@ -205,7 +205,7 @@ class LoginDetails extends Component {
         id: "emplId",
         Header: "Employee ID",
         accessor: "emplId",
-        minWidth: 120,
+        minWidth: 126,
         sortable: true,
         filterable: true,
         style: {
@@ -227,7 +227,7 @@ class LoginDetails extends Component {
             {showAsIcon(str)}
           </Button>
         ),
-        minWidth: 80,
+        minWidth: 150,
         sortable: false,
         filterable: false,
         style: {
@@ -252,7 +252,7 @@ class LoginDetails extends Component {
             Reset Password
           </Button>
         ),
-        minWidth: 72,
+        minWidth: 140,
         sortable: false,
         filterable: false,
         style: {
@@ -269,19 +269,11 @@ class LoginDetails extends Component {
           </span>
         </div>
         <div className="reactTableContainer">
-          <Row style={{ height: "50px" }}>
-            <Col md="6" xs="6">
-              <ExportToExcel LoginDetails={this.state.userData}>
-                <span
-                  className="fa fa-file-excel"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-              </ExportToExcel>
-            </Col>
-            <Col md="6" xs="6" style={{ textAlign: "right" }}>
-              <span> </span>
-            </Col>
-          </Row>
+          <div className="mainListBtnContainer">
+            <div className="SubListBtnSingleContainer">
+              <ExportToExcel LoginDetails={this.state.userData} />
+            </div>
+          </div>
           <ReactTable
             data={this.state.userData}
             columns={loginDetailsCols}
