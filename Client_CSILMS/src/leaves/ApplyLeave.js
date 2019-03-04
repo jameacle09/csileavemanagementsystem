@@ -9,6 +9,7 @@ import {
   Col,
   Alert
 } from "reactstrap";
+import moment from 'moment';
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { fetchData } from "../util/APIUtils";
@@ -172,6 +173,12 @@ class ApplyLeave extends Component {
     const fieldName = event.target.name;
     const startDateStr = this.state.startDate.toISOString().substr(0, 10);
     const endDateStr = this.state.endDate.toISOString().substr(0, 10);
+
+    const checkDate = moment(new Date(event.target.value));
+    if(checkDate.isValid() == false){
+      console.log("invalid date");
+      return ;
+    }
 
     switch (fieldName) {
       case "startDate":
