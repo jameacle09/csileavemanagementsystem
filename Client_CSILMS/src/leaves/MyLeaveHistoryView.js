@@ -297,7 +297,7 @@ class MyLeaveHistoryView extends Component {
         onClick={this.toggleDeleteLeave}
         className="largeButtonOverride"
       >
-        Cancel Leave
+        Recall
       </Button> 
       }
       else if (leaveStatus === "APPRV") {
@@ -534,7 +534,7 @@ class MyLeaveHistoryView extends Component {
                       margin: "220px auto"
                     }}
                   >
-                    <ModalHeader>Approval Confirmation</ModalHeader>
+                    <ModalHeader>Recall Leave Confirmation</ModalHeader>
                     {/* <ModalBody>
                       Are you sure you want to Delete this Leave Request?
                     </ModalBody> */}
