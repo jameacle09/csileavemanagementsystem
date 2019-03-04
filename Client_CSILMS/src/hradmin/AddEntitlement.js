@@ -11,7 +11,7 @@ import {
   ModalBody,
   ModalFooter
 } from "reactstrap";
-import { withRouter } from "react-router-dom";
+import { withRouter, Redirect } from "react-router-dom";
 import { fetchData, isHrRole } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import { confirmAlert } from "react-confirm-alert";
