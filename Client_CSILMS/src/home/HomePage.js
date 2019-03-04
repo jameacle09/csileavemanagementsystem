@@ -16,11 +16,15 @@ class HomePage extends Component {
       userData: {
         name: ""
       },
-      pendingApproval: []
+      pendingApproval: [],
+      staffLeave: {
+        balanceLeave: ""
+      }
     };
 
     this.loadUserProfile = this.loadUserProfile.bind(this);
     this.loadPendingApprovalManager = this.loadPendingApprovalManager.bind(this);
+    this.loadLeaveBalance = this.loadLeaveBalance.bind(this);
   }
 
   loadUserProfile() {
@@ -53,9 +57,27 @@ class HomePage extends Component {
     });
   }
 
+  loadLeaveBalance() {
+    // fetch leave balance from API
+    const thisYear = new Date().getFullYear();
+    fetchData({
+      url: API_BASE_URL + "/leaveentitlement/me/" + thisYear + "/AL",
+      method: "GET"
+    })
+      .then(data => this.setState({ staffLeave: data }))
+      .catch(err => {
+        // if unable to fetch data, assign default (spaces) to values
+        let staffLeaveData = {
+          balanceLeave: ""
+        };
+        this.setState({ staffLeave: staffLeaveData });
+      });
+  }
+
   componentDidMount() {
     this.loadUserProfile();
     this.loadPendingApprovalManager();
+    this.loadLeaveBalance();
   }
 
   render() {
@@ -66,17 +88,28 @@ class HomePage extends Component {
       marginTop: "-16px",
       color: "#FFFFFF"
     };
+    const pstyle = {
+      backgroundColor: "blue",
+      backgroundSize: "cover",
+      backgroundRadius: "20px"
+    };
 
-    let userData = this.state.userData;
-    let pendingApproval = this.state.pendingApproval;
+    const {
+      staffLeave,
+      userData,
+      pendingApproval
+    } = this.state;
+
+    // let userData = this.state.userData;
+    // let pendingApproval = this.state.pendingApproval;
     if (pendingApproval == 0) {
       return (
         <div>
           <Jumbotron style={divStyle}>
 
             <h1 className="display-3">Hello, {userData["name"]}</h1>
-            <p className="lead">Welcome to CSI Leave Management System.</p>
-            {/* <Countdown /> */}
+            <h1 className="lead">Welcome to CSI Leave Management System.</h1>
+            <h1 className="lead">You have {staffLeave["balanceLeave"]} days remaining leaves to go.</h1>
           </Jumbotron>
           <Dashboard currentUser={this.props.currentUser} />
         </div>
@@ -87,10 +120,10 @@ class HomePage extends Component {
           <Jumbotron style={divStyle}>
 
             <h1 className="display-3">Hello, {userData["name"]}</h1>
-            <p className="lead">Welcome to CSI Leave Management System.</p>
-            <p>You have <b style={{ fontSize: "2rem" }}>{pendingApproval}</b> leave request by your staff to be approve.
-            <NavLink to="/leaverequests"><Button>Click</Button></NavLink> to approve/reject the leave request.</p>
-            {/* <Countdown /> */}
+            <h2 className="lead" style={pstyle}>Welcome to CSI Leave Management System.</h2>
+            <h2 className="lead" style={pstyle}>You have <b style={{ fontSize: "2rem" }}>{pendingApproval}</b> leave request by your staff to be approve.
+            <NavLink to="/leaverequests"><Button>Click</Button></NavLink> to approve/reject the leave request.</h2>
+            <h2 className="lead" style={pstyle}>You have <b style={{ fontSize: "2rem" }}>{staffLeave["balanceLeave"]}</b> days remaining leaves to go.</h2>
           </Jumbotron>
           <Dashboard currentUser={this.props.currentUser} />
         </div>
