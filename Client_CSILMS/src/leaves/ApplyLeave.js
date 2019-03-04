@@ -9,6 +9,7 @@ import {
   Col,
   Alert
 } from "reactstrap";
+import moment from 'moment';
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { fetchData } from "../util/APIUtils";
@@ -173,6 +174,10 @@ class ApplyLeave extends Component {
     const startDateStr = this.state.startDate.toISOString().substr(0, 10);
     const endDateStr = this.state.endDate.toISOString().substr(0, 10);
 
+    const checkDate = moment(new Date(event.target.value));
+    if(checkDate.isValid() == false)
+      return ;   // do nothing if date is not valid
+
     switch (fieldName) {
       case "startDate":
         let newStartDate = new Date(event.target.value);
@@ -256,7 +261,18 @@ class ApplyLeave extends Component {
         this.setState({ leaveReason: event.target.value });
         break;
       case "attachment":
-        this.setState({ attachedFile: event.target.files[0] });
+        if(event.target.files[0].size > 5242880) {
+          confirmAlert({
+            message: "Unable to upload file. This file exceeded the limit of 5MB",
+            buttons: [
+              {
+                label: "Ok"
+              }
+            ]
+          });
+          event.target.value =  null;
+        } else 
+          this.setState({ attachedFile: event.target.files[0] });
         break;
       case "approverId":
         this.setState({ approverId: event.target.value });
@@ -282,9 +298,12 @@ class ApplyLeave extends Component {
 
     if (validForm) {
       // upload file to server
-      if (this.state.attachedFile != null)
+      if (this.state.attachedFile != null){
         await this.uploadFile(this.state.attachedFile);
 
+        if(this.state.attachedFileName === "")
+          return false;  // if attached file name is still blank = error in upload file
+      }
       // create JSON Object for new Leave Request
       let newLeaveRequest = {
         id: {
@@ -365,6 +384,15 @@ class ApplyLeave extends Component {
       })
       .catch(err => {
         console.log(err);
+        this.setState({ attachedFIleName: ""})
+        confirmAlert({
+          message: "Unable to upload file. Please ensure file does not exceed 5MB.",
+          buttons: [
+            {
+              label: "Ok"
+            }
+          ]
+        });
       });
   }
 
@@ -576,7 +604,7 @@ class ApplyLeave extends Component {
                   id="attachment"
                   onChange={this.handleDetailsChange}
                 />
-                <FormText color="muted">Please attach your document.</FormText>
+                <FormText color="muted">Please attach your document (maximum file size is 5 MB).</FormText>
               </Col>
             </FormGroup>
             <FormGroup row>
