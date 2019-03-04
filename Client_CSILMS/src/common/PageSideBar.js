@@ -21,7 +21,7 @@ class PageSideBar extends Component {
     }
 
     return (
-      <div id="PageSidebar" className="sidebar">
+      <div id="PageSidebar" className="sidebar" width="250px">
         <Link to="/" title="Home">
           <img
             src={CSILogo}

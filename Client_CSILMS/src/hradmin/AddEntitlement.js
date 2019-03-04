@@ -12,7 +12,7 @@ import {
   ModalFooter
 } from "reactstrap";
 import { withRouter } from "react-router-dom";
-import { fetchData } from "../util/APIUtils";
+import { fetchData, isHrRole } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import { confirmAlert } from "react-confirm-alert";
 import "../common/Styles.css";
@@ -195,18 +195,16 @@ class AddEntitlement extends Component {
   };
 
   render() {
-    // if (!isHrRole(this.props.currentUser)) {
-    //   return <Redirect to="/forbidden" />;
-    // }
-    console.log(this.state);
+    if (!isHrRole(this.props.currentUser)) {
+      return <Redirect to="/forbidden" />;
+    }
+
     const {
       employeeProfiles,
       leaveCategories,
       emplId,
-      // name,
       year,
       leaveCode,
-      // leaveDescr,
       carryForward,
       entitlement,
       availableLeave,

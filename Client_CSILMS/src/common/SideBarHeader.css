@@ -22,7 +22,7 @@ ul ul a {
 .sidebar {
   color: #fff;
   height: 100%;
-  width: 0;
+  width: 250px;
   position: fixed;
   z-index: 1;
   top: 0;
@@ -54,9 +54,11 @@ ul ul a {
   background-color: rgb(39, 129, 247);
 } */
 
-#main {
-  transition: margin-left 0.5s;
-  width: 100%;
+#MainPage {
+  width: calc(100% - 250px);
+  margin-left: 250px;
+  /* margin-left: 0; */
+  transition: margin-left 0.3s;
 }
 
 .sidebar.active {
@@ -148,6 +150,13 @@ a[aria-expanded="true"] {
   }
   .pageHeaderTitleBox {
     padding-top: 9px;
+  }
+  #MainPage {
+    width: 100%;
+    margin-left: 0;
+  }
+  .sidebar {
+    width: 0;
   }
 }
 

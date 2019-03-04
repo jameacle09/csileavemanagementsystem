@@ -1,9 +1,9 @@
 import React, { Component } from "react";
 import { Jumbotron, Button } from "reactstrap";
 import Dashboard from "./Dashboard";
-import { fetchData } from '../util/APIUtils';
-import { API_BASE_URL } from '../constants';
-import { withRouter } from 'react-router-dom';
+import { fetchData } from "../util/APIUtils";
+import { API_BASE_URL } from "../constants";
+import { withRouter } from "react-router-dom";
 // import { Hidden } from "@material-ui/core";
 import { NavLink } from "react-router-dom";
 import BGURL from "../img/header.jpg";
@@ -20,37 +20,43 @@ class HomePage extends Component {
     };
 
     this.loadUserProfile = this.loadUserProfile.bind(this);
-    this.loadPendingApprovalManager = this.loadPendingApprovalManager.bind(this);
+    this.loadPendingApprovalManager = this.loadPendingApprovalManager.bind(
+      this
+    );
   }
 
   loadUserProfile() {
     fetchData({
       url: API_BASE_URL + "/persondetail/me",
-      method: 'GET'
-    }).then(response => {
-      this.setState({
-        userData: response
+      method: "GET"
+    })
+      .then(response => {
+        this.setState({
+          userData: response
+        });
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
       });
-    }).catch(error => {
-      if (error.status === 401) {
-        this.props.history.push("/login");
-      }
-    });
   }
 
   loadPendingApprovalManager() {
     fetchData({
       url: API_BASE_URL + "/appliedleave/count/me/pendingapproval",
-      method: 'GET'
-    }).then(response => {
-      this.setState({
-        pendingApproval: response
+      method: "GET"
+    })
+      .then(response => {
+        this.setState({
+          pendingApproval: response
+        });
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
       });
-    }).catch(error => {
-      if (error.status === 401) {
-        this.props.history.push("/login");
-      }
-    });
   }
 
   componentDidMount() {
@@ -60,8 +66,7 @@ class HomePage extends Component {
 
   render() {
     const divStyle = {
-      backgroundImage:
-        `url(${BGURL})`,
+      backgroundImage: `url(${BGURL})`,
       backgroundSize: "cover",
       marginTop: "-16px",
       color: "#FFFFFF"
@@ -73,7 +78,6 @@ class HomePage extends Component {
       return (
         <div>
           <Jumbotron style={divStyle}>
-
             <h1 className="display-3">Hello, {userData["name"]}</h1>
             <p className="lead">Welcome to CSI Leave Management System.</p>
             {/* <Countdown /> */}
@@ -85,11 +89,16 @@ class HomePage extends Component {
       return (
         <div>
           <Jumbotron style={divStyle}>
-
             <h1 className="display-3">Hello, {userData["name"]}</h1>
             <p className="lead">Welcome to CSI Leave Management System.</p>
-            <p>You have <b style={{ fontSize: "2rem" }}>{pendingApproval}</b> leave request by your staff to be approve.
-            <NavLink to="/leaverequests"><Button>Click</Button></NavLink> to approve/reject the leave request.</p>
+            <p>
+              You have <b style={{ fontSize: "2rem" }}>{pendingApproval}</b>{" "}
+              leave request by your staff to be approve.
+              <NavLink to="/leaverequests">
+                <Button>Click</Button>
+              </NavLink>{" "}
+              to approve/reject the leave request.
+            </p>
             {/* <Countdown /> */}
           </Jumbotron>
           <Dashboard currentUser={this.props.currentUser} />

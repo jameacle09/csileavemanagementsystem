@@ -6,23 +6,40 @@ class PageHeader extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      isSideBarOpen: false
+      sideBarOpen: true
     };
   }
-  toggleSideBarMenu = e => {
-    if (!this.state.isSideBarOpen) {
-      document.getElementById("PageSidebar").style.width = "250px";
-      document.getElementById("MainPage").style.marginLeft = "250px";
-      document.getElementById("MainPage").style.width = "83.7%";
-      document.getElementById("MainPage").style.transitionDuration = "0.3s";
+
+  toggleSideBarMenu = () => {
+    var screenSize = window.screen.width * window.devicePixelRatio;
+    if (screenSize <= 768) {
+      if (this.state.sideBarOpen) {
+        document.getElementById("PageSidebar").style.width = "250px";
+        document.getElementById("MainPage").style.marginLeft = "250px";
+        document.getElementById("MainPage").style.width = "83.7%";
+        document.getElementById("MainPage").style.transitionDuration = "0.1s";
+      } else {
+        document.getElementById("PageSidebar").style.width = "0";
+        document.getElementById("MainPage").style.marginLeft = "0";
+        document.getElementById("MainPage").style.width = "100%";
+        document.getElementById("MainPage").style.transitionDuration = "0.1s";
+      }
     } else {
-      document.getElementById("PageSidebar").style.width = "0";
-      document.getElementById("MainPage").style.marginLeft = "0";
-      document.getElementById("MainPage").style.width = "100%";
-      document.getElementById("MainPage").style.transitionDuration = "0.3s";
+      if (!this.state.sideBarOpen) {
+        document.getElementById("PageSidebar").style.width = "250px";
+        document.getElementById("MainPage").style.marginLeft = "250px";
+        document.getElementById("MainPage").style.width = "83.7%";
+        document.getElementById("MainPage").style.transitionDuration = "0.1s";
+      } else {
+        document.getElementById("PageSidebar").style.width = "0";
+        document.getElementById("MainPage").style.marginLeft = "0";
+        document.getElementById("MainPage").style.width = "100%";
+        document.getElementById("MainPage").style.transitionDuration = "0.1s";
+      }
     }
+
     this.setState({
-      isSideBarOpen: !this.state.isSideBarOpen
+      sideBarOpen: !this.state.sideBarOpen
     });
   };
 
@@ -33,10 +50,7 @@ class PageHeader extends Component {
     return (
       <div className="pageHeaderBox">
         <div className="pageHeaderToggleBox">
-          <button
-            class="sideBarToggleButton"
-            onClick={event => this.toggleSideBarMenu(event)}
-          >
+          <button class="sideBarToggleButton" onClick={this.toggleSideBarMenu}>
             ☰
           </button>
         </div>
