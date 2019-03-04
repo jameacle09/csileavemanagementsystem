@@ -148,6 +148,7 @@ class NewStaffProfile extends Component {
         deptId: data.deptId,
         businessUnit: data.businessUnit,
         reportsTo: data.reportsTo,
+        reportDottedLine: data.reportDottedLine,
         joinDate: data.joinDate === null ? initialDate : formatDateYMD(data.joinDate),
         status: data.status,
         roles: data.roles,
