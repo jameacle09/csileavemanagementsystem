@@ -111,7 +111,7 @@ class HomePage extends Component {
           <div style={pstyle}>
             <h1 className="display-3">Hello, {userData["name"]}</h1>
             <h1 className="lead">Welcome to CSI Leave Management System.</h1>
-            <h1 className="lead">You have <b style={{ fontSize: "2rem" }}>{staffLeave["balanceLeave"]}</b> days remaining leaves to go.</h1>
+            <h1 className="lead">You have <b style={{ fontSize: "2rem" }}>{staffLeave["balanceLeave"]}</b> days remaining leave balance to go.</h1>
           </div>
           </Jumbotron>
           <Dashboard currentUser={this.props.currentUser} />
@@ -126,7 +126,7 @@ class HomePage extends Component {
             <h2 className="lead">Welcome to CSI Leave Management System.</h2>
             <h2 className="lead">You have <b style={{ fontSize: "2rem" }}>{pendingApproval}</b> leave request by your staff to be approve.
             <NavLink to="/leaverequests"><Button>Click</Button></NavLink> to approve/reject the leave request.</h2>
-            <h2 className="lead">You have <b style={{ fontSize: "2rem" }}>{staffLeave["balanceLeave"]}</b> days remaining leaves to go.</h2>
+            <h2 className="lead">You have <b style={{ fontSize: "2rem" }}>{staffLeave["balanceLeave"]}</b> days remaining leave balance to go.</h2>
             </div>
           </Jumbotron>
           <Dashboard currentUser={this.props.currentUser} />
