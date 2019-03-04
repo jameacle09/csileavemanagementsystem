@@ -87,14 +87,16 @@ class HomePage extends Component {
       backgroundSize: "cover",
       marginTop: "-16px",
       color: "#FFFFFF"
+      
     };
     const pstyle = {
-      backgroundColor: "blue",
+      backgroundColor: "rgba(0, 0, 0, 0.7)",
       backgroundSize: "cover",
-      backgroundRadius: "20px"
+      borderRadius: "20px",
+      padding: "10px"
     };
 
-    const {
+    let {
       staffLeave,
       userData,
       pendingApproval
@@ -106,10 +108,11 @@ class HomePage extends Component {
       return (
         <div>
           <Jumbotron style={divStyle}>
-
+          <div style={pstyle}>
             <h1 className="display-3">Hello, {userData["name"]}</h1>
             <h1 className="lead">Welcome to CSI Leave Management System.</h1>
-            <h1 className="lead">You have {staffLeave["balanceLeave"]} days remaining leaves to go.</h1>
+            <h1 className="lead">You have <b style={{ fontSize: "2rem" }}>{staffLeave["balanceLeave"]}</b> days remaining leaves to go.</h1>
+          </div>
           </Jumbotron>
           <Dashboard currentUser={this.props.currentUser} />
         </div>
@@ -118,12 +121,13 @@ class HomePage extends Component {
       return (
         <div>
           <Jumbotron style={divStyle}>
-
+            <div style={pstyle}>
             <h1 className="display-3">Hello, {userData["name"]}</h1>
-            <h2 className="lead" style={pstyle}>Welcome to CSI Leave Management System.</h2>
-            <h2 className="lead" style={pstyle}>You have <b style={{ fontSize: "2rem" }}>{pendingApproval}</b> leave request by your staff to be approve.
+            <h2 className="lead">Welcome to CSI Leave Management System.</h2>
+            <h2 className="lead">You have <b style={{ fontSize: "2rem" }}>{pendingApproval}</b> leave request by your staff to be approve.
             <NavLink to="/leaverequests"><Button>Click</Button></NavLink> to approve/reject the leave request.</h2>
-            <h2 className="lead" style={pstyle}>You have <b style={{ fontSize: "2rem" }}>{staffLeave["balanceLeave"]}</b> days remaining leaves to go.</h2>
+            <h2 className="lead">You have <b style={{ fontSize: "2rem" }}>{staffLeave["balanceLeave"]}</b> days remaining leaves to go.</h2>
+            </div>
           </Jumbotron>
           <Dashboard currentUser={this.props.currentUser} />
         </div>
