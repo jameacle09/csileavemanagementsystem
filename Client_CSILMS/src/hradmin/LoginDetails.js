@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "reactstrap";
+import { Row, Col, Button } from "reactstrap";
 import { Redirect, withRouter } from "react-router-dom";
 import "../common/Styles.css";
 import { fetchData, isHrRole } from "../util/APIUtils";
@@ -7,10 +7,11 @@ import { API_BASE_URL } from "../constants";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { confirmAlert } from "react-confirm-alert";
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faLock } from '@fortawesome/free-solid-svg-icons';
-import { faLockOpen } from '@fortawesome/free-solid-svg-icons';
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLock } from "@fortawesome/free-solid-svg-icons";
+import { faLockOpen } from "@fortawesome/free-solid-svg-icons";
+import ExportToExcel from "./LoginDetailsToExcel";
 
 class LoginDetails extends Component {
   constructor(props) {
@@ -28,28 +29,28 @@ class LoginDetails extends Component {
     library.add(faLockOpen);
   }
 
-  lockAccount(e, emplId, lockAccount){
-    const lock = lockAccount === 1? "0":"1";
-    const values = { emplId: emplId,
-                    lockAccount: lock};
+  lockAccount(e, emplId, lockAccount) {
+    const lock = lockAccount === 1 ? "0" : "1";
+    const values = { emplId: emplId, lockAccount: lock };
     const request = Object.assign({}, values);
-    
+
     fetchData({
       url: API_BASE_URL + "/lockAccount",
       method: "POST",
       body: JSON.stringify(request)
     })
       .then(response => {
-        if(response.emplId){
+        if (response.emplId) {
           confirmAlert({
             message:
-              "You have " + (response.lockAccount === 0? "un-locked" : "locked") 
-              + " login account for employee " + emplId,
-              buttons: [{ label: "OK" }]
+              "You have " +
+              (response.lockAccount === 0 ? "un-locked" : "locked") +
+              " login account for employee " +
+              emplId,
+            buttons: [{ label: "OK" }]
           });
-          
-          this.setState({userData:[],
-                  loading: true});
+
+          this.setState({ userData: [], loading: true });
           this.loadLoginDetails();
         }
       })
@@ -71,7 +72,12 @@ class LoginDetails extends Component {
 
   confirmLockAccount(e, emplId, lockAccount) {
     confirmAlert({
-      message: "Do you want to " + (lockAccount === 0? "lock" : "un-lock") +" login account for employee " + emplId + "?",
+      message:
+        "Do you want to " +
+        (lockAccount === 0 ? "lock" : "un-lock") +
+        " login account for employee " +
+        emplId +
+        "?",
       buttons: [
         {
           label: "Yes",
@@ -143,7 +149,7 @@ class LoginDetails extends Component {
       .then(response => {
         this.setState({
           userData: response,
-          loading:false
+          loading: false
         });
       })
       .catch(error => {
@@ -179,9 +185,9 @@ class LoginDetails extends Component {
     };
     const showAsIcon = str => {
       if (str.lockAccount === 1) {
-        return <FontAwesomeIcon icon="lock" style={{ color: 'red' }}/>;
+        return <FontAwesomeIcon icon="lock" style={{ color: "red" }} />;
       } else {
-        return <FontAwesomeIcon icon="lock-open" style={{ color: 'green' }}/>;
+        return <FontAwesomeIcon icon="lock-open" style={{ color: "green" }} />;
       }
     };
 
@@ -190,7 +196,7 @@ class LoginDetails extends Component {
         id: "userId",
         Header: "User ID (Email)",
         accessor: "userId",
-        minWidth: 140,
+        minWidth: 200,
         sortable: true,
         filterable: true
       },
@@ -199,7 +205,7 @@ class LoginDetails extends Component {
         id: "emplId",
         Header: "Employee ID",
         accessor: "emplId",
-        minWidth: 120,
+        minWidth: 126,
         sortable: true,
         filterable: true,
         style: {
@@ -209,16 +215,19 @@ class LoginDetails extends Component {
       {
         id: "lockAccount",
         Header: "Account Locked?",
-        accessor: str => (<Button
-          variant="contained"
-          title={showTitle(str)}
-          color="link"
-          onClick={event =>
-            this.confirmLockAccount(event, str.emplId, str.lockAccount)
-          }
-        >
-          {showAsIcon(str)}</Button>),
-        minWidth: 80,
+        accessor: str => (
+          <Button
+            variant="contained"
+            title={showTitle(str)}
+            color="link"
+            onClick={event =>
+              this.confirmLockAccount(event, str.emplId, str.lockAccount)
+            }
+          >
+            {showAsIcon(str)}
+          </Button>
+        ),
+        minWidth: 150,
         sortable: false,
         filterable: false,
         style: {
@@ -243,7 +252,7 @@ class LoginDetails extends Component {
             Reset Password
           </Button>
         ),
-        minWidth: 72,
+        minWidth: 140,
         sortable: false,
         filterable: false,
         style: {
@@ -260,6 +269,11 @@ class LoginDetails extends Component {
           </span>
         </div>
         <div className="reactTableContainer">
+          <div className="mainListBtnContainer">
+            <div className="SubListBtnSingleContainer">
+              <ExportToExcel LoginDetails={this.state.userData} />
+            </div>
+          </div>
           <ReactTable
             data={this.state.userData}
             columns={loginDetailsCols}

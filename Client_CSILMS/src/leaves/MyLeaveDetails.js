@@ -57,7 +57,7 @@ class MyLeaveDetails extends Component {
         id: "leaveType",
         Header: "Leave Type",
         accessor: "leaveCategory.leaveDescr",
-        minWidth: 140,
+        minWidth: 200,
         sortable: true,
         filterable: true
       },
@@ -65,7 +65,7 @@ class MyLeaveDetails extends Component {
         id: "entitlement",
         Header: "Entitlement",
         accessor: str => str.entitlement + " day(s)",
-        minWidth: 94,
+        minWidth: 100,
         sortable: true,
         filterable: true,
         style: {
@@ -76,7 +76,7 @@ class MyLeaveDetails extends Component {
         id: "carryForward",
         Header: "Carry Forward",
         accessor: str => str.carryForward + " day(s)",
-        minWidth: 140,
+        minWidth: 100,
         sortable: true,
         filterable: true,
         style: {
@@ -87,7 +87,7 @@ class MyLeaveDetails extends Component {
         id: "availableLeave",
         Header: "Available Leave",
         accessor: str => str.availableLeave + " day(s)",
-        minWidth: 140,
+        minWidth: 100,
         sortable: true,
         filterable: true,
         style: {
@@ -98,7 +98,7 @@ class MyLeaveDetails extends Component {
         id: "takenLeave",
         Header: "Leave Taken",
         accessor: str => str.takenLeave + " day(s)",
-        minWidth: 140,
+        minWidth: 100,
         sortable: true,
         filterable: true,
         style: {
@@ -109,7 +109,7 @@ class MyLeaveDetails extends Component {
         id: "balanceLeave",
         Header: "Leave Balance",
         accessor: str => str.balanceLeave + " day(s)",
-        minWidth: 140,
+        minWidth: 100,
         sortable: true,
         filterable: true,
         style: {
@@ -118,21 +118,18 @@ class MyLeaveDetails extends Component {
       }
     ];
     return (
-      <div className="mainContainerLeavePages">
+      <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span>
             <h3 className="headerStyle">My Leave Details</h3>
           </span>
         </div>
         <div className="reactTableContainer">
-          <Row style={{ height: "50px" }}>
-            <Col md="6" xs="6">
+          <div className="mainListBtnContainer">
+            <div className="SubListBtnSingleContainer">
               <MyLeaveDetailsToExcel userData={this.state.userData} />
-            </Col>
-            <Col md="6" xs="6" style={{ textAlign: "right" }}>
-              <span> </span>
-            </Col>
-          </Row> 
+            </div>
+          </div>
           <ReactTable
             data={this.state.userData}
             columns={myLeaveDetailsCols}

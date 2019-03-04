@@ -89,7 +89,7 @@ class Login extends Component {
             "Your Username or Password is incorrect. Please try again!";
           this.setState({ formErrors: fieldValidationErrors });
         } else {
-          if(error.message === "LOCKED"){
+          if (error.message === "LOCKED") {
             fieldValidationErrors.loginfailed =
               "Sorry! Your login account currently locked!";
           } else {
@@ -109,7 +109,7 @@ class Login extends Component {
   }
 
   render() {
-      const { email, password } = this.state;
+    const { email, password } = this.state;
 
     const textInputStyle = {
       fontSize: "18px",
@@ -145,7 +145,10 @@ class Login extends Component {
             </h4>
             <br />
             <br />
-            <h2>Leave Management System</h2>
+            <div className="loginSystemTitleContainer">
+              Leave Management System
+            </div>
+            {/* <h2>Leave Management System</h2> */}
             <div className="loginTextMessageContainer">
               <p>
                 Please login to submit your Leave Request or you may reach out

@@ -35,12 +35,10 @@ class LeaveEntitlement extends Component {
         if (error.status === 401) {
           this.props.history.push("/login");
         }
-        let leaveEntitlementData = [];
         this.setState({
-          leaveEntitlementData: leaveEntitlementData,
+          leaveEntitlementData: [],
           loading: false
         });
-        // console.log(leaveEntitlementData);
       });
   };
 
@@ -68,7 +66,7 @@ class LeaveEntitlement extends Component {
         id: "emplid",
         Header: "Employee ID",
         accessor: "id.emplid",
-        minWidth: 100,
+        minWidth: 130,
         sortable: true,
         filterable: true
       },
@@ -76,7 +74,7 @@ class LeaveEntitlement extends Component {
         id: "name",
         Header: "Employee Name",
         accessor: "employeeDetails.name",
-        minWidth: 140,
+        minWidth: 200,
         sortable: true,
         filterable: true
       },
@@ -186,41 +184,44 @@ class LeaveEntitlement extends Component {
           </span>
         </div>
         <div className="reactTableContainer">
-          <Row style={{ height: "50px" }}>
-            <Col md="6" xs="6">
+          <div className="mainListBtnContainer">
+            <div className="SubListBtnLeftContainer">
               <ExportToExcel
                 leaveEntitlementData={this.state.leaveEntitlementData}
               />
-            </Col>
-            <Col md="6" xs="6" style={{ textAlign: "right" }}>
-              <Button
-                variant="contained"
-                color="primary"
-                className="largeButtonOverride"
-                // component={Link}
-                tag={Link}
-                to={`/leaveentitlement/uploadentitlement`}
-              >
-                <span
-                  className="fa fa-upload"
-                  style={{ margin: "0px 10px 0px 0px" }}
-                />
-                Upload Entitlements
-              </Button>
-              <span> </span>
-              <Button
-                tag={Link}
-                to={`/leaveentitlement/add`}
-                className="largeButtonOverride"
-              >
-                <span
-                  className="fa fa-plus"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-                Add Entitlement
-              </Button>
-            </Col>
-          </Row>
+            </div>
+            <div className="SubListBtnRightContainer">
+              <div>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className="largeButtonOverride"
+                  // component={Link}
+                  tag={Link}
+                  to={`/leaveentitlement/uploadentitlement`}
+                >
+                  <span
+                    className="fa fa-upload"
+                    style={{ margin: "0px 5px 0px 0px" }}
+                  />
+                  Upload Entitlements
+                </Button>
+              </div>
+              <div style={{ paddingLeft: "4px" }}>
+                <Button
+                  tag={Link}
+                  to={`/leaveentitlement/add`}
+                  className="largeButtonOverride"
+                >
+                  <span
+                    className="fa fa-plus"
+                    style={{ margin: "0px 5px 0px 0px" }}
+                  />
+                  Add Entitlement
+                </Button>
+              </div>
+            </div>
+          </div>
           <ReactTable
             data={this.state.leaveEntitlementData}
             columns={leaveEntitlementCols}

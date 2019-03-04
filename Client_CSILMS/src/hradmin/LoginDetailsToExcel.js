@@ -1,37 +1,41 @@
 import React, { Component } from "react";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
-import { formatDateDMY } from "../util/APIUtils";
 import "../common/Styles.css";
 
 class ExportToExcel extends Component {
   render() {
+    const showYesNoDesc = nbrLocked => {
+      if (nbrLocked === 0) {
+        return "No";
+      } else {
+        return "Yes";
+      }
+    };
     return (
       <div>
         <ReactHTMLTableToExcel
           id="test-table-xls-button"
           className="exportToExcelButton"
           table="table-to-xls"
-          filename="Public Holidays"
-          sheet="PublicHolidays"
+          filename="LoginDetails"
+          sheet="LoginDetails"
           buttonText="Export List to Excel"
         />
         <table hidden={true} id="table-to-xls">
           <thead>
             <tr>
-              <th>Date</th>
-              <th>Day</th>
-              <th>Holiday Description</th>
-              <th>State(s)</th>
+              <th>User ID (Business Email)</th>
+              <th>Employee ID</th>
+              <th>Account Locked?</th>
             </tr>
           </thead>
           <tbody>
-            {this.props.publicHolidayDetails.map((publicHoliday, index) => {
+            {this.props.LoginDetails.map((login, index) => {
               return (
                 <tr key={index}>
-                  <td>{formatDateDMY(publicHoliday.holidayDate)}</td>
-                  <td>{publicHoliday.holidayDay}</td>
-                  <td>{publicHoliday.holidayDescr}</td>
-                  <td>{publicHoliday.holidayState}</td>
+                  <td>{login.userId}</td>
+                  <td align="center">{login.emplId}</td>
+                  <td align="center">{showYesNoDesc(login.lockAccount)}</td>
                 </tr>
               );
             })}

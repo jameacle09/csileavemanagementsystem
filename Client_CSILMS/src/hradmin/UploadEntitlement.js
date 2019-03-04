@@ -25,6 +25,7 @@ class UploadEntitlement extends Component {
       entitlementData: [],
       employeeProfiles: [],
       leaveCategories: [],
+      leaveEntitlements: [],
       filename: "",
       isValid: false,
       loading: false
@@ -36,6 +37,7 @@ class UploadEntitlement extends Component {
     this._isMounted = true;
     this.loadEmployeeProfilesLookup();
     this.loadLeaveCategoriesLookup();
+    this.loadLeaveEntitlementsLookup();
   }
 
   componentWillUnmount() {
@@ -70,6 +72,33 @@ class UploadEntitlement extends Component {
       method: "GET"
     })
       .then(data => this.setState({ leaveCategories: data }))
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
+
+  loadLeaveEntitlementsLookup = () => {
+    fetchData({
+      url: API_BASE_URL + "/leaveentitlements",
+      method: "GET"
+    })
+      .then(data => {
+        this.setState({
+          leaveEntitlements: data,
+          loading: false
+        });
+      })
       .catch(error => {
         if (error.status === 401) {
           this.props.history.push("/login");
@@ -138,21 +167,31 @@ class UploadEntitlement extends Component {
   };
 
   validateUploadedRowsData = () => {
-    let employeeProfilesData = this.state.employeeProfiles;
-    let leaveCategoriesData = this.state.leaveCategories;
+    let arrEmployeeProfilesData = this.state.employeeProfiles;
+    let arrLeaveCategoriesData = this.state.leaveCategories;
+    let arrLeaveEntitlementsData = this.state.leaveEntitlements;
+    let arrEntitlementDataLookup = this.state.entitlementData;
     let arrEntitlementData = this.state.entitlementData;
-    arrEntitlementData.forEach(function(e) {
-      e["ValidateStatus"] = "Passed!";
-      e["EmployeeName"] = "";
+
+    arrEntitlementData.forEach(entRow => {
+      entRow["ValidateStatus"] = "Passed!";
+      entRow["EmployeeName"] = "";
     });
 
+    // Remove Leading and Trailing Spaces
+    arrEntitlementData.map(entRow => {
+      if (entRow.EmployeeID) entRow.EmployeeID = entRow.EmployeeID.trim();
+      if (entRow.LeaveType) entRow.LeaveType = entRow.LeaveType.trim();
+    });
+
+    // Column Values Validations on each Row
     arrEntitlementData.forEach(entRow => {
       if (!entRow.EmployeeID) {
         // Employee ID
         entRow.ValidateStatus = "Employee ID cannot be blank.";
       } else if (
         entRow.EmployeeID &&
-        !employeeProfilesData.some(empProf => {
+        !arrEmployeeProfilesData.some(empProf => {
           if (empProf.emplId === entRow.EmployeeID)
             entRow.EmployeeName = empProf.name;
           return empProf.emplId === entRow.EmployeeID;
@@ -160,35 +199,92 @@ class UploadEntitlement extends Component {
       ) {
         entRow.ValidateStatus = "Employee ID value does not exist.";
       } else if (typeof entRow.LeaveYear !== "number") {
-        // Leave Year
         entRow.ValidateStatus = "Leave Year value is invalid.";
       } else if (("" + entRow.LeaveYear).length !== 4) {
         entRow.ValidateStatus = "Leave Year value length must be 4.";
       } else if (!entRow.LeaveType) {
-        // Leave Type
         entRow.ValidateStatus = "Leave Type cannot be blank.";
       } else if (
         entRow.LeaveType &&
-        !leaveCategoriesData.some(leave => {
+        !arrLeaveCategoriesData.some(leave => {
           return leave.leaveCode === entRow.LeaveType;
         })
       ) {
         entRow.ValidateStatus = "Leave Type value does not exist.";
+      } else if (
+        entRow.EmployeeID != "" &&
+        typeof entRow.LeaveYear === "number" &&
+        entRow.LeaveType != "" &&
+        arrEntitlementDataLookup.filter(
+          dupRow =>
+            dupRow.EmployeeID === entRow.EmployeeID &&
+            dupRow.LeaveYear === entRow.LeaveYear &&
+            dupRow.LeaveType === entRow.LeaveType
+        ).length > 1
+      ) {
+        entRow.ValidateStatus = "This row has duplicate entry.";
+      } else if (
+        entRow.EmployeeID != "" &&
+        typeof entRow.LeaveYear === "number" &&
+        entRow.LeaveType != "" &&
+        arrLeaveEntitlementsData.some(ent => {
+          return (
+            ent.id.emplid === entRow.EmployeeID &&
+            ent.id.year === entRow.LeaveYear &&
+            ent.id.leaveCode === entRow.LeaveType
+          );
+        })
+      ) {
+        entRow.ValidateStatus = "This entry already exist.";
       } else if (typeof entRow.CarriedForward !== "number") {
-        // Carried Forward
         entRow.ValidateStatus = "Carried Forward value is invalid.";
       } else if (typeof entRow.Entitlement !== "number") {
-        // Entitlement
         entRow.ValidateStatus = "Entitlement value is invalid.";
       } else if (typeof entRow.AvailableLeave !== "number") {
-        // Available Leave
         entRow.ValidateStatus = "Available Leave value is invalid.";
       } else if (typeof entRow.TakenLeave !== "number") {
-        // Taken Leave
         entRow.ValidateStatus = "Taken Leave value is invalid.";
       } else if (typeof entRow.BalanceLeave !== "number") {
-        // Balance Leave
         entRow.ValidateStatus = "Balance Leave value is invalid.";
+      }
+    });
+
+    // Detecting for disappeared Column Names due to empty values
+    arrEntitlementData.map((entRow, index) => {
+      if (typeof arrEntitlementData[index].EmployeeID !== "string") {
+        entRow.ValidateStatus = "Employee ID cannot be blank.";
+      } else if (
+        !arrEntitlementData[index].LeaveYear &&
+        typeof arrEntitlementData[index].LeaveYear !== "number"
+      ) {
+        entRow.ValidateStatus = "Leave Year cannot be blank.";
+      } else if (typeof arrEntitlementData[index].LeaveType !== "string") {
+        entRow.ValidateStatus = "Leave Type cannot be blank.";
+      } else if (
+        !arrEntitlementData[index].CarriedForward &&
+        typeof arrEntitlementData[index].CarriedForward !== "number"
+      ) {
+        entRow.ValidateStatus = "Carried Forward cannot be blank.";
+      } else if (
+        !arrEntitlementData[index].Entitlement &&
+        typeof arrEntitlementData[index].Entitlement !== "number"
+      ) {
+        entRow.ValidateStatus = "Entitlement cannot be blank.";
+      } else if (
+        !arrEntitlementData[index].AvailableLeave &&
+        typeof arrEntitlementData[index].AvailableLeave !== "number"
+      ) {
+        entRow.ValidateStatus = "Available Leave cannot be blank.";
+      } else if (
+        !arrEntitlementData[index].TakenLeave &&
+        typeof arrEntitlementData[index].TakenLeave !== "number"
+      ) {
+        entRow.ValidateStatus = "Taken Leave cannot be blank.";
+      } else if (
+        !arrEntitlementData[index].BalanceLeave &&
+        typeof arrEntitlementData[index].BalanceLeave !== "number"
+      ) {
+        entRow.ValidateStatus = "Balance Leave cannot be blank.";
       }
     });
 
@@ -319,7 +415,8 @@ class UploadEntitlement extends Component {
           }
         });
     });
-    this.props.history.push("/leaveentitlement");
+    // this.props.history.push("/leaveentitlement");
+    this.handleReset();
   };
 
   completedEntitlementSave = e => {
@@ -387,15 +484,18 @@ class UploadEntitlement extends Component {
         id: "emplId",
         Header: "Employee ID",
         accessor: "EmployeeID",
-        minWidth: 110,
+        minWidth: 90,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "EmployeeName",
         Header: "Employee Name",
         accessor: "EmployeeName",
-        minWidth: 110,
+        minWidth: 130,
         sortable: true,
         filterable: true
       },
@@ -527,7 +627,7 @@ class UploadEntitlement extends Component {
                     color="primary"
                     onClick={event => this.confirmEntitlementSave(event)}
                     disabled={this.validateStateHasData()}
-                    style={{ width: "100px" }}
+                    style={{ width: "94px", marginBottom: "2px" }}
                     className="largeButtonOverride"
                   >
                     Save
@@ -537,7 +637,7 @@ class UploadEntitlement extends Component {
                     variant="contained"
                     color="primary"
                     onClick={this.handleReset}
-                    style={{ width: "100px" }}
+                    style={{ width: "94px", marginBottom: "2px" }}
                     className="largeButtonOverride"
                   >
                     Reset
@@ -545,10 +645,10 @@ class UploadEntitlement extends Component {
                   <span> </span>
                   <Button
                     color="secondary"
-                    width="80px"
                     onClick={this.handleCancelUpload}
+                    style={{ width: "94px", marginBottom: "2px" }}
                   >
-                    Back to Main
+                    Back
                   </Button>
                 </Col>
               </FormGroup>

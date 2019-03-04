@@ -17,8 +17,8 @@ class Menu extends Component {
     });
   }
   render() {
-    if(!this.props.currentUser){
-      return(<div></div>);
+    if (!this.props.currentUser) {
+      return <div />;
     }
 
     const menuContainer = {
@@ -39,17 +39,17 @@ class Menu extends Component {
     };
     return (
       <nav
-        className="navbar navbar-expand-lg navbar-light bg-light"
+        class="navbar navbar-expand-lg navbar-light bg-light"
         style={menuContainer}
       >
-        <div className="container-fluid" style={menuContainer}>
+        <div class="container-fluid" style={menuContainer}>
           <button
             type="button"
             id="sidebarCollapse"
-            className="btn btn-info"
+            class="btn btn-info"
             style={{ background: "#032a53", border: "1px solid gray" }}
           >
-            <i className="fas fa-align-left" />
+            <i class="fas fa-align-left" />
             <span />
           </button>
           <span>

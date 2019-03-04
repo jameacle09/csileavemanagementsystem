@@ -5,7 +5,7 @@ import "react-table/react-table.css";
 import { fetchData, formatDateYMD, formatDateDMY } from "../util/APIUtils";
 import { Link } from "react-router-dom";
 import { Button, Row, Col } from "reactstrap";
-import MyLeaveHistoryToExcel from './MyLeaveHistoryToExcel';
+import MyLeaveHistoryToExcel from "./MyLeaveHistoryToExcel";
 
 class MyLeaveHistory extends Component {
   constructor(props) {
@@ -65,25 +65,34 @@ class MyLeaveHistory extends Component {
         id: "startDate",
         Header: "Start Date",
         accessor: d => formatDateDMY(d.id.startDate),
-        minWidth: 94,
+        minWidth: 90,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "endDate",
         Header: "End Date",
         accessor: d => formatDateDMY(d.endDate),
-        minWidth: 94,
+        minWidth: 90,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "leaveDuration",
         Header: "Duration",
         accessor: str => str.leaveDuration + " day(s)",
-        minWidth: 140,
+        minWidth: 90,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "leaveType",
@@ -97,7 +106,7 @@ class MyLeaveHistory extends Component {
         id: "reason",
         Header: "Reason",
         accessor: "reason",
-        width: 110,
+        minWidth: 200,
         sortable: true,
         filterable: true
       },
@@ -105,15 +114,18 @@ class MyLeaveHistory extends Component {
         id: "effDate",
         Header: "Applied Date",
         accessor: d => formatDateDMY(d.id.effDate),
-        minWidth: 94,
+        minWidth: 90,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "leaveStatus",
         Header: "Status",
         accessor: d => showFullString(d.leaveStatus),
-        minWidth: 140,
+        minWidth: 120,
         sortable: true,
         filterable: true
       },
@@ -136,7 +148,7 @@ class MyLeaveHistory extends Component {
             &nbsp;View
           </Button>
         ),
-        minWidth: 72,
+        minWidth: 90,
         sortable: false,
         filterable: false,
         style: {
@@ -146,21 +158,18 @@ class MyLeaveHistory extends Component {
     ];
 
     return (
-      <div className="mainContainerLeavePages">
+      <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span>
             <h3 className="headerStyle">My Leave History</h3>
           </span>
         </div>
         <div className="reactTableContainer">
-          <Row style={{ height: "50px" }}>
-            <Col md="6" xs="6">
+          <div className="mainListBtnContainer">
+            <div className="SubListBtnSingleContainer">
               <MyLeaveHistoryToExcel userData={this.state.userData} />
-            </Col>
-            <Col md="6" xs="6" style={{ textAlign: "right" }}>
-              <span> </span>
-            </Col>
-          </Row>                    
+            </div>
+          </div>
           <ReactTable
             data={this.state.userData}
             columns={myLeaveHistoryCols}
