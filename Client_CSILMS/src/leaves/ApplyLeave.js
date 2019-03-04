@@ -175,10 +175,8 @@ class ApplyLeave extends Component {
     const endDateStr = this.state.endDate.toISOString().substr(0, 10);
 
     const checkDate = moment(new Date(event.target.value));
-    if(checkDate.isValid() == false){
-      console.log("invalid date");
-      return ;
-    }
+    if(checkDate.isValid() == false)
+      return ;   // do nothing if date is not valid
 
     switch (fieldName) {
       case "startDate":
