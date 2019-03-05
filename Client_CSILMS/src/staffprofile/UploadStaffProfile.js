@@ -368,7 +368,7 @@ class UploadEmployeeProfile extends Component {
           return empProfile.emplId === empRow.EmployeeID;
         })
       ) {
-        empRow.ValidateStatus = "Employee ID is already taken.";
+        empRow.ValidateStatus = "Employee ID already exist.";
       } else if (empRow.EmployeeName === "") {
         empRow.ValidateStatus = "Employee Name cannot be blank.";
       } else if (empRow.BusinessEmail === "") {
@@ -391,7 +391,7 @@ class UploadEmployeeProfile extends Component {
           return empProfile.businessEmail === empRow.BusinessEmail;
         })
       ) {
-        empRow.ValidateStatus = "Business Email is already taken.";
+        empRow.ValidateStatus = "Business Email already exist.";
       } else if (empRow.NRICPassportNo === "") {
         empRow.ValidateStatus = "NRIC/Passport# cannot be blank.";
       } else if (empRow.Gender === "") {

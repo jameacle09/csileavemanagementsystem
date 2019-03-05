@@ -438,3 +438,13 @@ a:focus {
     justify-content: flex-start;
   }
 }
+
+.loginwrapper {
+  /* display: flex;
+  flex-direction: column;
+  align-items: stretch; */
+  width: 100%;
+  height: 100%;
+  display: table;
+  table-layout: fixed;
+}

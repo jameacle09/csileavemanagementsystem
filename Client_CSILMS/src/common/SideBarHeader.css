@@ -29,13 +29,14 @@ ul ul a {
   bottom: 0;
   left: 0;
   background-color: #032a53;
-  transition: 0.1s;
-  overflow-x: hidden;
-  overflow: scroll;
+  transition: 0s;
+  overflow: auto;
+  scrollbar-width: none; /* hide scrollbar in Firefox */
+  -ms-overflow-style: none; /* hide scrollbar in IE */
 }
 
 ::-webkit-scrollbar {
-  display: none;
+  display: none; /* hide scrollbar in Chrome */
 }
 
 .sideBarToggleButton {

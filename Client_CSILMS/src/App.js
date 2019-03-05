@@ -114,26 +114,18 @@ class App extends Component {
 
   render() {
     let showPageFooter = "<div />";
-    let showPageSideBar = "";
     if (this.state.currentUser) {
       showPageFooter = <PageFooter />;
-      showPageSideBar = (
-        <PageSideBar
-          isAuthenticated={this.state.isAuthenticated}
-          currentUser={this.state.currentUser}
-          handleLogout={this.handleLogout}
-        />
-      );
     }
+
     return (
       <div className="Site">
-        <div>
+        <div className="loginwrapper">
           <Route
             path="/login"
             render={props => <Login onLogin={this.handleLogin} {...props} />}
           />
         </div>
-
         <div id="MainPage" className="wrapper">
           <PageSideBar
             isAuthenticated={this.state.isAuthenticated}
