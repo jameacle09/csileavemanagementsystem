@@ -120,16 +120,14 @@ a:focus {
 
 /*** Begin Footer Styles ***/
 .footerContainer {
-  background: #004a9b;
-  font-family: Helvetica;
-  text-align: center;
-  /* margin: 0 0 0 0; */
-  /* padding: 3px; */
+  position: relative;
   width: 100%;
   height: 42px;
   margin-top: auto;
   bottom: 0;
-  position: relative;
+  padding: 6px;
+  background: #004a9b;
+  text-align: center;
 }
 .footerText {
   font-family: Helvetica;
