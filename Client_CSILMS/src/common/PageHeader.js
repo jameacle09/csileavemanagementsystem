@@ -35,17 +35,19 @@ class PageHeader extends Component {
   };
 
   showSideBarMenu = () => {
-    document.getElementById("PageSidebar").style.width = "250px";
     document.getElementById("MainPage").style.width = "83.7%";
     document.getElementById("MainPage").style.marginLeft = "250px";
+    document.getElementById("PageSidebar").style.width = "250px";
     document.getElementById("MainPage").style.transitionDuration = "0s";
+    document.getElementById("PageSidebar").style.transitionDuration = "0s";
   };
 
   hideSideBarMenu = () => {
-    document.getElementById("PageSidebar").style.width = "0";
     document.getElementById("MainPage").style.width = "100%";
     document.getElementById("MainPage").style.marginLeft = "0";
+    document.getElementById("PageSidebar").style.width = "0";
     document.getElementById("MainPage").style.transitionDuration = "0s";
+    document.getElementById("PageSidebar").style.transitionDuration = "0s";
   };
 
   render() {
