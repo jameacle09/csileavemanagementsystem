@@ -174,12 +174,12 @@ class ApplyLeave extends Component {
     const startDateStr = this.state.startDate.toISOString().substr(0, 10);
     const endDateStr = this.state.endDate.toISOString().substr(0, 10);
 
-    const checkDate = moment(new Date(event.target.value));
-    if(checkDate.isValid() == false)
-      return ;   // do nothing if date is not valid
-
     switch (fieldName) {
       case "startDate":
+        const checkDate1 = moment(new Date(event.target.value));
+        if(checkDate1.isValid() == false)
+          return ;   // do nothing if date is not valid
+    
         let newStartDate = new Date(event.target.value);
         let newStartDateStr = newStartDate.toISOString().substr(0, 10);
 
@@ -206,6 +206,10 @@ class ApplyLeave extends Component {
         break;
 
       case "endDate":
+        const checkDate2 = moment(new Date(event.target.value));
+        if(checkDate2.isValid() == false)
+          return ;   // do nothing if date is not valid
+    
         let newEndDate = new Date(event.target.value);
         let newEndDateStr = newEndDate.toISOString().substr(0, 10);
 
