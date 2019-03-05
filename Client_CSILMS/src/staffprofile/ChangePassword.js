@@ -5,6 +5,10 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { fetchData } from '../util/APIUtils';
 import { withRouter, Redirect } from 'react-router-dom';
 import { API_BASE_URL, FIRST_TIME, ACCESS_TOKEN } from '../constants'; 
+import { library } from '@fortawesome/fontawesome-svg-core';
+import { fas } from '@fortawesome/free-solid-svg-icons';
+
+library.add(fas);
 
 class ChangePassword extends React.Component {
   constructor(props) {
