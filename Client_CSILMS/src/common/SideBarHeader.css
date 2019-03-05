@@ -42,11 +42,11 @@ ul ul a {
 .sideBarToggleButton {
   font-size: 20px;
   cursor: pointer;
-  height: 42px;
-  width: 42px;
+  height: 38px;
+  width: 38px;
   background-color: #032a53;
   color: white;
-  padding: 5px 10px 10px 10px;
+  padding: 3px 8px 8px 8px;
   border-radius: 5px;
   border: 1px solid rgb(95, 116, 136);
 }
@@ -131,13 +131,14 @@ a[aria-expanded="true"] {
 }
 
 .pageHeaderToggleBox {
-  width: 50%;
+  width: 30%;
   left: 5px;
-  padding-left: 1px;
+  padding-left: 2px;
+  padding-top: 2px;
 }
 
 .pageHeaderTitleBox {
-  width: 90%;
+  width: 70%;
   right: 10px;
   padding-top: 5px;
   position: sticky;

@@ -12,7 +12,8 @@ class PageHeader extends Component {
 
   toggleSideBarMenu = e => {
     e.preventDefault();
-    var screenSize = window.screen.width * window.devicePixelRatio;
+    // var screenSize = window.screen.width * window.devicePixelRatio;
+    var screenSize = window.screen.width;
     if (screenSize <= 768) {
       // Smaller devices view
       if (this.state.sideBarOpen) {
