@@ -102,7 +102,7 @@ class PublicHoliday extends Component {
             <span className="fa fa-edit" /> Edit
           </Button>
         ),
-        minWidth: 40,
+        minWidth: 80,
         sortable: false,
         filterable: false,
         style: {

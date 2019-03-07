@@ -64,6 +64,11 @@ class App extends Component {
     this.handleLogout = this.handleLogout.bind(this);
   }
 
+  componentDidMount() {
+    this.loadCurrentUser();
+    this.checkFirstTimeLogin();
+  }
+
   loadCurrentUser() {
     this.setState({ isLoading: true });
     getCurrentUser()
@@ -90,42 +95,49 @@ class App extends Component {
     });
   }
 
-  handleLogout(redirectTo = "/") {
-    localStorage.removeItem(ACCESS_TOKEN);
-
-    this.setState({
-      currentUser: null,
-      isAuthenticated: false
-    });
-
-    this.props.history.push(redirectTo);
-  }
-
   handleLogin() {
     this.loadCurrentUser();
     this.checkFirstTimeLogin();
     this.props.history.push("/");
+
+    var screenSize = window.screen.width;
+    if (screenSize <= 768) {
+      this.removeSideBarSpace();
+    } else {
+      this.createSideBarSpace();
+    }
   }
 
-  componentDidMount() {
-    this.loadCurrentUser();
-    this.checkFirstTimeLogin();
+  handleLogout(redirectTo = "/") {
+    localStorage.removeItem(ACCESS_TOKEN);
+    this.setState({
+      currentUser: null,
+      isAuthenticated: false
+    });
+    this.removeSideBarSpace();
+    this.props.history.push(redirectTo);
   }
+
+  createSideBarSpace = () => {
+    document.getElementById("MainPage").style.width = "83.7%";
+    document.getElementById("MainPage").style.marginLeft = "250px";
+    document.getElementById("MainPage").style.transitionDuration = "0s";
+  };
+
+  removeSideBarSpace = () => {
+    document.getElementById("MainPage").style.width = "100%";
+    document.getElementById("MainPage").style.marginLeft = "0";
+    document.getElementById("MainPage").style.transitionDuration = "0s";
+  };
 
   render() {
-    let showPageFooter = "<div />";
+    let showPageFooter = "";
     if (this.state.currentUser) {
       showPageFooter = <PageFooter />;
     }
 
     return (
       <div className="Site">
-        <div className="loginwrapper">
-          <Route
-            path="/login"
-            render={props => <Login onLogin={this.handleLogin} {...props} />}
-          />
-        </div>
         <div id="MainPage" className="wrapper">
           <PageSideBar
             isAuthenticated={this.state.isAuthenticated}
@@ -148,12 +160,12 @@ class App extends Component {
                   currentUser={this.state.currentUser}
                   handleLogout={this.handleLogout}
                 />
-                {/* <Route
+                <Route
                   path="/login"
                   render={props => (
                     <Login onLogin={this.handleLogin} {...props} />
                   )}
-                /> */}
+                />
                 <PrivateRoute
                   authenticated={this.state.isAuthenticated}
                   currentUser={this.state.currentUser}
@@ -414,7 +426,7 @@ class App extends Component {
                 />
                 <PrivateRoute path="/forbidden" component={Forbidden} />
                 <Route path="/firsttime" component={FirstTime} />
-                <Route component={NotFound} />
+                <Route component={HomePage} />
               </Switch>
             </div>
           </div>
