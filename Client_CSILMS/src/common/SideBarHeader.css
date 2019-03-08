@@ -61,7 +61,7 @@ ul ul a {
   margin-left: 250px;
   /* width: 100%;
   margin-left: 0; */
-  transition: margin-left 0.3s;
+  /* transition: margin-left 0.3s; */
 }
 
 .sidebar.active {

@@ -67,7 +67,10 @@ class App extends Component {
   componentDidMount() {
     this.loadCurrentUser();
     this.checkFirstTimeLogin();
-    if (this.props.history.location.pathname === "/login") {
+    if (
+      this.props.history.location.pathname === "/login" ||
+      this.props.match.isExact === false
+    ) {
       this.removeSideBarSpace();
     }
   }
@@ -134,6 +137,7 @@ class App extends Component {
   };
 
   render() {
+    console.log("props", this.props);
     let showPageFooter = "";
     if (this.state.currentUser) {
       showPageFooter = <PageFooter />;
