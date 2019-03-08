@@ -67,30 +67,34 @@ class App extends Component {
   componentDidMount() {
     this.loadCurrentUser();
     this.checkFirstTimeLogin();
-    if (
-      this.props.history.location.pathname === "/login" ||
-      this.props.match.isExact === false
-    ) {
-      this.removeSideBarSpace();
-    }
   }
 
   loadCurrentUser() {
     this.setState({ isLoading: true });
     getCurrentUser()
       .then(response => {
-        this.setState(newState => {
-          return {
+        console.log("Response");
+        this.setState(
+          {
             currentUser: response,
             isAuthenticated: true,
             isLoading: false
-          };
-        });
+          },
+          () => {
+            this.createOrRemoveSideBarSpace();
+          }
+        );
       })
       .catch(error => {
-        this.setState({
-          isLoading: false
-        });
+        console.log("Error");
+        this.setState(
+          {
+            isLoading: false
+          },
+          () => {
+            this.createOrRemoveSideBarSpace();
+          }
+        );
       });
   }
 
@@ -107,11 +111,6 @@ class App extends Component {
     this.loadCurrentUser();
     this.checkFirstTimeLogin();
     this.props.history.push("/");
-    if (window.screen.width <= 768) {
-      this.removeSideBarSpace();
-    } else {
-      this.createSideBarSpace();
-    }
   }
 
   handleLogout(redirectTo = "/") {
@@ -123,6 +122,18 @@ class App extends Component {
     this.removeSideBarSpace();
     this.props.history.push(redirectTo);
   }
+
+  createOrRemoveSideBarSpace = () => {
+    if (this.state.currentUser) {
+      if (window.screen.width <= 768) {
+        this.removeSideBarSpace();
+      } else {
+        this.createSideBarSpace();
+      }
+    } else {
+      this.removeSideBarSpace();
+    }
+  };
 
   createSideBarSpace = () => {
     document.getElementById("MainPage").style.width = "83.7%";
@@ -433,7 +444,7 @@ class App extends Component {
                 />
                 <PrivateRoute path="/forbidden" component={Forbidden} />
                 <Route path="/firsttime" component={FirstTime} />
-                <Route component={HomePage} />
+                <Route component={NotFound} />
               </Switch>
             </div>
           </div>
