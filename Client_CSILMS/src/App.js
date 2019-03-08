@@ -73,7 +73,6 @@ class App extends Component {
     this.setState({ isLoading: true });
     getCurrentUser()
       .then(response => {
-        console.log("Response");
         this.setState(
           {
             currentUser: response,
@@ -86,7 +85,6 @@ class App extends Component {
         );
       })
       .catch(error => {
-        console.log("Error");
         this.setState(
           {
             isLoading: false
@@ -148,7 +146,6 @@ class App extends Component {
   };
 
   render() {
-    console.log("props", this.props);
     let showPageFooter = "";
     if (this.state.currentUser) {
       showPageFooter = <PageFooter />;
