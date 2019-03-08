@@ -57,10 +57,10 @@ ul ul a {
 } */
 
 #MainPage {
-  /* width: calc(100% - 250px);
-  margin-left: 250px; */
-  width: 100%;
-  margin-left: 0;
+  width: calc(100% - 250px);
+  margin-left: 250px;
+  /* width: 100%;
+  margin-left: 0; */
   transition: margin-left 0.3s;
 }
 

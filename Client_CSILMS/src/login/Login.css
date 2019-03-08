@@ -84,9 +84,6 @@
 @media (max-width: 768px) {
   .loginMainContainer {
     flex-direction: column;
-    /* min-height: 100%;
-    max-height: 400px;
-    border: 2px solid red; */
   }
   .loginTextContainer {
     width: 100%;

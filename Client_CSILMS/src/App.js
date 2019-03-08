@@ -67,16 +67,21 @@ class App extends Component {
   componentDidMount() {
     this.loadCurrentUser();
     this.checkFirstTimeLogin();
+    if (this.props.history.location.pathname === "/login") {
+      this.removeSideBarSpace();
+    }
   }
 
   loadCurrentUser() {
     this.setState({ isLoading: true });
     getCurrentUser()
       .then(response => {
-        this.setState({
-          currentUser: response,
-          isAuthenticated: true,
-          isLoading: false
+        this.setState(newState => {
+          return {
+            currentUser: response,
+            isAuthenticated: true,
+            isLoading: false
+          };
         });
       })
       .catch(error => {
@@ -99,9 +104,7 @@ class App extends Component {
     this.loadCurrentUser();
     this.checkFirstTimeLogin();
     this.props.history.push("/");
-
-    var screenSize = window.screen.width;
-    if (screenSize <= 768) {
+    if (window.screen.width <= 768) {
       this.removeSideBarSpace();
     } else {
       this.createSideBarSpace();
