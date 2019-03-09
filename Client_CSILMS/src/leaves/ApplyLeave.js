@@ -568,10 +568,10 @@ class ApplyLeave extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label xs={2} for="leaveDuration">
+              <Label sm={2} for="leaveDuration">
                 Leave Duration:{" "}
               </Label>
-              <Col xs={2}>
+              <Col sm={2}>
                 <Input
                   type="text"
                   name="leaveDuration"
@@ -582,7 +582,7 @@ class ApplyLeave extends Component {
                   required
                 />
               </Col>
-              <Col xs={8}>{durationErrorMsg}</Col>
+              <Col sm={8}>{durationErrorMsg}</Col>
             </FormGroup>
             <FormGroup row>
               <Label for="leaveReason" sm={2}>
