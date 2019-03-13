@@ -1,13 +1,5 @@
 import React, { Component } from "react";
-import {
-  Button,
-  Form,
-  FormGroup,
-  FormText,
-  Label,
-  Input,
-  Col
-} from "reactstrap";
+import { Button, Form, FormText, Label, Input, Col } from "reactstrap";
 import { Redirect, withRouter } from "react-router-dom";
 import {
   fetchData,
@@ -349,6 +341,7 @@ class UploadEmployeeProfile extends Component {
         empRow.NRICPassportNo = empRow.NRICPassportNo.trim();
       if (empRow.Role) empRow.Role = empRow.Role.trim();
       if (empRow.Status) empRow.Status = empRow.Status.trim();
+      return true;
     });
 
     // Column Values Validations on each Row
@@ -356,14 +349,14 @@ class UploadEmployeeProfile extends Component {
       if (empRow.EmployeeID === "") {
         empRow.ValidateStatus = "Employee ID cannot be blank.";
       } else if (
-        empRow.EmployeeID != "" &&
+        empRow.EmployeeID !== "" &&
         arrEmployeeProfileDataLookup.filter(
           dupRow => dupRow.EmployeeID === empRow.EmployeeID
         ).length > 1
       ) {
         empRow.ValidateStatus = "Employee ID has duplicate entry.";
       } else if (
-        empRow.EmployeeID != "" &&
+        empRow.EmployeeID !== "" &&
         arrEmployeeProfileLookup.some(empProfile => {
           return empProfile.emplId === empRow.EmployeeID;
         })
@@ -379,7 +372,7 @@ class UploadEmployeeProfile extends Component {
       ) {
         empRow.ValidateStatus = "Business Email format is invalid.";
       } else if (
-        empRow.BusinessEmail != "" &&
+        empRow.BusinessEmail !== "" &&
         arrEmployeeProfileDataLookup.filter(
           dupRow => dupRow.BusinessEmail === empRow.BusinessEmail
         ).length > 1
@@ -575,6 +568,7 @@ class UploadEmployeeProfile extends Component {
       } else if (typeof arrEmployeeProfileData[index].Role !== "string") {
         empRow.ValidateStatus = "Role cannot be blank.";
       }
+      return true;
     });
 
     let arrErrEmployeeProfileData = arrEmployeeProfileData.filter(
@@ -712,6 +706,7 @@ class UploadEmployeeProfile extends Component {
             });
           }
         });
+      return true;
     });
     // this.props.history.push("/liststaffprofile");
     this.handleReset();

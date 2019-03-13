@@ -8,7 +8,6 @@ import {
   Col,
   Modal,
   ModalHeader,
-  ModalBody,
   ModalFooter
 } from "reactstrap";
 import { withRouter, Redirect } from "react-router-dom";

@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Button } from "reactstrap";
+import { Button } from "reactstrap";
 import { Link, Redirect, withRouter } from "react-router-dom";
 import {
   fetchData,
@@ -205,7 +205,20 @@ class LeaveRequestsList extends Component {
         <div className="reactTableContainer">
           <div className="mainListBtnContainer">
             <div className="SubListBtnSingleContainer">
-              <ExportToExcel leaveRequestData={this.state.leaveRequestData} />
+              <Button
+                variant="contained"
+                color="primary"
+                className="largeButtonOverride"
+                onClick={() =>
+                  document.getElementById("test-table-xls-button").click()
+                }
+              >
+                <span
+                  className="fa fa-file-excel-o"
+                  style={{ margin: "0px 5px 0px 0px" }}
+                />
+                Export List to Excel
+              </Button>
             </div>
           </div>
           <ReactTable
@@ -221,6 +234,7 @@ class LeaveRequestsList extends Component {
             noDataText="No data available."
             className="-striped"
           />
+          <ExportToExcel leaveRequestData={this.state.leaveRequestData} />
         </div>
       </div>
     );

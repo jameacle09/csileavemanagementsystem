@@ -4,7 +4,7 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { fetchData, formatDateYMD, formatDateDMY } from "../util/APIUtils";
 import { Link } from "react-router-dom";
-import { Button, Row, Col } from "reactstrap";
+import { Button } from "reactstrap";
 import MyLeaveHistoryToExcel from "./MyLeaveHistoryToExcel";
 
 class MyLeaveHistory extends Component {
@@ -167,7 +167,20 @@ class MyLeaveHistory extends Component {
         <div className="reactTableContainer">
           <div className="mainListBtnContainer">
             <div className="SubListBtnSingleContainer">
-              <MyLeaveHistoryToExcel userData={this.state.userData} />
+              <Button
+                variant="contained"
+                color="primary"
+                className="largeButtonOverride"
+                onClick={() =>
+                  document.getElementById("test-table-xls-button").click()
+                }
+              >
+                <span
+                  className="fa fa-file-excel-o"
+                  style={{ margin: "0px 5px 0px 0px" }}
+                />
+                Export List to Excel
+              </Button>
             </div>
           </div>
           <ReactTable
@@ -184,6 +197,7 @@ class MyLeaveHistory extends Component {
             noDataText="No data available."
             className="-striped"
           />
+          <MyLeaveHistoryToExcel userData={this.state.userData} />
         </div>
       </div>
     );

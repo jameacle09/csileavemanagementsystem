@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Button } from "reactstrap";
+import { Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
 import { Redirect, withRouter } from "react-router-dom";
@@ -121,9 +121,20 @@ class PublicHoliday extends Component {
         <div className="reactTableContainer">
           <div className="mainListBtnContainer">
             <div className="SubListBtnLeftContainer">
-              <ExportToExcel
-                publicHolidayDetails={this.state.publicHolidayDetails}
-              />
+              <Button
+                variant="contained"
+                color="primary"
+                className="largeButtonOverride"
+                onClick={() =>
+                  document.getElementById("test-table-xls-button").click()
+                }
+              >
+                <span
+                  className="fa fa-file-excel-o"
+                  style={{ margin: "0px 5px 0px 0px" }}
+                />
+                Export List to Excel
+              </Button>
             </div>
             <div className="SubListBtnRightContainer">
               <div>
@@ -166,6 +177,9 @@ class PublicHoliday extends Component {
             loadingText="Loading Public Holidays..."
             noDataText="No data available."
             className="-striped"
+          />
+          <ExportToExcel
+            publicHolidayDetails={this.state.publicHolidayDetails}
           />
         </div>
       </div>

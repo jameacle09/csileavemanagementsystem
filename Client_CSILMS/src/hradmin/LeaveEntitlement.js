@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Button } from "reactstrap";
+import { Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
 import { Redirect, withRouter } from "react-router-dom";
@@ -186,9 +186,20 @@ class LeaveEntitlement extends Component {
         <div className="reactTableContainer">
           <div className="mainListBtnContainer">
             <div className="SubListBtnLeftContainer">
-              <ExportToExcel
-                leaveEntitlementData={this.state.leaveEntitlementData}
-              />
+              <Button
+                variant="contained"
+                color="primary"
+                className="largeButtonOverride"
+                onClick={() =>
+                  document.getElementById("test-table-xls-button").click()
+                }
+              >
+                <span
+                  className="fa fa-file-excel-o"
+                  style={{ margin: "0px 5px 0px 0px" }}
+                />
+                Export List to Excel
+              </Button>
             </div>
             <div className="SubListBtnRightContainer">
               <div>
@@ -234,6 +245,9 @@ class LeaveEntitlement extends Component {
             loadingText="Loading Leave Entitlements..."
             noDataText="No data available."
             className="-striped"
+          />
+          <ExportToExcel
+            leaveEntitlementData={this.state.leaveEntitlementData}
           />
         </div>
       </div>

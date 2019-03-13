@@ -16,10 +16,10 @@ import LeaveRequestsList from "./manager/LeaveRequestsList";
 import LeaveRequest from "./manager/LeaveRequest";
 import LeaveHistoryList from "./manager/LeaveHistoryList";
 import LeaveHistoryView from "./manager/LeaveHistoryView";
-import StaffProfileComponent from "./staffprofile/StaffProfileComponent";
+// import StaffProfileComponent from "./staffprofile/StaffProfileComponent";
 import ListStaffProfile from "./staffprofile/ListStaffProfile";
 import NewStaffProfile from "./staffprofile/NewStaffProfile";
-import EditStaffProfile from "./staffprofile/EditStaffProfile";
+// import EditStaffProfile from "./staffprofile/EditStaffProfile";
 import UploadEmployeeProfile from "./staffprofile/UploadStaffProfile";
 import PublicHoliday from "./hradmin/PublicHoliday";
 import AddPublicHoliday from "./hradmin/AddPublicHoliday";
@@ -260,13 +260,13 @@ class App extends Component {
                 />
 
                 {/* Employee Profiles */}
-                <PrivateRoute
+                {/* <PrivateRoute
                   authenticated={this.state.isAuthenticated}
                   currentUser={this.state.currentUser}
                   path="/staffprofile"
                   title="Employee Profiles"
                   component={StaffProfileComponent}
-                />
+                /> */}
                 <PrivateRoute
                   exact
                   authenticated={this.state.isAuthenticated}

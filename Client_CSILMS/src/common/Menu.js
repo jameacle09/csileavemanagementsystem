@@ -39,17 +39,17 @@ class Menu extends Component {
     };
     return (
       <nav
-        class="navbar navbar-expand-lg navbar-light bg-light"
+        className="navbar navbar-expand-lg navbar-light bg-light"
         style={menuContainer}
       >
-        <div class="container-fluid" style={menuContainer}>
+        <div className="container-fluid" style={menuContainer}>
           <button
             type="button"
             id="sidebarCollapse"
             class="btn btn-info"
             style={{ background: "#032a53", border: "1px solid gray" }}
           >
-            <i class="fas fa-align-left" />
+            <i className="fas fa-align-left" />
             <span />
           </button>
           <span>

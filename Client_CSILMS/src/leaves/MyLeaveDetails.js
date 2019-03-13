@@ -1,10 +1,10 @@
 import React, { Component } from "react";
+import { Button } from "reactstrap";
 import ReactTable from "react-table";
 import { API_BASE_URL } from "../constants";
 import { withRouter } from "react-router-dom";
 import "react-table/react-table.css";
-import { fetchData, formatDateDMY } from "../util/APIUtils";
-import { Row, Col } from "reactstrap";
+import { fetchData } from "../util/APIUtils";
 import MyLeaveDetailsToExcel from "./MyLeaveDetailsToExcel";
 
 class MyLeaveDetails extends Component {
@@ -127,7 +127,20 @@ class MyLeaveDetails extends Component {
         <div className="reactTableContainer">
           <div className="mainListBtnContainer">
             <div className="SubListBtnSingleContainer">
-              <MyLeaveDetailsToExcel userData={this.state.userData} />
+              <Button
+                variant="contained"
+                color="primary"
+                className="largeButtonOverride"
+                onClick={() =>
+                  document.getElementById("test-table-xls-button").click()
+                }
+              >
+                <span
+                  className="fa fa-file-excel-o"
+                  style={{ margin: "0px 5px 0px 0px" }}
+                />
+                Export List to Excel
+              </Button>
             </div>
           </div>
           <ReactTable
@@ -146,6 +159,7 @@ class MyLeaveDetails extends Component {
             noDataText="No data available."
             className="-striped"
           />
+          <MyLeaveDetailsToExcel userData={this.state.userData} />
         </div>
       </div>
     );

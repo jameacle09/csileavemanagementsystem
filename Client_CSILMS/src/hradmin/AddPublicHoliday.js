@@ -8,7 +8,6 @@ import {
   Button,
   Modal,
   ModalHeader,
-  ModalBody,
   ModalFooter
 } from "reactstrap";
 import "../common/Styles.css";

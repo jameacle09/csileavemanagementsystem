@@ -9,7 +9,7 @@ import {
   Col,
   Alert
 } from "reactstrap";
-import moment from 'moment';
+import moment from "moment";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { fetchData } from "../util/APIUtils";
@@ -177,9 +177,8 @@ class ApplyLeave extends Component {
     switch (fieldName) {
       case "startDate":
         const checkDate1 = moment(new Date(event.target.value));
-        if(checkDate1.isValid() == false)
-          return ;   // do nothing if date is not valid
-    
+        if (checkDate1.isValid() === false) return; // do nothing if date is not valid
+
         let newStartDate = new Date(event.target.value);
         let newStartDateStr = newStartDate.toISOString().substr(0, 10);
 
@@ -207,9 +206,8 @@ class ApplyLeave extends Component {
 
       case "endDate":
         const checkDate2 = moment(new Date(event.target.value));
-        if(checkDate2.isValid() == false)
-          return ;   // do nothing if date is not valid
-    
+        if (checkDate2.isValid() === false) return; // do nothing if date is not valid
+
         let newEndDate = new Date(event.target.value);
         let newEndDateStr = newEndDate.toISOString().substr(0, 10);
 
@@ -265,18 +263,18 @@ class ApplyLeave extends Component {
         this.setState({ leaveReason: event.target.value });
         break;
       case "attachment":
-        if(event.target.files[0].size > 5242880) {
+        if (event.target.files[0].size > 5242880) {
           confirmAlert({
-            message: "Unable to upload file. This file exceeded the limit of 5MB",
+            message:
+              "Unable to upload file. This file exceeded the limit of 5MB",
             buttons: [
               {
                 label: "Ok"
               }
             ]
           });
-          event.target.value =  null;
-        } else 
-          this.setState({ attachedFile: event.target.files[0] });
+          event.target.value = null;
+        } else this.setState({ attachedFile: event.target.files[0] });
         break;
       case "approverId":
         this.setState({ approverId: event.target.value });
@@ -302,11 +300,10 @@ class ApplyLeave extends Component {
 
     if (validForm) {
       // upload file to server
-      if (this.state.attachedFile != null){
+      if (this.state.attachedFile != null) {
         await this.uploadFile(this.state.attachedFile);
 
-        if(this.state.attachedFileName === "")
-          return false;  // if attached file name is still blank = error in upload file
+        if (this.state.attachedFileName === "") return false; // if attached file name is still blank = error in upload file
       }
       // create JSON Object for new Leave Request
       let newLeaveRequest = {
@@ -388,9 +385,10 @@ class ApplyLeave extends Component {
       })
       .catch(err => {
         console.log(err);
-        this.setState({ attachedFIleName: ""})
+        this.setState({ attachedFIleName: "" });
         confirmAlert({
-          message: "Unable to upload file. Please ensure file does not exceed 5MB.",
+          message:
+            "Unable to upload file. Please ensure file does not exceed 5MB.",
           buttons: [
             {
               label: "Ok"
@@ -608,7 +606,9 @@ class ApplyLeave extends Component {
                   id="attachment"
                   onChange={this.handleDetailsChange}
                 />
-                <FormText color="muted">Please attach your document (maximum file size is 5 MB).</FormText>
+                <FormText color="muted">
+                  Please attach your document (maximum file size is 5 MB).
+                </FormText>
               </Col>
             </FormGroup>
             <FormGroup row>
@@ -634,6 +634,7 @@ class ApplyLeave extends Component {
                         </option>
                       );
                     }
+                    return true;
                   })}
                 </Input>
               </Col>

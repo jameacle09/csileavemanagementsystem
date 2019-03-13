@@ -131,6 +131,7 @@ class UploadHoliday extends Component {
       if (holRow.Date) holRow.Date = holRow.Date.trim();
       if (holRow.Holiday) holRow.Holiday = holRow.Holiday.trim();
       if (holRow.State) holRow.State = holRow.State.trim();
+      return true;
     });
 
     // Column Values Validations on each Row
@@ -140,14 +141,14 @@ class UploadHoliday extends Component {
       } else if (holRow.Date && isNaN(Date.parse(holRow.Date))) {
         holRow.ValidateStatus = "Date value is invalid.";
       } else if (
-        holRow.Date != "" &&
+        holRow.Date !== "" &&
         typeof holRow.Date === "string" &&
         arrHolidayDataLookup.filter(dupRow => dupRow.Date === holRow.Date)
           .length > 1
       ) {
         holRow.ValidateStatus = "Date has duplicate entry.";
       } else if (
-        holRow.Date != "" &&
+        holRow.Date !== "" &&
         arrHolidayLookup.some(holiday => {
           return (
             formatDateYMD(holiday.holidayDate) === formatDateYMD(holRow.Date)
@@ -175,6 +176,7 @@ class UploadHoliday extends Component {
         holRow.ValidateStatus = "Holiday cannot be blank.";
       if (typeof arrHolidayData[index].State !== "string")
         holRow.ValidateStatus = "State(s) cannot be blank.";
+      return true;
     });
 
     let arrErrHolidayData = arrHolidayData.filter(
@@ -287,6 +289,7 @@ class UploadHoliday extends Component {
             });
           }
         });
+      return true;
     });
     // this.props.history.push("/publicholiday");
     this.handleReset();

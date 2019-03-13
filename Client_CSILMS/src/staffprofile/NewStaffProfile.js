@@ -1,10 +1,10 @@
 import React, { Component } from "react";
 import ReactDOM from "react-dom";
-import { withRouter } from 'react-router-dom';
+import { withRouter } from "react-router-dom";
 import { Button, Form, FormGroup, Label, Input, Col } from "reactstrap";
-import { fetchData, formatDateYMD } from '../util/APIUtils';
+import { fetchData, formatDateYMD } from "../util/APIUtils";
 import { confirmAlert } from "react-confirm-alert";
-import { API_BASE_URL } from '../constants';
+import { API_BASE_URL } from "../constants";
 import "../common/Styles.css";
 
 class NewStaffProfile extends Component {
@@ -48,7 +48,9 @@ class NewStaffProfile extends Component {
       translateItemList: [
         {
           id: { fieldname: "", fieldvalue: "" },
-          effStatus: "", xlatlongname: "", xlatshortname: ""
+          effStatus: "",
+          xlatlongname: "",
+          xlatshortname: ""
         }
       ]
     };
@@ -57,7 +59,7 @@ class NewStaffProfile extends Component {
   isHrRole(roles) {
     if (!roles) return;
     const arrRoles = roles;
-    const currRole = arrRoles.filter(function (role) {
+    const currRole = arrRoles.filter(function(role) {
       return role.roleName === "HR";
     });
 
@@ -67,7 +69,7 @@ class NewStaffProfile extends Component {
   isManagerRole(roles) {
     if (!roles) return;
     const arrRoles = roles;
-    const currRole = arrRoles.filter(function (role) {
+    const currRole = arrRoles.filter(function(role) {
       return role.roleName === "MANAGER";
     });
 
@@ -75,48 +77,60 @@ class NewStaffProfile extends Component {
   }
 
   verifyEmplId(event) {
-    if (event.target.value === "") { return; }
+    if (event.target.value === "") {
+      return;
+    }
 
     fetchData({
       url: API_BASE_URL + "/employeedetails/" + event.target.value,
-      method: 'GET'
-    }).then(response => {
-      const emplId = response.emplId;
-      if (emplId !== null) {
-        ReactDOM.findDOMNode(this.refs["csiStaffId"]).setCustomValidity("Employee Id already exists!");
-      } else {
-        ReactDOM.findDOMNode(this.refs["csiStaffId"]).setCustomValidity("");
-      }
-    }).catch(error => {
-      if (error.status === 401) {
-        this.props.history.push("/login");
-      }
-    });
+      method: "GET"
+    })
+      .then(response => {
+        const emplId = response.emplId;
+        if (emplId !== null) {
+          ReactDOM.findDOMNode(this.refs["csiStaffId"]).setCustomValidity(
+            "Employee Id already exists!"
+          );
+        } else {
+          ReactDOM.findDOMNode(this.refs["csiStaffId"]).setCustomValidity("");
+        }
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+      });
   }
 
   verifyEmailExists(event) {
-    if (event.target.value === "") { return; }
+    if (event.target.value === "") {
+      return;
+    }
 
     fetchData({
       url: API_BASE_URL + "/verifyEmailExists/" + event.target.value,
-      method: 'GET'
-    }).then(response => {
-      const emplId = response.emplId;
-      if (emplId !== null) {
-        ReactDOM.findDOMNode(this.refs["email"]).setCustomValidity("E-mail Id already exists!");
-      } else {
-        ReactDOM.findDOMNode(this.refs["email"]).setCustomValidity("");
-      }
-    }).catch(error => {
-      if (error.status === 401) {
-        this.props.history.push("/login");
-      }
-    });
+      method: "GET"
+    })
+      .then(response => {
+        const emplId = response.emplId;
+        if (emplId !== null) {
+          ReactDOM.findDOMNode(this.refs["email"]).setCustomValidity(
+            "E-mail Id already exists!"
+          );
+        } else {
+          ReactDOM.findDOMNode(this.refs["email"]).setCustomValidity("");
+        }
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+      });
   }
 
   getManagerDetails(emplId) {
     if (!emplId) return;
-    const currManager = this.state.managerList.filter(function (manager) {
+    const currManager = this.state.managerList.filter(function(manager) {
       return manager.emplId === emplId;
     });
 
@@ -131,56 +145,63 @@ class NewStaffProfile extends Component {
     fetchData({
       url: API_BASE_URL + "/employeedetails/" + emplId,
       method: "GET"
-    }).then(data => {
-      this.setState({
-        emplId: data.emplId,
-        name: data.name,
-        businessEmail: data.businessEmail,
-        nricPassport: data.nricPassport,
-        gender: data.gender,
-        marriageStatus: data.marriageStatus,
-        marriageDate: data.marriageDate === null ? initialDate : formatDateYMD(data.marriageDate),
-        marriageCount: data.marriageCount,
-        totalChildren: data.totalChildren,
-        jobTitle: data.jobTitle,
-        effectiveDate: data.effectiveDate,
-        mobileNo: data.mobileNo,
-        deptId: data.deptId,
-        businessUnit: data.businessUnit,
-        reportsTo: data.reportsTo,
-        reportDottedLine: data.reportDottedLine,
-        joinDate: data.joinDate === null ? initialDate : formatDateYMD(data.joinDate),
-        status: data.status,
-        roles: data.roles,
+    })
+      .then(data => {
+        this.setState({
+          emplId: data.emplId,
+          name: data.name,
+          businessEmail: data.businessEmail,
+          nricPassport: data.nricPassport,
+          gender: data.gender,
+          marriageStatus: data.marriageStatus,
+          marriageDate:
+            data.marriageDate === null
+              ? initialDate
+              : formatDateYMD(data.marriageDate),
+          marriageCount: data.marriageCount,
+          totalChildren: data.totalChildren,
+          jobTitle: data.jobTitle,
+          effectiveDate: data.effectiveDate,
+          mobileNo: data.mobileNo,
+          deptId: data.deptId,
+          businessUnit: data.businessUnit,
+          reportsTo: data.reportsTo,
+          reportDottedLine: data.reportDottedLine,
+          joinDate:
+            data.joinDate === null ? initialDate : formatDateYMD(data.joinDate),
+          status: data.status,
+          roles: data.roles
+        });
+
+        if (this.isHrRole(this.state.roles)) {
+          ReactDOM.findDOMNode(this.refs["HR"]).checked = true;
+        }
+
+        if (this.isManagerRole(this.state.roles)) {
+          ReactDOM.findDOMNode(this.refs["MANAGER"]).checked = true;
+        }
+
+        ReactDOM.findDOMNode(this.refs["csiStaffId"]).disabled = true;
+        if (data.marriageStatus === "SIN") {
+          ReactDOM.findDOMNode(this.refs["marriageDate"]).disabled = true;
+        } else {
+          ReactDOM.findDOMNode(this.refs["marriageDate"]).disabled = false;
+        }
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
       });
-
-      if (this.isHrRole(this.state.roles)) {
-        ReactDOM.findDOMNode(this.refs["HR"]).checked = true;
-      }
-
-      if (this.isManagerRole(this.state.roles)) {
-        ReactDOM.findDOMNode(this.refs["MANAGER"]).checked = true;
-      }
-
-      ReactDOM.findDOMNode(this.refs["csiStaffId"]).disabled = true;
-      if (data.marriageStatus === "SIN") {
-        ReactDOM.findDOMNode(this.refs["marriageDate"]).disabled = true;
-      } else {
-        ReactDOM.findDOMNode(this.refs["marriageDate"]).disabled = false;
-      }
-    }).catch(error => {
-      if (error.status === 401) {
-        this.props.history.push("/login");
-      }
-    });
   }
 
   loadManagerList() {
     // fetch approvers from API
     fetchData({
       url: API_BASE_URL + "/leaveapprovers",
-      method: 'GET'
-    }).then(data => this.setState({ managerList: data }))
+      method: "GET"
+    })
+      .then(data => this.setState({ managerList: data }))
       .catch(error => {
         // if unable to fetch data, assign default (spaces) to values
         let managerListData = [{ emplId: "", name: "" }];
@@ -196,14 +217,16 @@ class NewStaffProfile extends Component {
     // fetch translate item from API
     fetchData({
       url: API_BASE_URL + "/translateitems",
-      method: 'GET'
-    }).then(data => {
-      this.setState({ translateItemList: data })
-    }).catch(error => {
-      if (error.status === 401) {
-        this.props.history.push("/login");
-      }
-    });
+      method: "GET"
+    })
+      .then(data => {
+        this.setState({ translateItemList: data });
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+      });
   }
 
   handleChange(event) {
@@ -327,46 +350,51 @@ class NewStaffProfile extends Component {
     const request = Object.assign({}, values);
     fetchData({
       url: API_BASE_URL + "/addEditEmployeeDetails",
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(request)
-    }).then(response => {
-      if (response.emplId !== null) {
-        confirmAlert({
-          message: "Employee " + response.emplId + " is successfully save",
-          buttons: [
-            {
-              label: "OK",
-              onClick: () => this.props.history.push("/liststaffprofile")
-            }
-          ]
-        });
-      }
+    })
+      .then(response => {
+        if (response.emplId !== null) {
+          confirmAlert({
+            message: "Employee " + response.emplId + " is successfully save",
+            buttons: [
+              {
+                label: "OK",
+                onClick: () => this.props.history.push("/liststaffprofile")
+              }
+            ]
+          });
+        }
 
-      if(response.emplId === null && values.status === "I"){
-        confirmAlert({
-          message: "Employee " + values.emplId + " is successfully save and deactivated",
-          buttons: [
-            {
-              label: "OK",
-              onClick: () => this.props.history.push("/liststaffprofile")
-            }
-          ]
-        });
-      }
-    }).catch(error => {
-      if(error.status === 401) {
-         this.props.history.push("/login");    
-      } else {
-        confirmAlert({
-          message: error.status + " : " + error.message,
-          buttons: [
-            {
-              label: "OK"
-            }
-          ]
-        });
-      } 
-    });
+        if (response.emplId === null && values.status === "I") {
+          confirmAlert({
+            message:
+              "Employee " +
+              values.emplId +
+              " is successfully save and deactivated",
+            buttons: [
+              {
+                label: "OK",
+                onClick: () => this.props.history.push("/liststaffprofile")
+              }
+            ]
+          });
+        }
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
   };
 
   componentDidMount() {
@@ -393,7 +421,8 @@ class NewStaffProfile extends Component {
   };
 
   render() {
-    const { emplId,
+    const {
+      emplId,
       name,
       businessEmail,
       nricPassport,
@@ -409,7 +438,8 @@ class NewStaffProfile extends Component {
       reportsTo,
       reportDottedLine,
       joinDate,
-      status } = this.state;
+      status
+    } = this.state;
     const edit = this.props.computedMatch.params.emplId ? "Edit" : "Add";
 
     return (
@@ -420,9 +450,11 @@ class NewStaffProfile extends Component {
           </span>
         </div>
         <div className="tableContainerFlex">
-          <Form ref="form" onSubmit={this.handleFormSubmit} >
+          <Form ref="form" onSubmit={this.handleFormSubmit}>
             <FormGroup row>
-              <Label for="csiStaffId" sm={2}>Employee ID</Label>
+              <Label for="csiStaffId" sm={2}>
+                Employee ID:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="text"
@@ -438,7 +470,9 @@ class NewStaffProfile extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="staffName" sm={2}>Employee Name</Label>
+              <Label for="staffName" sm={2}>
+                Employee Name:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="text"
@@ -452,7 +486,9 @@ class NewStaffProfile extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="email" sm={2}>Email</Label>
+              <Label for="email" sm={2}>
+                Business Email:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="email"
@@ -468,7 +504,9 @@ class NewStaffProfile extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="icNumber" sm={2}>NRIC / Passport No.</Label>
+              <Label for="icNumber" sm={2}>
+                NRIC / Passport No.:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="text"
@@ -482,7 +520,9 @@ class NewStaffProfile extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="gender" sm={2}>Gender</Label>
+              <Label for="gender" sm={2}>
+                Gender:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="select"
@@ -497,18 +537,23 @@ class NewStaffProfile extends Component {
                   {this.state.translateItemList.map(item => {
                     if (item.id.fieldname === "gender") {
                       return (
-
-                        <option key={item.id.fieldvalue} value={item.id.fieldvalue}>
+                        <option
+                          key={item.id.fieldvalue}
+                          value={item.id.fieldvalue}
+                        >
                           {item.xlatlongname}
                         </option>
                       );
                     }
+                    return true;
                   })}
                 </Input>
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="marriageStatus" sm={2}>Marital Status</Label>
+              <Label for="marriageStatus" sm={2}>
+                Marital Status:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="select"
@@ -523,17 +568,23 @@ class NewStaffProfile extends Component {
                   {this.state.translateItemList.map(item => {
                     if (item.id.fieldname === "marriage_status") {
                       return (
-                        <option key={item.id.fieldvalue} value={item.id.fieldvalue}>
+                        <option
+                          key={item.id.fieldvalue}
+                          value={item.id.fieldvalue}
+                        >
                           {item.xlatlongname}
                         </option>
                       );
                     }
+                    return true;
                   })}
                 </Input>
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="marriageDate" sm={2}>Marriage Date</Label>
+              <Label for="marriageDate" sm={2}>
+                Marriage Date:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="date"
@@ -548,7 +599,9 @@ class NewStaffProfile extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="marriageCount" sm={2}>Marriage Count</Label>
+              <Label for="marriageCount" sm={2}>
+                Marriage Count:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="number"
@@ -562,7 +615,9 @@ class NewStaffProfile extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="totalChildren" sm={2}>Total Children</Label>
+              <Label for="totalChildren" sm={2}>
+                Total Children:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="number"
@@ -576,7 +631,9 @@ class NewStaffProfile extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="jobTitle" sm={2}>Job Title</Label>
+              <Label for="jobTitle" sm={2}>
+                Job Title:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="select"
@@ -587,21 +644,29 @@ class NewStaffProfile extends Component {
                   value={jobTitle}
                   required
                 >
-                  <option key="" value="">Select Job Title</option>
+                  <option key="" value="">
+                    Select Job Title
+                  </option>
                   {this.state.translateItemList.map(item => {
                     if (item.id.fieldname === "job_title") {
                       return (
-                        <option key={item.id.fieldvalue} value={item.id.fieldvalue}>
+                        <option
+                          key={item.id.fieldvalue}
+                          value={item.id.fieldvalue}
+                        >
                           {item.xlatlongname}
                         </option>
                       );
                     }
+                    return true;
                   })}
                 </Input>
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="mobileNo" sm={2}>Mobile No.</Label>
+              <Label for="mobileNo" sm={2}>
+                Mobile No.:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="text"
@@ -615,7 +680,9 @@ class NewStaffProfile extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="businessUnit" sm={2}>Business Unit</Label>
+              <Label for="businessUnit" sm={2}>
+                Business Unit:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="select"
@@ -625,21 +692,29 @@ class NewStaffProfile extends Component {
                   value={businessUnit}
                   required
                 >
-                  <option key="" value="">Select Business Unit</option>
+                  <option key="" value="">
+                    Select Business Unit
+                  </option>
                   {this.state.translateItemList.map(item => {
                     if (item.id.fieldname === "business_unit") {
                       return (
-                        <option key={item.id.fieldvalue} value={item.id.fieldvalue}>
+                        <option
+                          key={item.id.fieldvalue}
+                          value={item.id.fieldvalue}
+                        >
                           {item.xlatlongname}
                         </option>
                       );
                     }
+                    return true;
                   })}
                 </Input>
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="deptId" sm={2}>Department</Label>
+              <Label for="deptId" sm={2}>
+                Department ID:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="select"
@@ -649,21 +724,29 @@ class NewStaffProfile extends Component {
                   value={deptId}
                   required
                 >
-                  <option key="" value="">Select Department</option>
+                  <option key="" value="">
+                    Select Department
+                  </option>
                   {this.state.translateItemList.map(item => {
                     if (item.id.fieldname === "dept_id") {
                       return (
-                        <option key={item.id.fieldvalue} value={item.id.fieldvalue}>
+                        <option
+                          key={item.id.fieldvalue}
+                          value={item.id.fieldvalue}
+                        >
                           {item.xlatlongname}
                         </option>
                       );
                     }
+                    return true;
                   })}
                 </Input>
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="lineManagerId" sm={2}>Line Manager</Label>
+              <Label for="lineManagerId" sm={2}>
+                Line Manager:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="select"
@@ -673,7 +756,9 @@ class NewStaffProfile extends Component {
                   value={reportsTo.emplId}
                   required
                 >
-                  <option key="" value="">Select Line Manager</option>
+                  <option key="" value="">
+                    Select Line Manager
+                  </option>
                   {this.state.managerList.map(manager => {
                     return (
                       <option key={manager.emplId} value={manager.emplId}>
@@ -685,7 +770,9 @@ class NewStaffProfile extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="reportDottedLine" sm={2}>Dotted Line Manager</Label>
+              <Label for="reportDottedLine" sm={2}>
+                Dotted Line Manager:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="select"
@@ -694,7 +781,9 @@ class NewStaffProfile extends Component {
                   onChange={this.handleChange}
                   value={reportDottedLine}
                 >
-                  <option key="" value="">Select Line Manager</option>
+                  <option key="" value="">
+                    Select Line Manager
+                  </option>
                   {this.state.managerList.map(manager => {
                     if (manager.emplId !== reportsTo.emplId) {
                       return (
@@ -703,12 +792,15 @@ class NewStaffProfile extends Component {
                         </option>
                       );
                     }
+                    return true;
                   })}
                 </Input>
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="joinDate" sm={2}>Join Date</Label>
+              <Label for="joinDate" sm={2}>
+                Join Date:
+              </Label>
               <Col sm={10}>
                 <Input
                   type="date"
@@ -722,7 +814,9 @@ class NewStaffProfile extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="status" sm={2}>Status</Label>
+              <Label for="status" sm={2}>
+                Status:
+              </Label>
               <div className="form-check">
                 <Col sm={10}>
                   <Input
@@ -749,27 +843,45 @@ class NewStaffProfile extends Component {
               </div>
             </FormGroup>
             <FormGroup row>
-              <Label for="role" sm={2}>Role</Label>
+              <Label for="role" sm={2}>
+                Role:
+              </Label>
               <div className="form-check">
                 <Col sm={10}>
-                  <Input type="checkbox" name="EMPLOYEE" ref="EMPLOYEE"
-                    value="EMPLOYEE" checked disabled
-                    onChange={this.handleCheckBoxChange} />{" "}
+                  <Input
+                    type="checkbox"
+                    name="EMPLOYEE"
+                    ref="EMPLOYEE"
+                    value="EMPLOYEE"
+                    checked
+                    disabled
+                    onChange={this.handleCheckBoxChange}
+                  />{" "}
                   Employee
                 </Col>
               </div>
               <div className="form-check">
                 <Col sm={10}>
-                  <Input type="checkbox" name="MANAGER" ref="MANAGER"
+                  <Input
+                    type="checkbox"
+                    name="MANAGER"
+                    ref="MANAGER"
                     value="MANAGER"
-                    onChange={this.handleCheckBoxChange} /> Manager
-                  </Col>
+                    onChange={this.handleCheckBoxChange}
+                  />{" "}
+                  Manager
+                </Col>
               </div>
               <div className="form-check">
                 <Col sm={10}>
-                  <Input type="checkbox" name="HR" ref="HR"
+                  <Input
+                    type="checkbox"
+                    name="HR"
+                    ref="HR"
                     value="HR"
-                    onChange={this.handleCheckBoxChange} /> Admin
+                    onChange={this.handleCheckBoxChange}
+                  />{" "}
+                  Admin
                 </Col>
               </div>
             </FormGroup>
@@ -781,14 +893,11 @@ class NewStaffProfile extends Component {
                   className="largeButtonOverride"
                 >
                   Save
-            </Button>
+                </Button>
                 &nbsp;&nbsp;
-            <Button
-                  color="secondary"
-                  onClick={this.clickdiscard}
-                >
+                <Button color="secondary" onClick={this.clickdiscard}>
                   Cancel
-            </Button>
+                </Button>
               </Col>
             </FormGroup>
           </Form>

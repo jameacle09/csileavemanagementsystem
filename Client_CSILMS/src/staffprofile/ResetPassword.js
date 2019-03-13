@@ -1,7 +1,7 @@
 import React, { Component } from "react";
 import { Button, Form, FormGroup, Label, Input } from "reactstrap";
 import "../common/Styles.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class ResetPassword extends Component {
   constructor(props) {
@@ -64,14 +64,10 @@ class ResetPassword extends Component {
       width: "150px",
       float: "right"
     };
-    const {
-      passwordType,
-      newPassword,
-      confirmPassword
-    } = this.state;
+    const { passwordType } = this.state;
 
-    let show = (<FontAwesomeIcon icon="eye" />);
-    let hide = (<FontAwesomeIcon icon="eye-slash" />);
+    let show = <FontAwesomeIcon icon="eye" />;
+    let hide = <FontAwesomeIcon icon="eye-slash" />;
 
     return (
       <div className="mainContainerFlex">
@@ -86,24 +82,22 @@ class ResetPassword extends Component {
             <FormGroup>
               <Label for="newPassword">New Password</Label>
               <div className="input-group mb-3">
-              <Input
-                style={inputStyle}
-                type={passwordType}
-                name="newPassword"
-                id="newPassword"
-                aria-label="newpassword"
-                aria-describedby="basic-addon2"
-                onChange={this.validatePassword}
-                autoFocus
-                required
-              />
-              <div className="container_password_show input-group-append">
+                <Input
+                  style={inputStyle}
+                  type={passwordType}
+                  name="newPassword"
+                  id="newPassword"
+                  aria-label="newpassword"
+                  aria-describedby="basic-addon2"
+                  onChange={this.validatePassword}
+                  autoFocus
+                  required
+                />
+                <div className="container_password_show input-group-append">
                   <span
                     className="password__show input-group-text"
                     id="basic-addon2"
-                    onClick={event =>
-                      this.showHide(event, "passwordType")
-                    }
+                    onClick={event => this.showHide(event, "passwordType")}
                     color="primary"
                   >
                     {passwordType === "input" ? show : hide}
@@ -114,31 +108,35 @@ class ResetPassword extends Component {
             <FormGroup>
               <Label for="confirmPassword">Confirm Password</Label>
               <div className="input-group mb-3">
-              <Input
-                style={inputStyle}
-                type={passwordType}
-                name="confirmPassword"
-                id="confirmPassword"
-                aria-label="confirmPassword"
-                aria-describedby="basic-addon2"
-                onChange={this.validatePassword}
-                required
-              />
-              <div className="container_password_show input-group-append">
+                <Input
+                  style={inputStyle}
+                  type={passwordType}
+                  name="confirmPassword"
+                  id="confirmPassword"
+                  aria-label="confirmPassword"
+                  aria-describedby="basic-addon2"
+                  onChange={this.validatePassword}
+                  required
+                />
+                <div className="container_password_show input-group-append">
                   <span
                     className="password__show input-group-text"
                     id="basic-addon2"
-                    onClick={event =>
-                      this.showHide(event, "passwordType")
-                    }
+                    onClick={event => this.showHide(event, "passwordType")}
                     color="primary"
                   >
                     {passwordType === "input" ? show : hide}
                   </span>
                 </div>
-                </div>
+              </div>
             </FormGroup>
-            <Button color="primary" style={submitButtonStyle} onSubmit={this.validatePassword}>Save</Button>
+            <Button
+              color="primary"
+              style={submitButtonStyle}
+              onSubmit={this.validatePassword}
+            >
+              Save
+            </Button>
           </Form>
         </div>
       </div>

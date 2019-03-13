@@ -9,7 +9,6 @@ import {
   Col,
   Modal,
   ModalHeader,
-  ModalBody,
   ModalFooter
 } from "reactstrap";
 import { fetchData, formatDateYMD, fetchFile } from "../util/APIUtils";
@@ -93,30 +92,30 @@ class MyLeaveHistoryView extends Component {
   }
 
   getAttachement = () => {
-    if(this.state.attachment != ""){
+    if (this.state.attachment !== "") {
       fetchFile({
         url: API_BASE_URL + "/attachment/files/" + this.state.attachment,
         method: "GET"
       })
-      .then(response => response.blob())
-      .then(blob => {
-        // 2. Create blob link to download
-        const url = window.URL.createObjectURL(new Blob([blob]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', this.state.attachment);
-        // 3. Append to html page
-        document.body.appendChild(link);
-        // 4. Force download
-        link.click();
-        // 5. Clean up and remove the link
-        link.parentNode.removeChild(link);
-      })
-      .catch(err => {
-        alert(err)
-      } )
+        .then(response => response.blob())
+        .then(blob => {
+          // 2. Create blob link to download
+          const url = window.URL.createObjectURL(new Blob([blob]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", this.state.attachment);
+          // 3. Append to html page
+          document.body.appendChild(link);
+          // 4. Force download
+          link.click();
+          // 5. Clean up and remove the link
+          link.parentNode.removeChild(link);
+        })
+        .catch(err => {
+          alert(err);
+        });
     }
-  }
+  };
 
   handleBackToMain = () => {
     this.props.history.push("/myleavehistory");
@@ -157,7 +156,8 @@ class MyLeaveHistoryView extends Component {
       .then(response => {
         if (response.message === "Success") {
           confirmAlert({
-            message: "Leave Application has been successfully updated to Pending Cancel!",
+            message:
+              "Leave Application has been successfully updated to Pending Cancel!",
             buttons: [
               {
                 label: "OK",
@@ -291,33 +291,41 @@ class MyLeaveHistoryView extends Component {
     };
     const showButtonByStatus = leaveStatus => {
       if (leaveStatus === "PNAPV") {
-        return <Button
-        type="button"
-        color="primary"
-        onClick={this.toggleDeleteLeave}
-        className="largeButtonOverride"
-      >
-        Recall
-      </Button> 
-      }
-      else if (leaveStatus === "APPRV") {
-        return <Button
-        type="button"
-        color="primary"
-        onClick={this.toggleCancelLeave}
-        className="largeButtonOverride"
-      >
-        Cancel Leave
-      </Button>
+        return (
+          <Button
+            type="button"
+            color="primary"
+            onClick={this.toggleDeleteLeave}
+            className="largeButtonOverride"
+          >
+            Recall
+          </Button>
+        );
+      } else if (leaveStatus === "APPRV") {
+        return (
+          <Button
+            type="button"
+            color="primary"
+            onClick={this.toggleCancelLeave}
+            className="largeButtonOverride"
+          >
+            Cancel Leave
+          </Button>
+        );
       }
     };
     const showAttachment = attachment => {
-        if(attachment !== "") {
-          return <Button color="link" onClick={this.getAttachement}> {attachment}</Button>
-        } else {
-          return <FormText color="muted"> No attachment uploaded. </FormText>
-        }
-    }
+      if (attachment !== "") {
+        return (
+          <Button color="link" onClick={this.getAttachement}>
+            {" "}
+            {attachment}
+          </Button>
+        );
+      } else {
+        return <FormText color="muted"> No attachment uploaded. </FormText>;
+      }
+    };
 
     return (
       <div className="mainContainerLeavePages">
@@ -432,9 +440,7 @@ class MyLeaveHistoryView extends Component {
               <Label for="attachment" sm={2}>
                 File Attachment:
               </Label>
-              <Col sm={10}>
-                {showAttachment(attachment)}
-              </Col>
+              <Col sm={10}>{showAttachment(attachment)}</Col>
             </FormGroup>
             <FormGroup row>
               <Label for="approver" sm={2}>
@@ -466,7 +472,7 @@ class MyLeaveHistoryView extends Component {
             </FormGroup>
             <FormGroup row>
               <Col sm={{ size: 10, offset: 2 }}>
-              {/* <Button
+                {/* <Button
                   type="button"
                   color="primary"
                   onClick={this.toggleCancelLeave}
@@ -474,7 +480,7 @@ class MyLeaveHistoryView extends Component {
                 >
                   Cancel Leave
                 </Button> */}
-                { showButtonByStatus(leaveStatus) }
+                {showButtonByStatus(leaveStatus)}
                 {/* <Button
                   type="button"
                   color="primary"
@@ -517,7 +523,10 @@ class MyLeaveHistoryView extends Component {
                       >
                         Confirm
                       </Button>
-                      <Button color="secondary" onClick={this.toggleCancelLeave}>
+                      <Button
+                        color="secondary"
+                        onClick={this.toggleCancelLeave}
+                      >
                         Cancel
                       </Button>
                     </ModalFooter>
@@ -547,7 +556,10 @@ class MyLeaveHistoryView extends Component {
                       >
                         Confirm
                       </Button>
-                      <Button color="secondary" onClick={this.toggleDeleteLeave}>
+                      <Button
+                        color="secondary"
+                        onClick={this.toggleDeleteLeave}
+                      >
                         Cancel
                       </Button>
                     </ModalFooter>
