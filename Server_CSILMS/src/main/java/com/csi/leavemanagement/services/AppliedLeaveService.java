@@ -12,6 +12,7 @@ import org.springframework.stereotype.Service;
 import com.csi.leavemanagement.models.AppliedLeave;
 import com.csi.leavemanagement.models.AppliedLeaveId;
 import com.csi.leavemanagement.models.EmployeeDetails;
+import com.csi.leavemanagement.models.LeaveCategory;
 import com.csi.leavemanagement.models.LeaveEntitlement;
 import com.csi.leavemanagement.models.Translateitem;
 import com.csi.leavemanagement.repositories.AppliedLeaveRepository;
@@ -23,16 +24,19 @@ public class AppliedLeaveService {
 	private EmployeeDetailsService employeeDetailsService;
 	private LeaveEntitlementService leaveEntitlementService;
 	private TranslateitemService translateitemService;
+	private LeaveCategoryService leaveCategoryService;
 
 	@Autowired
 	public AppliedLeaveService(AppliedLeaveRepository appliedLeaveRepository,
 			                   EmployeeDetailsService employeeDetailsService,
 			                   LeaveEntitlementService leaveEntitlementService,
-			                   TranslateitemService translateitemService) {
+			                   TranslateitemService translateitemService,
+			                   LeaveCategoryService leaveCategoryService) {
 		this.appliedLeaveRepository = appliedLeaveRepository;
 		this.employeeDetailsService = employeeDetailsService;
 		this.leaveEntitlementService = leaveEntitlementService;
 		this.translateitemService = translateitemService;
+		this.leaveCategoryService = leaveCategoryService;
 	}
 	
 	public List<AppliedLeave> findAll() {
@@ -51,6 +55,11 @@ public class AppliedLeaveService {
 		LeaveEntitlement userLeaveEntitlement = leaveEntitlementService.findById(newAppliedLeave.getId().getEmplid(),
 																				 year, 
 																				 newAppliedLeave.getLeaveCategory().getLeaveCode());
+		if(userLeaveEntitlement == null) {
+			LeaveCategory thisLeaveCategory = this.leaveCategoryService.findById(newAppliedLeave.getLeaveCategory().getLeaveCode());
+			throw new Exception("csilms: You are not entitle for " + thisLeaveCategory.getLeaveDescr() +
+					" in " + year + ". Please contact HR for further clarification.");
+		}
 		
 		if(userLeaveEntitlement.getBalanceLeave() < newAppliedLeave.getLeaveDuration())
 			throw new Exception("csilms: You do not have sufficient leave balance for " + userLeaveEntitlement.getLeaveCategory().getLeaveDescr());

@@ -332,8 +332,6 @@ class ApplyLeave extends Component {
         attachment: this.state.attachedFileName
       };
 
-      console.log(JSON.stringify(newLeaveRequest));
-
       fetchData({
         url: API_BASE_URL + "/appliedleave",
         method: "POST",
