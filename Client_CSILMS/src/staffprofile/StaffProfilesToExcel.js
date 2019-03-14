@@ -1,9 +1,38 @@
 import React, { Component } from "react";
 import ReactHTMLTableToExcel from "react-html-table-to-excel";
-import { formatDateDMY } from "../util/APIUtils";
+import { fetchData, formatDateDMY } from "../util/APIUtils";
+import { API_BASE_URL } from "../constants";
 import "../common/Styles.css";
 
 class ExportToExcel extends Component {
+  constructor(props) {
+    super(props);
+    this.state = {
+      userProfile: []
+    };
+  }
+
+  componentDidMount() {
+    this.loadCurrentUserProfile();
+  }
+
+  loadCurrentUserProfile = () => {
+    fetchData({
+      url: API_BASE_URL + "/persondetail/me",
+      method: "GET"
+    })
+      .then(data => {
+        this.setState({
+          userProfile: data
+        });
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+      });
+  };
+
   render() {
     const borderStyle = {
       border: "1px solid black"
@@ -27,9 +56,15 @@ class ExportToExcel extends Component {
             </tr>
             <tr>
               <th colSpan="17" align="left">
-                Report Extracted on {formatDateDMY(new Date())}
+                Report Extracted On: {formatDateDMY(new Date())}
               </th>
             </tr>
+            <tr>
+              <th colSpan="17" align="left">
+                Report Extracted By: {this.state.userProfile.name}
+              </th>
+            </tr>
+
             <tr>
               <th colSpan="17" />
             </tr>

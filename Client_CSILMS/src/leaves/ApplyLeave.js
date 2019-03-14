@@ -14,6 +14,8 @@ import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import { fetchData } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
+import "../common/Styles.css";
+import MessageBox from "../modal/MessageBox";
 
 class ApplyLeave extends Component {
   constructor(props) {
@@ -51,7 +53,11 @@ class ApplyLeave extends Component {
       leaveReason: "",
       attachedFile: null,
       approverId: "",
-      attachedFileName: ""
+      attachedFileName: "",
+      modalShow: false,
+      msgHeaderText: "",
+      msgBodyText: "",
+      msgButton: ""
     };
     this.handleDateChange = this.handleDateChange.bind(this);
     this.handleDetailsChange = this.handleDetailsChange.bind(this);
@@ -76,8 +82,43 @@ class ApplyLeave extends Component {
   //   this.props.history.push("/");
   // };
 
+  // clickdiscard = () => {
+  //   confirmAlert({
+  //     customUI: (event) => {
+  //       return (
+  //         <div className="confirmAlertBox">
+  //           <h4>Are you sure?</h4>
+  //           <p>You want to cancel this request?</p>
+  //           <Button
+  //             color="primary"
+  //             size="sm"
+  //             onClick={() => {
+  //               this.props.history.push("/");
+  //             }}
+  //           >
+  //             Yes
+  //           </Button>
+  //           <span> </span>
+  //           <Button size="sm" onClick={() => this.}>No</Button>
+  //         </div>
+  //       );
+  //     }
+  //   });
+  // };
+
+  showModal = (msgHeaderText, msgBodyText, msgButton) => {
+    this.setState({
+      ...this.state,
+      modalShow: !this.state.modalShow,
+      msgHeaderText: msgHeaderText,
+      msgBodyText: msgBodyText,
+      msgButton: msgButton
+    });
+  };
+
   clickdiscard = () => {
     confirmAlert({
+      title: "Confirmation",
       message: "Do you want to cancel this request?",
       buttons: [
         {
@@ -435,6 +476,7 @@ class ApplyLeave extends Component {
   }
 
   render() {
+    console.log("STATE", this.state);
     const {
       userData,
       staffLeave,
@@ -649,39 +691,24 @@ class ApplyLeave extends Component {
                   Submit
                 </Button>
                 <span> </span>
-                <Button onClick={this.clickdiscard}>Cancel</Button>
-                {/* <div>
-                  <Modal
-                    isOpen={this.state.modalSave}
-                    toggle={this.toggleSave}
-                    className={this.props.className}
-                    style={{
-                      width: "360px",
-                      height: "300px",
-                      margin: "220px auto"
-                    }}
-                  >
-                    <ModalHeader>Submit Confirmation</ModalHeader>
-                    <ModalBody>
-                      Are you sure you want to submit this request?
-                    </ModalBody>
-                    <ModalFooter>
-                      <Button
-                        type="submit"
-                        color="primary"
-                        onClick={this.handleSubmit}
-                        className="largeButtonOverride"
-                      >
-                        Confirm
-                      </Button>
-                      <Button color="secondary" onClick={this.toggleSave}>
-                        Cancel
-                      </Button>
-                    </ModalFooter>
-                  </Modal>
-                </div> */}
+                {/* <Button onClick={this.clickdiscard}>Cancel</Button> */}
+                <Button
+                  onClick={() =>
+                    this.showModal("Cancel Confirm", "Are you sure?", "YesNo")
+                  }
+                >
+                  Cancel
+                </Button>
               </Col>
             </FormGroup>
+            <MessageBox
+              onWindowClose={() => this.showModal()}
+              onExecute={() => this.props.history.push("/")}
+              show={this.state.modalShow}
+              {...this.state}
+            >
+              Search New Employee
+            </MessageBox>
           </Form>
         </div>
       </div>
