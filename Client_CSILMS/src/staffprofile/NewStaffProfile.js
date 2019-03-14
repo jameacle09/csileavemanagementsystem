@@ -495,7 +495,7 @@ class NewStaffProfile extends Component {
                 >
                   <option value="">Select Gender</option>
                   {this.state.translateItemList.map(item => {
-                    if (item.id.fieldname === "gender") {
+                    if (item.id.fieldname === "gender" && item.effStatus === "A") {
                       return (
 
                         <option key={item.id.fieldvalue} value={item.id.fieldvalue}>
@@ -521,7 +521,7 @@ class NewStaffProfile extends Component {
                 >
                   <option value="">Select Marital Status</option>
                   {this.state.translateItemList.map(item => {
-                    if (item.id.fieldname === "marriage_status") {
+                    if (item.id.fieldname === "marriage_status"  && item.effStatus === "A") {
                       return (
                         <option key={item.id.fieldvalue} value={item.id.fieldvalue}>
                           {item.xlatlongname}
@@ -589,7 +589,7 @@ class NewStaffProfile extends Component {
                 >
                   <option key="" value="">Select Job Title</option>
                   {this.state.translateItemList.map(item => {
-                    if (item.id.fieldname === "job_title") {
+                    if (item.id.fieldname === "job_title" && item.effStatus === "A") {
                       return (
                         <option key={item.id.fieldvalue} value={item.id.fieldvalue}>
                           {item.xlatlongname}
@@ -627,7 +627,7 @@ class NewStaffProfile extends Component {
                 >
                   <option key="" value="">Select Business Unit</option>
                   {this.state.translateItemList.map(item => {
-                    if (item.id.fieldname === "business_unit") {
+                    if (item.id.fieldname === "business_unit"  && item.effStatus === "A") {
                       return (
                         <option key={item.id.fieldvalue} value={item.id.fieldvalue}>
                           {item.xlatlongname}
@@ -651,7 +651,7 @@ class NewStaffProfile extends Component {
                 >
                   <option key="" value="">Select Department</option>
                   {this.state.translateItemList.map(item => {
-                    if (item.id.fieldname === "dept_id") {
+                    if (item.id.fieldname === "dept_id"  && item.effStatus === "A") {
                       return (
                         <option key={item.id.fieldvalue} value={item.id.fieldvalue}>
                           {item.xlatlongname}
