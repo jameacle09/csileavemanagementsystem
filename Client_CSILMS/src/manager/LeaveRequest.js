@@ -10,7 +10,6 @@ import {
   CustomInput,
   Modal,
   ModalHeader,
-  ModalBody,
   ModalFooter
 } from "reactstrap";
 import { withRouter } from "react-router-dom";
@@ -39,7 +38,9 @@ class LeaveRequest extends Component {
     this.toggleApprove = this.toggleApprove.bind(this);
     this.toggleReject = this.toggleReject.bind(this);
     this.updateAppliedLeaveStatus = this.updateAppliedLeaveStatus.bind(this);
-    this.updateAppliedLeaveStatusCancel = this.updateAppliedLeaveStatusCancel.bind(this);
+    this.updateAppliedLeaveStatusCancel = this.updateAppliedLeaveStatusCancel.bind(
+      this
+    );
   }
 
   toggleApprove = () => {
@@ -188,7 +189,7 @@ class LeaveRequest extends Component {
         APPRV means cancellation request is rejected
     */
     if (leaveStatus === "CANCL") {
-      this.toggleApprove();    
+      this.toggleApprove();
     } else if (leaveStatus === "APPRV") {
       this.toggleReject();
     } else {
@@ -250,30 +251,30 @@ class LeaveRequest extends Component {
   };
 
   getAttachement = () => {
-    if(this.state.attachment != ""){
+    if (this.state.attachment !== "") {
       fetchFile({
         url: API_BASE_URL + "/attachment/files/" + this.state.attachment,
         method: "GET"
       })
-      .then(response => response.blob())
-      .then(blob => {
-        // 2. Create blob link to download
-        const url = window.URL.createObjectURL(new Blob([blob]));
-        const link = document.createElement('a');
-        link.href = url;
-        link.setAttribute('download', this.state.attachment);
-        // 3. Append to html page
-        document.body.appendChild(link);
-        // 4. Force download
-        link.click();
-        // 5. Clean up and remove the link
-        link.parentNode.removeChild(link);
-      })
-      .catch(err => {
-        alert(err)
-      } )
+        .then(response => response.blob())
+        .then(blob => {
+          // 2. Create blob link to download
+          const url = window.URL.createObjectURL(new Blob([blob]));
+          const link = document.createElement("a");
+          link.href = url;
+          link.setAttribute("download", this.state.attachment);
+          // 3. Append to html page
+          document.body.appendChild(link);
+          // 4. Force download
+          link.click();
+          // 5. Clean up and remove the link
+          link.parentNode.removeChild(link);
+        })
+        .catch(err => {
+          alert(err);
+        });
     }
-  }
+  };
 
   render() {
     const {
@@ -325,141 +326,152 @@ class LeaveRequest extends Component {
 
     const showModalApproveByStatus = leaveStatus => {
       if (leaveStatus === "PNAPV") {
-        return <Modal
-          isOpen={this.state.modalApprove}
-          toggle={this.toggleApprove}
-          className={this.props.className}
-          style={{
-            width: "360px",
-            height: "300px",
-            margin: "220px auto"
-          }}
-        > <ModalHeader>Approval Confirmation</ModalHeader>
-          {/* <ModalBody>
+        return (
+          <Modal
+            isOpen={this.state.modalApprove}
+            toggle={this.toggleApprove}
+            className={this.props.className}
+            style={{
+              width: "360px",
+              height: "300px",
+              margin: "220px auto"
+            }}
+          >
+            {" "}
+            <ModalHeader>Approval Confirmation</ModalHeader>
+            {/* <ModalBody>
             Are you sure you want to Approve this Leave Request?
         </ModalBody> */}
-          <ModalFooter>
-            <Button
-              type="submit"
-              color="primary"
-              onClick={event =>
-                this.updateAppliedLeaveStatus(event, "APPRV")
-              }
-              className="largeButtonOverride"
-            >
-              Confirm
-          </Button>
-            <Button color="secondary" onClick={this.toggleApprove}>
-              Cancel
-          </Button>
-          </ModalFooter>
-        </Modal>
-      }
-      else if (leaveStatus === "PNCLD") {
-        return <Modal
-          isOpen={this.state.modalApprove}
-          toggle={this.toggleApprove}
-          className={this.props.className}
-          style={{
-            width: "360px",
-            height: "300px",
-            margin: "220px auto"
-          }}
-        > <ModalHeader>Approval Confirmation</ModalHeader>
-          {/* <ModalBody>
+            <ModalFooter>
+              <Button
+                type="submit"
+                color="primary"
+                onClick={event => this.updateAppliedLeaveStatus(event, "APPRV")}
+                className="largeButtonOverride"
+              >
+                Confirm
+              </Button>
+              <Button color="secondary" onClick={this.toggleApprove}>
+                Cancel
+              </Button>
+            </ModalFooter>
+          </Modal>
+        );
+      } else if (leaveStatus === "PNCLD") {
+        return (
+          <Modal
+            isOpen={this.state.modalApprove}
+            toggle={this.toggleApprove}
+            className={this.props.className}
+            style={{
+              width: "360px",
+              height: "300px",
+              margin: "220px auto"
+            }}
+          >
+            {" "}
+            <ModalHeader>Approval Confirmation</ModalHeader>
+            {/* <ModalBody>
             Are you sure you want to change the status of this Leave Request to Cancel?
         </ModalBody> */}
-          <ModalFooter>
-            <Button
-              type="submit"
-              color="primary"
-              onClick={event =>
-                this.updateAppliedLeaveStatusCancel(event, "CANCL")
-              }
-              className="largeButtonOverride"
-            >
-              Confirm
-          </Button>
-            <Button color="secondary" onClick={this.toggleApprove}>
-              Cancel
-          </Button>
-          </ModalFooter>
-        </Modal>
+            <ModalFooter>
+              <Button
+                type="submit"
+                color="primary"
+                onClick={event =>
+                  this.updateAppliedLeaveStatusCancel(event, "CANCL")
+                }
+                className="largeButtonOverride"
+              >
+                Confirm
+              </Button>
+              <Button color="secondary" onClick={this.toggleApprove}>
+                Cancel
+              </Button>
+            </ModalFooter>
+          </Modal>
+        );
       }
     };
 
     const showModalRejectByStatus = leaveStatus => {
       if (leaveStatus === "PNAPV") {
-        return <Modal
-          isOpen={this.state.modalReject}
-          toggle={this.toggleReject}
-          className={this.props.className}
-          style={{
-            width: "360px",
-            height: "300px",
-            margin: "220px auto"
-          }}
-        >
-          <ModalHeader>Reject Confirmation</ModalHeader>
-          {/* <ModalBody>
+        return (
+          <Modal
+            isOpen={this.state.modalReject}
+            toggle={this.toggleReject}
+            className={this.props.className}
+            style={{
+              width: "360px",
+              height: "300px",
+              margin: "220px auto"
+            }}
+          >
+            <ModalHeader>Reject Confirmation</ModalHeader>
+            {/* <ModalBody>
             Are you sure you want to Reject this Leave Request?
         </ModalBody> */}
-          <ModalFooter>
-            <Button
-              type="submit"
-              color="danger"
-              onClick={event =>
-                this.updateAppliedLeaveStatus(event, "REJCT")
-              }
-            >
-              Confirm
-          </Button>
-            <Button color="secondary" onClick={this.toggleReject}>
-              Cancel
-          </Button>
-          </ModalFooter>
-        </Modal>
-      }
-      else if (leaveStatus === "PNCLD") {
-        return <Modal
-          isOpen={this.state.modalReject}
-          toggle={this.toggleReject}
-          className={this.props.className}
-          style={{
-            width: "360px",
-            height: "300px",
-            margin: "220px auto"
-          }}
-        >
-          <ModalHeader>Reject Confirmation</ModalHeader>
-          {/* <ModalBody>
+            <ModalFooter>
+              <Button
+                type="submit"
+                color="danger"
+                onClick={event => this.updateAppliedLeaveStatus(event, "REJCT")}
+              >
+                Confirm
+              </Button>
+              <Button color="secondary" onClick={this.toggleReject}>
+                Cancel
+              </Button>
+            </ModalFooter>
+          </Modal>
+        );
+      } else if (leaveStatus === "PNCLD") {
+        return (
+          <Modal
+            isOpen={this.state.modalReject}
+            toggle={this.toggleReject}
+            className={this.props.className}
+            style={{
+              width: "360px",
+              height: "300px",
+              margin: "220px auto"
+            }}
+          >
+            <ModalHeader>Reject Confirmation</ModalHeader>
+            {/* <ModalBody>
             Are you sure you want to Reject this Pending Cancel Request?
         </ModalBody> */}
-          <ModalFooter>
-            <Button
-              type="submit"
-              color="danger"
-              onClick={event =>
-                this.updateAppliedLeaveStatusCancel(event, "APPRV")
-              }
-            >
-              Confirm
-          </Button>
-            <Button color="secondary" onClick={this.toggleReject}>
-              Cancel
-          </Button>
-          </ModalFooter>
-        </Modal>
+            <ModalFooter>
+              <Button
+                type="submit"
+                color="danger"
+                onClick={event =>
+                  this.updateAppliedLeaveStatusCancel(event, "APPRV")
+                }
+              >
+                Confirm
+              </Button>
+              <Button color="secondary" onClick={this.toggleReject}>
+                Cancel
+              </Button>
+            </ModalFooter>
+          </Modal>
+        );
       }
     };
 
     const showAttachment = attachment => {
-      if(attachment !== "") {
-        return <Button color="link" onClick={this.getAttachement}> {attachment}</Button>
+      if (attachment !== "") {
+        return (
+          <Button color="link" onClick={this.getAttachement}>
+            {" "}
+            {attachment}
+          </Button>
+        );
       } else {
-        return <FormText color="muted"> No attachment uploaded. </FormText>
+        return <FormText color="muted"> No attachment uploaded. </FormText>;
       }
-    }
+    };
 
     return (
       <div className="mainContainerLeavePages">
@@ -588,9 +600,7 @@ class LeaveRequest extends Component {
               <Label for="attachment" sm={2}>
                 File Attachment:
               </Label>
-              <Col sm={10}>
-                {showAttachment(attachment)}
-              </Col>
+              <Col sm={10}>{showAttachment(attachment)}</Col>
             </FormGroup>
             <FormGroup row>
               <Label for="leaveStatus" sm={2}>

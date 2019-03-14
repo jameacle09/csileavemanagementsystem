@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Row, Col, Button } from "reactstrap";
+import { Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
 import { Redirect, withRouter } from "react-router-dom";
@@ -11,44 +11,25 @@ import "react-table/react-table.css";
 import ExportToExcel from "./StaffProfilesToExcel";
 
 class ListStaffProfile extends Component {
+  _isMounted = false;
+
   constructor(props) {
     super(props);
     this.state = {
       employeeProfiles: [],
+      filteredProfiles: [],
+      filteredLength: 0,
       loading: true
     };
-  }
-  _isMounted = false;
-
-  loadEmployeeDetails = () => {
-    fetchData({
-      url: API_BASE_URL + "/employeedetails",
-      method: "GET"
-    })
-      .then(data => {
-        this.setState({
-          employeeProfiles: data,
-          loading: false
-        });
-      })
-      .catch(error => {
-        if (error.status === 401) {
-          this.props.history.push("/login");
-        }
-        this.setState({
-          employeeProfiles: [],
-          loading: false
-        });
-      });
-  };
-
-  componentDidMount() {
-    this._isMounted = true;
-    this.loadEmployeeDetails();
   }
 
   componentWillMount() {
     this._isMounted = false;
+  }
+
+  componentDidMount() {
+    this._isMounted = true;
+    this.loadEmployeeDetails();
   }
 
   componentDidUpdate(nextProps) {
@@ -56,6 +37,48 @@ class ListStaffProfile extends Component {
       this.loadEmployeeDetails();
     }
   }
+
+  loadEmployeeDetails = () => {
+    fetchData({
+      url: API_BASE_URL + "/employeedetails",
+      method: "GET"
+    })
+      .then(data => {
+        if (this._isMounted) {
+          this.setState({
+            employeeProfiles: data
+          });
+          this.populateFilteredProfiles();
+        }
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+        if (this._isMounted) {
+          this.setState({
+            employeeProfiles: [],
+            filteredProfiles: [],
+            filteredLength: 0,
+            loading: false
+          });
+        }
+      });
+  };
+
+  populateFilteredProfiles = () => {
+    // This will initialize values for the State Filtered Profiles
+    let arrFilteredProfiles = this.state.employeeProfiles;
+    arrFilteredProfiles.forEach(empRow => {
+      empRow["LineMgrID"] = empRow.reportsTo.emplId;
+      empRow["LineMgrName"] = empRow.reportsTo.name;
+    });
+    this.setState({
+      filteredProfiles: arrFilteredProfiles,
+      filteredLength: arrFilteredProfiles.length,
+      loading: false
+    });
+  };
 
   render() {
     if (!isHrRole(this.props.currentUser)) {
@@ -95,15 +118,6 @@ class ListStaffProfile extends Component {
         sortable: true,
         filterable: true
       },
-      // {
-      //   id: "nricPassport",
-      //   Header: () => (
-      //     <span className="tableHeaderStyle">NRIC/Passport No.</span>
-      //   ),
-      //   accessor: "nricPassport",
-      //   sortable: true,
-      //   filterable: true
-      // },
       {
         id: "jobTitle",
         Header: "Job Title",
@@ -138,7 +152,7 @@ class ListStaffProfile extends Component {
         }
       },
       {
-        id: "reportsTo",
+        id: "LineMgrName",
         Header: "Line Manager",
         accessor: "reportsTo.name",
         minWidth: 180,
@@ -146,7 +160,7 @@ class ListStaffProfile extends Component {
         filterable: true
       },
       {
-        id: "joinDate",
+        id: "DateJoined",
         Header: "Join Date",
         accessor: d => formatDateDMY(d.joinDate),
         minWidth: 100,
@@ -166,6 +180,66 @@ class ListStaffProfile extends Component {
         style: {
           textAlign: "center"
         }
+      },
+      {
+        id: "joinDate",
+        Header: "Join Date",
+        accessor: "joinDate",
+        show: false
+      },
+      {
+        id: "deptId",
+        Header: "Dept ID",
+        accessor: "deptId",
+        show: false
+      },
+      {
+        id: "gender",
+        Header: "Gender",
+        accessor: "gender",
+        show: false
+      },
+      {
+        id: "marriageCount",
+        Header: "MarriageCount",
+        accessor: "marriageCount",
+        show: false
+      },
+      {
+        id: "marriageStatus",
+        Header: "MarriageStatus",
+        accessor: "marriageStatus",
+        show: false
+      },
+      {
+        id: "marriageDate",
+        Header: "MarriageDate",
+        accessor: "marriageDate",
+        show: false
+      },
+      {
+        id: "nricPassport",
+        Header: "NRIC/Passport No.",
+        accessor: "nricPassport",
+        show: false
+      },
+      {
+        id: "reportDottedLine",
+        Header: "ReportDottedLine",
+        accessor: "reportDottedLine",
+        show: false
+      },
+      {
+        id: "totalChildren",
+        Header: "TotalChildren",
+        accessor: "totalChildren",
+        show: false
+      },
+      {
+        id: "LineMgrID",
+        Header: "Line Manager ID",
+        accessor: "reportsTo.emplId",
+        show: false
       },
       {
         id: "Action",
@@ -189,7 +263,6 @@ class ListStaffProfile extends Component {
         }
       }
     ];
-
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -200,12 +273,20 @@ class ListStaffProfile extends Component {
         <div className="reactTableContainer">
           <div className="mainListBtnContainer">
             <div className="SubListBtnLeftContainer">
-              <ExportToExcel employeeProfiles={this.state.employeeProfiles}>
+              <Button
+                variant="contained"
+                color="primary"
+                className="largeButtonOverride"
+                onClick={() =>
+                  document.getElementById("test-table-xls-button").click()
+                }
+              >
                 <span
-                  className="fa fa-file-excel"
+                  className="fa fa-file-excel-o"
                   style={{ margin: "0px 5px 0px 0px" }}
                 />
-              </ExportToExcel>
+                Export List to Excel
+              </Button>
             </div>
             <div className="SubListBtnRightContainer">
               <div>
@@ -242,8 +323,10 @@ class ListStaffProfile extends Component {
             </div>
           </div>
           <ReactTable
+            // key={this.state.filteredLength}
             data={this.state.employeeProfiles}
             columns={EmplProfileCols}
+            pageSizeOptions={[10, 20, 30, 50, 100, this.state.filteredLength]}
             defaultPageSize={10}
             pages={this.state.pages}
             loading={this.state.loading}
@@ -253,7 +336,23 @@ class ListStaffProfile extends Component {
             loadingText="Loading Employee Profiles..."
             noDataText="No data available."
             className="-striped"
+            showPagination={true}
+            showPageSizeOptions={true}
+            ref={refer => {
+              this.selectTable = refer;
+            }}
+            onFilteredChange={() => {
+              const filteredData = this.selectTable.getResolvedState()
+                .sortedData;
+              const filteredDataLength = this.selectTable.getResolvedState()
+                .sortedData.length;
+              this.setState({
+                filteredProfiles: filteredData,
+                filteredLength: filteredDataLength
+              });
+            }}
           />
+          <ExportToExcel employeeProfiles={this.state.filteredProfiles} />
         </div>
       </div>
     );

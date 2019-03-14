@@ -59,7 +59,7 @@ class PageHeader extends Component {
       <div className="pageHeaderBox">
         <div className="pageHeaderToggleBox">
           <button
-            class="sideBarToggleButton"
+            className="sideBarToggleButton"
             onClick={event => this.toggleSideBarMenu(event)}
           >
             ☰

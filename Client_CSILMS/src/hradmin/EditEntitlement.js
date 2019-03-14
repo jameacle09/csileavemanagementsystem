@@ -8,7 +8,6 @@ import {
   Col,
   Modal,
   ModalHeader,
-  ModalBody,
   ModalFooter
 } from "reactstrap";
 import { Redirect, withRouter } from "react-router-dom";
@@ -82,10 +81,8 @@ class EditEntitlement extends Component {
     event.preventDefault();
     const {
       emplId,
-      name,
       year,
       leaveCode,
-      leaveDescr,
       carryForward,
       entitlement,
       availableLeave,

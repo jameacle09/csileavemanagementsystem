@@ -44,7 +44,7 @@ const requestFileUnparsed = options => {
   options = Object.assign({}, defaults, options);
 
   return fetch(options.url, options).then(response => response);
-}
+};
 
 export function getCurrentUser() {
   if (!localStorage.getItem(ACCESS_TOKEN)) {
@@ -120,6 +120,7 @@ export function isManagerRole(props) {
 
 export function formatDateDMY(strDate) {
   // Returns DD/MM/YYYY Date Format
+  if (!strDate) return;
   var date = new Date(strDate),
     month = "" + (date.getMonth() + 1),
     day = "" + date.getDate(),
@@ -133,6 +134,7 @@ export function formatDateDMY(strDate) {
 
 export function formatDateYMD(strDate) {
   // Returns YYYY-MM-DD Date Format
+  if (!strDate) return;
   var date = new Date(strDate),
     month = "" + (date.getMonth() + 1),
     day = "" + date.getDate(),

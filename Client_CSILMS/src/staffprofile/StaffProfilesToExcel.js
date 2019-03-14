@@ -8,7 +8,6 @@ class ExportToExcel extends Component {
     const borderStyle = {
       border: "1px solid black"
     };
-
     return (
       <div>
         <ReactHTMLTableToExcel
@@ -22,17 +21,17 @@ class ExportToExcel extends Component {
         <table hidden={true} id="table-to-xls">
           <thead>
             <tr>
-              <th colspan="17" style={{ fontSize: "28px", textAlign: "left" }}>
+              <th colSpan="17" style={{ fontSize: "28px", textAlign: "left" }}>
                 Employee Profiles List
               </th>
             </tr>
             <tr>
-              <th colspan="17" align="left">
+              <th colSpan="17" align="left">
                 Report Extracted on {formatDateDMY(new Date())}
               </th>
             </tr>
             <tr>
-              <th colspan="17" />
+              <th colSpan="17" />
             </tr>
             <tr>
               <th style={borderStyle}>Employee ID</th>
@@ -92,9 +91,9 @@ class ExportToExcel extends Component {
                     {empProfile.deptId}
                   </td>
                   <td align="center" style={borderStyle}>
-                    {empProfile.reportsTo.emplId}
+                    {empProfile.LineMgrID}
                   </td>
-                  <td style={borderStyle}>{empProfile.reportsTo.name}</td>
+                  <td style={borderStyle}>{empProfile.LineMgrName}</td>
                   <td align="center" style={borderStyle}>
                     {formatDateDMY(empProfile.joinDate)}
                   </td>

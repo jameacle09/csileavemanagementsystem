@@ -182,6 +182,7 @@ class UploadEntitlement extends Component {
     arrEntitlementData.map(entRow => {
       if (entRow.EmployeeID) entRow.EmployeeID = entRow.EmployeeID.trim();
       if (entRow.LeaveType) entRow.LeaveType = entRow.LeaveType.trim();
+      return true;
     });
 
     // Column Values Validations on each Row
@@ -212,9 +213,9 @@ class UploadEntitlement extends Component {
       ) {
         entRow.ValidateStatus = "Leave Type value does not exist.";
       } else if (
-        entRow.EmployeeID != "" &&
+        entRow.EmployeeID !== "" &&
         typeof entRow.LeaveYear === "number" &&
-        entRow.LeaveType != "" &&
+        entRow.LeaveType !== "" &&
         arrEntitlementDataLookup.filter(
           dupRow =>
             dupRow.EmployeeID === entRow.EmployeeID &&
@@ -224,9 +225,9 @@ class UploadEntitlement extends Component {
       ) {
         entRow.ValidateStatus = "This row has duplicate entry.";
       } else if (
-        entRow.EmployeeID != "" &&
+        entRow.EmployeeID !== "" &&
         typeof entRow.LeaveYear === "number" &&
-        entRow.LeaveType != "" &&
+        entRow.LeaveType !== "" &&
         arrLeaveEntitlementsData.some(ent => {
           return (
             ent.id.emplid === entRow.EmployeeID &&
@@ -286,6 +287,7 @@ class UploadEntitlement extends Component {
       ) {
         entRow.ValidateStatus = "Balance Leave cannot be blank.";
       }
+      return true;
     });
 
     let arrErrEntitlementData = arrEntitlementData.filter(
@@ -414,6 +416,7 @@ class UploadEntitlement extends Component {
             });
           }
         });
+      return true;
     });
     // this.props.history.push("/leaveentitlement");
     this.handleReset();

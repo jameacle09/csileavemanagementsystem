@@ -104,7 +104,7 @@ class HomePage extends Component {
 
     // let userData = this.state.userData;
     // let pendingApproval = this.state.pendingApproval;
-    if (pendingApproval == 0) {
+    if (pendingApproval === 0) {
       return (
         <div>
           <Jumbotron style={divStyle}>

@@ -22,7 +22,7 @@ class TranslateitemToExcel extends Component {
           sheet="Translateitem"
           buttonText="Export List to Excel"
         />
-        <table hidden="true" id="table-to-xls">
+        <table hidden={true} id="table-to-xls">
           <thead>
             <tr>
               <th>Field Name</th>

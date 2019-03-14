@@ -12,11 +12,7 @@ class Dashboard extends Component {
   render() {
     return (
       <div className="containerDashboard">
-        <NavLink
-          to="/applyleave"
-          title="Apply Leave"
-          activeClassName="sidebarLinkActive"
-        >
+        <NavLink to="/applyleave" title="Apply Leave">
           <div className="thumbNail_DashboardMenu">
             <img
               src={ApplyLeave}
@@ -26,11 +22,7 @@ class Dashboard extends Component {
             <div className="thumbNail_DashboardLabel">Apply Leave</div>
           </div>
         </NavLink>
-        <NavLink
-          to="/myleavehistory"
-          title="View Leave History"
-          activeClassName="sidebarLinkActive"
-        >
+        <NavLink to="/myleavehistory" title="View Leave History">
           <div className="thumbNail_DashboardMenu">
             <img
               src={MyLeaveHistory}
@@ -40,11 +32,7 @@ class Dashboard extends Component {
             <div className="thumbNail_DashboardLabel">My Leave History</div>
           </div>
         </NavLink>
-        <NavLink
-          to="/myleavedetails"
-          title="View Leave Details"
-          activeClassName="sidebarLinkActive"
-        >
+        <NavLink to="/myleavedetails" title="View Leave Details">
           <div className="thumbNail_DashboardMenu">
             <img
               src={MyLeaveDetails}
@@ -54,11 +42,7 @@ class Dashboard extends Component {
             <div className="thumbNail_DashboardLabel">My Leave Details</div>
           </div>
         </NavLink>
-        <NavLink
-          to="/myprofile"
-          title="View Profile"
-          activeClassName="sidebarLinkActive"
-        >
+        <NavLink to="/myprofile" title="View Profile">
           <div className="thumbNail_DashboardMenu">
             <img
               src={MyProfile}
@@ -69,24 +53,8 @@ class Dashboard extends Component {
           </div>
         </NavLink>
         <NavLink
-          to="/leaverequests"
-          title="Manager Approval"
-          activeClassName="sidebarLinkActive"
-          style={displayByRole(this.props.currentUser, "MANAGER")}
-        >
-          <div className="thumbNail_DashboardMenu">
-            <img
-              src={ManagerApproval}
-              alt="Manager Approval"
-              className="thumbNail_DashboardImage"
-            />
-            <div className="thumbNail_DashboardLabel">Manager Approval</div>
-          </div>
-        </NavLink>
-        <NavLink
           to="/liststaffprofile"
           title="HR Dashboard"
-          activeClassName="sidebarLinkActive"
           style={displayByRole(this.props.currentUser, "HR")}
         >
           <div className="thumbNail_DashboardMenu">
@@ -96,6 +64,20 @@ class Dashboard extends Component {
               className="thumbNail_DashboardImage"
             />
             <div className="thumbNail_DashboardLabel">HR Dashboard</div>
+          </div>
+        </NavLink>
+        <NavLink
+          to="/leaverequests"
+          title="Manager Approval"
+          style={displayByRole(this.props.currentUser, "MANAGER")}
+        >
+          <div className="thumbNail_DashboardMenu">
+            <img
+              src={ManagerApproval}
+              alt="Manager Approval"
+              className="thumbNail_DashboardImage"
+            />
+            <div className="thumbNail_DashboardLabel">Manager Approval</div>
           </div>
         </NavLink>
       </div>
