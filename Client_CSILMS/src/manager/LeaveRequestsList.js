@@ -8,6 +8,7 @@ import {
   formatDateDMY
 } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
+import { confirmAlert } from "react-confirm-alert";
 import "../common/Styles.css";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
@@ -17,6 +18,7 @@ class LeaveRequestsList extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      leaveStatusLookup: [],
       leaveRequestData: [],
       loading: true
     };
@@ -27,6 +29,7 @@ class LeaveRequestsList extends Component {
 
   componentDidMount() {
     this.loadLeaveRequestList();
+    this.loadLeaveStatusLookup();
   }
 
   componentDidUpdate(nextProps) {
@@ -50,6 +53,29 @@ class LeaveRequestsList extends Component {
         console.log(err);
       });
   }
+
+  loadLeaveStatusLookup = () => {
+    fetchData({
+      url: API_BASE_URL + "/translateitem/leave_status",
+      method: "GET"
+    })
+      .then(data => this.setState({ leaveStatusLookup: data })
+      )
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
 
   render() {
     if (!isManagerRole(this.props.currentUser)) {
@@ -147,7 +173,7 @@ class LeaveRequestsList extends Component {
       {
         id: "leaveStatus",
         Header: "Leave Status",
-        accessor: str => showFullStatus(str.leaveStatus),
+        accessor: str => getLeaveStatusDesc(str.leaveStatus),
         minWidth: 150,
         sortable: true,
         filterable: true
@@ -181,18 +207,29 @@ class LeaveRequestsList extends Component {
       }
     ];
 
-    const showFullStatus = strStatus => {
-      if (strStatus === "PNAPV") {
-        return "Pending Approve";
-      } else if (strStatus === "APPRV") {
-        return "Approved";
-      } else if (strStatus === "CANCL") {
-        return "Cancelled";
-      } else if (strStatus === "PNCLD") {
-        return "Pending Cancel";
-      } else if (strStatus === "REJCT") {
-        return "Rejected";
-      }
+    // const showFullStatus = strStatus => {
+    //   if (strStatus === "PNAPV") {
+    //     return "Pending Approve";
+    //   } else if (strStatus === "APPRV") {
+    //     return "Approved";
+    //   } else if (strStatus === "CANCL") {
+    //     return "Cancelled";
+    //   } else if (strStatus === "PNCLD") {
+    //     return "Pending Cancel";
+    //   } else if (strStatus === "REJCT") {
+    //     return "Rejected";
+    //   }
+    // };
+
+    const getLeaveStatusDesc = (strLeaveStatus) => {
+      let arrLeaveStatusLookup = this.state.leaveStatusLookup;
+      let leaveDesc = "";
+      arrLeaveStatusLookup.forEach(leaveStat => {
+        if (leaveStat.id.fieldvalue === strLeaveStatus) {
+          return leaveDesc = leaveStat.xlatlongname;
+        }
+      });
+      return leaveDesc;
     };
 
     return (

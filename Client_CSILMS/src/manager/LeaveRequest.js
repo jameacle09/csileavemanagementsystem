@@ -33,7 +33,8 @@ class LeaveRequest extends Component {
       leaveStatus: "",
       attachment: "",
       modalApprove: false,
-      modalReject: false
+      modalReject: false,      
+      leaveStatusLookup: []
     };
     this.toggleApprove = this.toggleApprove.bind(this);
     this.toggleReject = this.toggleReject.bind(this);
@@ -55,7 +56,8 @@ class LeaveRequest extends Component {
     }));
   };
 
-  componentDidMount() {
+  componentDidMount() {    
+    this.loadLeaveStatusLookup();
     const {
       emplId,
       effDate,
@@ -276,6 +278,29 @@ class LeaveRequest extends Component {
     }
   };
 
+  loadLeaveStatusLookup = () => {
+    fetchData({
+      url: API_BASE_URL + "/translateitem/leave_status",
+      method: "GET"
+    })
+      .then(data => this.setState({ leaveStatusLookup: data })
+      )
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
+
   render() {
     const {
       emplId,
@@ -308,20 +333,31 @@ class LeaveRequest extends Component {
     //   </button>
     // );
 
-    const showFullStatus = strStatus => {
-      if (strStatus === "PNAPV") {
-        return "Pending Approve";
-      } else if (strStatus === "APPRV") {
-        return "Approved";
-      } else if (strStatus === "CANCL") {
-        return "Cancelled";
-      } else if (strStatus === "PNCLD") {
-        return "Pending Cancel";
-      } else if (strStatus === "REJCT") {
-        return "Rejected";
-      } else {
-        return "";
-      }
+    // const showFullStatus = strStatus => {
+    //   if (strStatus === "PNAPV") {
+    //     return "Pending Approve";
+    //   } else if (strStatus === "APPRV") {
+    //     return "Approved";
+    //   } else if (strStatus === "CANCL") {
+    //     return "Cancelled";
+    //   } else if (strStatus === "PNCLD") {
+    //     return "Pending Cancel";
+    //   } else if (strStatus === "REJCT") {
+    //     return "Rejected";
+    //   } else {
+    //     return "";
+    //   }
+    // };
+
+    const getLeaveStatusDesc = (strLeaveStatus) => {
+      let arrLeaveStatusLookup = this.state.leaveStatusLookup;
+      let leaveDesc = "";
+      arrLeaveStatusLookup.forEach(leaveStat => {
+        if (leaveStat.id.fieldvalue === strLeaveStatus) {
+          return leaveDesc = leaveStat.xlatlongname;
+        }
+      });
+      return leaveDesc;
     };
 
     const showModalApproveByStatus = leaveStatus => {
@@ -611,7 +647,7 @@ class LeaveRequest extends Component {
                   type="text"
                   name="leaveStatus"
                   id="leaveStatus"
-                  value={showFullStatus(leaveStatus)}
+                  value={getLeaveStatusDesc(leaveStatus)}
                   disabled={true}
                 />
               </Col>

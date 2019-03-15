@@ -6,6 +6,7 @@ import { Redirect, withRouter } from "react-router-dom";
 import { isHrRole } from "../util/APIUtils";
 import { fetchData, formatDateDMY } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
+import { confirmAlert } from "react-confirm-alert";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import ExportToExcel from "./StaffProfilesToExcel";
@@ -16,6 +17,7 @@ class ListStaffProfile extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      statusLookup: [],
       employeeProfiles: [],
       filteredProfiles: [],
       filteredLength: 0,
@@ -30,6 +32,7 @@ class ListStaffProfile extends Component {
   componentDidMount() {
     this._isMounted = true;
     this.loadEmployeeDetails();
+    this.loadStatusLookup();
   }
 
   componentDidUpdate(nextProps) {
@@ -80,18 +83,52 @@ class ListStaffProfile extends Component {
     });
   };
 
+  loadStatusLookup = () => {
+    fetchData({
+      url: API_BASE_URL + "/translateitem/status",
+      method: "GET"
+    })
+      .then(data => this.setState({ statusLookup: data })
+      )
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
+
   render() {
     if (!isHrRole(this.props.currentUser)) {
       return <Redirect to="/forbidden" />;
     }
 
-    const showStatusDesc = strStatus => {
-      if (strStatus === "A") {
-        return "Active";
-      } else {
-        return "Inactive";
-      }
-    };
+    // const showStatusDesc = strStatus => {
+    //   if (strStatus === "A") {
+    //     return "Active";
+    //   } else {
+    //     return "Inactive";
+    //   }
+    // };
+
+    const getStatusDesc = (strStatus) => {
+      let arrStatusDescLookup = this.state.statusLookup;
+      let stsDesc = "";
+      arrStatusDescLookup.forEach(statusDesc => {
+        if (statusDesc.id.fieldvalue === strStatus) {
+          return stsDesc = statusDesc.xlatlongname;
+        }
+      });
+      return stsDesc;
+    }
 
     const EmplProfileCols = [
       {
@@ -173,7 +210,7 @@ class ListStaffProfile extends Component {
       {
         id: "status",
         Header: "Status",
-        accessor: str => showStatusDesc(str.status),
+        accessor: str => getStatusDesc(str.status),
         minWidth: 80,
         sortable: true,
         filterable: true,

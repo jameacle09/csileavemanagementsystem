@@ -1,5 +1,6 @@
 import React, { Component } from "react";
 import { API_BASE_URL } from "../constants";
+import { confirmAlert } from "react-confirm-alert";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import { fetchData, formatDateYMD, formatDateDMY } from "../util/APIUtils";
@@ -11,6 +12,7 @@ class MyLeaveHistory extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      leaveStatusLookup: [],
       userData: []
     };
     this.loadMyLeaveHistory = this.loadMyLeaveHistory.bind(this);
@@ -38,6 +40,7 @@ class MyLeaveHistory extends Component {
 
   componentDidMount() {
     this.loadMyLeaveHistory();
+    this.loadLeaveStatusLookup();
   }
 
   componentDidUpdate(nextProps) {
@@ -46,20 +49,55 @@ class MyLeaveHistory extends Component {
     }
   }
 
+  loadLeaveStatusLookup = () => {
+    fetchData({
+      url: API_BASE_URL + "/translateitem/leave_status",
+      method: "GET"
+    })
+      .then(data => this.setState({ leaveStatusLookup: data })
+      )
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
+
   render() {
-    const showFullString = strStatus => {
-      if (strStatus === "PNAPV") {
-        return "Pending Approve";
-      } else if (strStatus === "APPRV") {
-        return "Approved";
-      } else if (strStatus === "CANCL") {
-        return "Cancelled";
-      } else if (strStatus === "PNCLD") {
-        return "Pending Cancel";
-      } else if (strStatus === "REJCT") {
-        return "Rejected";
-      }
+    // const showFullString = strStatus => {
+    //   if (strStatus === "PNAPV") {
+    //     return "Pending Approve";
+    //   } else if (strStatus === "APPRV") {
+    //     return "Approved";
+    //   } else if (strStatus === "CANCL") {
+    //     return "Cancelled";
+    //   } else if (strStatus === "PNCLD") {
+    //     return "Pending Cancel";
+    //   } else if (strStatus === "REJCT") {
+    //     return "Rejected";
+    //   }
+    // };
+
+    const getLeaveStatusDesc = (strLeaveStatus) => {
+      let arrLeaveStatusLookup = this.state.leaveStatusLookup;
+      let leaveDesc = "";
+      arrLeaveStatusLookup.forEach(leaveStat => {
+        if (leaveStat.id.fieldvalue === strLeaveStatus) {
+          return leaveDesc = leaveStat.xlatlongname;
+        }
+      });
+      return leaveDesc;
     };
+    
     const myLeaveHistoryCols = [
       {
         id: "startDate",
@@ -124,7 +162,7 @@ class MyLeaveHistory extends Component {
       {
         id: "leaveStatus",
         Header: "Status",
-        accessor: d => showFullString(d.leaveStatus),
+        accessor: d => getLeaveStatusDesc(d.leaveStatus),
         minWidth: 120,
         sortable: true,
         filterable: true
