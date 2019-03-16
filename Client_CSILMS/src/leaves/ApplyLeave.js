@@ -1,3 +1,5 @@
+// yung Halfday at submit the leave
+
 import React, { Component } from "react";
 import {
   Button,
@@ -9,326 +11,144 @@ import {
   Col,
   Alert
 } from "reactstrap";
-import moment from "moment";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
-import { fetchData } from "../util/APIUtils";
+import {
+  fetchData,
+  formatDateDMY,
+  getWeekDay,
+  formatDateYMD
+} from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import "../common/Styles.css";
-import MessageBox from "../modal/MessageBox";
 
 class ApplyLeave extends Component {
   constructor(props) {
     super(props);
-
-    let initialDate = new Date();
-    initialDate.setUTCHours(0, 0, 0, 0);
-
     this.state = {
-      userData: {
-        emplId: "",
-        name: "",
-        reportsTo: null
-      },
-      staffLeave: {
-        availableLeave: ""
-      },
-      leaveCategoryList: [
-        {
-          leaveCode: "",
-          leaveDescr: ""
-        }
-      ],
-      approverList: [
-        {
-          emplId: "",
-          name: ""
-        }
-      ],
-      startDate: initialDate,
-      endDate: initialDate,
+      annualLeave: 0,
+      balanceLeave: 0,
+      leaveEntitlementsLookup: [],
+      approversLookup: [],
+      emplId: "",
+      name: "",
+      year: new Date().getFullYear(),
+      leaveCategory: "AL",
+      startDate: formatDateYMD(new Date()),
+      endDate: formatDateYMD(new Date()),
       isHalfDay: false,
       leaveDuration: 1,
-      leaveCategory: "",
       leaveReason: "",
       attachedFile: null,
       approverId: "",
       attachedFileName: "",
-      modalShow: false,
-      msgHeaderText: "",
-      msgBodyText: "",
-      msgButton: ""
+      publicHolidaysLookup: []
     };
-    this.handleDateChange = this.handleDateChange.bind(this);
-    this.handleDetailsChange = this.handleDetailsChange.bind(this);
-    this.handleSubmit = this.handleSubmit.bind(this);
-    this.doNotSubmit = this.doNotSubmit.bind(this);
     this.uploadFile = this.uploadFile.bind(this);
   }
 
-  // toggleSave = () => {
-  //   this.setState(prevState => ({
-  //     modalSave: !prevState.modalSave
-  //   }));
-  // };
-
-  // toggleCancel = () => {
-  //   this.setState(prevState => ({
-  //     modalCancel: !prevState.modalCancel
-  //   }));
-  // };
-
-  // handleCancel = () => {
-  //   this.props.history.push("/");
-  // };
-
-  // clickdiscard = () => {
-  //   confirmAlert({
-  //     customUI: (event) => {
-  //       return (
-  //         <div className="confirmAlertBox">
-  //           <h4>Are you sure?</h4>
-  //           <p>You want to cancel this request?</p>
-  //           <Button
-  //             color="primary"
-  //             size="sm"
-  //             onClick={() => {
-  //               this.props.history.push("/");
-  //             }}
-  //           >
-  //             Yes
-  //           </Button>
-  //           <span> </span>
-  //           <Button size="sm" onClick={() => this.}>No</Button>
-  //         </div>
-  //       );
-  //     }
-  //   });
-  // };
-
-  showModal = (msgHeaderText, msgBodyText, msgButton) => {
-    this.setState({
-      ...this.state,
-      modalShow: !this.state.modalShow,
-      msgHeaderText: msgHeaderText,
-      msgBodyText: msgBodyText,
-      msgButton: msgButton
-    });
-  };
-
-  clickdiscard = () => {
-    confirmAlert({
-      title: "Confirmation",
-      message: "Do you want to cancel this request?",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => this.props.history.push("/")
-        },
-        {
-          label: "No"
-        }
-      ]
-    });
-  };
-
   componentDidMount() {
-    // fetch CSI Staff ID and Name from API
+    this.loadCurrentUserData();
+    this.loadCurrentUserALEntitlement();
+    this.loadLeaveApproversLookup();
+    this.loadPublicHolidaysLookup();
+  }
+
+  loadCurrentUserData = () => {
     fetchData({
       url: API_BASE_URL + "/employeedetail/me",
       method: "GET"
     })
       .then(data => {
-        this.setState({ userData: data });
-        if (data["reportsTo"] != null)
-          this.setState({ approverId: data["reportsTo"]["emplId"] });
+        this.setState(
+          {
+            userData: data,
+            emplId: data.emplId,
+            name: data.name,
+            approverId: data.reportsTo.emplId
+          },
+          () => this.loadCurrentUserEntitlements()
+        );
       })
-      .catch(err => {
-        // if unable to fetch data, assign default (spaces) to values
-        let userData = {
-          emplId: "",
-          name: "",
-          reportsTo: null
-        };
-        this.setState({ userData: userData });
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
       });
+  };
 
-    // fetch leave category from API
+  loadCurrentUserEntitlements = () => {
+    var currDate = new Date();
     fetchData({
-      url: API_BASE_URL + "/leavecategories",
+      url:
+        API_BASE_URL +
+        "/leaveentitlement/" +
+        this.state.emplId +
+        "/" +
+        currDate.getFullYear(),
       method: "GET"
     })
       .then(data =>
         this.setState({
-          leaveCategoryList: data,
-          leaveCategory: data[0]["leaveCode"]
+          leaveEntitlementsLookup: data,
+          year: currDate.getFullYear()
         })
       )
-      .catch(err => {
-        console.log(err);
-        // if unable to fetch data, assign default (spaces) to values
-        let leaveCategoryData = [
-          {
-            leaveCode: "",
-            leaveDescr: ""
-          }
-        ];
-        this.setState({ leaveCategoryList: leaveCategoryData });
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
       });
+  };
 
-    // fetch leave balance from API
+  loadCurrentUserALEntitlement = () => {
     const thisYear = new Date().getFullYear();
     fetchData({
       url: API_BASE_URL + "/leaveentitlement/me/" + thisYear + "/AL",
       method: "GET"
     })
-      .then(data => this.setState({ staffLeave: data }))
-      .catch(err => {
-        // if unable to fetch data, assign default (spaces) to values
-        let staffLeaveData = {
-          availableLeave: ""
-        };
-        this.setState({ staffLeave: staffLeaveData });
+      .then(data =>
+        this.setState({
+          annualLeave: data.balanceLeave,
+          balanceLeave: data.balanceLeave
+        })
+      )
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
       });
+  };
 
-    // fetch approvers from API
+  loadLeaveApproversLookup = () => {
     fetchData({
       url: API_BASE_URL + "/leaveapprovers",
       method: "GET"
     })
-      .then(data => this.setState({ approverList: data }))
-      .catch(err => {
-        // if unable to fetch data, assign default (spaces) to values
-        let approverListData = [
-          {
-            emplId: "",
-            name: ""
-          }
-        ];
-        this.setState({ approverList: approverListData });
+      .then(data => this.setState({ approversLookup: data }))
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
       });
-  }
+  };
 
-  // this method process changes on all 3 date related fields
-  handleDateChange(event) {
-    const fieldName = event.target.name;
-    const startDateStr = this.state.startDate.toISOString().substr(0, 10);
-    const endDateStr = this.state.endDate.toISOString().substr(0, 10);
-
-    switch (fieldName) {
-      case "startDate":
-        const checkDate1 = moment(new Date(event.target.value));
-        if (checkDate1.isValid() === false) return; // do nothing if date is not valid
-
-        let newStartDate = new Date(event.target.value);
-        let newStartDateStr = newStartDate.toISOString().substr(0, 10);
-
-        // only process if date actually changed
-        if (newStartDateStr !== startDateStr) {
-          // if new end date and start date are same date
-          if (newStartDateStr === endDateStr) {
-            this.setState({
-              startDate: newStartDate
-            });
-          } else if (newStartDateStr < endDateStr) {
-            this.setState({
-              startDate: newStartDate,
-              isHalfDay: false
-            });
-          } else {
-            this.setState({
-              startDate: newStartDate,
-              endDate: newStartDate,
-              isHalfDay: false
-            });
-          }
+  loadPublicHolidaysLookup = () => {
+    fetchData({
+      url: API_BASE_URL + "/publicholidays",
+      method: "GET"
+    })
+      .then(data =>
+        this.setState({
+          publicHolidaysLookup: data
+        })
+      )
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
         }
-        break;
-
-      case "endDate":
-        const checkDate2 = moment(new Date(event.target.value));
-        if (checkDate2.isValid() === false) return; // do nothing if date is not valid
-
-        let newEndDate = new Date(event.target.value);
-        let newEndDateStr = newEndDate.toISOString().substr(0, 10);
-
-        // only process if date actually changed
-        if (newEndDateStr !== endDateStr) {
-          // if new end date and start date are same date
-          if (newEndDateStr === startDateStr) {
-            this.setState({
-              endDate: newEndDate
-            });
-          } else if (newEndDateStr > startDateStr) {
-            this.setState({
-              endDate: newEndDate,
-              isHalfDay: false
-            });
-          } else {
-            // If End Date is smaller than Start Date, reset Start Date to End Date
-            this.setState({
-              startDate: newEndDate,
-              endDate: newEndDate,
-              isHalfDay: false
-            });
-          }
-        }
-        break;
-
-      case "isHalfDay":
-        if (startDateStr === endDateStr) {
-          let newIsHalfDay = !this.state.isHalfDay;
-          this.setState({
-            isHalfDay: newIsHalfDay,
-            leaveDuration: newIsHalfDay ? 0.5 : 1
-          });
-        }
-        break;
-
-      case "leaveDuration":
-        this.setState({ leaveDuration: event.target.value });
-        break;
-
-      default:
-        break;
-    }
-  }
-
-  // this method process changes on non-date related fields
-  handleDetailsChange(event) {
-    switch (event.target.name) {
-      case "leaveCategory":
-        this.setState({ leaveCategory: event.target.value });
-        break;
-      case "leaveReason":
-        this.setState({ leaveReason: event.target.value });
-        break;
-      case "attachment":
-        if (event.target.files[0].size > 5242880) {
-          confirmAlert({
-            message:
-              "Unable to upload file. This file exceeded the limit of 5MB",
-            buttons: [
-              {
-                label: "Ok"
-              }
-            ]
-          });
-          event.target.value = null;
-        } else this.setState({ attachedFile: event.target.files[0] });
-        break;
-      case "approverId":
-        this.setState({ approverId: event.target.value });
-        break;
-      default:
-        break;
-    }
-  }
-
-  // Do not submit form, unless user clicked on submit button
-  doNotSubmit(event) {
-    event.preventDefault();
-  }
+      });
+  };
 
   // create JSON object with form data, and call API
   async handleSubmit(event) {
@@ -336,8 +156,8 @@ class ApplyLeave extends Component {
     let validForm = true;
 
     // validate form data
-    let durationError = this.validateLeaveDuration(this.state.leaveDuration);
-    if (durationError !== "") validForm = false;
+    // let durationError = this.validateLeaveDuration(this.state.leaveDuration);
+    // if (durationError !== "") validForm = false;
 
     if (validForm) {
       // upload file to server
@@ -349,13 +169,13 @@ class ApplyLeave extends Component {
       // create JSON Object for new Leave Request
       let newLeaveRequest = {
         id: {
-          emplid: this.state.userData["emplId"],
-          effDate: new Date(),
+          emplid: this.state.emplId,
+          effDate: formatDateYMD(new Date()),
           startDate: this.state.startDate,
           leaveCode: this.state.leaveCategory
         },
         employeeDetails: {
-          emplId: this.state.userData["emplId"]
+          emplId: this.state.emplId
         },
         leaveCategory: {
           leaveCode: this.state.leaveCategory
@@ -369,7 +189,7 @@ class ApplyLeave extends Component {
         approverDate: null,
         attachment: this.state.attachedFileName
       };
-
+      console.log(newLeaveRequest);
       fetchData({
         url: API_BASE_URL + "/appliedleave",
         method: "POST",
@@ -437,60 +257,230 @@ class ApplyLeave extends Component {
       });
   }
 
-  validateLeaveDuration(newLeaveDuration) {
-    // Validate if input is a number
-    if (isNaN(newLeaveDuration)) {
-      return <Alert color="danger">Invalid number</Alert>;
+  handleChange = event => {
+    const { name, value } = event.target;
+    let varDate = "";
+    switch (name) {
+      case "leaveCategory":
+        this.setState({ [name]: value }, () => this.processLeaveDuration());
+        break;
+      case "startDate":
+        varDate = new Date(value);
+        if (varDate.getFullYear() !== this.state.year) {
+          confirmAlert({
+            message:
+              "Start Date must be within Calendar Year of " +
+              this.state.year +
+              "!",
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        } else if (value > this.state.endDate) {
+          this.setState({ [name]: value, endDate: value }, () =>
+            this.processLeaveDuration()
+          );
+        } else if (value < this.state.endDate) {
+          this.setState({ [name]: value, isHalfDay: false }, () =>
+            this.processLeaveDuration()
+          );
+        } else {
+          this.setState({ [name]: value }, () => this.processLeaveDuration());
+        }
+        break;
+      case "endDate":
+        varDate = new Date(value);
+        if (varDate.getFullYear() !== this.state.year) {
+          confirmAlert({
+            message:
+              "End Date must be within Calendar Year of " +
+              this.state.year +
+              "!",
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        } else if (this.state.startDate > value) {
+          this.setState({ [name]: value, startDate: value }, () =>
+            this.processLeaveDuration()
+          );
+        } else if (this.state.startDate < value) {
+          this.setState({ [name]: value, isHalfDay: false }, () =>
+            this.processLeaveDuration()
+          );
+        } else {
+          this.setState({ [name]: value }, () => this.processLeaveDuration());
+        }
+        break;
+      case "isHalfDay":
+        this.setState({ isHalfDay: !this.state.isHalfDay }, () =>
+          this.processLeaveDuration()
+        );
+        break;
+      case "attachment":
+        if (event.target.files[0].size > 5242880) {
+          confirmAlert({
+            message:
+              "Unable to upload file. This file exceeded the limit of 5MB",
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+          event.target.value = null;
+        } else {
+          this.setState({
+            attachedFile: event.target.files[0]
+          });
+        }
+        break;
+      default:
+        this.setState({ [name]: value });
+        break;
     }
+  };
 
-    // Validate if input exceedes maximum duration
-    const milliseconds = 86400000;
-    const dayDiff =
-      Math.ceil((this.state.endDate - this.state.startDate) / milliseconds) + 1;
-
-    if (newLeaveDuration > dayDiff) {
-      return (
-        <Alert color="danger">
-          Duration exceeds maximum duration between Start Date and End Date
-        </Alert>
+  processLeaveDuration = () => {
+    const { leaveCategory, startDate, endDate, isHalfDay } = this.state;
+    let arrPublicHolidaysLookup = this.state.publicHolidaysLookup;
+    let arrleaveEntitlementsLookup = this.state.leaveEntitlementsLookup;
+    let arrDateOfLeaves = [],
+      currLeaveDate = "",
+      nextLeaveDate = "",
+      duration = 0;
+    var x = 366;
+    currLeaveDate = new Date(startDate);
+    nextLeaveDate = formatDateYMD(
+      currLeaveDate.setDate(currLeaveDate.getDate())
+    );
+    for (let i = 0; i <= x; i++) {
+      if (nextLeaveDate <= endDate) {
+        if (
+          getWeekDay(nextLeaveDate) !== "Sunday" &&
+          getWeekDay(nextLeaveDate) !== "Saturday" &&
+          !arrPublicHolidaysLookup.find(
+            holiday => formatDateYMD(holiday.holidayDate) === nextLeaveDate
+          )
+        )
+          arrDateOfLeaves.push(nextLeaveDate);
+        currLeaveDate = new Date(nextLeaveDate);
+      } else {
+        i = 367;
+      }
+      nextLeaveDate = formatDateYMD(
+        currLeaveDate.setDate(currLeaveDate.getDate() + 1)
       );
     }
-
-    // Validate if input is integer, if start date and end date are different
-    const startDateStr = this.state.startDate.toISOString().substr(0, 10);
-    const endDateStr = this.state.endDate.toISOString().substr(0, 10);
-
-    if (
-      startDateStr !== endDateStr &&
-      !Number.isInteger(Number(newLeaveDuration))
-    ) {
-      return (
-        <Alert color="danger">Please apply half day leave separately</Alert>
-      );
+    duration = arrDateOfLeaves.length;
+    if (duration === 1 && isHalfDay) {
+      this.setState({
+        leaveDuration: 0.5
+      });
+    } else {
+      this.setState({
+        leaveDuration: duration
+      });
     }
 
-    // If pass all validation, return empty string
-    return "";
-  }
+    if (leaveCategory) {
+      if (duration === 0) {
+        confirmAlert({
+          message: "Leave Duration shouldn't be zero!",
+          buttons: [
+            {
+              label: "OK"
+            }
+          ]
+        });
+      } else {
+        let leaveEnt = arrleaveEntitlementsLookup.find(
+          entitlement => entitlement.id.leaveCode === leaveCategory
+        );
+        this.setState({
+          balanceLeave: leaveEnt.balanceLeave
+        });
+        if (leaveEnt.balanceLeave < duration) {
+          confirmAlert({
+            message:
+              "Leave Duration shouldn't be higher than your Leave Balance!",
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      }
+    }
+  };
+
+  validateFields = () => {
+    const {
+      emplId,
+      leaveCategory,
+      year,
+      balanceLeave,
+      startDate,
+      endDate,
+      leaveDuration,
+      leaveReason,
+      approverId
+    } = this.state;
+
+    let varStartDate = new Date(startDate),
+      varEndDate = new Date(endDate);
+
+    const isInvalid =
+      !emplId ||
+      !leaveCategory ||
+      !startDate ||
+      varStartDate.getFullYear() !== year ||
+      !endDate ||
+      varEndDate.getFullYear() !== year ||
+      leaveDuration === 0 ||
+      leaveDuration > balanceLeave ||
+      !leaveReason ||
+      !approverId;
+    return isInvalid;
+  };
+
+  handleCancel = () => {
+    confirmAlert({
+      message: "Cancel this leave application?",
+      buttons: [
+        {
+          label: "Yes",
+          onClick: () => this.props.history.push("/")
+        },
+        {
+          label: "No"
+        }
+      ]
+    });
+  };
 
   render() {
     console.log("STATE", this.state);
     const {
-      userData,
-      staffLeave,
-      leaveCategoryList,
-      approverList,
+      balanceLeave,
+      emplId,
+      name,
+      leaveCategory,
       startDate,
       endDate,
       isHalfDay,
       leaveDuration,
-      leaveCategory,
+      leaveEntitlementsLookup,
+      approversLookup,
       // leaveReason,
       // attachedFile,
       approverId
     } = this.state;
-
-    let durationErrorMsg = this.validateLeaveDuration(leaveDuration);
 
     return (
       <div className="mainContainerFlex ">
@@ -499,60 +489,67 @@ class ApplyLeave extends Component {
             <h3 className="headerStyle">Apply Leave</h3>
           </span>
         </div>
+        {/* <div className="tableContainerFlex">
+          <h5>Annual Leave Balance: {balanceLeave} Days</h5>
+        </div> */}
         <div className="tableContainerFlex">
-          <h5>Annual Leave Balance: {staffLeave["balanceLeave"]} Days</h5>
-        </div>
-        <div className="tableContainerFlex">
-          <Form onSubmit={this.doNotSubmit}>
+          {/* <Form onSubmit={this.doNotSubmit}> */}
+          <Form>
             <FormGroup row>
-              <Label for="csiStaffId" sm={2}>
+              <Label for="emplId" sm={2}>
                 Employee ID:
               </Label>
               <Col sm={10}>
                 <Input
                   type="text"
-                  name="csiStaffId"
-                  id="csiStaffId"
-                  value={userData["emplId"]}
+                  name="emplId"
+                  id="emplId"
+                  value={emplId}
                   disabled={true}
                 />
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="staffName" sm={2}>
+              <Label for="name" sm={2}>
                 Employee Name:
               </Label>
               <Col sm={10}>
                 <Input
                   type="text"
-                  name="staffName"
-                  id="staffName"
-                  value={userData["name"]}
+                  name="name"
+                  id="name"
+                  value={name}
                   disabled={true}
                 />
               </Col>
             </FormGroup>
             <FormGroup row>
               <Label for="leaveCategory" sm={2}>
-                Leave Category:
+                Leave Type:
               </Label>
               <Col sm={10}>
                 <Input
                   type="select"
                   name="leaveCategory"
                   id="leaveCategory"
-                  onChange={this.handleDetailsChange}
+                  onChange={this.handleChange}
                   value={leaveCategory}
                 >
-                  {leaveCategoryList.map(leaveCategory => {
+                  <option key="" value="">
+                    --- Select Leave Type ---
+                  </option>
+                  {leaveEntitlementsLookup.map(leaveEnt => {
+                    // if (leaveEnt.balanceLeave > 0) {
                     return (
                       <option
-                        key={leaveCategory["leaveCode"]}
-                        value={leaveCategory["leaveCode"]}
+                        key={leaveEnt.leaveCategory.leaveCode}
+                        value={leaveEnt.leaveCategory.leaveCode}
                       >
-                        {leaveCategory["leaveDescr"]}
+                        {leaveEnt.leaveCategory.leaveDescr} (
+                        {leaveEnt.balanceLeave} days)
                       </option>
                     );
+                    // }
                   })}
                 </Input>
               </Col>
@@ -566,8 +563,10 @@ class ApplyLeave extends Component {
                   type="date"
                   name="startDate"
                   id="startDate"
-                  value={startDate.toISOString().substr(0, 10)}
-                  onChange={this.handleDateChange}
+                  value={formatDateYMD(startDate)}
+                  onChange={this.handleChange}
+                  // value={startDate.toISOString().substr(0, 10)}
+                  // onChange={this.handleDateChange}
                 />
               </Col>
             </FormGroup>
@@ -580,8 +579,10 @@ class ApplyLeave extends Component {
                   type="date"
                   name="endDate"
                   id="endDate"
-                  value={endDate.toISOString().substr(0, 10)}
-                  onChange={this.handleDateChange}
+                  value={formatDateYMD(endDate)}
+                  onChange={this.handleChange}
+                  // value={endDate.toISOString().substr(0, 10)}
+                  // onChange={this.handleDateChange}
                 />
               </Col>
             </FormGroup>
@@ -591,16 +592,22 @@ class ApplyLeave extends Component {
                 &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
                 <Input
                   type="checkbox"
-                  name="isHalfDay"
                   id="isHalfDay"
+                  name="isHalfDay"
                   disabled={
-                    startDate.toISOString().substr(0, 10) ===
-                    endDate.toISOString().substr(0, 10)
+                    formatDateYMD(startDate) === formatDateYMD(endDate)
                       ? false
                       : true
                   }
-                  onChange={this.handleDateChange}
                   checked={isHalfDay}
+                  onChange={this.handleChange}
+                  // disabled={
+                  //   startDate.toISOString().substr(0, 10) ===
+                  //   endDate.toISOString().substr(0, 10)
+                  //     ? false
+                  //     : true
+                  // }
+                  // onChange={this.handleDateChange}
                 />{" "}
                 Check the box if you are taking half day leave.
               </Col>
@@ -616,11 +623,15 @@ class ApplyLeave extends Component {
                   id="leaveDuration"
                   value={leaveDuration}
                   placeholder="Days"
-                  onChange={this.handleDateChange}
-                  required
+                  disabled={true}
+                  // onChange={this.handleDateChange}
+                  // required
                 />
               </Col>
-              <Col sm={8}>{durationErrorMsg}</Col>
+              <Label sm={8} align="left">
+                day(s)
+              </Label>
+              {/* <Col sm={8}>{durationErrorMsg}</Col> */}
             </FormGroup>
             <FormGroup row>
               <Label for="leaveReason" sm={2}>
@@ -631,7 +642,8 @@ class ApplyLeave extends Component {
                   type="textarea"
                   name="leaveReason"
                   id="leaveReason"
-                  onChange={this.handleDetailsChange}
+                  // onChange={this.handleDetailsChange}
+                  onChange={this.handleChange}
                 />
               </Col>
             </FormGroup>
@@ -644,7 +656,7 @@ class ApplyLeave extends Component {
                   type="file"
                   name="attachment"
                   id="attachment"
-                  onChange={this.handleDetailsChange}
+                  onChange={this.handleChange}
                 />
                 <FormText color="muted">
                   Please attach your document (maximum file size is 5 MB).
@@ -660,17 +672,15 @@ class ApplyLeave extends Component {
                   type="select"
                   name="approverId"
                   id="approverId"
-                  onChange={this.handleDetailsChange}
+                  // onChange={this.handleDetailsChange}
+                  onChange={this.handleChange}
                   value={approverId}
                 >
-                  {approverList.map(approver => {
-                    if (approver["emplId"] !== userData["emplId"]) {
+                  {approversLookup.map(approver => {
+                    if (approver.emplId !== emplId) {
                       return (
-                        <option
-                          key={approver["emplId"]}
-                          value={approver["emplId"]}
-                        >
-                          {approver["name"]}
+                        <option key={approver.emplId} value={approver.emplId}>
+                          {approver.name} ({approver.emplId})
                         </option>
                       );
                     }
@@ -683,30 +693,16 @@ class ApplyLeave extends Component {
               <Col sm={{ size: 10, offset: 2 }}>
                 <Button
                   color="primary"
-                  style={{ backgroundColor: "#3F51B5", color: "white" }}
+                  className="largeButtonOverride"
                   onClick={this.handleSubmit}
+                  disabled={this.validateFields()}
                 >
                   Submit
                 </Button>
                 <span> </span>
-                {/* <Button onClick={this.clickdiscard}>Cancel</Button> */}
-                <Button
-                  onClick={() =>
-                    this.showModal("Cancel Confirm", "Are you sure?", "YesNo")
-                  }
-                >
-                  Cancel
-                </Button>
+                <Button onClick={this.handleCancel}>Cancel</Button>
               </Col>
             </FormGroup>
-            <MessageBox
-              onWindowClose={() => this.showModal()}
-              onExecute={() => this.props.history.push("/")}
-              show={this.state.modalShow}
-              {...this.state}
-            >
-              Search New Employee
-            </MessageBox>
           </Form>
         </div>
       </div>

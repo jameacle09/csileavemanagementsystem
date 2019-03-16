@@ -3,7 +3,7 @@ import { Button, Modal, ModalHeader, ModalBody, ModalFooter } from "reactstrap";
 import "./Modal.css";
 
 class MessageBox extends React.Component {
-  onWindowClose = e => {
+  onClose = e => {
     this.props.onClose && this.props.onClose(e);
   };
   render() {
@@ -28,7 +28,6 @@ class MessageBox extends React.Component {
         <ModalBody>{this.props.msgBodyText}</ModalBody>
         <ModalFooter>
           {(() => {
-            console.log("Hey", this.props.msgButton);
             if (this.props.msgButton === "YesNo") {
               return (
                 <React.Fragment>
@@ -42,7 +41,7 @@ class MessageBox extends React.Component {
                   </Button>
                   <Button
                     color="secondary"
-                    onClick={() => this.props.onWindowClose()}
+                    onClick={() => this.props.onClose()}
                   >
                     No
                   </Button>
@@ -50,10 +49,7 @@ class MessageBox extends React.Component {
               );
             } else if (this.props.msgButton === "OK") {
               return (
-                <Button
-                  color="primary"
-                  onClick={() => this.props.onWindowClose()}
-                >
+                <Button color="primary" onClick={() => this.props.onClose()}>
                   OK
                 </Button>
               );
