@@ -1,8 +1,13 @@
 package com.csi.leavemanagement.controllers;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -11,6 +16,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.csi.leavemanagement.models.EmployeeDetails;
@@ -54,6 +60,42 @@ public class EmployeeDetailsController {
     @PreAuthorize("hasAuthority('HR')")
 	public List<EmployeeDetails> doGetEmployeeWithoutLogin() {
 		return this.employeeDetailsService.findEmplidWithoutLogin();
+	}
+	
+	@GetMapping("/searchemployee")
+	public ResponseEntity<?> doFindEmployee(@RequestParam(value="businessunit", required=false) String businessUnit,
+											 @RequestParam(value="deptid", required=false) String deptId,
+										 	 @RequestParam(value="marriagestatus", required=false) String marriageStatus,
+											 @RequestParam(value="gender", required=false) String gender) {
+		Map<String, String> responseEntityMessage = new HashMap<String, String> ();
+		List<EmployeeDetails> matchingEmployees;
+		if(businessUnit != null)
+			matchingEmployees = this.employeeDetailsService.findByBusinessUnit(businessUnit);
+		else if(deptId != null)
+			matchingEmployees = this.employeeDetailsService.findByDeptId(deptId);
+		else if(marriageStatus != null)
+			matchingEmployees = this.employeeDetailsService.findByMarriageStatus(marriageStatus);
+		else if(gender != null)
+			matchingEmployees = this.employeeDetailsService.findByGender(gender);
+		else {
+			responseEntityMessage.put("message", "Search parameter is empty or invalid");
+			return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.BAD_REQUEST);
+		}
+		
+		if(matchingEmployees == null || matchingEmployees.size() == 0) {
+			responseEntityMessage.put("matchingEmployees", "");
+			responseEntityMessage.put("message","No matching employee");
+			return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.NO_CONTENT);
+		}
+		
+		String matchingEmployeesMsg = "";
+		for(EmployeeDetails employee : matchingEmployees) {
+			matchingEmployeesMsg += employee.getName() + " (" + employee.getEmplId() + ");";
+		}
+		
+		responseEntityMessage.put("matchingEmployees", matchingEmployeesMsg);
+		responseEntityMessage.put("message","Success");
+		return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/employeedetails/{mgrId}/reportee", method=RequestMethod.GET)

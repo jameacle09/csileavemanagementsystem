@@ -20,4 +20,10 @@ public interface EmployeeDetailsRepository extends JpaRepository<EmployeeDetails
 	List<EmployeeDetails> findByEmplIdNotIn(List<String> emplId);
 	
 	Optional<EmployeeDetails> findByBusinessEmail(String businessEmail);
+	
+	List<EmployeeDetails> findByBusinessUnit(String businessUnit);
+	List<EmployeeDetails> findByDeptId(String deptId);
+	List<EmployeeDetails> findByMarriageStatus(String marriageStatus);
+	List<EmployeeDetails> findByGender(String gender);
+	
 }
