@@ -29,6 +29,7 @@ class MyLeaveHistoryView extends Component {
       leaveDuration: "1 day(s)",
       leaveReason: "",
       approver: "",
+      approverName: "",
       leaveStatus: "",
       attachment: "",
       approvedDate: ""
@@ -72,7 +73,6 @@ class MyLeaveHistoryView extends Component {
       method: "GET"
     })
       .then(data => {
-        console.log("Fetched Data", data);
         this.setState({
           emplId: data.id.emplid,
           name: data.employeeDetails.name,
@@ -85,11 +85,30 @@ class MyLeaveHistoryView extends Component {
           leaveStatus: data.leaveStatus,
           attachment: data.attachment
         });
+        this.getApproverName(data.approver);
       })
       .catch(err => {
         console.log(err);
       });
   }
+
+  getApproverName = approverId => {
+    fetchData({
+      url: API_BASE_URL + "/employeedetails/" + approverId,
+      method: "GET"
+    })
+      .then(data => {
+        console.log(data);
+        this.setState({
+          approverName: data.name + " (" + approverId + ")"
+        });
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+      });
+  };
 
   getAttachement = () => {
     if (this.state.attachment !== "") {
@@ -263,6 +282,7 @@ class MyLeaveHistoryView extends Component {
   };
 
   render() {
+    console.log("STATE", this.state);
     const {
       emplId,
       name,
@@ -271,7 +291,7 @@ class MyLeaveHistoryView extends Component {
       endDate,
       leaveDuration,
       leaveReason,
-      approver,
+      approverName,
       leaveStatus,
       attachment
     } = this.state;
@@ -444,14 +464,21 @@ class MyLeaveHistoryView extends Component {
             </FormGroup>
             <FormGroup row>
               <Label for="approver" sm={2}>
-                Approver ID:
+                Approver Name:
               </Label>
               <Col sm={10}>
-                <Input
+                {/* <Input
                   type="text"
                   name="approver"
                   id="approver"
                   value={approver}
+                  disabled={true}
+                /> */}
+                <Input
+                  type="text"
+                  name="approverName"
+                  id="approverName"
+                  value={approverName}
                   disabled={true}
                 />
               </Col>

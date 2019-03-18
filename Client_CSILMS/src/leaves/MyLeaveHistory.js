@@ -186,6 +186,11 @@ class MyLeaveHistory extends Component {
           <ReactTable
             data={this.state.userData}
             columns={myLeaveHistoryCols}
+            defaultFilterMethod={(filter, row) =>
+              String(row[filter.id])
+                .toLowerCase()
+                .includes(filter.value.toLowerCase())
+            }
             defaultPageSize={10}
             pages={this.state.pages}
             loading={this.state.loading}

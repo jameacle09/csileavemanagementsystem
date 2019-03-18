@@ -435,7 +435,10 @@ class UploadHoliday extends Component {
                   />
                   <FormText color="muted" style={{ fontFamily: "Helvetica" }}>
                     Please download the latest{" "}
-                    <a href={ExcelUploadTemplate}>
+                    <a
+                      href={ExcelUploadTemplate}
+                      className="uploadTemplateLink"
+                    >
                       Public Holiday Upload Template
                     </a>{" "}
                     for you to fill in the data.
@@ -483,7 +486,7 @@ class UploadHoliday extends Component {
               sortable={true}
               multiSort={true}
               loadingText="Loading Leave Holidays..."
-              noDataText="No data available."
+              noDataText="No data uploaded."
               className="-striped"
             />
           </Form>

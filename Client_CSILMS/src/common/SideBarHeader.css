@@ -36,7 +36,7 @@ ul ul a {
   -ms-overflow-style: none; /* hide scrollbar in IE */
 }
 
-::-webkit-scrollbar {
+.sidebar::-webkit-scrollbar {
   display: none; /* hide scrollbar in Chrome */
 }
 

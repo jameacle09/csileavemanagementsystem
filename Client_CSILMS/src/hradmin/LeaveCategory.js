@@ -154,6 +154,11 @@ class LeaveCategory extends Component {
           <ReactTable
             data={this.state.leaveCategoryDetails}
             columns={LeaveCategoryCols}
+            defaultFilterMethod={(filter, row) =>
+              String(row[filter.id])
+                .toLowerCase()
+                .includes(filter.value.toLowerCase())
+            }
             defaultPageSize={10}
             pages={this.state.pages}
             filterable={true}

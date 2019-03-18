@@ -224,6 +224,11 @@ class LeaveRequestsList extends Component {
           <ReactTable
             data={this.state.leaveRequestData}
             columns={leaveRequestsCols}
+            defaultFilterMethod={(filter, row) =>
+              String(row[filter.id])
+                .toLowerCase()
+                .includes(filter.value.toLowerCase())
+            }
             defaultPageSize={10}
             pages={this.state.pages}
             loading={this.state.loading}

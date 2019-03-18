@@ -801,7 +801,7 @@ class UploadEmployeeProfile extends Component {
         id: "EmployeeName",
         Header: "Employee Name",
         accessor: "EmployeeName",
-        minWidth: 180,
+        minWidth: 170,
         sortable: true,
         filterable: true
       },
@@ -1037,7 +1037,10 @@ class UploadEmployeeProfile extends Component {
                     />
                     <FormText color="muted" style={{ fontFamily: "Helvetica" }}>
                       Please download the latest{" "}
-                      <a href={ExcelUploadTemplate}>
+                      <a
+                        href={ExcelUploadTemplate}
+                        className="uploadTemplateLink"
+                      >
                         Employee Profile Upload Template
                       </a>{" "}
                       for you to fill in the data.
@@ -1091,7 +1094,7 @@ class UploadEmployeeProfile extends Component {
                 sortable={true}
                 multiSort={true}
                 loadingText="Loading Employee Profiles..."
-                noDataText="No data available."
+                noDataText="No data uploaded."
                 className="-striped"
               />
             </div>

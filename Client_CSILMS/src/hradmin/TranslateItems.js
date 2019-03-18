@@ -180,6 +180,11 @@ class TranslateItems extends Component {
           <ReactTable
             data={this.state.translateItemsData}
             columns={TranslateItemsCols}
+            defaultFilterMethod={(filter, row) =>
+              String(row[filter.id])
+                .toLowerCase()
+                .includes(filter.value.toLowerCase())
+            }
             defaultPageSize={10}
             pages={this.state.pages}
             filterable={true}

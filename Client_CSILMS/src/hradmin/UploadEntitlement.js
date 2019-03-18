@@ -618,7 +618,10 @@ class UploadEntitlement extends Component {
                   />
                   <FormText color="muted" style={{ fontFamily: "Helvetica" }}>
                     Please download the latest{" "}
-                    <a href={ExcelUploadTemplate}>
+                    <a
+                      href={ExcelUploadTemplate}
+                      className="uploadTemplateLink"
+                    >
                       Leave Entitlement Upload Template
                     </a>{" "}
                     for you to fill in the data.
@@ -666,7 +669,7 @@ class UploadEntitlement extends Component {
               sortable={true}
               multiSort={true}
               loadingText="Loading Leave Entitlements..."
-              noDataText="No data available."
+              noDataText="No data uploaded."
               className="-striped"
             />
           </Form>

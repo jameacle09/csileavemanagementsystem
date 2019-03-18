@@ -98,7 +98,7 @@ class ListStaffProfile extends Component {
         id: "emplId",
         Header: "Employee ID",
         accessor: "emplId",
-        width: 120,
+        width: 110,
         sortable: true,
         filterable: true
       },
@@ -114,14 +114,14 @@ class ListStaffProfile extends Component {
         id: "businessEmail",
         Header: "Business Email",
         accessor: "businessEmail",
-        minWidth: 200,
+        minWidth: 190,
         sortable: true,
         filterable: true
       },
       {
-        id: "jobTitle",
-        Header: "Job Title",
-        accessor: "jobTitle",
+        id: "marriageStatus",
+        Header: "MStatus",
+        accessor: "marriageStatus",
         minWidth: 80,
         sortable: true,
         filterable: true,
@@ -130,10 +130,10 @@ class ListStaffProfile extends Component {
         }
       },
       {
-        id: "mobileNo",
-        Header: "Mobile No.",
-        accessor: "mobileNo",
-        minWidth: 110,
+        id: "jobTitle",
+        Header: "Job Title",
+        accessor: "jobTitle",
+        minWidth: 80,
         sortable: true,
         filterable: true,
         style: {
@@ -152,10 +152,21 @@ class ListStaffProfile extends Component {
         }
       },
       {
+        id: "deptId",
+        Header: "Dept ID",
+        accessor: "deptId",
+        minWidth: 80,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
         id: "LineMgrName",
         Header: "Line Manager",
         accessor: "reportsTo.name",
-        minWidth: 180,
+        minWidth: 170,
         sortable: true,
         filterable: true
       },
@@ -163,7 +174,7 @@ class ListStaffProfile extends Component {
         id: "DateJoined",
         Header: "Join Date",
         accessor: d => formatDateDMY(d.joinDate),
-        minWidth: 100,
+        minWidth: 90,
         sortable: true,
         filterable: true,
         style: {
@@ -174,7 +185,7 @@ class ListStaffProfile extends Component {
         id: "status",
         Header: "Status",
         accessor: str => showStatusDesc(str.status),
-        minWidth: 80,
+        minWidth: 70,
         sortable: true,
         filterable: true,
         style: {
@@ -182,15 +193,21 @@ class ListStaffProfile extends Component {
         }
       },
       {
-        id: "joinDate",
-        Header: "Join Date",
-        accessor: "joinDate",
+        id: "mobileNo",
+        Header: "Mobile No.",
+        accessor: "mobileNo",
+        minWidth: 110,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        },
         show: false
       },
       {
-        id: "deptId",
-        Header: "Dept ID",
-        accessor: "deptId",
+        id: "joinDate",
+        Header: "Join Date",
+        accessor: "joinDate",
         show: false
       },
       {
@@ -205,12 +222,7 @@ class ListStaffProfile extends Component {
         accessor: "marriageCount",
         show: false
       },
-      {
-        id: "marriageStatus",
-        Header: "MarriageStatus",
-        accessor: "marriageStatus",
-        show: false
-      },
+
       {
         id: "marriageDate",
         Header: "MarriageDate",
@@ -326,6 +338,11 @@ class ListStaffProfile extends Component {
             // key={this.state.filteredLength}
             data={this.state.employeeProfiles}
             columns={EmplProfileCols}
+            defaultFilterMethod={(filter, row) =>
+              String(row[filter.id])
+                .toLowerCase()
+                .includes(filter.value.toLowerCase())
+            }
             pageSizeOptions={[10, 20, 30, 50, 100, this.state.filteredLength]}
             defaultPageSize={10}
             pages={this.state.pages}

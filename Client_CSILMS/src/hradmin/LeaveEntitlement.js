@@ -66,7 +66,7 @@ class LeaveEntitlement extends Component {
         id: "emplid",
         Header: "Employee ID",
         accessor: "id.emplid",
-        minWidth: 130,
+        minWidth: 110,
         sortable: true,
         filterable: true
       },
@@ -74,7 +74,7 @@ class LeaveEntitlement extends Component {
         id: "name",
         Header: "Employee Name",
         accessor: "employeeDetails.name",
-        minWidth: 200,
+        minWidth: 180,
         sortable: true,
         filterable: true
       },
@@ -82,9 +82,12 @@ class LeaveEntitlement extends Component {
         id: "leaveYear",
         Header: "Year",
         accessor: "id.year",
-        minWidth: 50,
+        minWidth: 70,
         sortable: true,
-        filterable: true
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
       },
       {
         id: "leaveType",
@@ -236,6 +239,11 @@ class LeaveEntitlement extends Component {
           <ReactTable
             data={this.state.leaveEntitlementData}
             columns={leaveEntitlementCols}
+            defaultFilterMethod={(filter, row) =>
+              String(row[filter.id])
+                .toLowerCase()
+                .includes(filter.value.toLowerCase())
+            }
             defaultPageSize={10}
             pages={this.state.pages}
             loading={this.state.loading}

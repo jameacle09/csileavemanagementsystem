@@ -404,6 +404,11 @@ a:focus {
   display: inherit;
   justify-content: flex-start;
 }
+.uploadTemplateLink,
+.uploadTemplateLink:visited,
+.uploadTemplateLink:focus {
+  color: rgb(39, 129, 247);
+}
 
 @media (max-width: 768px) {
   .mainListBtnContainer {

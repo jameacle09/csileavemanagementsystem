@@ -408,16 +408,6 @@ class NewStaffProfile extends Component {
 
   clickdiscard = () => {
     this.props.history.push("/liststaffprofile");
-    confirmAlert({
-      message: "Do you want to cancel this request?",
-      buttons: [
-        {
-          label: "Yes",
-          onClick: () => this.props.history.push("/liststaffprofile")
-        },
-        { label: "No" }
-      ]
-    });
   };
 
   render() {
