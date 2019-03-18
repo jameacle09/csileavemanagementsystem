@@ -16,6 +16,7 @@ import { Redirect, withRouter } from "react-router-dom";
 import { isHrRole } from "../util/APIUtils";
 import { fetchData } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
+import { confirmAlert } from "react-confirm-alert";
 
 class AddLeaveCategory extends Component {
   constructor(props) {
@@ -75,8 +76,33 @@ class AddLeaveCategory extends Component {
         url: API_BASE_URL + "/leavecategory",
         method: "POST",
         body: JSON.stringify(addLeaveCategory)
+      })
+      .then(response => {
+        this.toggleApprove();
+        confirmAlert({
+          message: "Leave Category has been successfully added!",
+          buttons: [
+            {
+              label: "OK",
+              onClick: () => this.props.history.push("/leavecategory")
+            }
+          ]
+        });
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
       });
-      this.props.history.push("/leavecategory");
     }
   }
 
@@ -115,6 +141,7 @@ class AddLeaveCategory extends Component {
                   id="leaveCode"
                   value={leaveCode}
                   onChange={this.handleChange}
+                  maxLength="3"
                   required
                 />
               </Col>

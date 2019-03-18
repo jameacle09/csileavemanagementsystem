@@ -167,6 +167,7 @@ class EditLeaveCategory extends Component {
                   id="leaveCode"
                   value={leaveCode}
                   onChange={this.handleChange}
+                  maxLength="3"
                   required
                   disabled
                 />
