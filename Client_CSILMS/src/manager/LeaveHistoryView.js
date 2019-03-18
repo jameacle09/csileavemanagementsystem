@@ -11,6 +11,7 @@ import {
 } from "reactstrap";
 import { fetchData, formatDateYMD, fetchFile } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
+import { confirmAlert } from "react-confirm-alert";
 import "../common/Styles.css";
 
 class LeaveHistoryView extends Component {
@@ -28,7 +29,8 @@ class LeaveHistoryView extends Component {
       approver: "",
       leaveStatus: "",
       approvedDate: "",
-      attachment: ""
+      attachment: "",
+      leaveStatusLookup: []
     };
   }
 
@@ -39,6 +41,8 @@ class LeaveHistoryView extends Component {
       startDate,
       leaveCode
     } = this.props.computedMatch.params;
+    
+    this.loadLeaveStatusLookup();
 
     fetchData({
       url:
@@ -104,6 +108,30 @@ class LeaveHistoryView extends Component {
     this.props.history.push("/leavehistory");
   };
 
+  loadLeaveStatusLookup = () => {
+    fetchData({
+      url: API_BASE_URL + "/translateitem/leave_status",
+      method: "GET"
+    })
+      .then(data => this.setState({ leaveStatusLookup: data })
+      )
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
+
+
   render() {
     const {
       emplId,
@@ -128,18 +156,29 @@ class LeaveHistoryView extends Component {
       }
     };
 
-    const showFullStatus = strStatus => {
-      if (strStatus === "PNAPV") {
-        return "Pending Approve";
-      } else if (strStatus === "APPRV") {
-        return "Approved";
-      } else if (strStatus === "CANCL") {
-        return "Cancelled";
-      } else if (strStatus === "PNCLD") {
-        return "Pending Cancel";
-      } else if (strStatus === "REJCT") {
-        return "Rejected";
-      }
+    // const showFullStatus = strStatus => {
+    //   if (strStatus === "PNAPV") {
+    //     return "Pending Approvedddddddddddddd";
+    //   } else if (strStatus === "APPRV") {
+    //     return "Approvedddddddddddddddddddddd";
+    //   } else if (strStatus === "CANCL") {
+    //     return "Cancelled";
+    //   } else if (strStatus === "PNCLD") {
+    //     return "Pending Cancel";
+    //   } else if (strStatus === "REJCT") {
+    //     return "Rejected";
+    //   }
+    // };
+
+    const getLeaveStatusDesc = (strLeaveStatus) => {
+      let arrLeaveStatusLookup = this.state.leaveStatusLookup;
+      let leaveDesc = "";
+      arrLeaveStatusLookup.forEach(leaveStat => {
+        if (leaveStat.id.fieldvalue === strLeaveStatus) {
+          return leaveDesc = leaveStat.xlatlongname;
+        }
+      });
+      return leaveDesc;
     };
 
     const showAttachment = attachment => {
@@ -317,7 +356,7 @@ class LeaveHistoryView extends Component {
                   type="text"
                   name="leaveStatus"
                   id="leaveStatus"
-                  value={showFullStatus(leaveStatus)}
+                  value={getLeaveStatusDesc(leaveStatus)}
                   disabled={true}
                 />
               </Col>
