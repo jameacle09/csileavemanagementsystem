@@ -28,7 +28,9 @@ class EditLeaveCategory extends Component {
     this.handleSubmit = this.handleSubmit.bind(this);
     this.doNotSubmit = this.doNotSubmit.bind(this);
     this.toggleSave = this.toggleSave.bind(this);
-    this.handleDelete = this.handleDelete.bind(this);
+
+    // Delete function is removed for now. Additional handling required is to be implement in Phase 2
+    //this.handleDelete = this.handleDelete.bind(this);
   }
 
   componentDidMount() {
@@ -39,7 +41,7 @@ class EditLeaveCategory extends Component {
       method: "GET"
     })
       .then(data => {
-        console.log("Fetched Data", data);
+        //console.log("Fetched Data", data);
         this.setState({
           leaveCode: data.leaveCode,
           leaveDescr: data.leaveDescr,
@@ -57,11 +59,13 @@ class EditLeaveCategory extends Component {
     }));
   };
 
+/* Delete function is removed for now. Additional handling required is to be implement in Phase 2
   toggleDelete = () => {
     this.setState(prevState => ({
       modalDelete: !prevState.modalDelete
     }));
   };
+*/
 
   handleCancel = () => {
     this.props.history.push("/leavecategory");
@@ -101,7 +105,7 @@ class EditLeaveCategory extends Component {
         entitlement: this.state.entitlement
       };
 
-      console.log(JSON.stringify(editLeaveCategory));
+      //console.log(JSON.stringify(editLeaveCategory));
 
       const { leaveCode } = this.props.computedMatch.params;
 
@@ -114,6 +118,7 @@ class EditLeaveCategory extends Component {
     }
   }
 
+/* Delete function is removed for now. Additional handling required is to be implement in Phase 2
   handleDelete(event) {
     event.preventDefault();
 
@@ -125,6 +130,7 @@ class EditLeaveCategory extends Component {
     });
     this.props.history.push("/leavecategory");
   }
+*/
 
   validateLeaveEnt(leaveEnt) {
     // Validate if input is a number
@@ -208,6 +214,7 @@ class EditLeaveCategory extends Component {
                 >
                   Save
                 </Button>
+              {/* Delete function is removed for now. Additional handling required is to be implement in Phase 2
                 <span> </span>
                 <Button
                   type="button"
@@ -217,6 +224,7 @@ class EditLeaveCategory extends Component {
                 >
                   Delete
                 </Button>
+              */}
                 <span> </span>
                 <Button
                   type="button"
@@ -255,6 +263,7 @@ class EditLeaveCategory extends Component {
                     </ModalFooter>
                   </Modal>
                 </div>
+                {/* Delete function is removed for now. Additional handling required is to be implement in Phase 2
                 <div>
                   <Modal
                     isOpen={this.state.modalDelete}
@@ -267,9 +276,9 @@ class EditLeaveCategory extends Component {
                     }}
                   >
                     <ModalHeader>Delete Confirmation</ModalHeader>
-                    {/* <ModalBody>
+                    /* <ModalBody>
                       Are you sure you want to delete this item?
-                    </ModalBody> */}
+                    </ModalBody> */ /*
                     <ModalFooter>
                       <Button
                         type="submit"
@@ -284,6 +293,7 @@ class EditLeaveCategory extends Component {
                     </ModalFooter>
                   </Modal>
                 </div>
+                */}
               </Col>
             </FormGroup>
           </Form>
