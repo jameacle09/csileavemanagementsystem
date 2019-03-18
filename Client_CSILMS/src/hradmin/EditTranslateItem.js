@@ -25,7 +25,8 @@ class AddTranslateItem extends Component {
       effStatus: "A",
       xlatlongname: "",
       xlatshortname: "",
-      modalSubmit: false
+      modalSubmit: false,
+      changeStatus: false
     };
   }
 
@@ -66,7 +67,7 @@ class AddTranslateItem extends Component {
       });
   };
 
-  submitTranslateItem = event => {
+  submitTranslateItem = async event => {
     event.preventDefault();
     const {
       fieldname,
@@ -76,39 +77,82 @@ class AddTranslateItem extends Component {
       xlatshortname
     } = this.state;
 
-    const jsonRowValues = {
-      id: {
-        fieldname: fieldname,
-        fieldvalue: fieldvalue
-      },
-      effStatus: effStatus,
-      xlatlongname: xlatlongname,
-      xlatshortname: xlatshortname
-    };
+    let noReference = true;
+    if(this.state.changeStatus && effStatus === "I"){
+      // To de-activate Translate Item, verify if any employee using the value
+      // If yes, disallow deactivate and prompt message
+    
+      let fetchURL = null ;
+      switch(fieldname) {
+        case "business_unit" :
+          fetchURL = API_BASE_URL + "/searchemployee?businessunit=" + fieldvalue;
+          break;
+        case "dept_id" :
+          fetchURL = API_BASE_URL + "/searchemployee?deptid=" + fieldvalue;
+          break;
+        case "marriage_status" :
+          fetchURL = API_BASE_URL + "/searchemployee?marriagestatus=" + fieldvalue;
+          break;
+        case "gender" :
+          fetchURL = API_BASE_URL + "/searchemployee?gender=" + fieldvalue;
+          break;
+        default :
+          // do nothing, no impact
+      }
 
-    const postRequest = Object.assign({}, jsonRowValues);
+      if(fetchURL != null ){
+        await fetchData({
+          url: fetchURL,
+          method: "GET"
 
-    fetchData({
-      url: API_BASE_URL + "/translateitem/" + fieldname + "/" + fieldvalue,
-      method: "PATCH",
-      body: JSON.stringify(postRequest)
-    })
-      .then(response => {
-        this.toggleConfirmSubmit();
-        confirmAlert({
-          message: "Translate Item has been successfully updated!",
-          buttons: [
-            {
-              label: "OK",
-              onClick: () => this.props.history.push("/translateitems")
-            }
-          ]
-        });
-      })
-      .catch(error => {
-        if (error.status === 401) {
-          this.props.history.push("/login");
-        } else {
+        }).then(data => {
+          
+          if(data.matchingEmployees !== "" || data.matchingEmployees !== null) {
+            noReference = false; 
+
+            // .filter(Boolean) to remove empty array element
+            let employeeList = data.matchingEmployees.split(";").filter(Boolean)                        
+            let outputMsgList;
+            
+            // if employeeList exceeds 3 entry, only display 3 on outputMsgList
+            if(employeeList.length > 3) {
+              outputMsgList = employeeList.slice(0,3);
+
+              const remaining = employeeList.length - 3;
+              outputMsgList[3] = "... and " + remaining + " other employee";
+              outputMsgList[3] += (remaining > 1 ? "s" : "");   // append "s" for plurals
+            } else
+              outputMsgList = employeeList
+
+            this.toggleConfirmSubmit();
+            confirmAlert({
+              childrenElement: () => {
+                return (
+                  <div>
+                    Please update employees profile before deactivating <strong>{fieldvalue}</strong>. This <strong>{fieldname}</strong> is being reference by following employees:
+                    <ul>
+                      {
+                        outputMsgList.map(employeeString => 
+                          (<li> {employeeString} </li>)
+                        )
+                      }
+                    </ul>                  
+                  </div>
+                )
+              },
+              buttons: [
+                {
+                  label: "OK"
+                }
+              ]
+            });            
+
+          } else {
+            // noReference remains true if no employee using the value
+            noReference = true;
+          }
+
+        }).catch(error => {
           confirmAlert({
             message: error.status + " : " + error.message,
             buttons: [
@@ -117,13 +161,68 @@ class AddTranslateItem extends Component {
               }
             ]
           });
-        }
-      });
+        })
+      }
+    }
+    
+    // if no employee using the translate item, proceed to update DB
+    if(noReference) {
+      const jsonRowValues = {
+        id: {
+          fieldname: fieldname,
+          fieldvalue: fieldvalue
+        },
+        effStatus: effStatus,
+        xlatlongname: xlatlongname,
+        xlatshortname: xlatshortname
+      };
+
+      const postRequest = Object.assign({}, jsonRowValues);
+
+      fetchData({
+        url: API_BASE_URL + "/translateitem/" + fieldname + "/" + fieldvalue,
+        method: "PATCH",
+        body: JSON.stringify(postRequest)
+      })
+        .then(response => {
+          this.toggleConfirmSubmit();
+          confirmAlert({
+            message: "Translate Item has been successfully updated!",
+            buttons: [
+              {
+                label: "OK",
+                onClick: () => this.props.history.push("/translateitems")
+              }
+            ]
+          });
+        })
+        .catch(error => {
+          if (error.status === 401) {
+            this.props.history.push("/login");
+          } else {
+            confirmAlert({
+              message: error.status + " : " + error.message,
+              buttons: [
+                {
+                  label: "OK"
+                }
+              ]
+            });
+          }
+        });
+    }
   };
+
+  checkValueReferences = () => {
+    
+  }
 
   handleChange = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
+
+    if(name === "effStatus") 
+      this.setState({ changeStatus: true });
   };
 
   handleCancel = () => {
