@@ -91,6 +91,26 @@ public class EmployeeDetailsService {
 		List<EmployeeDetails> employeeList = this.employeeDetailRepository.findByEmplIdNotIn(emplidList);
 		return employeeList;
 	}
+	
+	public List<EmployeeDetails> findByBusinessUnit(String businessUnit) {
+		List<EmployeeDetails> employeeDetailsList = this.employeeDetailRepository.findByBusinessUnit(businessUnit);
+		return employeeDetailsList;
+	}
+	
+	public List<EmployeeDetails> findByDeptId(String deptId) {
+		List<EmployeeDetails> employeeDetailsList = this.employeeDetailRepository.findByDeptId(deptId);
+		return employeeDetailsList;
+	}
+
+	public List<EmployeeDetails> findByMarriageStatus(String marriageStatus) {
+		List<EmployeeDetails> employeeDetailsList = this.employeeDetailRepository.findByMarriageStatus(marriageStatus);
+		return employeeDetailsList;
+	}
+
+	public List<EmployeeDetails> findByGender(String gender) {
+		List<EmployeeDetails> employeeDetailsList = this.employeeDetailRepository.findByGender(gender);
+		return employeeDetailsList;
+	}
 
 	public EmployeeDetails addEditEmployeeDetails(EmployeeDetails employeeDetails, UserPrincipal currentUser) {
 		PersonDetails personDetails = new PersonDetails();
