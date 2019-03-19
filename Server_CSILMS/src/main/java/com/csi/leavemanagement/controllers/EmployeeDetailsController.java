@@ -85,7 +85,7 @@ public class EmployeeDetailsController {
 		if(matchingEmployees == null || matchingEmployees.size() == 0) {
 			responseEntityMessage.put("matchingEmployees", "");
 			responseEntityMessage.put("message","No matching employee");
-			return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.NO_CONTENT);
+			return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.OK);
 		}
 		
 		String matchingEmployeesMsg = "";
