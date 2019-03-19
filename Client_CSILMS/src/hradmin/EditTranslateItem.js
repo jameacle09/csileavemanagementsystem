@@ -159,17 +159,16 @@ class AddTranslateItem extends Component {
         })
           .then(data => {
             if (
-              data.matchingEmployees !== "" ||
-              data.matchingEmployees !== null
-            )
-              noReference = false;
-          })
-          .then(data => {
-            if (
               data.matchingEmployees !== "" &&
               data.matchingEmployees !== null
             ) {
               noReference = false;
+
+              // .filter(Boolean) to remove empty array element
+              let employeeList = data.matchingEmployees
+                .split(";")
+                .filter(Boolean);
+              let outputMsgList;
 
               // if employeeList exceeds 3 entry, only display 3 on outputMsgList
               if (employeeList.length > 3) {
@@ -178,33 +177,44 @@ class AddTranslateItem extends Component {
                 const remaining = employeeList.length - 3;
                 outputMsgList[3] = "... and " + remaining + " other employee";
                 outputMsgList[3] += remaining > 1 ? "s" : ""; // append "s" for plurals
-              } else {
-                outputMsgList = employeeList;
+              } else outputMsgList = employeeList;
 
-                confirmAlert({
-                  childrenElement: () => {
-                    return (
-                      <div>
-                        Please update employees profile before deactivating{" "}
-                        <strong>{fieldvalue}</strong>. This{" "}
-                        <strong>{fieldname}</strong> is being reference by
-                        following employees:
-                        <ul>
-                          {outputMsgList.map(employeeString => (
-                            <li key={employeeString}> {employeeString} </li>
-                          ))}
-                        </ul>
-                      </div>
-                    );
-                  },
-                  buttons: [
-                    {
-                      label: "OK"
-                    }
-                  ]
-                });
-              }
+              confirmAlert({
+                childrenElement: () => {
+                  return (
+                    <div>
+                      Please update employees profile before deactivating{" "}
+                      <strong>{fieldvalue}</strong>. This{" "}
+                      <strong>{fieldname}</strong> is being reference by
+                      following employees:
+                      <ul>
+                        {outputMsgList.map(employeeString => (
+                          <li key={employeeString}> {employeeString} </li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                },
+                buttons: [
+                  {
+                    label: "OK"
+                  }
+                ]
+              });
+            } else {
+              // noReference remains true if no employee using the value
+              noReference = true;
             }
+          })
+          .catch(error => {
+            confirmAlert({
+              message: error.status + " : " + error.message,
+              buttons: [
+                {
+                  label: "OK"
+                }
+              ]
+            });
           });
       }
     }
