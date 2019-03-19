@@ -27,8 +27,8 @@ class UploadEmployeeProfile extends Component {
       departmentIdLookup: [],
       employeeProfileLookup: [],
       managerLookup: [],
-      statusLookup: [],
-      roleLookup: [],
+      // statusLookup: [],
+      // roleLookup: [],
       filename: "",
       isValid: false,
       loading: false
@@ -45,8 +45,8 @@ class UploadEmployeeProfile extends Component {
     this.loadDepartmentIdLookup();
     this.loadEmployeeProfileLookup();
     this.loadManagerLookup();
-    this.loadStatusLookup();
-    this.loadRoleLookup();
+    // this.loadStatusLookup();
+    // this.loadRoleLookup();
   }
 
   componentWillUnmount() {
@@ -207,49 +207,49 @@ class UploadEmployeeProfile extends Component {
       });
   };
 
-  loadStatusLookup = () => {
-    fetchData({
-      url: API_BASE_URL + "/translateitem/status",
-      method: "GET"
-    })
-      .then(data => this.setState({ statusLookup: data }))
-      .catch(error => {
-        if (error.status === 401) {
-          this.props.history.push("/login");
-        } else {
-          confirmAlert({
-            message: error.status + " : " + error.message,
-            buttons: [
-              {
-                label: "OK"
-              }
-            ]
-          });
-        }
-      });
-  };
+  // loadStatusLookup = () => {
+  //   fetchData({
+  //     url: API_BASE_URL + "/translateitem/status",
+  //     method: "GET"
+  //   })
+  //     .then(data => this.setState({ statusLookup: data }))
+  //     .catch(error => {
+  //       if (error.status === 401) {
+  //         this.props.history.push("/login");
+  //       } else {
+  //         confirmAlert({
+  //           message: error.status + " : " + error.message,
+  //           buttons: [
+  //             {
+  //               label: "OK"
+  //             }
+  //           ]
+  //         });
+  //       }
+  //     });
+  // };
 
-  loadRoleLookup = () => {
-    fetchData({
-      url: API_BASE_URL + "/translateitem/role",
-      method: "GET"
-    })
-      .then(data => this.setState({ roleLookup: data }))
-      .catch(error => {
-        if (error.status === 401) {
-          this.props.history.push("/login");
-        } else {
-          confirmAlert({
-            message: error.status + " : " + error.message,
-            buttons: [
-              {
-                label: "OK"
-              }
-            ]
-          });
-        }
-      });
-  };
+  // loadRoleLookup = () => {
+  //   fetchData({
+  //     url: API_BASE_URL + "/translateitem/role",
+  //     method: "GET"
+  //   })
+  //     .then(data => this.setState({ roleLookup: data }))
+  //     .catch(error => {
+  //       if (error.status === 401) {
+  //         this.props.history.push("/login");
+  //       } else {
+  //         confirmAlert({
+  //           message: error.status + " : " + error.message,
+  //           buttons: [
+  //             {
+  //               label: "OK"
+  //             }
+  //           ]
+  //         });
+  //       }
+  //     });
+  // };
 
   handleExcelFileUpload = file => {
     if (file.target.files[0]) {
@@ -310,14 +310,14 @@ class UploadEmployeeProfile extends Component {
     let arrDepartmentIdLookup = this.state.departmentIdLookup;
     let arrEmployeeProfileLookup = this.state.employeeProfileLookup;
     let arrManagerLookup = this.state.managerLookup;
-    let arrStatusLookup = this.state.statusLookup;
-    let arrRoleLookup = this.state.roleLookup;
+    // let arrStatusLookup = this.state.statusLookup;
+    // let arrRoleLookup = this.state.roleLookup;
     let arrEmployeeProfileDataLookup = this.state.employeeProfileData;
     let arrEmployeeProfileData = this.state.employeeProfileData;
 
     arrEmployeeProfileData.forEach(empRow => {
       empRow["ValidateStatus"] = "Passed!";
-      empRow["RoleName"] = "";
+      // empRow["RoleName"] = "";
     });
 
     // Remove Leading and Trailing Spaces
@@ -339,8 +339,10 @@ class UploadEmployeeProfile extends Component {
         empRow.MaritalStatus = empRow.MaritalStatus.trim();
       if (empRow.NRICPassportNo)
         empRow.NRICPassportNo = empRow.NRICPassportNo.trim();
-      if (empRow.Role) empRow.Role = empRow.Role.trim();
+      // if (empRow.Role) empRow.Role = empRow.Role.trim();
       if (empRow.Status) empRow.Status = empRow.Status.trim();
+      if (empRow.isManager) empRow.isManager = empRow.isManager.trim();
+      if (empRow.isAdmin) empRow.isAdmin = empRow.isAdmin.trim();
       return true;
     });
 
@@ -489,24 +491,35 @@ class UploadEmployeeProfile extends Component {
         empRow.ValidateStatus = "Date Joined value is invalid.";
       } else if (empRow.Status === "") {
         empRow.ValidateStatus = "Status cannot be blank.";
-      } else if (
-        empRow.Status !== "" &&
-        !arrStatusLookup.some(status => {
-          return status.id.fieldvalue === empRow.Status;
-        })
-      ) {
-        empRow.ValidateStatus = "Status value does not exist.";
-      } else if (empRow.Role === "") {
-        empRow.ValidateStatus = "Role cannot be blank.";
-      } else if (
-        empRow.Role !== "" &&
-        !arrRoleLookup.some(role => {
-          if (role.id.fieldvalue === empRow.Role)
-            empRow.RoleName = role.xlatlongname;
-          return role.id.fieldvalue === empRow.Role;
-        })
-      ) {
-        empRow.ValidateStatus = "Role value does not exist.";
+      } else if (empRow.Status !== "A" && empRow.Status !== "I") {
+        empRow.ValidateStatus = "Status value is invalid.";
+        // } else if (
+        //   empRow.Status !== "" &&
+        //   !arrStatusLookup.some(status => {
+        //     return status.id.fieldvalue === empRow.Status;
+        //   })
+        // ) {
+        //   empRow.ValidateStatus = "Status value does not exist.";
+        // } else if (empRow.Role === "") {
+        //   empRow.ValidateStatus = "Role cannot be blank.";
+        // } else if (
+        //   empRow.Role !== "" &&
+        //   !arrRoleLookup.some(role => {
+        //     if (role.id.fieldvalue === empRow.Role)
+        //       empRow.RoleName = role.xlatlongname;
+        //     return role.id.fieldvalue === empRow.Role;
+        //   })
+        // ) {
+        //   empRow.ValidateStatus = "Role value does not exist.";
+        // }
+      } else if (empRow.isManager === "") {
+        empRow.ValidateStatus = "isManager cannot be blank.";
+      } else if (empRow.isManager !== "Y" && empRow.isManager !== "N") {
+        empRow.ValidateStatus = "isManager value is invalid.";
+      } else if (empRow.isAdmin === "") {
+        empRow.ValidateStatus = "isAdmin cannot be blank.";
+      } else if (empRow.isAdmin !== "Y" && empRow.isAdmin !== "N") {
+        empRow.ValidateStatus = "isAdmin value is invalid.";
       }
 
       if (empRow.DateMarried !== "" && !isNaN(Date.parse(empRow.DateMarried)))
@@ -565,9 +578,15 @@ class UploadEmployeeProfile extends Component {
         empRow.ValidateStatus = "Date Joined cannot be blank.";
       } else if (typeof arrEmployeeProfileData[index].Status !== "string") {
         empRow.ValidateStatus = "Status cannot be blank.";
-      } else if (typeof arrEmployeeProfileData[index].Role !== "string") {
-        empRow.ValidateStatus = "Role cannot be blank.";
+        // } else if (typeof arrEmployeeProfileData[index].Role !== "string") {
+        //   empRow.ValidateStatus = "Role cannot be blank.";
+        // }
+      } else if (typeof arrEmployeeProfileData[index].isManager !== "string") {
+        empRow.ValidateStatus = "isManager cannot be blank.";
+      } else if (typeof arrEmployeeProfileData[index].isAdmin !== "string") {
+        empRow.ValidateStatus = "isAdmin cannot be blank.";
       }
+
       return true;
     });
 
@@ -598,7 +617,7 @@ class UploadEmployeeProfile extends Component {
       });
       confirmAlert({
         message:
-          "Invalid row(s) has/have been detected from the uploaded Employee Profile data! Please find those invalid row(s) in the table and fix them in Excel Template, then re-try uploading...",
+          "Invalid row/s has/have been detected in the uploaded Employee Profile data! Please find those in the table and fix them in Excel Template, then re-try uploading...",
         buttons: [
           {
             label: "OK"
@@ -650,11 +669,15 @@ class UploadEmployeeProfile extends Component {
     // This is a temporary solution for saving Array of data, an API
     // for saving bulk of data should be created to speed up the saving
     this.state.employeeProfileData.map(empRow => {
+      let empProfRoles = this.getEmployeeProfileRoles(
+        empRow.isManager,
+        empRow.isAdmin
+      );
       if (!empRow.DottedLineManager) empRow.DottedLineManager = " ";
       const jsonRowValues = {
         emplId: empRow.EmployeeID,
         name: empRow.EmployeeName,
-        effectiveDate: this.getCurrentDate(),
+        effectiveDate: formatDateYMD(new Date()),
         reportsTo: { emplId: empRow.LineManager, name: "" },
         reportDottedLine: empRow.DottedLineManager,
         businessEmail: empRow.BusinessEmail,
@@ -670,7 +693,7 @@ class UploadEmployeeProfile extends Component {
         deptId: empRow.DepartmentID,
         joinDate: empRow.DateJoined,
         status: empRow.Status,
-        roles: [{ role: empRow.Role, roleName: empRow.RoleName }]
+        roles: empProfRoles
       };
 
       const postRequest = Object.assign({}, jsonRowValues);
@@ -712,16 +735,13 @@ class UploadEmployeeProfile extends Component {
     this.handleReset();
   };
 
-  getCurrentDate = () => {
-    var date = new Date(),
-      month = "" + (date.getMonth() + 1),
-      day = "" + date.getDate(),
-      year = date.getFullYear();
+  getEmployeeProfileRoles = (isManager, isAdmin) => {
+    let empRoles = [];
+    empRoles.push({ role: "E", roleName: "EMPLOYEE" });
+    if (isManager === "Y") empRoles.push({ role: "M", roleName: "MANAGER" });
+    if (isAdmin === "Y") empRoles.push({ role: "A", roleName: "HR" });
 
-    if (month.length < 2) month = "0" + month;
-    if (day.length < 2) day = "0" + day;
-
-    return [year, month, day].join("-");
+    return empRoles;
   };
 
   completedEntitlementSave = e => {
@@ -757,9 +777,9 @@ class UploadEmployeeProfile extends Component {
   };
 
   render() {
-    if (!isHrRole(this.props.currentUser)) {
-      return <Redirect to="/forbidden" />;
-    }
+    // if (!isHrRole(this.props.currentUser)) {
+    //   return <Redirect to="/forbidden" />;
+    // }
 
     let textHeaderValue = "",
       textColorValStatus = "",
@@ -767,7 +787,7 @@ class UploadEmployeeProfile extends Component {
     if (this.state.isValid) {
       textHeaderValue = "Validation";
       textColorValStatus = "#004a9b";
-      colWidthValStatus = 70;
+      colWidthValStatus = 90;
     } else {
       textHeaderValue = "Validation Status";
       textColorValStatus = "red";
@@ -801,7 +821,7 @@ class UploadEmployeeProfile extends Component {
         id: "EmployeeName",
         Header: "Employee Name",
         accessor: "EmployeeName",
-        minWidth: 170,
+        minWidth: 180,
         sortable: true,
         filterable: true
       },
@@ -809,7 +829,7 @@ class UploadEmployeeProfile extends Component {
         id: "BusinessEmail",
         Header: "Business Email",
         accessor: "BusinessEmail",
-        minWidth: 180,
+        minWidth: 190,
         sortable: true,
         filterable: true,
         style: {
@@ -851,7 +871,7 @@ class UploadEmployeeProfile extends Component {
       },
       {
         id: "DateMarried",
-        Header: "Date Married",
+        Header: "DateMarried",
         accessor: d => {
           if (d.DateMarried) {
             return formatDateDMY(d.DateMarried);
@@ -859,7 +879,7 @@ class UploadEmployeeProfile extends Component {
             return " ";
           }
         },
-        minWidth: 100,
+        minWidth: 110,
         sortable: true,
         filterable: true,
         style: {
@@ -881,7 +901,7 @@ class UploadEmployeeProfile extends Component {
         id: "ChildrenCount",
         Header: "ChildCnt",
         accessor: "ChildrenCount",
-        minWidth: 70,
+        minWidth: 80,
         sortable: true,
         filterable: true,
         style: {
@@ -892,7 +912,7 @@ class UploadEmployeeProfile extends Component {
         id: "JobTitle",
         Header: "JobTitle",
         accessor: "JobTitle",
-        minWidth: 70,
+        minWidth: 80,
         sortable: true,
         filterable: true,
         style: {
@@ -914,7 +934,7 @@ class UploadEmployeeProfile extends Component {
         id: "BusinessUnit",
         Header: "BU",
         accessor: "BusinessUnit",
-        minWidth: 70,
+        minWidth: 80,
         sortable: true,
         filterable: true,
         style: {
@@ -925,7 +945,7 @@ class UploadEmployeeProfile extends Component {
         id: "DepartmentID",
         Header: "DeptID",
         accessor: "DepartmentID",
-        minWidth: 70,
+        minWidth: 80,
         sortable: true,
         filterable: true,
         style: {
@@ -945,7 +965,7 @@ class UploadEmployeeProfile extends Component {
       },
       {
         id: "DottedLineManager",
-        Header: "DottedLineMgr",
+        Header: "DottedLMgr",
         accessor: "DottedLineManager",
         minWidth: 110,
         sortable: true,
@@ -982,11 +1002,33 @@ class UploadEmployeeProfile extends Component {
           textAlign: "center"
         }
       },
+      // {
+      //   id: "Role",
+      //   Header: "Role",
+      //   accessor: "Role",
+      //   minWidth: 70,
+      //   sortable: true,
+      //   filterable: true,
+      //   style: {
+      //     textAlign: "center"
+      //   }
+      // },
       {
-        id: "Role",
-        Header: "Role",
-        accessor: "Role",
-        minWidth: 70,
+        id: "Manager",
+        Header: "isManager",
+        accessor: "isManager",
+        minWidth: 96,
+        sortable: true,
+        filterable: true,
+        style: {
+          textAlign: "center"
+        }
+      },
+      {
+        id: "Admin",
+        Header: "isAdmin",
+        accessor: "isAdmin",
+        minWidth: 82,
         sortable: true,
         filterable: true,
         style: {
@@ -1086,6 +1128,11 @@ class UploadEmployeeProfile extends Component {
               <ReactTable
                 data={this.state.employeeProfileData}
                 columns={employeeProfileCols}
+                defaultFilterMethod={(filter, row) =>
+                  String(row[filter.id])
+                    .toLowerCase()
+                    .includes(filter.value.toLowerCase())
+                }
                 defaultPageSize={10}
                 pages={this.state.pages}
                 loading={this.state.loading}

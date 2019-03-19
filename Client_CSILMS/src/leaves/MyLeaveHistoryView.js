@@ -32,7 +32,7 @@ class MyLeaveHistoryView extends Component {
       approverName: "",
       leaveStatus: "",
       attachment: "",
-      approvedDate: "",      
+      approvedDate: "",
       leaveStatusLookup: []
     };
     this.toggleCancelLeave = this.toggleCancelLeave.bind(this);
@@ -52,7 +52,7 @@ class MyLeaveHistoryView extends Component {
     }));
   };
 
-  componentDidMount() {    
+  componentDidMount() {
     this.loadLeaveStatusLookup();
     const {
       emplId,
@@ -288,8 +288,7 @@ class MyLeaveHistoryView extends Component {
       url: API_BASE_URL + "/translateitem/leave_status",
       method: "GET"
     })
-      .then(data => this.setState({ leaveStatusLookup: data })
-      )
+      .then(data => this.setState({ leaveStatusLookup: data }))
       .catch(error => {
         if (error.status === 401) {
           this.props.history.push("/login");
@@ -334,13 +333,13 @@ class MyLeaveHistoryView extends Component {
     //     return "Rejected";
     //   }
     // };
-    
-    const getLeaveStatusDesc = (strLeaveStatus) => {
+
+    const getLeaveStatusDesc = strLeaveStatus => {
       let arrLeaveStatusLookup = this.state.leaveStatusLookup;
       let leaveDesc = "";
       arrLeaveStatusLookup.forEach(leaveStat => {
         if (leaveStat.id.fieldvalue === strLeaveStatus) {
-          return leaveDesc = leaveStat.xlatlongname;
+          return (leaveDesc = leaveStat.xlatlongname);
         }
       });
       return leaveDesc;
@@ -555,7 +554,7 @@ class MyLeaveHistoryView extends Component {
                 </Button> */}
                 <span> </span>
                 <Button
-                  color="primary"
+                  color="secondary"
                   onClick={this.handleBackToMain}
                   className="largeButtonOverride"
                 >

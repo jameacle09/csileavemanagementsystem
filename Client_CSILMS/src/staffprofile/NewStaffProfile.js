@@ -24,7 +24,7 @@ class NewStaffProfile extends Component {
     this.loadProfile = this.loadProfile.bind(this);
     this.state = {
       emplIdExists: false,
-      roles: [{ role: "e", roleName: "EMPLOYEE" }],
+      roles: [{ role: "E", roleName: "EMPLOYEE" }],
       managerList: [{ emplId: "", name: "" }],
       emplId: "",
       name: "",
@@ -525,7 +525,10 @@ class NewStaffProfile extends Component {
                 >
                   <option value="">Select Gender</option>
                   {this.state.translateItemList.map(item => {
-                    if (item.id.fieldname === "gender" && item.effStatus === "A") {
+                    if (
+                      item.id.fieldname === "gender" &&
+                      item.effStatus === "A"
+                    ) {
                       return (
                         <option
                           key={item.id.fieldvalue}
@@ -556,7 +559,10 @@ class NewStaffProfile extends Component {
                 >
                   <option value="">Select Marital Status</option>
                   {this.state.translateItemList.map(item => {
-                    if (item.id.fieldname === "marriage_status"  && item.effStatus === "A") {
+                    if (
+                      item.id.fieldname === "marriage_status" &&
+                      item.effStatus === "A"
+                    ) {
                       return (
                         <option
                           key={item.id.fieldvalue}
@@ -638,7 +644,10 @@ class NewStaffProfile extends Component {
                     Select Job Title
                   </option>
                   {this.state.translateItemList.map(item => {
-                    if (item.id.fieldname === "job_title" && item.effStatus === "A") {
+                    if (
+                      item.id.fieldname === "job_title" &&
+                      item.effStatus === "A"
+                    ) {
                       return (
                         <option
                           key={item.id.fieldvalue}
@@ -686,7 +695,10 @@ class NewStaffProfile extends Component {
                     Select Business Unit
                   </option>
                   {this.state.translateItemList.map(item => {
-                    if (item.id.fieldname === "business_unit"  && item.effStatus === "A") {
+                    if (
+                      item.id.fieldname === "business_unit" &&
+                      item.effStatus === "A"
+                    ) {
                       return (
                         <option
                           key={item.id.fieldvalue}
@@ -718,7 +730,10 @@ class NewStaffProfile extends Component {
                     Select Department
                   </option>
                   {this.state.translateItemList.map(item => {
-                    if (item.id.fieldname === "dept_id"  && item.effStatus === "A") {
+                    if (
+                      item.id.fieldname === "dept_id" &&
+                      item.effStatus === "A"
+                    ) {
                       return (
                         <option
                           key={item.id.fieldvalue}

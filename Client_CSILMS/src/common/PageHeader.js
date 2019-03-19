@@ -37,7 +37,7 @@ class PageHeader extends Component {
   showSideBarMenu = () => {
     document.getElementById("PageSidebar").style.width = "250px";
     document.getElementById("MainPage").style.marginLeft = "250px";
-    document.getElementById("MainPage").style.width = "83.7%";
+    document.getElementById("MainPage").style.width = "83.5%";
     document.getElementById("PageSidebar").style.transitionDuration = "0s";
     document.getElementById("MainPage").style.transitionDuration = "0s";
   };

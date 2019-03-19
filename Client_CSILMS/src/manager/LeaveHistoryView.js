@@ -366,7 +366,7 @@ class LeaveHistoryView extends Component {
             <FormGroup row>
               <Col sm={{ size: 10, offset: 2 }}>
                 <Button
-                  color="primary"
+                  color="secondary"
                   onClick={this.handleBackToMain}
                   className="largeButtonOverride"
                 >
