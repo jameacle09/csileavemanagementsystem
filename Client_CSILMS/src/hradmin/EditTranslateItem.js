@@ -160,7 +160,7 @@ class AddTranslateItem extends Component {
 
         }).then(data => {
           
-          if(data.matchingEmployees !== "" || data.matchingEmployees !== null) {
+          if(data.matchingEmployees !== "" && data.matchingEmployees !== null) {
             noReference = false; 
 
             // .filter(Boolean) to remove empty array element
@@ -185,7 +185,7 @@ class AddTranslateItem extends Component {
                     <ul>
                       {
                         outputMsgList.map(employeeString => 
-                          (<li> {employeeString} </li>)
+                          (<li key={employeeString}> {employeeString} </li>)
                         )
                       }
                     </ul>                  
