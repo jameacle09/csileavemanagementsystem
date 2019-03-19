@@ -77,10 +77,63 @@ class AddTranslateItem extends Component {
       xlatshortname
     } = this.state;
 
+    const jsonRowValues = {
+      id: {
+        fieldname: fieldname,
+        fieldvalue: fieldvalue
+      },
+      effStatus: effStatus,
+      xlatlongname: xlatlongname,
+      xlatshortname: xlatshortname
+    };
+
+    const postRequest = Object.assign({}, jsonRowValues);
+
+    fetchData({
+      url: API_BASE_URL + "/translateitem/" + fieldname + "/" + fieldvalue,
+      method: "PATCH",
+      body: JSON.stringify(postRequest)
+    })
+      .then(response => {
+        this.toggleConfirmSubmit();
+        confirmAlert({
+          message: "Translate Item has been successfully updated!",
+          buttons: [
+            {
+              label: "OK",
+              onClick: () => this.props.history.push("/translateitems")
+            }
+          ]
+        });
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+    
+  };
+
+  checkValueReferences = async () => {
     let noReference = true;
+    const {
+      fieldname,
+      fieldvalue,
+      effStatus
+    } = this.state;
+
+    // To de-activate Translate Item, verify if any employee using the value
+    // If yes, disallow deactivate and prompt message
     if(this.state.changeStatus && effStatus === "I"){
-      // To de-activate Translate Item, verify if any employee using the value
-      // If yes, disallow deactivate and prompt message
     
       let fetchURL = null ;
       switch(fieldname) {
@@ -124,7 +177,6 @@ class AddTranslateItem extends Component {
             } else
               outputMsgList = employeeList
 
-            this.toggleConfirmSubmit();
             confirmAlert({
               childrenElement: () => {
                 return (
@@ -164,54 +216,10 @@ class AddTranslateItem extends Component {
         })
       }
     }
-    
-    // if no employee using the translate item, proceed to update DB
-    if(noReference) {
-      const jsonRowValues = {
-        id: {
-          fieldname: fieldname,
-          fieldvalue: fieldvalue
-        },
-        effStatus: effStatus,
-        xlatlongname: xlatlongname,
-        xlatshortname: xlatshortname
-      };
 
-      const postRequest = Object.assign({}, jsonRowValues);
-
-      fetchData({
-        url: API_BASE_URL + "/translateitem/" + fieldname + "/" + fieldvalue,
-        method: "PATCH",
-        body: JSON.stringify(postRequest)
-      })
-        .then(response => {
-          this.toggleConfirmSubmit();
-          confirmAlert({
-            message: "Translate Item has been successfully updated!",
-            buttons: [
-              {
-                label: "OK",
-                onClick: () => this.props.history.push("/translateitems")
-              }
-            ]
-          });
-        })
-        .catch(error => {
-          if (error.status === 401) {
-            this.props.history.push("/login");
-          } else {
-            confirmAlert({
-              message: error.status + " : " + error.message,
-              buttons: [
-                {
-                  label: "OK"
-                }
-              ]
-            });
-          }
-        });
-    }
-  };
+    if(noReference)
+      this.toggleConfirmSubmit();
+  }
 
   handleChange = event => {
     const { name, value } = event.target;
@@ -355,7 +363,7 @@ class AddTranslateItem extends Component {
                 <Button
                   type="button"
                   color="primary"
-                  onClick={this.toggleConfirmSubmit}
+                  onClick={this.checkValueReferences}
                   className="largeButtonOverride"
                   disabled={this.validateFields()}
                 >
