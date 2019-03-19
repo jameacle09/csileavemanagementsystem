@@ -12,6 +12,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faLock } from "@fortawesome/free-solid-svg-icons";
 import { faLockOpen } from "@fortawesome/free-solid-svg-icons";
 import ExportToExcel from "./LoginDetailsToExcel";
+import LoadingPage from "../common/LoadingPage";
 
 class LoginDetails extends Component {
   constructor(props) {
@@ -268,46 +269,52 @@ class LoginDetails extends Component {
             <h3 className="headerStyle">User Login Details</h3>
           </span>
         </div>
-        <div className="reactTableContainer">
-          <div className="mainListBtnContainer">
-            <div className="SubListBtnSingleContainer">
-              <Button
-                variant="contained"
-                color="primary"
-                className="largeButtonOverride"
-                onClick={() =>
-                  document.getElementById("test-table-xls-button").click()
+        {this.state.loading ? (
+          <LoadingPage />
+        ) : (
+          <React.Fragment>
+            <div className="reactTableContainer">
+              <div className="mainListBtnContainer">
+                <div className="SubListBtnSingleContainer">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className="largeButtonOverride"
+                    onClick={() =>
+                      document.getElementById("test-table-xls-button").click()
+                    }
+                  >
+                    <span
+                      className="fa fa-file-excel-o"
+                      style={{ margin: "0px 5px 0px 0px" }}
+                    />
+                    Export List to Excel
+                  </Button>
+                </div>
+              </div>
+              <ReactTable
+                data={this.state.userData}
+                columns={loginDetailsCols}
+                defaultFilterMethod={(filter, row) =>
+                  String(row[filter.id])
+                    .toLowerCase()
+                    .includes(filter.value.toLowerCase())
                 }
-              >
-                <span
-                  className="fa fa-file-excel-o"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-                Export List to Excel
-              </Button>
+                defaultPageSize={10}
+                pages={this.state.pages}
+                loading={this.state.loading}
+                filterable={true}
+                sortable={true}
+                multiSort={true}
+                // rowsText="Rows per page"
+                loadingText="Loading Employee Login Details..."
+                noDataText="No data available."
+                className="-striped"
+              />
+              <ExportToExcel LoginDetails={this.state.userData} />
             </div>
-          </div>
-          <ReactTable
-            data={this.state.userData}
-            columns={loginDetailsCols}
-            defaultFilterMethod={(filter, row) =>
-              String(row[filter.id])
-                .toLowerCase()
-                .includes(filter.value.toLowerCase())
-            }
-            defaultPageSize={10}
-            pages={this.state.pages}
-            loading={this.state.loading}
-            filterable={true}
-            sortable={true}
-            multiSort={true}
-            // rowsText="Rows per page"
-            loadingText="Loading Employee Login Details..."
-            noDataText="No data available."
-            className="-striped"
-          />
-          <ExportToExcel LoginDetails={this.state.userData} />
-        </div>
+          </React.Fragment>
+        )}
       </div>
     );
   }

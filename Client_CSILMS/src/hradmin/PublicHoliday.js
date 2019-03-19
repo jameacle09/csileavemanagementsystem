@@ -8,6 +8,7 @@ import { API_BASE_URL } from "../constants";
 import ReactTable from "react-table";
 import { fetchData, formatDateDMY, formatDateYMD } from "../util/APIUtils";
 import ExportToExcel from "./PublicHolidayToExcel";
+import LoadingPage from "../common/LoadingPage";
 
 class PublicHoliday extends Component {
   constructor(props) {
@@ -118,75 +119,81 @@ class PublicHoliday extends Component {
             <h3 className="headerStyle">Public Holidays</h3>
           </span>
         </div>
-        <div className="reactTableContainer">
-          <div className="mainListBtnContainer">
-            <div className="SubListBtnLeftContainer">
-              <Button
-                variant="contained"
-                color="primary"
-                className="largeButtonOverride"
-                onClick={() =>
-                  document.getElementById("test-table-xls-button").click()
+        {this.state.loading ? (
+          <LoadingPage />
+        ) : (
+          <React.Fragment>
+            <div className="reactTableContainer">
+              <div className="mainListBtnContainer">
+                <div className="SubListBtnLeftContainer">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className="largeButtonOverride"
+                    onClick={() =>
+                      document.getElementById("test-table-xls-button").click()
+                    }
+                  >
+                    <span
+                      className="fa fa-file-excel-o"
+                      style={{ margin: "0px 5px 0px 0px" }}
+                    />
+                    Export List to Excel
+                  </Button>
+                </div>
+                <div className="SubListBtnRightContainer">
+                  <div>
+                    <Button
+                      tag={Link}
+                      to={`/publicholiday/uploadholiday`}
+                      className="largeButtonOverride"
+                    >
+                      <span
+                        className="fa fa-upload"
+                        style={{ margin: "0px 5px 0px 0px" }}
+                      />
+                      Upload Holidays
+                    </Button>
+                  </div>
+                  <div style={{ paddingLeft: "4px" }}>
+                    <Button
+                      tag={Link}
+                      to={`/publicholiday/add`}
+                      className="largeButtonOverride"
+                    >
+                      <span
+                        className="fa fa-plus"
+                        style={{ margin: "0px 5px 0px 0px" }}
+                      />
+                      Add Holiday
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              <ReactTable
+                data={this.state.publicHolidayDetails}
+                columns={PublicHolidayCols}
+                defaultFilterMethod={(filter, row) =>
+                  String(row[filter.id])
+                    .toLowerCase()
+                    .includes(filter.value.toLowerCase())
                 }
-              >
-                <span
-                  className="fa fa-file-excel-o"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-                Export List to Excel
-              </Button>
+                defaultPageSize={10}
+                pages={this.state.pages}
+                loading={this.state.loading}
+                filterable={true}
+                sortable={true}
+                multiSort={true}
+                loadingText="Loading Public Holidays..."
+                noDataText="No data available."
+                className="-striped"
+              />
+              <ExportToExcel
+                publicHolidayDetails={this.state.publicHolidayDetails}
+              />
             </div>
-            <div className="SubListBtnRightContainer">
-              <div>
-                <Button
-                  tag={Link}
-                  to={`/publicholiday/uploadholiday`}
-                  className="largeButtonOverride"
-                >
-                  <span
-                    className="fa fa-upload"
-                    style={{ margin: "0px 5px 0px 0px" }}
-                  />
-                  Upload Holidays
-                </Button>
-              </div>
-              <div style={{ paddingLeft: "4px" }}>
-                <Button
-                  tag={Link}
-                  to={`/publicholiday/add`}
-                  className="largeButtonOverride"
-                >
-                  <span
-                    className="fa fa-plus"
-                    style={{ margin: "0px 5px 0px 0px" }}
-                  />
-                  Add Holiday
-                </Button>
-              </div>
-            </div>
-          </div>
-          <ReactTable
-            data={this.state.publicHolidayDetails}
-            columns={PublicHolidayCols}
-            defaultFilterMethod={(filter, row) =>
-              String(row[filter.id])
-                .toLowerCase()
-                .includes(filter.value.toLowerCase())
-            }
-            defaultPageSize={10}
-            pages={this.state.pages}
-            loading={this.state.loading}
-            filterable={true}
-            sortable={true}
-            multiSort={true}
-            loadingText="Loading Public Holidays..."
-            noDataText="No data available."
-            className="-striped"
-          />
-          <ExportToExcel
-            publicHolidayDetails={this.state.publicHolidayDetails}
-          />
-        </div>
+          </React.Fragment>
+        )}
       </div>
     );
   }

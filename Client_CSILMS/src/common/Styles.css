@@ -194,7 +194,7 @@ a:focus {
   justify-content: flex-start;
   background: #b8e2fc;
   flex-basis: auto;
-  box-shadow: 5px 5px 5px rgb(63, 84, 105);
+  box-shadow: 5px 5px 5px #3f5469;
   border: 1px solid #032a53;
   border-radius: 5px;
 }

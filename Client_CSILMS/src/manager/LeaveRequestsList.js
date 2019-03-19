@@ -13,6 +13,7 @@ import "../common/Styles.css";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import ExportToExcel from "./LeaveRequestListToExcel";
+import LoadingPage from "../common/LoadingPage";
 
 class LeaveRequestsList extends Component {
   constructor(props) {
@@ -59,8 +60,7 @@ class LeaveRequestsList extends Component {
       url: API_BASE_URL + "/translateitem/leave_status",
       method: "GET"
     })
-      .then(data => this.setState({ leaveStatusLookup: data })
-      )
+      .then(data => this.setState({ leaveStatusLookup: data }))
       .catch(error => {
         if (error.status === 401) {
           this.props.history.push("/login");
@@ -221,12 +221,12 @@ class LeaveRequestsList extends Component {
     //   }
     // };
 
-    const getLeaveStatusDesc = (strLeaveStatus) => {
+    const getLeaveStatusDesc = strLeaveStatus => {
       let arrLeaveStatusLookup = this.state.leaveStatusLookup;
       let leaveDesc = "";
       arrLeaveStatusLookup.forEach(leaveStat => {
         if (leaveStat.id.fieldvalue === strLeaveStatus) {
-          return leaveDesc = leaveStat.xlatlongname;
+          return (leaveDesc = leaveStat.xlatlongname);
         }
       });
       return leaveDesc;
@@ -239,45 +239,51 @@ class LeaveRequestsList extends Component {
             <h3 className="headerStyle">Leave Requests</h3>
           </span>
         </div>
-        <div className="reactTableContainer">
-          <div className="mainListBtnContainer">
-            <div className="SubListBtnSingleContainer">
-              <Button
-                variant="contained"
-                color="primary"
-                className="largeButtonOverride"
-                onClick={() =>
-                  document.getElementById("test-table-xls-button").click()
+        {this.state.loading ? (
+          <LoadingPage />
+        ) : (
+          <React.Fragment>
+            <div className="reactTableContainer">
+              <div className="mainListBtnContainer">
+                <div className="SubListBtnSingleContainer">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className="largeButtonOverride"
+                    onClick={() =>
+                      document.getElementById("test-table-xls-button").click()
+                    }
+                  >
+                    <span
+                      className="fa fa-file-excel-o"
+                      style={{ margin: "0px 5px 0px 0px" }}
+                    />
+                    Export List to Excel
+                  </Button>
+                </div>
+              </div>
+              <ReactTable
+                data={this.state.leaveRequestData}
+                columns={leaveRequestsCols}
+                defaultFilterMethod={(filter, row) =>
+                  String(row[filter.id])
+                    .toLowerCase()
+                    .includes(filter.value.toLowerCase())
                 }
-              >
-                <span
-                  className="fa fa-file-excel-o"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-                Export List to Excel
-              </Button>
+                defaultPageSize={10}
+                pages={this.state.pages}
+                loading={this.state.loading}
+                filterable={true}
+                sortable={true}
+                multiSort={true}
+                loadingText="Loading Employe Profiles..."
+                noDataText="No data available."
+                className="-striped"
+              />
+              <ExportToExcel leaveRequestData={this.state.leaveRequestData} />
             </div>
-          </div>
-          <ReactTable
-            data={this.state.leaveRequestData}
-            columns={leaveRequestsCols}
-            defaultFilterMethod={(filter, row) =>
-              String(row[filter.id])
-                .toLowerCase()
-                .includes(filter.value.toLowerCase())
-            }
-            defaultPageSize={10}
-            pages={this.state.pages}
-            loading={this.state.loading}
-            filterable={true}
-            sortable={true}
-            multiSort={true}
-            loadingText="Loading Employe Profiles..."
-            noDataText="No data available."
-            className="-striped"
-          />
-          <ExportToExcel leaveRequestData={this.state.leaveRequestData} />
-        </div>
+          </React.Fragment>
+        )}
       </div>
     );
   }

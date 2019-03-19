@@ -13,6 +13,7 @@ import { fetchData, formatDateYMD, fetchFile } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import { confirmAlert } from "react-confirm-alert";
 import "../common/Styles.css";
+import LoadingPage from "../common/LoadingPage";
 
 class LeaveHistoryView extends Component {
   constructor(props) {
@@ -31,7 +32,8 @@ class LeaveHistoryView extends Component {
       leaveStatus: "",
       approvedDate: "",
       attachment: "",
-      leaveStatusLookup: []
+      leaveStatusLookup: [],
+      loading: true
     };
   }
 
@@ -42,7 +44,7 @@ class LeaveHistoryView extends Component {
       startDate,
       leaveCode
     } = this.props.computedMatch.params;
-    
+
     this.loadLeaveStatusLookup();
 
     fetchData({
@@ -71,7 +73,8 @@ class LeaveHistoryView extends Component {
           approver: data.approver,
           leaveStatus: data.leaveStatus,
           approvedDate: data.approvedDate,
-          attachment: data.attachment
+          attachment: data.attachment,
+          loading: false
         });
         this.getApproverName(data.approver);
       })
@@ -133,8 +136,7 @@ class LeaveHistoryView extends Component {
       url: API_BASE_URL + "/translateitem/leave_status",
       method: "GET"
     })
-      .then(data => this.setState({ leaveStatusLookup: data })
-      )
+      .then(data => this.setState({ leaveStatusLookup: data }))
       .catch(error => {
         if (error.status === 401) {
           this.props.history.push("/login");
@@ -150,7 +152,6 @@ class LeaveHistoryView extends Component {
         }
       });
   };
-
 
   render() {
     const {
@@ -190,12 +191,12 @@ class LeaveHistoryView extends Component {
     //   }
     // };
 
-    const getLeaveStatusDesc = (strLeaveStatus) => {
+    const getLeaveStatusDesc = strLeaveStatus => {
       let arrLeaveStatusLookup = this.state.leaveStatusLookup;
       let leaveDesc = "";
       arrLeaveStatusLookup.forEach(leaveStat => {
         if (leaveStat.id.fieldvalue === strLeaveStatus) {
-          return leaveDesc = leaveStat.xlatlongname;
+          return (leaveDesc = leaveStat.xlatlongname);
         }
       });
       return leaveDesc;
@@ -221,93 +222,96 @@ class LeaveHistoryView extends Component {
             <h3 className="headerStyle">View Leave History</h3>
           </span>
         </div>
-
-        <div className="tableContainerFlex">
-          <Form>
-            <FormGroup row>
-              <Label for="emplId" sm={2}>
-                Employee ID:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="text"
-                  name="emplId"
-                  id="emplId"
-                  value={emplId}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="name" sm={2}>
-                Employee Name:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="text"
-                  name="name"
-                  id="name"
-                  value={name}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="leaveDescr" sm={2}>
-                Leave Category:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="text"
-                  name="leaveDescr"
-                  id="leaveDescr"
-                  value={leaveDescr}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="startDate" sm={2}>
-                Start Date:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="date"
-                  name="startDate"
-                  id="startDate"
-                  value={formatDateYMD(startDate)}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="endDate" sm={2}>
-                End Date:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="date"
-                  name="endDate"
-                  id="endDate"
-                  value={formatDateYMD(endDate)}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="endDate" sm={2}>
-                Taking Half Day?
-              </Label>
-              <Col sm={10}>
-                <CustomInput
-                  type="checkbox"
-                  id="isHalfDay"
-                  label=""
-                  checked={BooleanHalfDay(isHalfDay)}
-                  disabled={true}
-                />
-              </Col>
-              {/* <Label check>
+        {this.state.loading ? (
+          <LoadingPage />
+        ) : (
+          <React.Fragment>
+            <div className="tableContainerFlex">
+              <Form>
+                <FormGroup row>
+                  <Label for="emplId" sm={2}>
+                    Employee ID:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="text"
+                      name="emplId"
+                      id="emplId"
+                      value={emplId}
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="name" sm={2}>
+                    Employee Name:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="text"
+                      name="name"
+                      id="name"
+                      value={name}
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="leaveDescr" sm={2}>
+                    Leave Category:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="text"
+                      name="leaveDescr"
+                      id="leaveDescr"
+                      value={leaveDescr}
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="startDate" sm={2}>
+                    Start Date:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="date"
+                      name="startDate"
+                      id="startDate"
+                      value={formatDateYMD(startDate)}
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="endDate" sm={2}>
+                    End Date:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="date"
+                      name="endDate"
+                      id="endDate"
+                      value={formatDateYMD(endDate)}
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="endDate" sm={2}>
+                    Taking Half Day?
+                  </Label>
+                  <Col sm={10}>
+                    <CustomInput
+                      type="checkbox"
+                      id="isHalfDay"
+                      label=""
+                      checked={BooleanHalfDay(isHalfDay)}
+                      disabled={true}
+                    />
+                  </Col>
+                  {/* <Label check>
                 <Input
                   type="checkbox"
                   name="isHalfDay"
@@ -317,104 +321,106 @@ class LeaveHistoryView extends Component {
                 />
                 Taking Half Day Leave?
               </Label> */}
-            </FormGroup>
-            <FormGroup row>
-              <Label for="leaveDuration" sm={2}>
-                Leave Duration:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="text"
-                  name="leaveDuration"
-                  id="leaveDuration"
-                  value={leaveDuration}
-                  placeholder="Days"
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="leaveReason" sm={2}>
-                Leave Reason:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="textarea"
-                  name="leaveReason"
-                  id="leaveReason"
-                  value={leaveReason}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="attachment" sm={2}>
-                File Attachment:
-              </Label>
-              <Col sm={10}>{showAttachment(attachment)}</Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="approver" sm={2}>
-                Approver Name:
-              </Label>
-              <Col sm={10}>
-                {/* <Input
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="leaveDuration" sm={2}>
+                    Leave Duration:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="text"
+                      name="leaveDuration"
+                      id="leaveDuration"
+                      value={leaveDuration}
+                      placeholder="Days"
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="leaveReason" sm={2}>
+                    Leave Reason:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="textarea"
+                      name="leaveReason"
+                      id="leaveReason"
+                      value={leaveReason}
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="attachment" sm={2}>
+                    File Attachment:
+                  </Label>
+                  <Col sm={10}>{showAttachment(attachment)}</Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="approver" sm={2}>
+                    Approver Name:
+                  </Label>
+                  <Col sm={10}>
+                    {/* <Input
                   type="text"
                   name="approver"
                   id="approver"
                   value={approver}
                   disabled={true}
                 /> */}
-                <Input
-                  type="text"
-                  name="approverName"
-                  id="approverName"
-                  value={approverName}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="leaveStatus" sm={2}>
-                Leave Status:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="text"
-                  name="leaveStatus"
-                  id="leaveStatus"
-                  value={getLeaveStatusDesc(leaveStatus)}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="endDate" sm={2}>
-                Date Status Changed:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="date"
-                  name="endDate"
-                  id="endDate"
-                  value={formatDateYMD(approvedDate)}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Col sm={{ size: 10, offset: 2 }}>
-                <Button
-                  color="secondary"
-                  onClick={this.handleBackToMain}
-                  className="largeButtonOverride"
-                >
-                  Back
-                </Button>
-              </Col>
-            </FormGroup>
-          </Form>
-        </div>
+                    <Input
+                      type="text"
+                      name="approverName"
+                      id="approverName"
+                      value={approverName}
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="leaveStatus" sm={2}>
+                    Leave Status:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="text"
+                      name="leaveStatus"
+                      id="leaveStatus"
+                      value={getLeaveStatusDesc(leaveStatus)}
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="endDate" sm={2}>
+                    Date Status Changed:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="date"
+                      name="endDate"
+                      id="endDate"
+                      value={formatDateYMD(approvedDate)}
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Col sm={{ size: 10, offset: 2 }}>
+                    <Button
+                      color="secondary"
+                      onClick={this.handleBackToMain}
+                      className="largeButtonOverride"
+                    >
+                      Back
+                    </Button>
+                  </Col>
+                </FormGroup>
+              </Form>
+            </div>
+          </React.Fragment>
+        )}
       </div>
     );
   }

@@ -8,6 +8,7 @@ import { withRouter } from "react-router-dom";
 import { NavLink } from "react-router-dom";
 import BGURL from "../img/header.jpg";
 // import Countdown from "../common/Countdown.js"
+import LoadingPage from "../common/LoadingPage";
 
 class HomePage extends Component {
   constructor(props) {
@@ -19,9 +20,9 @@ class HomePage extends Component {
       pendingApproval: [],
       staffLeave: {
         balanceLeave: ""
-      }
+      },
+      loading: true
     };
-
     this.loadUserProfile = this.loadUserProfile.bind(this);
     this.loadPendingApprovalManager = this.loadPendingApprovalManager.bind(
       this
@@ -84,6 +85,9 @@ class HomePage extends Component {
     this.loadUserProfile();
     this.loadPendingApprovalManager();
     this.loadLeaveBalance();
+    this.setState({
+      loading: false
+    });
   }
 
   render() {
@@ -100,13 +104,21 @@ class HomePage extends Component {
       padding: "10px"
     };
 
-    let { staffLeave, userData, pendingApproval } = this.state;
+    let { staffLeave, userData, pendingApproval, loading } = this.state;
 
     // let userData = this.state.userData;
     // let pendingApproval = this.state.pendingApproval;
+    if (loading) {
+      return (
+        <div className="mainContainerFlex">
+          <LoadingPage />
+        </div>
+      );
+      return;
+    }
     if (pendingApproval === 0) {
       return (
-        <div>
+        <div className="mainContainerFlex">
           <Jumbotron style={divStyle}>
             <div style={pstyle}>
               <h1 className="display-3">Hello, {userData["name"]}</h1>
@@ -123,7 +135,7 @@ class HomePage extends Component {
       );
     } else
       return (
-        <div>
+        <div className="mainContainerFlex">
           <Jumbotron style={divStyle}>
             <div style={pstyle}>
               <h1 className="display-3">Hello, {userData["name"]}</h1>

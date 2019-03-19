@@ -16,6 +16,7 @@ import { Redirect, withRouter } from "react-router-dom";
 import { isHrRole } from "../util/APIUtils";
 import { fetchData } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
+import LoadingPage from "../common/LoadingPage";
 
 class EditLeaveCategory extends Component {
   constructor(props) {
@@ -23,7 +24,8 @@ class EditLeaveCategory extends Component {
     this.state = {
       leaveCode: "",
       leaveDescr: "",
-      entitlement: ""
+      entitlement: "",
+      loading: true
     };
     this.handleSubmit = this.handleSubmit.bind(this);
     this.doNotSubmit = this.doNotSubmit.bind(this);
@@ -45,7 +47,8 @@ class EditLeaveCategory extends Component {
         this.setState({
           leaveCode: data.leaveCode,
           leaveDescr: data.leaveDescr,
-          entitlement: data.entitlement
+          entitlement: data.entitlement,
+          loading: false
         });
       })
       .catch(err => {
@@ -59,7 +62,7 @@ class EditLeaveCategory extends Component {
     }));
   };
 
-/* Delete function is removed for now. Additional handling required is to be implement in Phase 2
+  /* Delete function is removed for now. Additional handling required is to be implement in Phase 2
   toggleDelete = () => {
     this.setState(prevState => ({
       modalDelete: !prevState.modalDelete
@@ -118,7 +121,7 @@ class EditLeaveCategory extends Component {
     }
   }
 
-/* Delete function is removed for now. Additional handling required is to be implement in Phase 2
+  /* Delete function is removed for now. Additional handling required is to be implement in Phase 2
   handleDelete(event) {
     event.preventDefault();
 
@@ -154,68 +157,72 @@ class EditLeaveCategory extends Component {
             <h3 className="headerStyle">Edit Leave Category</h3>
           </span>
         </div>
-        <div className="tableContainerFlex">
-          <Form onSubmit={this.doNotSubmit}>
-            <FormGroup row>
-              <Label for="leaveCode" sm={2}>
-                Leave Code:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="text"
-                  name="leaveCode"
-                  id="leaveCode"
-                  value={leaveCode}
-                  onChange={this.handleChange}
-                  maxLength="3"
-                  required
-                  disabled
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="name" sm={2}>
-                Leave Description:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="text"
-                  name="leaveDescr"
-                  id="leaveDescription"
-                  value={leaveDescr}
-                  onChange={this.handleChange}
-                  required
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="name" sm={2}>
-                Leave Entitlement:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="number"
-                  name="entitlement"
-                  id="leaveEntitlement"
-                  value={entitlement}
-                  onChange={this.handleChange}
-                  required
-                />
-                <span>{leaveEntErrorMsg}</span>
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Col sm={{ size: 10, offset: 2 }}>
-                <Button
-                  type="button"
-                  color="primary"
-                  onClick={this.toggleSave}
-                  className="largeButtonOverride"
-                  disabled={this.validateFields()}
-                >
-                  Save
-                </Button>
-              {/* Delete function is removed for now. Additional handling required is to be implement in Phase 2
+        {this.state.loading ? (
+          <LoadingPage />
+        ) : (
+          <React.Fragment>
+            <div className="tableContainerFlex">
+              <Form onSubmit={this.doNotSubmit}>
+                <FormGroup row>
+                  <Label for="leaveCode" sm={2}>
+                    Leave Code:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="text"
+                      name="leaveCode"
+                      id="leaveCode"
+                      value={leaveCode}
+                      onChange={this.handleChange}
+                      maxLength="3"
+                      required
+                      disabled
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="name" sm={2}>
+                    Leave Description:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="text"
+                      name="leaveDescr"
+                      id="leaveDescription"
+                      value={leaveDescr}
+                      onChange={this.handleChange}
+                      required
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="name" sm={2}>
+                    Leave Entitlement:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="number"
+                      name="entitlement"
+                      id="leaveEntitlement"
+                      value={entitlement}
+                      onChange={this.handleChange}
+                      required
+                    />
+                    <span>{leaveEntErrorMsg}</span>
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Col sm={{ size: 10, offset: 2 }}>
+                    <Button
+                      type="button"
+                      color="primary"
+                      onClick={this.toggleSave}
+                      className="largeButtonOverride"
+                      disabled={this.validateFields()}
+                    >
+                      Save
+                    </Button>
+                    {/* Delete function is removed for now. Additional handling required is to be implement in Phase 2
                 <span> </span>
                 <Button
                   type="button"
@@ -226,45 +233,45 @@ class EditLeaveCategory extends Component {
                   Delete
                 </Button>
               */}
-                <span> </span>
-                <Button
-                  type="button"
-                  color="secondary"
-                  onClick={this.handleCancel}
-                >
-                  Cancel
-                </Button>
-                <div>
-                  <Modal
-                    isOpen={this.state.modalSave}
-                    toggle={this.toggleSave}
-                    className={this.props.className}
-                    style={{
-                      width: "360px",
-                      height: "300px",
-                      margin: "220px auto"
-                    }}
-                  >
-                    <ModalHeader>Edit Confirmation</ModalHeader>
-                    {/* <ModalBody>
+                    <span> </span>
+                    <Button
+                      type="button"
+                      color="secondary"
+                      onClick={this.handleCancel}
+                    >
+                      Cancel
+                    </Button>
+                    <div>
+                      <Modal
+                        isOpen={this.state.modalSave}
+                        toggle={this.toggleSave}
+                        className={this.props.className}
+                        style={{
+                          width: "360px",
+                          height: "300px",
+                          margin: "220px auto"
+                        }}
+                      >
+                        <ModalHeader>Edit Confirmation</ModalHeader>
+                        {/* <ModalBody>
                       Are you sure you want to edit this item?
                     </ModalBody> */}
-                    <ModalFooter>
-                      <Button
-                        type="submit"
-                        color="primary"
-                        onClick={this.handleSubmit}
-                        className="largeButtonOverride"
-                      >
-                        Confirm
-                      </Button>
-                      <Button color="secondary" onClick={this.toggleSave}>
-                        Cancel
-                      </Button>
-                    </ModalFooter>
-                  </Modal>
-                </div>
-                {/* Delete function is removed for now. Additional handling required is to be implement in Phase 2
+                        <ModalFooter>
+                          <Button
+                            type="submit"
+                            color="primary"
+                            onClick={this.handleSubmit}
+                            className="largeButtonOverride"
+                          >
+                            Confirm
+                          </Button>
+                          <Button color="secondary" onClick={this.toggleSave}>
+                            Cancel
+                          </Button>
+                        </ModalFooter>
+                      </Modal>
+                    </div>
+                    {/* Delete function is removed for now. Additional handling required is to be implement in Phase 2
                 <div>
                   <Modal
                     isOpen={this.state.modalDelete}
@@ -279,7 +286,8 @@ class EditLeaveCategory extends Component {
                     <ModalHeader>Delete Confirmation</ModalHeader>
                     /* <ModalBody>
                       Are you sure you want to delete this item?
-                    </ModalBody> */ /*
+                    </ModalBody> */
+                    /*
                     <ModalFooter>
                       <Button
                         type="submit"
@@ -295,10 +303,12 @@ class EditLeaveCategory extends Component {
                   </Modal>
                 </div>
                 */}
-              </Col>
-            </FormGroup>
-          </Form>
-        </div>
+                  </Col>
+                </FormGroup>
+              </Form>
+            </div>
+          </React.Fragment>
+        )}
       </div>
     );
   }

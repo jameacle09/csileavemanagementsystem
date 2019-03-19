@@ -10,6 +10,7 @@ import { confirmAlert } from "react-confirm-alert";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
 import ExportToExcel from "./StaffProfilesToExcel";
+import LoadingPage from "../common/LoadingPage";
 
 class ListStaffProfile extends Component {
   _isMounted = false;
@@ -311,6 +312,7 @@ class ListStaffProfile extends Component {
         }
       }
     ];
+
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -318,95 +320,109 @@ class ListStaffProfile extends Component {
             <h3 className="headerStyle">Employee Profiles</h3>
           </span>
         </div>
-        <div className="reactTableContainer">
-          <div className="mainListBtnContainer">
-            <div className="SubListBtnLeftContainer">
-              <Button
-                variant="contained"
-                color="primary"
-                className="largeButtonOverride"
-                onClick={() =>
-                  document.getElementById("test-table-xls-button").click()
+
+        {this.state.loading ? (
+          <LoadingPage />
+        ) : (
+          <React.Fragment>
+            <div className="reactTableContainer">
+              <div className="mainListBtnContainer">
+                <div className="SubListBtnLeftContainer">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className="largeButtonOverride"
+                    onClick={() =>
+                      document.getElementById("test-table-xls-button").click()
+                    }
+                  >
+                    <span
+                      className="fa fa-file-excel-o"
+                      style={{ margin: "0px 5px 0px 0px" }}
+                    />
+                    Export List to Excel
+                  </Button>
+                </div>
+                <div className="SubListBtnRightContainer">
+                  <div>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className="largeButtonOverride"
+                      component={Link}
+                      tag={Link}
+                      to={`/liststaffprofile/uploadprofiles`}
+                    >
+                      <span
+                        className="fa fa-upload"
+                        style={{ margin: "0px 5px 0px 0px" }}
+                      />
+                      Upload Profiles
+                    </Button>
+                  </div>
+                  <div style={{ paddingLeft: "4px" }}>
+                    <Button
+                      color="primary"
+                      // component={Link}
+                      tag={Link}
+                      to={`/liststaffprofile/add`}
+                      className="largeButtonOverride"
+                    >
+                      <span
+                        className="fa fa-plus"
+                        style={{ margin: "0px 5px 0px 0px" }}
+                      />
+                      Add Employee
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              <ReactTable
+                // key={this.state.filteredLength}
+                data={this.state.employeeProfiles}
+                columns={EmplProfileCols}
+                defaultFilterMethod={(filter, row) =>
+                  String(row[filter.id])
+                    .toLowerCase()
+                    .includes(filter.value.toLowerCase())
                 }
-              >
-                <span
-                  className="fa fa-file-excel-o"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-                Export List to Excel
-              </Button>
+                pageSizeOptions={[
+                  10,
+                  20,
+                  30,
+                  50,
+                  100,
+                  this.state.filteredLength
+                ]}
+                defaultPageSize={10}
+                pages={this.state.pages}
+                loading={this.state.loading}
+                filterable={true}
+                sortable={true}
+                multiSort={true}
+                loadingText="Loading Employee Profiles..."
+                noDataText="No data available."
+                className="-striped"
+                showPagination={true}
+                showPageSizeOptions={true}
+                ref={refer => {
+                  this.selectTable = refer;
+                }}
+                onFilteredChange={() => {
+                  const filteredData = this.selectTable.getResolvedState()
+                    .sortedData;
+                  const filteredDataLength = this.selectTable.getResolvedState()
+                    .sortedData.length;
+                  this.setState({
+                    filteredProfiles: filteredData,
+                    filteredLength: filteredDataLength
+                  });
+                }}
+              />
+              <ExportToExcel employeeProfiles={this.state.filteredProfiles} />
             </div>
-            <div className="SubListBtnRightContainer">
-              <div>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className="largeButtonOverride"
-                  component={Link}
-                  tag={Link}
-                  to={`/liststaffprofile/uploadprofiles`}
-                >
-                  <span
-                    className="fa fa-upload"
-                    style={{ margin: "0px 5px 0px 0px" }}
-                  />
-                  Upload Profiles
-                </Button>
-              </div>
-              <div style={{ paddingLeft: "4px" }}>
-                <Button
-                  color="primary"
-                  // component={Link}
-                  tag={Link}
-                  to={`/liststaffprofile/add`}
-                  className="largeButtonOverride"
-                >
-                  <span
-                    className="fa fa-plus"
-                    style={{ margin: "0px 5px 0px 0px" }}
-                  />
-                  Add Employee
-                </Button>
-              </div>
-            </div>
-          </div>
-          <ReactTable
-            // key={this.state.filteredLength}
-            data={this.state.employeeProfiles}
-            columns={EmplProfileCols}
-            defaultFilterMethod={(filter, row) =>
-              String(row[filter.id])
-                .toLowerCase()
-                .includes(filter.value.toLowerCase())
-            }
-            pageSizeOptions={[10, 20, 30, 50, 100, this.state.filteredLength]}
-            defaultPageSize={10}
-            pages={this.state.pages}
-            loading={this.state.loading}
-            filterable={true}
-            sortable={true}
-            multiSort={true}
-            loadingText="Loading Employee Profiles..."
-            noDataText="No data available."
-            className="-striped"
-            showPagination={true}
-            showPageSizeOptions={true}
-            ref={refer => {
-              this.selectTable = refer;
-            }}
-            onFilteredChange={() => {
-              const filteredData = this.selectTable.getResolvedState()
-                .sortedData;
-              const filteredDataLength = this.selectTable.getResolvedState()
-                .sortedData.length;
-              this.setState({
-                filteredProfiles: filteredData,
-                filteredLength: filteredDataLength
-              });
-            }}
-          />
-          <ExportToExcel employeeProfiles={this.state.filteredProfiles} />
-        </div>
+          </React.Fragment>
+        )}
       </div>
     );
   }

@@ -9,6 +9,7 @@ import { isHrRole } from "../util/APIUtils";
 import { fetchData } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import ExportToExcel from "./LeaveEntitlementToExcel";
+import LoadingPage from "../common/LoadingPage";
 
 class LeaveEntitlement extends Component {
   constructor(props) {
@@ -186,78 +187,84 @@ class LeaveEntitlement extends Component {
             <h3 className="headerStyle">Leave Entitlements</h3>
           </span>
         </div>
-        <div className="reactTableContainer">
-          <div className="mainListBtnContainer">
-            <div className="SubListBtnLeftContainer">
-              <Button
-                variant="contained"
-                color="primary"
-                className="largeButtonOverride"
-                onClick={() =>
-                  document.getElementById("test-table-xls-button").click()
+        {this.state.loading ? (
+          <LoadingPage />
+        ) : (
+          <React.Fragment>
+            <div className="reactTableContainer">
+              <div className="mainListBtnContainer">
+                <div className="SubListBtnLeftContainer">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className="largeButtonOverride"
+                    onClick={() =>
+                      document.getElementById("test-table-xls-button").click()
+                    }
+                  >
+                    <span
+                      className="fa fa-file-excel-o"
+                      style={{ margin: "0px 5px 0px 0px" }}
+                    />
+                    Export List to Excel
+                  </Button>
+                </div>
+                <div className="SubListBtnRightContainer">
+                  <div>
+                    <Button
+                      variant="contained"
+                      color="primary"
+                      className="largeButtonOverride"
+                      // component={Link}
+                      tag={Link}
+                      to={`/leaveentitlement/uploadentitlement`}
+                    >
+                      <span
+                        className="fa fa-upload"
+                        style={{ margin: "0px 5px 0px 0px" }}
+                      />
+                      Upload Entitlements
+                    </Button>
+                  </div>
+                  <div style={{ paddingLeft: "4px" }}>
+                    <Button
+                      tag={Link}
+                      to={`/leaveentitlement/add`}
+                      className="largeButtonOverride"
+                    >
+                      <span
+                        className="fa fa-plus"
+                        style={{ margin: "0px 5px 0px 0px" }}
+                      />
+                      Add Entitlement
+                    </Button>
+                  </div>
+                </div>
+              </div>
+              <ReactTable
+                data={this.state.leaveEntitlementData}
+                columns={leaveEntitlementCols}
+                defaultFilterMethod={(filter, row) =>
+                  String(row[filter.id])
+                    .toLowerCase()
+                    .includes(filter.value.toLowerCase())
                 }
-              >
-                <span
-                  className="fa fa-file-excel-o"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-                Export List to Excel
-              </Button>
+                defaultPageSize={10}
+                pages={this.state.pages}
+                loading={this.state.loading}
+                filterable={true}
+                sortable={true}
+                multiSort={true}
+                loadingText="Loading Leave Entitlements..."
+                noDataText="No data available."
+                className="-striped"
+              />
+              <ExportToExcel
+                leaveEntitlementData={this.state.leaveEntitlementData}
+              />
             </div>
-            <div className="SubListBtnRightContainer">
-              <div>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  className="largeButtonOverride"
-                  // component={Link}
-                  tag={Link}
-                  to={`/leaveentitlement/uploadentitlement`}
-                >
-                  <span
-                    className="fa fa-upload"
-                    style={{ margin: "0px 5px 0px 0px" }}
-                  />
-                  Upload Entitlements
-                </Button>
-              </div>
-              <div style={{ paddingLeft: "4px" }}>
-                <Button
-                  tag={Link}
-                  to={`/leaveentitlement/add`}
-                  className="largeButtonOverride"
-                >
-                  <span
-                    className="fa fa-plus"
-                    style={{ margin: "0px 5px 0px 0px" }}
-                  />
-                  Add Entitlement
-                </Button>
-              </div>
-            </div>
-          </div>
-          <ReactTable
-            data={this.state.leaveEntitlementData}
-            columns={leaveEntitlementCols}
-            defaultFilterMethod={(filter, row) =>
-              String(row[filter.id])
-                .toLowerCase()
-                .includes(filter.value.toLowerCase())
-            }
-            defaultPageSize={10}
-            pages={this.state.pages}
-            loading={this.state.loading}
-            filterable={true}
-            sortable={true}
-            multiSort={true}
-            loadingText="Loading Leave Entitlements..."
-            noDataText="No data available."
-            className="-striped"
-          />
-          <ExportToExcel
-            leaveEntitlementData={this.state.leaveEntitlementData}
-          />
-        </div>
+          </React.Fragment>
+        )}
       </div>
     );
   }
