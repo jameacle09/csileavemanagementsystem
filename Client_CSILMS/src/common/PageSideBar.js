@@ -113,11 +113,6 @@ class PageSideBar extends Component {
                   Translate Items
                 </NavLink>
               </li>
-              <li>
-                <NavLink to="#" activeClassName="sidebarLinkActive">
-                  Reports
-                </NavLink>
-              </li>
             </ul>
           </li>
           <li style={displayByRole(this.props.currentUser, "MANAGER")}>
@@ -141,11 +136,6 @@ class PageSideBar extends Component {
               <li>
                 <NavLink to="/leavehistory" activeClassName="sidebarLinkActive">
                   Leave History
-                </NavLink>
-              </li>
-              <li>
-                <NavLink to="#" activeClassName="sidebarLinkActive">
-                  Reports
                 </NavLink>
               </li>
             </ul>
