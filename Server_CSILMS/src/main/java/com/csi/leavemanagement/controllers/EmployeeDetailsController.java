@@ -115,4 +115,17 @@ public class EmployeeDetailsController {
     public EmployeeDetails addEditEmployeeDetails(@RequestBody EmployeeDetails employeeDetails,@CurrentUser UserPrincipal currentUser) {
 		return employeeDetailsService.addEditEmployeeDetails(employeeDetails, currentUser);
     }
+	
+	@PostMapping("/bulkUpdateEmployeeDetails")
+    @PreAuthorize("hasAuthority('HR')")
+    public int bulkUpdateEmployeeDetails(@RequestBody EmployeeDetails[] employeeDetailsArray, @CurrentUser UserPrincipal currentUser) {
+		
+		int successCount = 0;
+		for(EmployeeDetails employeeDetails : employeeDetailsArray) {
+			
+			if( this.employeeDetailsService.addEditEmployeeDetails(employeeDetails, currentUser) != null)
+				successCount ++;
+		}
+		return successCount;
+	}
 }
