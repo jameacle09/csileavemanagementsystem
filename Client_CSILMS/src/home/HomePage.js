@@ -114,11 +114,10 @@ class HomePage extends Component {
           <LoadingPage />
         </div>
       );
-      return;
     }
     if (pendingApproval === 0) {
       return (
-        <div className="mainContainerFlex">
+        <div>
           <Jumbotron style={divStyle}>
             <div style={pstyle}>
               <h1 className="display-3">Hello, {userData["name"]}</h1>
@@ -135,7 +134,7 @@ class HomePage extends Component {
       );
     } else
       return (
-        <div className="mainContainerFlex">
+        <div>
           <Jumbotron style={divStyle}>
             <div style={pstyle}>
               <h1 className="display-3">Hello, {userData["name"]}</h1>

@@ -406,6 +406,7 @@ a:focus {
 }
 .uploadTemplateLink,
 .uploadTemplateLink:visited,
+.uploadTemplateLink:hover,
 .uploadTemplateLink:focus {
   color: rgb(39, 129, 247);
 }

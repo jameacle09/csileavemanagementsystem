@@ -20,12 +20,11 @@ class LoadingPage extends Component {
       verticalAlign: "middle"
     };
 
-    const innerContainer = {
-      marginLeft: "auto",
-      marginLight: "auto",
-      width: "400px"
-      /*whatever width you want*/
-    };
+    // const innerContainer = {
+    //   marginLeft: "auto",
+    //   marginLight: "auto",
+    //   width: "400px"
+    // };
     return (
       <div style={outerContainer}>
         <div style={middleContainer}>
