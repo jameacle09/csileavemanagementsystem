@@ -215,7 +215,7 @@ class MultipleStaffUpdate extends Component {
       default: 
         break;
     }
-    console.log(fieldValuesList[0].value)
+    
     this.setState({
       selectedFieldType: selectedFieldType,
       fieldValuesList: fieldValuesList,
@@ -255,6 +255,35 @@ class MultipleStaffUpdate extends Component {
           });
         }
       });
+  }
+
+  handleUpdateEmployee = event => {
+    const [targetEmplId, targetAttr] = event.target.id.split("_")
+
+    let employeeList = this.state.employeeProfiles;
+    employeeList.map(employeeProfile => {
+      if(employeeProfile.emplId === targetEmplId) {
+        employeeProfile[targetAttr] = event.target.value;
+      }
+      return true;
+    })
+    
+    this.setState({employeeProfiles: employeeList})
+  }
+
+  handleUpdateEmployeeMgr = event => {
+    const [targetEmplId] = event.target.id.split("_")
+    const newMgrId = event.target.value;
+
+    let employeeList = this.state.employeeProfiles;
+    employeeList.map(employeeProfile => {
+      if(employeeProfile.emplId === targetEmplId) {
+        employeeProfile.reportsTo = {emplId: newMgrId}
+      }
+      return true;
+    })
+    
+    this.setState({employeeProfiles: employeeList})
   }
 
   render() {
@@ -298,7 +327,14 @@ class MultipleStaffUpdate extends Component {
         },
         Cell: (props) => {
           return (
-            <Input type="select" value={props.value} bsSize="sm">
+            <Input 
+              type="select" 
+              name={props.row.emplId + "_gender"} 
+              id={props.row.emplId + "_gender"} 
+              onChange={this.handleUpdateEmployee}
+              value={props.value} 
+              bsSize="sm"
+            >
               { this.state.genderList.map(gender => {
                 return (
                   <option
@@ -324,7 +360,14 @@ class MultipleStaffUpdate extends Component {
         },
         Cell: (props) => {
           return (
-            <Input type="select" value={props.value} bsSize="sm">
+            <Input 
+              type="select" 
+              name={props.row.emplId + "_marriageStatus"} 
+              id={props.row.emplId + "_marriageStatus"} 
+              onChange={this.handleUpdateEmployee}
+              value={props.value} 
+              bsSize="sm"
+            >
               { this.state.marriageStatusList.map(marriageStatus => {
                 return (
                   <option
@@ -347,7 +390,14 @@ class MultipleStaffUpdate extends Component {
         sortable: true,
         Cell: (props) => {
           return (
-            <Input type="select" value={props.value} bsSize="sm">
+            <Input 
+              type="select" 
+              name={props.row.emplId + "_jobTitle"} 
+              id={props.row.emplId + "_jobTitle"} 
+              onChange={this.handleUpdateEmployee}
+              value={props.value} 
+              bsSize="sm"
+            >
               { this.state.jobTitleList.map(jobTitle => {
                 return (
                   <option
@@ -373,7 +423,14 @@ class MultipleStaffUpdate extends Component {
         },
         Cell: (props) => {
           return (
-            <Input type="select" value={props.value} bsSize="sm">
+            <Input
+              type="select" 
+              name={props.row.emplId + "_businessUnit"} 
+              id={props.row.emplId + "_businessUnit"} 
+              onChange={this.handleUpdateEmployee}
+              value={props.value} 
+              bsSize="sm"
+            >
               { this.state.businessUnitList.map(businessUnit => {
                 return (
                   <option
@@ -399,7 +456,14 @@ class MultipleStaffUpdate extends Component {
         },
         Cell: (props) => {
           return (
-            <Input type="select" value={props.value} bsSize="sm">
+            <Input
+              type="select" 
+              name={props.row.emplId + "_deptId"} 
+              id={props.row.emplId + "_deptId"} 
+              onChange={this.handleUpdateEmployee}
+              value={props.value} 
+              bsSize="sm"
+            >
               { this.state.deptIdList.map(deptId => {
                 return (
                   <option
@@ -421,8 +485,16 @@ class MultipleStaffUpdate extends Component {
         minWidth: 140,
         sortable: true,
         Cell: (props) => {
+          console.log(props)
           return (
-            <Input type="select" value={props.value} bsSize="sm">
+            <Input
+              type="select" 
+              name={props.row.emplId + "_manager"} 
+              id={props.row.emplId + "_manager"} 
+              onChange={this.handleUpdateEmployeeMgr}
+              value={props.value} 
+              bsSize="sm"
+            >
               { this.state.managerList.map(manager => {
                 return (
                   <option
