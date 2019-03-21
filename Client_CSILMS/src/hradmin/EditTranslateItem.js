@@ -165,42 +165,42 @@ class AddTranslateItem extends Component {
               if(employeeList.length > 3) {
                 outputMsgList = employeeList.slice(0,3);
 
-                  const remaining = employeeList.length - 3;
-                  outputMsgList[3] = "... and " + remaining + " other employee";
-                  outputMsgList[3] += remaining > 1 ? "s" : ""; // append "s" for plurals
-                } else outputMsgList = employeeList;
+                const remaining = employeeList.length - 3;
+                outputMsgList[3] = "... and " + remaining + " other employee";
+                outputMsgList[3] += remaining > 1 ? "s" : ""; // append "s" for plurals
+              } else outputMsgList = employeeList;
 
-                confirmAlert({
-                  childrenElement: () => {
-                    return (
-                      <div>
-                        Please update employees profile before deactivating{" "}
-                        <strong>{fieldvalue}</strong>. This{" "}
-                        <strong>{fieldname}</strong> is being reference by
-                        following employees:
-                        <ul>
-                          {outputMsgList.map(employeeString => (
-                            <li key={employeeString}> {employeeString} </li>
-                          ))}
-                        </ul>
-                      </div>
-                    );
-                  },
-                  buttons: [
-                    {
-                      label: "OK"
-                    } ,
-                    {
-                      label: "Update employee",
-                      onClick: () => this.props.history.push("/liststaffprofile/multipleupdate")
-                    }
-                  ]
-                });
-              } else {
-                // noReference remains true if no employee using the value
-                noReference = true;
-              }
-            })
+              confirmAlert({
+                childrenElement: () => {
+                  return (
+                    <div>
+                      Please update employees profile before deactivating{" "}
+                      <strong>{fieldvalue}</strong>. This{" "}
+                      <strong>{fieldname}</strong> is being reference by
+                      following employees:
+                      <ul>
+                        {outputMsgList.map(employeeString => (
+                          <li key={employeeString}> {employeeString} </li>
+                        ))}
+                      </ul>
+                    </div>
+                  );
+                },
+                buttons: [
+                  {
+                    label: "OK"
+                  } ,
+                  {
+                    label: "Update employee",
+                    onClick: () => this.props.history.push("/liststaffprofile/multipleupdate")
+                  }
+                ]
+              });
+            } else {
+              // noReference remains true if no employee using the value
+              noReference = true;
+            }
+          })
           .catch(error => {
             confirmAlert({
               message: error.status + " : " + error.message,
