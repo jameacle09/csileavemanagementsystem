@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import { Button, Input, Col } from "reactstrap";
-import { Link } from "react-router-dom";
 import "../common/Styles.css";
 import { Redirect, withRouter } from "react-router-dom";
 import { isHrRole } from "../util/APIUtils";
@@ -28,7 +27,7 @@ class MultipleStaffUpdate extends Component {
       jobTitleList: [],
       businessUnitList: [],
       managerList: [],
-      loading: true
+      loading: false
     };
   }
 
@@ -230,6 +229,7 @@ class MultipleStaffUpdate extends Component {
   }
 
   handleEmployeeSearch = event => {
+    this.setState({loading: true})
     const searchString = this.state.selectedFieldType + "=" + this.state.selectedFieldValue;
     
     fetchData({
@@ -264,6 +264,8 @@ class MultipleStaffUpdate extends Component {
     employeeList.map(employeeProfile => {
       if(employeeProfile.emplId === targetEmplId) {
         employeeProfile[targetAttr] = event.target.value;
+        employeeProfile.changed = true;
+        console.log(employeeProfile)
       }
       return true;
     })
@@ -279,11 +281,49 @@ class MultipleStaffUpdate extends Component {
     employeeList.map(employeeProfile => {
       if(employeeProfile.emplId === targetEmplId) {
         employeeProfile.reportsTo = {emplId: newMgrId}
+        employeeProfile.changed = true;
       }
       return true;
     })
     
     this.setState({employeeProfiles: employeeList})
+  }
+
+  handleSave = () => {
+    const changedEmployeeProfiles = this.state.employeeProfiles.filter( employee => {
+      return employee.hasOwnProperty('changed')
+    })
+
+    fetchData({
+      url: API_BASE_URL + "/bulkUpdateEmployeeDetails",
+      method: "POST",
+      body: JSON.stringify(changedEmployeeProfiles)
+    })
+      .then(data => {
+        confirmAlert({
+          message:  data + " employee" + (data == 1 ? " profile is" : " profiles are") + " updated",
+          buttons: [
+            {
+              label: "OK",
+              onClick: () => this.props.history.push("/liststaffprofile")
+            }
+          ]
+        })
+      })
+      .catch(err => {
+        confirmAlert({
+          message: err.message,
+          buttons: [
+            {
+              label: "OK"
+            }
+          ]
+        });
+      });
+  }
+
+  handleCancel = () => {
+    this.props.history.push("/liststaffprofile");
   }
 
   render() {
@@ -314,14 +354,14 @@ class MultipleStaffUpdate extends Component {
         id: "name",
         Header: "Employee Name",
         accessor: "name",
-        minWidth: 130,
+        minWidth: 160,
         sortable: true
       },
       {
         id: "gender",
         Header: "Gender",
         accessor: "gender",
-        minWidth: 80,
+        minWidth: 100,
         style: {
           textAlign: "center"
         },
@@ -353,7 +393,7 @@ class MultipleStaffUpdate extends Component {
         id: "marriageStatus",
         Header: "MStatus",
         accessor: "marriageStatus",
-        minWidth: 80,
+        minWidth: 100,
         sortable: true,
         style: {
           textAlign: "center"
@@ -386,7 +426,7 @@ class MultipleStaffUpdate extends Component {
         id: "jobTitle",
         Header: "Job Title",
         accessor: "jobTitle",
-        minWidth: 130,
+        minWidth: 160,
         sortable: true,
         Cell: (props) => {
           return (
@@ -416,7 +456,7 @@ class MultipleStaffUpdate extends Component {
         id: "businessUnit",
         Header: "BU",
         accessor: "businessUnit",
-        minWidth: 110,
+        minWidth: 160,
         sortable: true,
         style: {
           textAlign: "center"
@@ -449,7 +489,7 @@ class MultipleStaffUpdate extends Component {
         id: "deptId",
         Header: "Dept ID",
         accessor: "deptId",
-        minWidth: 90,
+        minWidth: 160,
         sortable: true,
         style: {
           textAlign: "center"
@@ -482,10 +522,9 @@ class MultipleStaffUpdate extends Component {
         id: "LineMgrName",
         Header: "Line Manager",
         accessor: "reportsTo.emplId",
-        minWidth: 140,
+        minWidth: 160,
         sortable: true,
         Cell: (props) => {
-          console.log(props)
           return (
             <Input
               type="select" 
@@ -597,8 +636,9 @@ class MultipleStaffUpdate extends Component {
         </div>
         <div className="reactTableContainer">
           <div className="mainListBtnContainer">
-            <div className="SubListBtnLeftContainer">
-              <Col xs="5">
+            <div className="SubUploadListLeftContainer">
+              
+              <Col xs="10" sm="5" style={{ margin: "1px" }}>
                 <Input 
                   type="select" 
                   name="fieldtypeselect" 
@@ -615,7 +655,7 @@ class MultipleStaffUpdate extends Component {
                   <option key="marriage_status" value="marriage_status">Marriage Status</option>
                 </Input>
               </Col>             
-              <Col xs="5">
+              <Col xs="10" sm="5" style={{ margin: "1px" }}>
                 <Input 
                   type="select" 
                   name="fieldvalueselect" 
@@ -637,7 +677,7 @@ class MultipleStaffUpdate extends Component {
                   }
                 </Input>
               </Col>
-              <Col xs="2">
+              <Col xs="6" sm="2" style={{ margin: "1px" }}>
                 <Button
                   variant="contained"
                   color="primary"
@@ -647,19 +687,19 @@ class MultipleStaffUpdate extends Component {
                   <span
                     className="fa fa-search"
                     style={{ margin: "0px 5px 0px 0px" }}
-                  />                
+                  />     
+                  Search           
                 </Button>
               </Col>
+              
             </div>
-            <div className="SubListBtnRightContainer">
+            <div className="SubUploadListRightContainer">
               <div>
                 <Button
                   variant="contained"
                   color="primary"
                   className="largeButtonOverride"
-                  component={Link}
-                  tag={Link}
-                  to={`/liststaffprofile/uploadprofiles`}
+                  onClick={this.handleSave}
                 >
                   <span
                     className="fa fa-save"
@@ -667,6 +707,14 @@ class MultipleStaffUpdate extends Component {
                   />
                   Save All
                 </Button>
+                <span> </span>
+                  <Button
+                    variant="contained"
+                    color="secondary"
+                    onClick={this.handleCancel}
+                  >
+                    Back
+                  </Button>
               </div>
             </div>
           </div>
