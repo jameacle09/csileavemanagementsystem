@@ -301,7 +301,7 @@ class MultipleStaffUpdate extends Component {
     })
       .then(data => {
         confirmAlert({
-          message:  data + " employee" + (data == 1 ? " profile is" : " profiles are") + " updated",
+          message:  data + " employee" + (data === 1 ? " profile is" : " profiles are") + " updated",
           buttons: [
             {
               label: "OK",
