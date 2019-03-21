@@ -112,6 +112,11 @@ public class EmployeeDetailsService {
 		return employeeDetailsList;
 	}
 
+	public List<EmployeeDetails> findByJobTitle(String jobTitle) {
+		List<EmployeeDetails> employeeDetailsList = this.employeeDetailRepository.findByJobTitle(jobTitle);
+		return employeeDetailsList;
+	}
+
 	public EmployeeDetails addEditEmployeeDetails(EmployeeDetails employeeDetails, UserPrincipal currentUser) {
 		PersonDetails personDetails = new PersonDetails();
 		personDetails.setEmplId(employeeDetails.getEmplId());

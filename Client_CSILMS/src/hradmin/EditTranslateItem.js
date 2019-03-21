@@ -143,6 +143,9 @@ class AddTranslateItem extends Component {
         case "dept_id" :
           fetchURL = API_BASE_URL + "/searchemployee?deptid=" + fieldvalue;
           break;
+        case "job_title" :
+          fetchURL = API_BASE_URL + "/searchemployee?jobtitle=" + fieldvalue;
+          break;
         case "marriage_status" :
           fetchURL = API_BASE_URL + "/searchemployee?marriagestatus=" + fieldvalue;
           break;
@@ -160,11 +163,12 @@ class AddTranslateItem extends Component {
 
         }).then(data => {
           
-          if(data.matchingEmployees !== "" && data.matchingEmployees !== null) {
-            noReference = false; 
+          if(data.length > 0) {
+            noReference = false;
 
-            // .filter(Boolean) to remove empty array element
-            let employeeList = data.matchingEmployees.split(";").filter(Boolean)                        
+            let employeeList = data.map(employee => {
+              return employee.name + " (" + employee.emplId + ")";
+            })                      
             let outputMsgList;
             
             // if employeeList exceeds 3 entry, only display 3 on outputMsgList

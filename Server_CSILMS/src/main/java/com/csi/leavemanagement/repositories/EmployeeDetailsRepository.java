@@ -25,5 +25,6 @@ public interface EmployeeDetailsRepository extends JpaRepository<EmployeeDetails
 	List<EmployeeDetails> findByDeptId(String deptId);
 	List<EmployeeDetails> findByMarriageStatus(String marriageStatus);
 	List<EmployeeDetails> findByGender(String gender);
+	List<EmployeeDetails> findByJobTitle(String jobTitle);
 	
 }
