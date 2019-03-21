@@ -138,19 +138,11 @@ class AddTranslateItem extends Component {
       let fetchURL = null ;
       switch(fieldname) {
         case "business_unit" :
-          fetchURL = API_BASE_URL + "/searchemployee?businessunit=" + fieldvalue;
-          break;
         case "dept_id" :
-          fetchURL = API_BASE_URL + "/searchemployee?deptid=" + fieldvalue;
-          break;
         case "job_title" :
-          fetchURL = API_BASE_URL + "/searchemployee?jobtitle=" + fieldvalue;
-          break;
         case "marriage_status" :
-          fetchURL = API_BASE_URL + "/searchemployee?marriagestatus=" + fieldvalue;
-          break;
         case "gender" :
-          fetchURL = API_BASE_URL + "/searchemployee?gender=" + fieldvalue;
+          fetchURL = API_BASE_URL + "/searchemployee?" + fieldname + "=" + fieldvalue;
           break;
         default :
           // do nothing, no impact

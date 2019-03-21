@@ -63,11 +63,11 @@ public class EmployeeDetailsController {
 	}
 	
 	@GetMapping("/searchemployee")
-	public ResponseEntity<?> doFindEmployee(@RequestParam(value="businessunit", required=false) String businessUnit,
-											 @RequestParam(value="deptid", required=false) String deptId,
-										 	 @RequestParam(value="marriagestatus", required=false) String marriageStatus,
+	public ResponseEntity<?> doFindEmployee(@RequestParam(value="business_unit", required=false) String businessUnit,
+											 @RequestParam(value="dept_id", required=false) String deptId,
+										 	 @RequestParam(value="marriage_status", required=false) String marriageStatus,
 											 @RequestParam(value="gender", required=false) String gender,
-											 @RequestParam(value="jobtitle", required=false) String jobTitle,
+											 @RequestParam(value="job_title", required=false) String jobTitle,
 											 @RequestParam(value="managerid", required=false) String managerId) {
 		Map<String, String> responseEntityMessage = new HashMap<String, String> ();
 		List<EmployeeDetails> matchingEmployees;
