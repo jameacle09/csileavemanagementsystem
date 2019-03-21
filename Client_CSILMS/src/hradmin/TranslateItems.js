@@ -8,6 +8,7 @@ import { fetchData } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import ReactTable from "react-table";
 import TranslateitemToExcel from "./TranslateitemToExcel";
+import LoadingPage from "../common/LoadingPage";
 
 class TranslateItems extends Component {
   constructor(props) {
@@ -143,60 +144,66 @@ class TranslateItems extends Component {
             <h3 className="headerStyle">Translate Items</h3>
           </span>
         </div>
-        <div className="reactTableContainer">
-          <div className="mainListBtnContainer">
-            <div className="SubListBtnLeftContainer">
-              <Button
-                variant="contained"
-                color="primary"
-                className="largeButtonOverride"
-                onClick={() =>
-                  document.getElementById("test-table-xls-button").click()
-                }
-              >
-                <span
-                  className="fa fa-file-excel-o"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-                Export List to Excel
-              </Button>
-            </div>
-            <div className="SubListBtnRightContainer">
-              <div>
-                <Button
-                  tag={Link}
-                  to={`/translateitems/add`}
-                  className="largeButtonOverride"
-                >
-                  <span
-                    className="fa fa-plus"
-                    style={{ margin: "0px 5px 0px 0px" }}
-                  />
-                  Add Translate Item
-                </Button>
+        {this.state.loading ? (
+          <LoadingPage />
+        ) : (
+          <React.Fragment>
+            <div className="reactTableContainer">
+              <div className="mainListBtnContainer">
+                <div className="SubListBtnLeftContainer">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className="largeButtonOverride"
+                    onClick={() =>
+                      document.getElementById("test-table-xls-button").click()
+                    }
+                  >
+                    <span
+                      className="fa fa-file-excel-o"
+                      style={{ margin: "0px 5px 0px 0px" }}
+                    />
+                    Export List to Excel
+                  </Button>
+                </div>
+                <div className="SubListBtnRightContainer">
+                  <div>
+                    <Button
+                      tag={Link}
+                      to={`/translateitems/add`}
+                      className="largeButtonOverride"
+                    >
+                      <span
+                        className="fa fa-plus"
+                        style={{ margin: "0px 5px 0px 0px" }}
+                      />
+                      Add Translate Item
+                    </Button>
+                  </div>
+                </div>
               </div>
+              <ReactTable
+                data={this.state.translateItemsData}
+                columns={TranslateItemsCols}
+                defaultFilterMethod={(filter, row) =>
+                  String(row[filter.id])
+                    .toLowerCase()
+                    .includes(filter.value.toLowerCase())
+                }
+                defaultPageSize={10}
+                pages={this.state.pages}
+                filterable={true}
+                sortable={true}
+                multiSort={true}
+                noDataText="No data available."
+                className="-striped"
+              />
+              <TranslateitemToExcel
+                translateItemsData={this.state.translateItemsData}
+              />
             </div>
-          </div>
-          <ReactTable
-            data={this.state.translateItemsData}
-            columns={TranslateItemsCols}
-            defaultFilterMethod={(filter, row) =>
-              String(row[filter.id])
-                .toLowerCase()
-                .includes(filter.value.toLowerCase())
-            }
-            defaultPageSize={10}
-            pages={this.state.pages}
-            filterable={true}
-            sortable={true}
-            multiSort={true}
-            noDataText="No data available."
-            className="-striped"
-          />
-          <TranslateitemToExcel
-            translateItemsData={this.state.translateItemsData}
-          />
-        </div>
+          </React.Fragment>
+        )}
       </div>
     );
   }

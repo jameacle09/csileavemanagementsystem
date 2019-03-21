@@ -777,9 +777,9 @@ class UploadEmployeeProfile extends Component {
   };
 
   render() {
-    // if (!isHrRole(this.props.currentUser)) {
-    //   return <Redirect to="/forbidden" />;
-    // }
+    if (!isHrRole(this.props.currentUser)) {
+      return <Redirect to="/forbidden" />;
+    }
 
     let textHeaderValue = "",
       textColorValStatus = "",

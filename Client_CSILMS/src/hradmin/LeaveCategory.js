@@ -8,6 +8,7 @@ import { fetchData } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import ReactTable from "react-table";
 import ExportToExcel from "./LeaveCategoryToExcel";
+import LoadingPage from "../common/LoadingPage";
 
 class LeaveCategory extends Component {
   constructor(props) {
@@ -117,60 +118,66 @@ class LeaveCategory extends Component {
             <h3 className="headerStyle">Leave Categories</h3>
           </span>
         </div>
-        <div className="reactTableContainer">
-          <div className="mainListBtnContainer">
-            <div className="SubListBtnLeftContainer">
-              <Button
-                variant="contained"
-                color="primary"
-                className="largeButtonOverride"
-                onClick={() =>
-                  document.getElementById("test-table-xls-button").click()
-                }
-              >
-                <span
-                  className="fa fa-file-excel-o"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-                Export List to Excel
-              </Button>
-            </div>
-            <div className="SubListBtnRightContainer">
-              <div>
-                <Button
-                  tag={Link}
-                  to={`/leavecategory/add`}
-                  className="largeButtonOverride"
-                >
-                  <span
-                    className="fa fa-plus"
-                    style={{ margin: "0px 5px 0px 0px" }}
-                  />
-                  Add Leave Category
-                </Button>
+        {this.state.loading ? (
+          <LoadingPage />
+        ) : (
+          <React.Fragment>
+            <div className="reactTableContainer">
+              <div className="mainListBtnContainer">
+                <div className="SubListBtnLeftContainer">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className="largeButtonOverride"
+                    onClick={() =>
+                      document.getElementById("test-table-xls-button").click()
+                    }
+                  >
+                    <span
+                      className="fa fa-file-excel-o"
+                      style={{ margin: "0px 5px 0px 0px" }}
+                    />
+                    Export List to Excel
+                  </Button>
+                </div>
+                <div className="SubListBtnRightContainer">
+                  <div>
+                    <Button
+                      tag={Link}
+                      to={`/leavecategory/add`}
+                      className="largeButtonOverride"
+                    >
+                      <span
+                        className="fa fa-plus"
+                        style={{ margin: "0px 5px 0px 0px" }}
+                      />
+                      Add Leave Category
+                    </Button>
+                  </div>
+                </div>
               </div>
+              <ReactTable
+                data={this.state.leaveCategoryDetails}
+                columns={LeaveCategoryCols}
+                defaultFilterMethod={(filter, row) =>
+                  String(row[filter.id])
+                    .toLowerCase()
+                    .includes(filter.value.toLowerCase())
+                }
+                defaultPageSize={10}
+                pages={this.state.pages}
+                filterable={true}
+                sortable={true}
+                multiSort={true}
+                noDataText="No data available."
+                className="-striped"
+              />
+              <ExportToExcel
+                leaveCategoryDetails={this.state.leaveCategoryDetails}
+              />
             </div>
-          </div>
-          <ReactTable
-            data={this.state.leaveCategoryDetails}
-            columns={LeaveCategoryCols}
-            defaultFilterMethod={(filter, row) =>
-              String(row[filter.id])
-                .toLowerCase()
-                .includes(filter.value.toLowerCase())
-            }
-            defaultPageSize={10}
-            pages={this.state.pages}
-            filterable={true}
-            sortable={true}
-            multiSort={true}
-            noDataText="No data available."
-            className="-striped"
-          />
-          <ExportToExcel
-            leaveCategoryDetails={this.state.leaveCategoryDetails}
-          />
-        </div>
+          </React.Fragment>
+        )}
       </div>
     );
   }

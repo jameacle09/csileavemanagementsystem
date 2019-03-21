@@ -7,13 +7,15 @@ import { fetchData, formatDateYMD, formatDateDMY } from "../util/APIUtils";
 import { Link } from "react-router-dom";
 import { Button } from "reactstrap";
 import MyLeaveHistoryToExcel from "./MyLeaveHistoryToExcel";
+import LoadingPage from "../common/LoadingPage";
 
 class MyLeaveHistory extends Component {
   constructor(props) {
     super(props);
     this.state = {
       leaveStatusLookup: [],
-      userData: []
+      userData: [],
+      loading: true
     };
     this.loadMyLeaveHistory = this.loadMyLeaveHistory.bind(this);
   }
@@ -25,7 +27,8 @@ class MyLeaveHistory extends Component {
     })
       .then(response => {
         this.setState({
-          userData: response
+          userData: response,
+          loading: false
         });
       })
       .catch(error => {
@@ -39,8 +42,8 @@ class MyLeaveHistory extends Component {
   }
 
   componentDidMount() {
-    this.loadMyLeaveHistory();
     this.loadLeaveStatusLookup();
+    this.loadMyLeaveHistory();
   }
 
   componentDidUpdate(nextProps) {
@@ -54,8 +57,7 @@ class MyLeaveHistory extends Component {
       url: API_BASE_URL + "/translateitem/leave_status",
       method: "GET"
     })
-      .then(data => this.setState({ leaveStatusLookup: data })
-      )
+      .then(data => this.setState({ leaveStatusLookup: data }))
       .catch(error => {
         if (error.status === 401) {
           this.props.history.push("/login");
@@ -87,17 +89,17 @@ class MyLeaveHistory extends Component {
     //   }
     // };
 
-    const getLeaveStatusDesc = (strLeaveStatus) => {
+    const getLeaveStatusDesc = strLeaveStatus => {
       let arrLeaveStatusLookup = this.state.leaveStatusLookup;
       let leaveDesc = "";
       arrLeaveStatusLookup.forEach(leaveStat => {
         if (leaveStat.id.fieldvalue === strLeaveStatus) {
-          return leaveDesc = leaveStat.xlatlongname;
+          return (leaveDesc = leaveStat.xlatlongname);
         }
       });
       return leaveDesc;
     };
-    
+
     const myLeaveHistoryCols = [
       {
         id: "startDate",
@@ -202,46 +204,52 @@ class MyLeaveHistory extends Component {
             <h3 className="headerStyle">My Leave History</h3>
           </span>
         </div>
-        <div className="reactTableContainer">
-          <div className="mainListBtnContainer">
-            <div className="SubListBtnSingleContainer">
-              <Button
-                variant="contained"
-                color="primary"
-                className="largeButtonOverride"
-                onClick={() =>
-                  document.getElementById("test-table-xls-button").click()
+        {this.state.loading ? (
+          <LoadingPage />
+        ) : (
+          <React.Fragment>
+            <div className="reactTableContainer">
+              <div className="mainListBtnContainer">
+                <div className="SubListBtnSingleContainer">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className="largeButtonOverride"
+                    onClick={() =>
+                      document.getElementById("test-table-xls-button").click()
+                    }
+                  >
+                    <span
+                      className="fa fa-file-excel-o"
+                      style={{ margin: "0px 5px 0px 0px" }}
+                    />
+                    Export List to Excel
+                  </Button>
+                </div>
+              </div>
+              <ReactTable
+                data={this.state.userData}
+                columns={myLeaveHistoryCols}
+                defaultFilterMethod={(filter, row) =>
+                  String(row[filter.id])
+                    .toLowerCase()
+                    .includes(filter.value.toLowerCase())
                 }
-              >
-                <span
-                  className="fa fa-file-excel-o"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-                Export List to Excel
-              </Button>
+                defaultPageSize={10}
+                pages={this.state.pages}
+                loading={this.state.loading}
+                filterable={true}
+                sortable={true}
+                multiSort={true}
+                // rowsText="Rows per page"
+                loadingText="Loading Leave History..."
+                noDataText="No data available."
+                className="-striped"
+              />
+              <MyLeaveHistoryToExcel userData={this.state.userData} />
             </div>
-          </div>
-          <ReactTable
-            data={this.state.userData}
-            columns={myLeaveHistoryCols}
-            defaultFilterMethod={(filter, row) =>
-              String(row[filter.id])
-                .toLowerCase()
-                .includes(filter.value.toLowerCase())
-            }
-            defaultPageSize={10}
-            pages={this.state.pages}
-            loading={this.state.loading}
-            filterable={true}
-            sortable={true}
-            multiSort={true}
-            // rowsText="Rows per page"
-            loadingText="Loading Leave History..."
-            noDataText="No data available."
-            className="-striped"
-          />
-          <MyLeaveHistoryToExcel userData={this.state.userData} />
-        </div>
+          </React.Fragment>
+        )}
       </div>
     );
   }

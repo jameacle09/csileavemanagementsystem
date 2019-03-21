@@ -16,6 +16,7 @@ import { API_BASE_URL } from "../constants";
 import "../common/Styles.css";
 import { withRouter } from "react-router-dom";
 import { confirmAlert } from "react-confirm-alert";
+import LoadingPage from "../common/LoadingPage";
 
 class MyLeaveHistoryView extends Component {
   constructor(props) {
@@ -33,7 +34,8 @@ class MyLeaveHistoryView extends Component {
       leaveStatus: "",
       attachment: "",
       approvedDate: "",
-      leaveStatusLookup: []
+      leaveStatusLookup: [],
+      loading: true
     };
     this.toggleCancelLeave = this.toggleCancelLeave.bind(this);
     this.toggleDeleteLeave = this.toggleDeleteLeave.bind(this);
@@ -85,7 +87,8 @@ class MyLeaveHistoryView extends Component {
           leaveReason: data.reason,
           approver: data.approver,
           leaveStatus: data.leaveStatus,
-          attachment: data.attachment
+          attachment: data.attachment,
+          loading: false
         });
         this.getApproverName(data.approver);
       })
@@ -390,152 +393,155 @@ class MyLeaveHistoryView extends Component {
             <h3 className="headerStyle">View My Leave History</h3>
           </span>
         </div>
-
-        <div className="tableContainerFlex">
-          <Form>
-            <FormGroup row>
-              <Label for="emplId" sm={2}>
-                Employee ID:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="text"
-                  name="emplId"
-                  id="emplId"
-                  value={emplId}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="name" sm={2}>
-                Employee Name:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="text"
-                  name="name"
-                  id="name"
-                  value={name}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="leaveDescr" sm={2}>
-                Leave Category:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="text"
-                  name="leaveDescr"
-                  id="leaveDescr"
-                  value={leaveDescr}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="startDate" sm={2}>
-                Start Date:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="date"
-                  name="startDate"
-                  id="startDate"
-                  value={formatDateYMD(startDate)}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="endDate" sm={2}>
-                End Date:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="date"
-                  name="endDate"
-                  id="endDate"
-                  value={formatDateYMD(endDate)}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="leaveDuration" sm={2}>
-                Leave Duration:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="text"
-                  name="leaveDuration"
-                  id="leaveDuration"
-                  value={leaveDuration}
-                  placeholder="Days"
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="leaveReason" sm={2}>
-                Leave Reason:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="textarea"
-                  name="leaveReason"
-                  id="leaveReason"
-                  value={leaveReason}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="attachment" sm={2}>
-                File Attachment:
-              </Label>
-              <Col sm={10}>{showAttachment(attachment)}</Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="approver" sm={2}>
-                Approver Name:
-              </Label>
-              <Col sm={10}>
-                {/* <Input
+        {this.state.loading ? (
+          <LoadingPage />
+        ) : (
+          <React.Fragment>
+            <div className="tableContainerFlex">
+              <Form>
+                <FormGroup row>
+                  <Label for="emplId" sm={2}>
+                    Employee ID:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="text"
+                      name="emplId"
+                      id="emplId"
+                      value={emplId}
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="name" sm={2}>
+                    Employee Name:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="text"
+                      name="name"
+                      id="name"
+                      value={name}
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="leaveDescr" sm={2}>
+                    Leave Category:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="text"
+                      name="leaveDescr"
+                      id="leaveDescr"
+                      value={leaveDescr}
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="startDate" sm={2}>
+                    Start Date:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="date"
+                      name="startDate"
+                      id="startDate"
+                      value={formatDateYMD(startDate)}
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="endDate" sm={2}>
+                    End Date:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="date"
+                      name="endDate"
+                      id="endDate"
+                      value={formatDateYMD(endDate)}
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="leaveDuration" sm={2}>
+                    Leave Duration:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="text"
+                      name="leaveDuration"
+                      id="leaveDuration"
+                      value={leaveDuration}
+                      placeholder="Days"
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="leaveReason" sm={2}>
+                    Leave Reason:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="textarea"
+                      name="leaveReason"
+                      id="leaveReason"
+                      value={leaveReason}
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="attachment" sm={2}>
+                    File Attachment:
+                  </Label>
+                  <Col sm={10}>{showAttachment(attachment)}</Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="approver" sm={2}>
+                    Approver Name:
+                  </Label>
+                  <Col sm={10}>
+                    {/* <Input
                   type="text"
                   name="approver"
                   id="approver"
                   value={approver}
                   disabled={true}
                 /> */}
-                <Input
-                  type="text"
-                  name="approverName"
-                  id="approverName"
-                  value={approverName}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="leaveStatus" sm={2}>
-                Leave Status:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="text"
-                  name="leaveStatus"
-                  id="leaveStatus"
-                  value={getLeaveStatusDesc(leaveStatus)}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Col sm={{ size: 10, offset: 2 }}>
-                {/* <Button
+                    <Input
+                      type="text"
+                      name="approverName"
+                      id="approverName"
+                      value={approverName}
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="leaveStatus" sm={2}>
+                    Leave Status:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="text"
+                      name="leaveStatus"
+                      id="leaveStatus"
+                      value={getLeaveStatusDesc(leaveStatus)}
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Col sm={{ size: 10, offset: 2 }}>
+                    {/* <Button
                   type="button"
                   color="primary"
                   onClick={this.toggleCancelLeave}
@@ -543,8 +549,8 @@ class MyLeaveHistoryView extends Component {
                 >
                   Cancel Leave
                 </Button> */}
-                {showButtonByStatus(leaveStatus)}
-                {/* <Button
+                    {showButtonByStatus(leaveStatus)}
+                    {/* <Button
                   type="button"
                   color="primary"
                   onClick={this.toggleDeleteLeave}
@@ -552,86 +558,88 @@ class MyLeaveHistoryView extends Component {
                 >
                   Delete Leave
                 </Button> */}
-                <span> </span>
-                <Button
-                  color="secondary"
-                  onClick={this.handleBackToMain}
-                  className="largeButtonOverride"
-                >
-                  Back
-                </Button>
-                <div>
-                  <Modal
-                    isOpen={this.state.modalCancelLeave}
-                    toggle={this.toggleCancelLeave}
-                    className={this.props.className}
-                    style={{
-                      width: "360px",
-                      height: "300px",
-                      margin: "220px auto"
-                    }}
-                  >
-                    <ModalHeader>Cancel Leave Confirmation</ModalHeader>
-                    {/* <ModalBody>
+                    <span> </span>
+                    <Button
+                      color="secondary"
+                      onClick={this.handleBackToMain}
+                      className="largeButtonOverride"
+                    >
+                      Back
+                    </Button>
+                    <div>
+                      <Modal
+                        isOpen={this.state.modalCancelLeave}
+                        toggle={this.toggleCancelLeave}
+                        className={this.props.className}
+                        style={{
+                          width: "360px",
+                          height: "300px",
+                          margin: "220px auto"
+                        }}
+                      >
+                        <ModalHeader>Cancel Leave Confirmation</ModalHeader>
+                        {/* <ModalBody>
                       Are you sure you want to Cancel this Annual Leave Request?
                     </ModalBody> */}
-                    <ModalFooter>
-                      <Button
-                        type="submit"
-                        color="primary"
-                        onClick={event =>
-                          this.updateAppliedLeaveStatus(event, "PNCLD")
-                        }
-                        className="largeButtonOverride"
+                        <ModalFooter>
+                          <Button
+                            type="submit"
+                            color="primary"
+                            onClick={event =>
+                              this.updateAppliedLeaveStatus(event, "PNCLD")
+                            }
+                            className="largeButtonOverride"
+                          >
+                            Confirm
+                          </Button>
+                          <Button
+                            color="secondary"
+                            onClick={this.toggleCancelLeave}
+                          >
+                            Cancel
+                          </Button>
+                        </ModalFooter>
+                      </Modal>
+                    </div>
+                    <div>
+                      <Modal
+                        isOpen={this.state.modalDeleteLeave}
+                        toggle={this.toggleDeleteLeave}
+                        className={this.props.className}
+                        style={{
+                          width: "360px",
+                          height: "300px",
+                          margin: "220px auto"
+                        }}
                       >
-                        Confirm
-                      </Button>
-                      <Button
-                        color="secondary"
-                        onClick={this.toggleCancelLeave}
-                      >
-                        Cancel
-                      </Button>
-                    </ModalFooter>
-                  </Modal>
-                </div>
-                <div>
-                  <Modal
-                    isOpen={this.state.modalDeleteLeave}
-                    toggle={this.toggleDeleteLeave}
-                    className={this.props.className}
-                    style={{
-                      width: "360px",
-                      height: "300px",
-                      margin: "220px auto"
-                    }}
-                  >
-                    <ModalHeader>Recall Leave Confirmation</ModalHeader>
-                    {/* <ModalBody>
+                        <ModalHeader>Recall Leave Confirmation</ModalHeader>
+                        {/* <ModalBody>
                       Are you sure you want to Delete this Leave Request?
                     </ModalBody> */}
-                    <ModalFooter>
-                      <Button
-                        type="submit"
-                        color="primary"
-                        onClick={this.deleteAppliedLeaveStatus}
-                        className="largeButtonOverride"
-                      >
-                        Confirm
-                      </Button>
-                      <Button
-                        color="secondary"
-                        onClick={this.toggleDeleteLeave}
-                      >
-                        Cancel
-                      </Button>
-                    </ModalFooter>
-                  </Modal>
-                </div>
-              </Col>
-            </FormGroup>
-          </Form>
-        </div>
+                        <ModalFooter>
+                          <Button
+                            type="submit"
+                            color="primary"
+                            onClick={this.deleteAppliedLeaveStatus}
+                            className="largeButtonOverride"
+                          >
+                            Confirm
+                          </Button>
+                          <Button
+                            color="secondary"
+                            onClick={this.toggleDeleteLeave}
+                          >
+                            Cancel
+                          </Button>
+                        </ModalFooter>
+                      </Modal>
+                    </div>
+                  </Col>
+                </FormGroup>
+              </Form>
+            </div>
+          </React.Fragment>
+        )}
       </div>
     );
   }

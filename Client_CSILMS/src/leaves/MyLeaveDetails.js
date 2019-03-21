@@ -6,6 +6,7 @@ import { withRouter } from "react-router-dom";
 import "react-table/react-table.css";
 import { fetchData } from "../util/APIUtils";
 import MyLeaveDetailsToExcel from "./MyLeaveDetailsToExcel";
+import LoadingPage from "../common/LoadingPage";
 
 class MyLeaveDetails extends Component {
   constructor(props) {
@@ -150,95 +151,101 @@ class MyLeaveDetails extends Component {
             <h3 className="headerStyle">My Leave Details</h3>
           </span>
         </div>
-        <div className="reactTableContainer">
-          <div className="mainListBtnContainer">
-            <div className="SubListBtnLeftContainer">
-              <Button
-                variant="contained"
-                color="primary"
-                className="largeButtonOverride"
-                onClick={() =>
-                  document.getElementById("test-table-xls-button").click()
-                }
-              >
-                <span
-                  className="fa fa-file-excel-o"
-                  style={{ margin: "0px 5px 0px 0px" }}
-                />
-                Export List to Excel
-              </Button>
-            </div>
-            <div className="SubListBtnRightContainer">
-              <div
-                style={{
-                  paddingTop: "7px",
-                  paddingRight: "2px",
-                  fontFamily: "Helvetica 17px",
-                  fontWeight: "bold",
-                  color: "#032a53"
-                }}
-              >
-                <Label for="approverId">Leave Details Year:</Label>
-              </div>
-              <div style={{ paddingLeft: "4px" }}>
-                <Input
-                  type="select"
-                  name="year"
-                  id="year"
-                  onChange={event =>
-                    this.filterDataByLeaveDetailsYear(
-                      Number(event.target.value)
-                    )
-                  }
-                  value={this.state.leaveYear}
-                  style={{
-                    fontFamily: "Helvetica 17px",
-                    fontWeight: "bold",
-                    color: "#032a53",
-                    border: "1px solid black",
-                    background: "rgb(251, 252, 253)"
-                  }}
-                >
-                  {this.state.leaveDetailsData.map((leaveDet, index) => {
-                    if (currYear !== leaveDet.id.year) {
-                      currYear = leaveDet.id.year;
-                      return (
-                        <option key={index} value={leaveDet.id.year}>
-                          {leaveDet.id.year}
-                        </option>
-                      );
+        {this.state.loading ? (
+          <LoadingPage />
+        ) : (
+          <React.Fragment>
+            <div className="reactTableContainer">
+              <div className="mainListBtnContainer">
+                <div className="SubListBtnLeftContainer">
+                  <Button
+                    variant="contained"
+                    color="primary"
+                    className="largeButtonOverride"
+                    onClick={() =>
+                      document.getElementById("test-table-xls-button").click()
                     }
-                    return true;
-                  })}
-                </Input>
+                  >
+                    <span
+                      className="fa fa-file-excel-o"
+                      style={{ margin: "0px 5px 0px 0px" }}
+                    />
+                    Export List to Excel
+                  </Button>
+                </div>
+                <div className="SubListBtnRightContainer">
+                  <div
+                    style={{
+                      paddingTop: "7px",
+                      paddingRight: "2px",
+                      fontFamily: "Helvetica 17px",
+                      fontWeight: "bold",
+                      color: "#032a53"
+                    }}
+                  >
+                    <Label for="approverId">Leave Details Year:</Label>
+                  </div>
+                  <div style={{ paddingLeft: "4px" }}>
+                    <Input
+                      type="select"
+                      name="year"
+                      id="year"
+                      onChange={event =>
+                        this.filterDataByLeaveDetailsYear(
+                          Number(event.target.value)
+                        )
+                      }
+                      value={this.state.leaveYear}
+                      style={{
+                        fontFamily: "Helvetica 17px",
+                        fontWeight: "bold",
+                        color: "#032a53",
+                        border: "1px solid black",
+                        background: "rgb(251, 252, 253)"
+                      }}
+                    >
+                      {this.state.leaveDetailsData.map((leaveDet, index) => {
+                        if (currYear !== leaveDet.id.year) {
+                          currYear = leaveDet.id.year;
+                          return (
+                            <option key={index} value={leaveDet.id.year}>
+                              {leaveDet.id.year}
+                            </option>
+                          );
+                        }
+                        return true;
+                      })}
+                    </Input>
+                  </div>
+                </div>
               </div>
+              <ReactTable
+                data={this.state.leaveDetailsYearData}
+                columns={myLeaveDetailsCols}
+                defaultFilterMethod={(filter, row) =>
+                  String(row[filter.id])
+                    .toLowerCase()
+                    .includes(filter.value.toLowerCase())
+                }
+                defaultPageSize={10}
+                pages={this.state.pages}
+                loading={this.state.loading}
+                filterable={true}
+                sortable={true}
+                multiSort={true}
+                minRows={10}
+                pageSizeOptions={[10, 20, 50, 100]}
+                // rowsText="Rows per page"
+                loadingText="Loading Leave Details..."
+                noDataText="No data available."
+                className="-striped"
+              />
+              <MyLeaveDetailsToExcel
+                leaveDetailsData={this.state.leaveDetailsYearData}
+              />
             </div>
-          </div>
-          <ReactTable
-            data={this.state.leaveDetailsYearData}
-            columns={myLeaveDetailsCols}
-            defaultFilterMethod={(filter, row) =>
-              String(row[filter.id])
-                .toLowerCase()
-                .includes(filter.value.toLowerCase())
-            }
-            defaultPageSize={10}
-            pages={this.state.pages}
-            loading={this.state.loading}
-            filterable={true}
-            sortable={true}
-            multiSort={true}
-            minRows={10}
-            pageSizeOptions={[10, 20, 50, 100]}
-            // rowsText="Rows per page"
-            loadingText="Loading Leave Details..."
-            noDataText="No data available."
-            className="-striped"
-          />
-          <MyLeaveDetailsToExcel
-            leaveDetailsData={this.state.leaveDetailsYearData}
-          />
-        </div>
+          </React.Fragment>
+        )}
       </div>
     );
   }

@@ -13,6 +13,7 @@ import { API_BASE_URL } from "../constants";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import "../common/Styles.css";
+import LoadingPage from "../common/LoadingPage";
 
 class ApplyLeave extends Component {
   constructor(props) {
@@ -21,7 +22,7 @@ class ApplyLeave extends Component {
       emplId: "",
       name: "",
       leaveCategory: "AL",
-      startDate: formatDateYMD(new Date()),
+      startDate: "",
       endDate: "",
       isHalfDay: false,
       leaveDuration: 0,
@@ -34,7 +35,8 @@ class ApplyLeave extends Component {
       balanceLeave: 0,
       leaveEntitlementsLookup: [],
       approversLookup: [],
-      publicHolidaysLookup: []
+      publicHolidaysLookup: [],
+      loading: true
     };
     this.uploadFile = this.uploadFile.bind(this);
   }
@@ -44,6 +46,9 @@ class ApplyLeave extends Component {
     this.loadCurrentUserALEntitlement();
     this.loadLeaveApproversLookup();
     this.loadPublicHolidaysLookup();
+    this.setState({
+      loading: false
+    });
   }
 
   loadCurrentUserData = () => {
@@ -520,204 +525,213 @@ class ApplyLeave extends Component {
         {/* <div className="tableContainerFlex">
           <h5>Annual Leave Balance: {balanceLeave} Days</h5>
         </div> */}
-        <div className="tableContainerFlex">
-          <Form>
-            <FormGroup row>
-              <Label for="emplId" sm={2}>
-                Employee ID:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="text"
-                  name="emplId"
-                  id="emplId"
-                  value={emplId}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="name" sm={2}>
-                Employee Name:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="text"
-                  name="name"
-                  id="name"
-                  value={name}
-                  disabled={true}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="leaveCategory" sm={2}>
-                Leave Type:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="select"
-                  name="leaveCategory"
-                  id="leaveCategory"
-                  onChange={this.handleChange}
-                  value={leaveCategory}
-                >
-                  {/* <option key="" value="">
+        {this.state.loading ? (
+          <LoadingPage />
+        ) : (
+          <React.Fragment>
+            <div className="tableContainerFlex">
+              <Form>
+                <FormGroup row>
+                  <Label for="emplId" sm={2}>
+                    Employee ID:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="text"
+                      name="emplId"
+                      id="emplId"
+                      value={emplId}
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="name" sm={2}>
+                    Employee Name:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="text"
+                      name="name"
+                      id="name"
+                      value={name}
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="leaveCategory" sm={2}>
+                    Leave Type:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="select"
+                      name="leaveCategory"
+                      id="leaveCategory"
+                      onChange={this.handleChange}
+                      value={leaveCategory}
+                    >
+                      {/* <option key="" value="">
                     --- Select Leave Type ---
                   </option> */}
-                  {leaveEntitlementsLookup.map(leaveEnt => {
-                    // if (leaveEnt.balanceLeave > 0) {
-                    return (
-                      <option
-                        key={leaveEnt.leaveCategory.leaveCode}
-                        value={leaveEnt.leaveCategory.leaveCode}
-                      >
-                        {leaveEnt.leaveCategory.leaveDescr} (
-                        {leaveEnt.balanceLeave} days)
-                      </option>
-                    );
-                    // }
-                  })}
-                </Input>
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="startDate" sm={2}>
-                Start Date:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="date"
-                  name="startDate"
-                  id="startDate"
-                  value={formatDateYMD(startDate)}
-                  onChange={this.handleChange}
-                  onBlur={this.validateDateFields}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="endDate" sm={2}>
-                End Date:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="date"
-                  name="endDate"
-                  id="endDate"
-                  value={formatDateYMD(endDate)}
-                  onChange={this.handleChange}
-                  onBlur={this.validateDateFields}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label check sm={2} />
-              <Col sm={10}>
-                &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
-                <Input
-                  type="checkbox"
-                  id="isHalfDay"
-                  name="isHalfDay"
-                  disabled={
-                    formatDateYMD(startDate) === formatDateYMD(endDate)
-                      ? false
-                      : true
-                  }
-                  checked={isHalfDay}
-                  onChange={this.handleChange}
-                />{" "}
-                Check the box if you are taking half day leave.
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label sm={2} for="leaveDuration">
-                Leave Duration:{" "}
-              </Label>
-              <Col sm={2}>
-                <Input
-                  type="text"
-                  name="leaveDuration"
-                  id="leaveDuration"
-                  value={leaveDuration}
-                  placeholder="Days"
-                  disabled={true}
-                />
-              </Col>
-              <Label sm={8} align="left">
-                day(s)
-              </Label>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="leaveReason" sm={2}>
-                Leave Reason:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="textarea"
-                  name="leaveReason"
-                  id="leaveReason"
-                  onChange={this.handleChange}
-                />
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="attachment" sm={2}>
-                File:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="file"
-                  name="attachment"
-                  id="attachment"
-                  onChange={this.handleChange}
-                />
-                <FormText color="muted">
-                  Please attach your document (maximum file size is 5 MB).
-                </FormText>
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Label for="approverId" sm={2}>
-                Approver Name:
-              </Label>
-              <Col sm={10}>
-                <Input
-                  type="select"
-                  name="approverId"
-                  id="approverId"
-                  onChange={this.handleChange}
-                  value={approverId}
-                >
-                  {approversLookup.map(approver => {
-                    if (approver.emplId !== emplId) {
-                      return (
-                        <option key={approver.emplId} value={approver.emplId}>
-                          {approver.name} ({approver.emplId})
-                        </option>
-                      );
-                    }
-                    return true;
-                  })}
-                </Input>
-              </Col>
-            </FormGroup>
-            <FormGroup row>
-              <Col sm={{ size: 10, offset: 2 }}>
-                <Button
-                  color="primary"
-                  className="largeButtonOverride"
-                  onClick={this.handleSubmit}
-                  disabled={this.validateFields()}
-                >
-                  Submit
-                </Button>
-                <span> </span>
-                <Button onClick={this.handleCancel}>Cancel</Button>
-              </Col>
-            </FormGroup>
-          </Form>
-        </div>
+                      {leaveEntitlementsLookup.map(leaveEnt => {
+                        // if (leaveEnt.balanceLeave > 0) {
+                        return (
+                          <option
+                            key={leaveEnt.leaveCategory.leaveCode}
+                            value={leaveEnt.leaveCategory.leaveCode}
+                          >
+                            {leaveEnt.leaveCategory.leaveDescr} (
+                            {leaveEnt.balanceLeave} days)
+                          </option>
+                        );
+                        // }
+                      })}
+                    </Input>
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="startDate" sm={2}>
+                    Start Date:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="date"
+                      name="startDate"
+                      id="startDate"
+                      value={formatDateYMD(startDate)}
+                      onChange={this.handleChange}
+                      onBlur={this.validateDateFields}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="endDate" sm={2}>
+                    End Date:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="date"
+                      name="endDate"
+                      id="endDate"
+                      value={formatDateYMD(endDate)}
+                      onChange={this.handleChange}
+                      onBlur={this.validateDateFields}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label check sm={2} />
+                  <Col sm={10}>
+                    &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+                    <Input
+                      type="checkbox"
+                      id="isHalfDay"
+                      name="isHalfDay"
+                      disabled={
+                        formatDateYMD(startDate) === formatDateYMD(endDate)
+                          ? false
+                          : true
+                      }
+                      checked={isHalfDay}
+                      onChange={this.handleChange}
+                    />{" "}
+                    Check the box if you are taking half day leave.
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label sm={2} for="leaveDuration">
+                    Leave Duration:{" "}
+                  </Label>
+                  <Col sm={2}>
+                    <Input
+                      type="text"
+                      name="leaveDuration"
+                      id="leaveDuration"
+                      value={leaveDuration}
+                      placeholder="Days"
+                      disabled={true}
+                    />
+                  </Col>
+                  <Label sm={8} align="left">
+                    day(s)
+                  </Label>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="leaveReason" sm={2}>
+                    Leave Reason:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="textarea"
+                      name="leaveReason"
+                      id="leaveReason"
+                      onChange={this.handleChange}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="attachment" sm={2}>
+                    File:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="file"
+                      name="attachment"
+                      id="attachment"
+                      onChange={this.handleChange}
+                    />
+                    <FormText color="muted">
+                      Please attach your document (maximum file size is 5 MB).
+                    </FormText>
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="approverId" sm={2}>
+                    Approver Name:
+                  </Label>
+                  <Col sm={10}>
+                    <Input
+                      type="select"
+                      name="approverId"
+                      id="approverId"
+                      onChange={this.handleChange}
+                      value={approverId}
+                    >
+                      {approversLookup.map(approver => {
+                        if (approver.emplId !== emplId) {
+                          return (
+                            <option
+                              key={approver.emplId}
+                              value={approver.emplId}
+                            >
+                              {approver.name} ({approver.emplId})
+                            </option>
+                          );
+                        }
+                        return true;
+                      })}
+                    </Input>
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Col sm={{ size: 10, offset: 2 }}>
+                    <Button
+                      color="primary"
+                      className="largeButtonOverride"
+                      onClick={this.handleSubmit}
+                      disabled={this.validateFields()}
+                    >
+                      Submit
+                    </Button>
+                    <span> </span>
+                    <Button onClick={this.handleCancel}>Cancel</Button>
+                  </Col>
+                </FormGroup>
+              </Form>
+            </div>
+          </React.Fragment>
+        )}
       </div>
     );
   }

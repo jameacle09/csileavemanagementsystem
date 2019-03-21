@@ -21,7 +21,6 @@ class HomePage extends Component {
         balanceLeave: ""
       }
     };
-
     this.loadUserProfile = this.loadUserProfile.bind(this);
     this.loadPendingApprovalManager = this.loadPendingApprovalManager.bind(
       this
@@ -102,8 +101,6 @@ class HomePage extends Component {
 
     let { staffLeave, userData, pendingApproval } = this.state;
 
-    // let userData = this.state.userData;
-    // let pendingApproval = this.state.pendingApproval;
     if (pendingApproval === 0) {
       return (
         <div>

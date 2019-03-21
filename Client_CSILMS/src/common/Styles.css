@@ -194,7 +194,7 @@ a:focus {
   justify-content: flex-start;
   background: #b8e2fc;
   flex-basis: auto;
-  box-shadow: 5px 5px 5px rgb(63, 84, 105);
+  box-shadow: 5px 5px 5px #3f5469;
   border: 1px solid #032a53;
   border-radius: 5px;
 }
@@ -409,6 +409,9 @@ a:focus {
 .uploadTemplateLink:focus {
   color: rgb(39, 129, 247);
 }
+.uploadTemplateLink:hover {
+  text-decoration: underline;
+}
 
 @media (max-width: 768px) {
   .mainListBtnContainer {
@@ -443,23 +446,20 @@ a:focus {
   }
 }
 
-.confirmAlertBox {
-  margin: 0px auto;
-  width: 400px;
-  height: 120px;
-  border: 1px solid #032a53;
-  border-radius: 5px;
-  box-shadow: 5px 5px 5px rgb(95, 116, 136);
-
-  /* margin: 0px auto;
-  margin-bottom: 10px;
-  width: 98%;
-  padding: 10px;
-  flex-basis: auto;
-  box-shadow: 5px 5px 5px rgb(95, 116, 136);
-  border: 1px solid #032a53;
-  border-radius: 5px;
-  justify-content: flex-start;
-  text-align: left;
-  overflow: auto; */
+/**********************************************/
+/*** My Profile *******************************/
+/**********************************************/
+.profileFullText {
+  display: inline-block;
+}
+.profileShortText {
+  display: none;
+}
+@media (max-width: 768px) {
+  .profileFullText {
+    display: none;
+  }
+  .profileShortText {
+    display: inline-block;
+  }
 }
