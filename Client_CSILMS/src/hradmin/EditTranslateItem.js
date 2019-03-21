@@ -189,6 +189,10 @@ class AddTranslateItem extends Component {
                   buttons: [
                     {
                       label: "OK"
+                    } ,
+                    {
+                      label: "Update employee",
+                      onClick: () => this.props.history.push("/liststaffprofile/multipleupdate")
                     }
                   ]
                 });
