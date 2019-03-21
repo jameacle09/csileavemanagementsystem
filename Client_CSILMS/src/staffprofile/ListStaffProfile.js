@@ -344,6 +344,22 @@ class ListStaffProfile extends Component {
                   className="largeButtonOverride"
                   component={Link}
                   tag={Link}
+                  to={`/liststaffprofile/multipleupdate`}
+                >
+                  <span
+                    className="fa fa-edit"
+                    style={{ margin: "0px 5px 0px 0px" }}
+                  />
+                  Update Multiple Profiles
+                </Button>
+              </div>
+              <div style={{ paddingLeft: "4px" }}>
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className="largeButtonOverride"
+                  component={Link}
+                  tag={Link}
                   to={`/liststaffprofile/uploadprofiles`}
                 >
                   <span

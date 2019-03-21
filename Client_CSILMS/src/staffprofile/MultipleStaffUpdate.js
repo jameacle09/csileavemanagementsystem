@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { Button } from "reactstrap";
+import { Button, Input, Col } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
 import { Redirect, withRouter } from "react-router-dom";
@@ -15,25 +15,30 @@ class MultipleStaffUpdate extends Component {
 
   constructor(props) {
     super(props);
+    this._isMounted = false;
     this.state = {
       statusLookup: [],
       employeeProfiles: [],
-      filteredProfiles: [],
-      filteredLength: 0,
+      selectedFieldType: "",
+      selectedFieldValue: "",
+      fieldValuesList: [],
+      deptIdList: [],
+      genderList: [],
+      marriageStatusList: [],
+      jobTitleList: [],
+      businessUnitList: [],
+      managerList: [],
       loading: true
     };
   }
 
-  componentWillMount() {
-    this._isMounted = false;
-  }
-
   componentDidMount() {
     this._isMounted = true;
-    this.loadEmployeeDetails();
+    this.loadTranslateItem();
+    this.loadManagerList();
     this.loadStatusLookup();
   }
-
+/*
   componentDidUpdate(nextProps) {
     if (this.props.isAuthenticated !== nextProps.isAuthenticated) {
       this.loadEmployeeDetails();
@@ -48,9 +53,9 @@ class MultipleStaffUpdate extends Component {
       .then(data => {
         if (this._isMounted) {
           this.setState({
-            employeeProfiles: data
+            employeeProfiles: data,
+            loading: false
           });
-          this.populateFilteredProfiles();
         }
       })
       .catch(error => {
@@ -60,28 +65,12 @@ class MultipleStaffUpdate extends Component {
         if (this._isMounted) {
           this.setState({
             employeeProfiles: [],
-            filteredProfiles: [],
-            filteredLength: 0,
             loading: false
           });
         }
       });
   };
-
-  populateFilteredProfiles = () => {
-    // This will initialize values for the State Filtered Profiles
-    let arrFilteredProfiles = this.state.employeeProfiles;
-    arrFilteredProfiles.forEach(empRow => {
-      empRow["LineMgrID"] = empRow.reportsTo.emplId;
-      empRow["LineMgrName"] = empRow.reportsTo.name;
-    });
-    this.setState({
-      filteredProfiles: arrFilteredProfiles,
-      filteredLength: arrFilteredProfiles.length,
-      loading: false
-    });
-  };
-
+*/
   loadStatusLookup = () => {
     fetchData({
       url: API_BASE_URL + "/translateitem/status",
@@ -104,18 +93,174 @@ class MultipleStaffUpdate extends Component {
       });
   };
 
+  loadManagerList = () => {
+    // fetch approvers from API
+    fetchData({
+      url: API_BASE_URL + "/leaveapprovers",
+      method: "GET"
+    })
+      .then(data => this.setState({ managerList: data }))
+      .catch(error => {
+        // if unable to fetch data, assign default (spaces) to values
+        let managerListData = [{ emplId: "", name: "" }];
+        this.setState({ managerList: managerListData });
+
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+      });
+  }
+
+  loadTranslateItem = () => {
+    // fetch translate item from API
+    fetchData({
+      url: API_BASE_URL + "/translateitems",
+      method: "GET"
+    })
+      .then(data => {
+        
+        let deptIdList = [], genderList = [], marriageStatusList = [], 
+            jobTitleList = [], businessUnitList = [];
+          
+        data.map(item => { 
+          if(item.effStatus === "A"){
+            if (item.id.fieldname === "dept_id" ) 
+              deptIdList.push(item)
+            else if(item.id.fieldname === "gender")
+              genderList.push(item)
+            else if(item.id.fieldname === "marriage_status")
+              marriageStatusList.push(item)
+            else if(item.id.fieldname === "job_title")
+              jobTitleList.push(item)
+            else if(item.id.fieldname === "business_unit")
+              businessUnitList.push(item)
+          }
+          return true;
+        })
+        
+        this.setState({
+          deptIdList: deptIdList,
+          genderList: genderList,
+          marriageStatusList: marriageStatusList,
+          jobTitleList: jobTitleList,
+          businessUnitList: businessUnitList
+        })
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+      });
+  }
+
+  handlefieldtypechange = event => {
+    const selectedFieldType = event.target.value;
+    let fieldValuesList = [];
+
+    switch(selectedFieldType) {
+      case "business_unit":
+        this.state.businessUnitList.map(businessUnit => {
+          fieldValuesList.push({
+            key: businessUnit.id.fieldvalue, 
+            value: businessUnit.xlatlongname
+          })
+          return true;
+        })
+        break;
+      case "dept_id":
+        this.state.deptIdList.map(deptId => {
+          fieldValuesList.push({
+            key: deptId.id.fieldvalue, 
+            value: deptId.xlatlongname
+          })
+          return true;
+        })
+        break;
+      case "manager":
+        this.state.managerList.map(manager => {
+          fieldValuesList.push({
+            key: manager.emplId, 
+            value: manager.name
+          })
+          return true;
+        })
+        break;
+      case "job_title":
+        this.state.jobTitleList.map(jobTitle => {
+          fieldValuesList.push({
+            key: jobTitle.id.fieldvalue, 
+            value: jobTitle.xlatlongname
+          })
+          return true;
+        })
+        break;
+      case "gender":
+        this.state.genderList.map(gender => {
+          fieldValuesList.push({
+            key: gender.id.fieldvalue, 
+            value: gender.xlatlongname
+          })
+          return true;
+        })
+        break;
+      case "marriage_status":
+        this.state.marriageStatusList.map(marriageStatus => {
+          fieldValuesList.push({
+            key: marriageStatus.id.fieldvalue, 
+            value: marriageStatus.xlatlongname
+          })
+          return true;
+        })
+        break;
+      default: 
+        break;
+    }
+    console.log(fieldValuesList[0].value)
+    this.setState({
+      selectedFieldType: selectedFieldType,
+      fieldValuesList: fieldValuesList,
+      selectedFieldValue: fieldValuesList[0].key
+    })
+  }
+
+  handlefieldvaluechange = event => {
+    this.setState({
+      selectedFieldValue: event.target.value
+    })
+  }
+
+  handleEmployeeSearch = event => {
+    const searchString = this.state.selectedFieldType + "=" + this.state.selectedFieldValue;
+    
+    fetchData({
+      url: API_BASE_URL + "/searchemployee?" + searchString,
+      method: "GET"
+    })
+      .then(data => {
+        if (this._isMounted) {
+          this.setState({
+            employeeProfiles: data,
+            loading: false
+          });
+        }
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+        if (this._isMounted) {
+          this.setState({
+            employeeProfiles: [],
+            loading: false
+          });
+        }
+      });
+  }
+
   render() {
     if (!isHrRole(this.props.currentUser)) {
       return <Redirect to="/forbidden" />;
     }
-
-    // const showStatusDesc = strStatus => {
-    //   if (strStatus === "A") {
-    //     return "Active";
-    //   } else {
-    //     return "Inactive";
-    //   }
-    // };
 
     const getStatusDesc = strStatus => {
       let arrStatusDescLookup = this.state.statusLookup;
@@ -134,24 +279,39 @@ class MultipleStaffUpdate extends Component {
         Header: "Employee ID",
         accessor: "emplId",
         width: 110,
-        sortable: true,
-        filterable: true
+        sortable: true
       },
       {
         id: "name",
         Header: "Employee Name",
         accessor: "name",
-        minWidth: 180,
-        sortable: true,
-        filterable: true
+        minWidth: 130,
+        sortable: true
       },
       {
-        id: "businessEmail",
-        Header: "Business Email",
-        accessor: "businessEmail",
-        minWidth: 190,
-        sortable: true,
-        filterable: true
+        id: "gender",
+        Header: "Gender",
+        accessor: "gender",
+        minWidth: 80,
+        style: {
+          textAlign: "center"
+        },
+        Cell: (props) => {
+          return (
+            <Input type="select" value={props.value} bsSize="sm">
+              { this.state.genderList.map(gender => {
+                return (
+                  <option
+                    key={gender.id.fieldvalue}
+                    value={gender.id.fieldvalue}
+                  >
+                    {gender.xlatlongname}
+                  </option>
+                );
+              }) }
+            </Input>
+          )
+        }
       },
       {
         id: "marriageStatus",
@@ -159,52 +319,131 @@ class MultipleStaffUpdate extends Component {
         accessor: "marriageStatus",
         minWidth: 80,
         sortable: true,
-        filterable: true,
         style: {
           textAlign: "center"
+        },
+        Cell: (props) => {
+          return (
+            <Input type="select" value={props.value} bsSize="sm">
+              { this.state.marriageStatusList.map(marriageStatus => {
+                return (
+                  <option
+                    key={marriageStatus.id.fieldvalue}
+                    value={marriageStatus.id.fieldvalue}
+                  >
+                    {marriageStatus.xlatlongname}
+                  </option>
+                );
+              }) }
+            </Input>
+          )
         }
       },
       {
         id: "jobTitle",
         Header: "Job Title",
         accessor: "jobTitle",
-        minWidth: 80,
+        minWidth: 130,
         sortable: true,
-        filterable: true,
-        style: {
-          textAlign: "center"
+        Cell: (props) => {
+          return (
+            <Input type="select" value={props.value} bsSize="sm">
+              { this.state.jobTitleList.map(jobTitle => {
+                return (
+                  <option
+                    key={jobTitle.id.fieldvalue}
+                    value={jobTitle.id.fieldvalue}
+                  >
+                    {jobTitle.xlatlongname}
+                  </option>
+                );
+              }) }
+            </Input>
+          )
         }
       },
       {
         id: "businessUnit",
         Header: "BU",
         accessor: "businessUnit",
-        minWidth: 80,
+        minWidth: 110,
         sortable: true,
-        filterable: true,
         style: {
           textAlign: "center"
+        },
+        Cell: (props) => {
+          return (
+            <Input type="select" value={props.value} bsSize="sm">
+              { this.state.businessUnitList.map(businessUnit => {
+                return (
+                  <option
+                    key={businessUnit.id.fieldvalue}
+                    value={businessUnit.id.fieldvalue}
+                  >
+                    {businessUnit.xlatlongname}
+                  </option>
+                );
+              }) }
+            </Input>
+          )
         }
       },
       {
         id: "deptId",
         Header: "Dept ID",
         accessor: "deptId",
-        minWidth: 80,
+        minWidth: 90,
         sortable: true,
-        filterable: true,
         style: {
           textAlign: "center"
         },
-        Cell: props => <select><option>abc</option><option>def</option><option>ghi</option></select>
+        Cell: (props) => {
+          return (
+            <Input type="select" value={props.value} bsSize="sm">
+              { this.state.deptIdList.map(deptId => {
+                return (
+                  <option
+                    key={deptId.id.fieldvalue}
+                    value={deptId.id.fieldvalue}
+                  >
+                    {deptId.xlatlongname}
+                  </option>
+                );
+              }) }
+            </Input>
+          )
+        }
       },
       {
         id: "LineMgrName",
         Header: "Line Manager",
-        accessor: "reportsTo.name",
-        minWidth: 170,
+        accessor: "reportsTo.emplId",
+        minWidth: 140,
         sortable: true,
-        filterable: true
+        Cell: (props) => {
+          return (
+            <Input type="select" value={props.value} bsSize="sm">
+              { this.state.managerList.map(manager => {
+                return (
+                  <option
+                    key={manager.emplId}
+                    value={manager.emplId}
+                  >
+                    {manager.name}
+                  </option>
+                );
+              }) }
+            </Input>
+          )
+        }
+      },
+      {
+        id: "businessEmail",
+        Header: "Business Email",
+        accessor: "businessEmail",
+        minWidth: 190,
+        sortable: true,
+        show: false
       },
       {
         id: "DateJoined",
@@ -212,21 +451,14 @@ class MultipleStaffUpdate extends Component {
         accessor: d => formatDateDMY(d.joinDate),
         minWidth: 90,
         sortable: true,
-        filterable: true,
-        style: {
-          textAlign: "center"
-        }
+        show: false
       },
       {
         id: "status",
         Header: "Status",
         accessor: str => getStatusDesc(str.status),
-        minWidth: 70,
         sortable: true,
-        filterable: true,
-        style: {
-          textAlign: "center"
-        }
+        show: false
       },
       {
         id: "mobileNo",
@@ -234,7 +466,6 @@ class MultipleStaffUpdate extends Component {
         accessor: "mobileNo",
         minWidth: 110,
         sortable: true,
-        filterable: true,
         style: {
           textAlign: "center"
         },
@@ -244,12 +475,6 @@ class MultipleStaffUpdate extends Component {
         id: "joinDate",
         Header: "Join Date",
         accessor: "joinDate",
-        show: false
-      },
-      {
-        id: "gender",
-        Header: "Gender",
-        accessor: "gender",
         show: false
       },
       {
@@ -288,38 +513,72 @@ class MultipleStaffUpdate extends Component {
         Header: "Line Manager ID",
         accessor: "reportsTo.emplId",
         show: false
-      },
-      {
-        id: "Action",
-        Header: "Action",
-        accessor: editButton => (
-          <Button
-            color="primary"
-            size="sm"
-            tag={Link}
-            to={`/liststaffprofile/edit/${editButton.emplId}`}
-            className="smallButtonOverride"
-          >
-            <span className="fa fa-edit" /> Edit
-          </Button>
-        ),
-        minWidth: 72,
-        sortable: false,
-        filterable: false,
-        style: {
-          textAlign: "center"
-        }
-      }
+      }      
     ];
+
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Employee Profiles</h3>
+            <h3 className="headerStyle">Update Multiple Profiles</h3>
           </span>
         </div>
         <div className="reactTableContainer">
           <div className="mainListBtnContainer">
+            <div className="SubListBtnLeftContainer">
+              <Col xs="5">
+                <Input 
+                  type="select" 
+                  name="fieldtypeselect" 
+                  id="fieldtypeselect" 
+                  onChange={this.handlefieldtypechange}
+                  value={this.state.selectedFieldType}
+                >
+                  <option key="" value="">- Select a search field -</option>
+                  <option key="business_unit" value="business_unit">Business Unit</option>
+                  <option key="dept_id" value="dept_id">Department ID</option>
+                  <option key="manager" value="manager">Manager</option>
+                  <option key="job_title" value="job_title">Job Title</option>
+                  <option key="gender" value="gender">Gender</option>
+                  <option key="marriage_status" value="marriage_status">Marriage Status</option>
+                </Input>
+              </Col>             
+              <Col xs="5">
+                <Input 
+                  type="select" 
+                  name="fieldvalueselect" 
+                  id="fieldvalueselect" 
+                  onChange={this.handlefieldvaluechange}
+                  value={this.state.selectedFieldValue}
+                >
+                  {                     
+                    this.state.fieldValuesList.map(fieldvalue => {
+                      return (
+                        <option
+                          key={fieldvalue.key}
+                          value={fieldvalue.key}
+                        >
+                          {fieldvalue.value}
+                        </option>
+                      );
+                    })
+                  }
+                </Input>
+              </Col>
+              <Col xs="2">
+                <Button
+                  variant="contained"
+                  color="primary"
+                  className="largeButtonOverride"
+                  onClick={this.handleEmployeeSearch}
+                >
+                  <span
+                    className="fa fa-search"
+                    style={{ margin: "0px 5px 0px 0px" }}
+                  />                
+                </Button>
+              </Col>
+            </div>
             <div className="SubListBtnRightContainer">
               <div>
                 <Button
@@ -331,43 +590,21 @@ class MultipleStaffUpdate extends Component {
                   to={`/liststaffprofile/uploadprofiles`}
                 >
                   <span
-                    className="fa fa-upload"
+                    className="fa fa-save"
                     style={{ margin: "0px 5px 0px 0px" }}
                   />
-                  Upload Profiles
-                </Button>
-              </div>
-              <div style={{ paddingLeft: "4px" }}>
-                <Button
-                  color="primary"
-                  // component={Link}
-                  tag={Link}
-                  to={`/liststaffprofile/add`}
-                  className="largeButtonOverride"
-                >
-                  <span
-                    className="fa fa-plus"
-                    style={{ margin: "0px 5px 0px 0px" }}
-                  />
-                  Add Employee
+                  Save All
                 </Button>
               </div>
             </div>
           </div>
           <ReactTable
-            // key={this.state.filteredLength}
             data={this.state.employeeProfiles}
             columns={EmplProfileCols}
-            defaultFilterMethod={(filter, row) =>
-              String(row[filter.id])
-                .toLowerCase()
-                .includes(filter.value.toLowerCase())
-            }
-            pageSizeOptions={[10, 20, 30, 50, 100, this.state.filteredLength]}
+            pageSizeOptions={[10, 20, 30, 50, 100]}
             defaultPageSize={10}
             pages={this.state.pages}
             loading={this.state.loading}
-            filterable={true}
             sortable={true}
             multiSort={true}
             loadingText="Loading Employee Profiles..."
@@ -377,17 +614,7 @@ class MultipleStaffUpdate extends Component {
             showPageSizeOptions={true}
             ref={refer => {
               this.selectTable = refer;
-            }}
-            onFilteredChange={() => {
-              const filteredData = this.selectTable.getResolvedState()
-                .sortedData;
-              const filteredDataLength = this.selectTable.getResolvedState()
-                .sortedData.length;
-              this.setState({
-                filteredProfiles: filteredData,
-                filteredLength: filteredDataLength
-              });
-            }}
+            }}            
           />
         </div>
       </div>

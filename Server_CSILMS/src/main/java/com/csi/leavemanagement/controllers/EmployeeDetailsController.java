@@ -68,7 +68,7 @@ public class EmployeeDetailsController {
 										 	 @RequestParam(value="marriage_status", required=false) String marriageStatus,
 											 @RequestParam(value="gender", required=false) String gender,
 											 @RequestParam(value="job_title", required=false) String jobTitle,
-											 @RequestParam(value="managerid", required=false) String managerId) {
+											 @RequestParam(value="manager", required=false) String managerId) {
 		Map<String, String> responseEntityMessage = new HashMap<String, String> ();
 		List<EmployeeDetails> matchingEmployees;
 		if(businessUnit != null)
