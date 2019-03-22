@@ -411,7 +411,7 @@ class ApplyLeave extends Component {
         leaveCategory === "PT" ||
         leaveCategory === "SL"
       ) {
-        // (HL) Medical Leave - Hospitalization, (MT) Maternity, (PT) Paternity and (SL) Sickness
+        // (HL) Medical - Hospitalization, (MT) Maternity, (PT) Paternity or (SL) Medical - Outpatient
         for (let i = 0; i < x; i++) {
           if (nextLeaveDate <= endDate) {
             arrDateOfLeaves.push(nextLeaveDate);

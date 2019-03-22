@@ -138,7 +138,7 @@ class ChangePassword extends React.Component {
       color: "#004a9b",
       fontSize: "17px",
       // fontWeight: "bold",
-      height: "40px",
+      height: "36px",
       borderLeft: "none",
       borderRight: "none",
       borderTop: "none",
@@ -147,7 +147,7 @@ class ChangePassword extends React.Component {
     };
 
     const showHideButton = {
-      height: "38px",
+      height: "36px",
       color: "white",
       background: "#004a9b"
     };
@@ -203,7 +203,9 @@ class ChangePassword extends React.Component {
                     className="input-group mb-3"
                     style={{
                       height: "40px",
-                      paddingBottom: "2px"
+                      paddingBottom: "2px",
+                      display: "flex",
+                      alignItems: "center"
                     }}
                   >
                     <Input
@@ -242,7 +244,9 @@ class ChangePassword extends React.Component {
                     className="input-group mb-3"
                     style={{
                       height: "40px",
-                      paddingBottom: "2px"
+                      paddingBottom: "2px",
+                      display: "flex",
+                      alignItems: "center"
                     }}
                   >
                     <Input
@@ -295,7 +299,9 @@ class ChangePassword extends React.Component {
                       className="container_password_show input-group-append"
                       style={{
                         height: "40px",
-                        paddingBottom: "2px"
+                        paddingBottom: "2px",
+                        display: "flex",
+                        alignItems: "center"
                       }}
                     >
                       <span
