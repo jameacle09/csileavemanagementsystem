@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import { ListGroup, ListGroupItem, Table } from "reactstrap";
+import { ListGroup, ListGroupItem, Table, Button } from "reactstrap";
 import "../common/Styles.css";
 import { fetchData, formatDateDMY } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
@@ -181,6 +181,10 @@ class MyProfile extends Component {
       });
   };
 
+  handleCancel = () => {
+    this.props.history.push("/");
+  };
+
   render() {
     const getGenderDesc = strGender => {
       let arrGenderLookup = this.state.genderLookup;
@@ -237,25 +241,8 @@ class MyProfile extends Component {
       return departmentDesc;
     };
 
-    const titleFontStyle = {
-      font: "Helvetica",
-      fontSize: "17px",
-      fontWeight: "bold",
-      color: "#004a9b"
-    };
-
-    const tableFontStyle = {
-      font: "Helvetica",
-      fontSize: "16px"
-    };
-
-    const rowFontStyle = {
-      font: "Helvetica",
-      fontSize: "16px",
-      color: "darkblue"
-    };
-
     const { emplProfileData } = this.state;
+
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -266,16 +253,16 @@ class MyProfile extends Component {
         <div className="reactTableContainer">
           <ListGroup>
             <ListGroupItem color="primary">
-              <span style={titleFontStyle}>Personal Information</span>
+              <span className="fontProfileSubHeader">Personal Information</span>
             </ListGroupItem>
-            <Table align="left" style={tableFontStyle} size="sm">
+            <Table align="left" className="fontTableItems" size="sm">
               <tbody>
                 <tr>
                   <td width="35%" style={{ paddingLeft: "20px" }}>
                     <span className="profileFullText">Employee ID:</span>
                     <span className="profileShortText">Empl ID:</span>
                   </td>
-                  <td width="65%" style={rowFontStyle}>
+                  <td width="65%" className="fontRowItemValue">
                     {emplProfileData.emplId}
                   </td>
                 </tr>
@@ -284,11 +271,11 @@ class MyProfile extends Component {
                     <span className="profileFullText">Employee Name:</span>
                     <span className="profileShortText">Empl Name:</span>
                   </td>
-                  <td style={rowFontStyle}>{emplProfileData.name}</td>
+                  <td className="fontRowItemValue">{emplProfileData.name}</td>
                 </tr>
                 <tr>
                   <td style={{ paddingLeft: "20px" }}>Gender:</td>
-                  <td style={rowFontStyle}>
+                  <td className="fontRowItemValue">
                     {getGenderDesc(emplProfileData.gender)}
                   </td>
                 </tr>
@@ -297,7 +284,7 @@ class MyProfile extends Component {
                     <span className="profileFullText">Marital Status:</span>
                     <span className="profileShortText">Marital Stat:</span>
                   </td>
-                  <td style={rowFontStyle}>
+                  <td className="fontRowItemValue">
                     {getMaritalStatusDesc(emplProfileData.marriageStatus)}
                   </td>
                 </tr>
@@ -306,7 +293,7 @@ class MyProfile extends Component {
                     <span className="profileFullText">Married Date:</span>
                     <span className="profileShortText">Married On:</span>
                   </td>
-                  <td style={rowFontStyle}>
+                  <td className="fontRowItemValue">
                     {emplProfileData.marriageDate
                       ? formatDateDMY(emplProfileData.marriageDate)
                       : "None"}
@@ -317,7 +304,7 @@ class MyProfile extends Component {
                     <span className="profileFullText">Married Count:</span>
                     <span className="profileShortText">Married Cnt:</span>
                   </td>
-                  <td style={rowFontStyle}>
+                  <td className="fontRowItemValue">
                     {emplProfileData.marriageCount > 0
                       ? emplProfileData.marriageCount
                       : "None"}
@@ -328,7 +315,7 @@ class MyProfile extends Component {
                     <span className="profileFullText">No. of Children:</span>
                     <span className="profileShortText">Children:</span>
                   </td>
-                  <td style={rowFontStyle}>
+                  <td className="fontRowItemValue">
                     {emplProfileData.totalChildren > 0
                       ? emplProfileData.totalChildren
                       : "None"}
@@ -339,7 +326,9 @@ class MyProfile extends Component {
                     <span className="profileFullText">NRIC / Passport No:</span>
                     <span className="profileShortText">NRIC/Passport:</span>
                   </td>
-                  <td style={rowFontStyle}>{emplProfileData.nricPassport}</td>
+                  <td className="fontRowItemValue">
+                    {emplProfileData.nricPassport}
+                  </td>
                 </tr>
               </tbody>
             </Table>
@@ -348,16 +337,16 @@ class MyProfile extends Component {
         <div className="reactTableContainer">
           <ListGroup>
             <ListGroupItem color="primary">
-              <span style={titleFontStyle}>Contact Information</span>
+              <span className="fontProfileSubHeader">Contact Information</span>
             </ListGroupItem>
-            <Table align="left" style={tableFontStyle} size="sm">
+            <Table align="left" className="fontTableItems" size="sm">
               <tbody>
                 <tr>
                   <td width="35%" style={{ paddingLeft: "20px" }}>
                     <span className="profileFullText">Business Email:</span>
                     <span className="profileShortText">Bus Email:</span>
                   </td>
-                  <td width="65%" style={rowFontStyle}>
+                  <td width="65%" className="fontRowItemValue">
                     {emplProfileData.businessEmail}
                   </td>
                 </tr>
@@ -366,7 +355,9 @@ class MyProfile extends Component {
                     <span className="profileFullText">Mobile Number:</span>
                     <span className="profileShortText">Mobile #:</span>
                   </td>
-                  <td style={rowFontStyle}>{emplProfileData.mobileNo}</td>
+                  <td className="fontRowItemValue">
+                    {emplProfileData.mobileNo}
+                  </td>
                 </tr>
               </tbody>
             </Table>
@@ -375,15 +366,17 @@ class MyProfile extends Component {
         <div className="reactTableContainer">
           <ListGroup>
             <ListGroupItem color="primary">
-              <span style={titleFontStyle}>Employment Information</span>
+              <span className="fontProfileSubHeader">
+                Employment Information
+              </span>
             </ListGroupItem>
-            <Table align="left" style={tableFontStyle} size="sm">
+            <Table align="left" className="fontTableItems" size="sm">
               <tbody>
                 <tr>
                   <td width="35%" style={{ paddingLeft: "20px" }}>
                     Job Title:
                   </td>
-                  <td width="65%" style={rowFontStyle}>
+                  <td width="65%" className="fontRowItemValue">
                     {getJobTitleDesc(emplProfileData.jobTitle)}
                   </td>
                 </tr>
@@ -392,13 +385,13 @@ class MyProfile extends Component {
                     <span className="profileFullText">Business Unit:</span>
                     <span className="profileShortText">Bus Unit:</span>
                   </td>
-                  <td style={rowFontStyle}>
+                  <td className="fontRowItemValue">
                     {getBusinessUnitDesc(emplProfileData.businessUnit)}
                   </td>
                 </tr>
                 <tr>
                   <td style={{ paddingLeft: "20px" }}>Department:</td>
-                  <td style={rowFontStyle}>
+                  <td className="fontRowItemValue">
                     {getDepartmentDesc(emplProfileData.deptId)}
                   </td>
                 </tr>
@@ -407,11 +400,13 @@ class MyProfile extends Component {
                     <span className="profileFullText">Line Manager:</span>
                     <span className="profileShortText">Line Mgr:</span>
                   </td>
-                  <td style={rowFontStyle}>{emplProfileData.reportsTo.name}</td>
+                  <td className="fontRowItemValue">
+                    {emplProfileData.reportsTo.name}
+                  </td>
                 </tr>
                 <tr>
                   <td style={{ paddingLeft: "20px" }}>Joined Date:</td>
-                  <td style={rowFontStyle}>
+                  <td className="fontRowItemValue">
                     {formatDateDMY(emplProfileData.joinDate)}
                   </td>
                 </tr>
@@ -419,9 +414,10 @@ class MyProfile extends Component {
             </Table>
           </ListGroup>
         </div>
-        <div style={{ paddingLeft: "20px" }}>
+        <div>
           <p
             style={{
+              paddingLeft: "20px",
               fontSize: "14px",
               fontStyle: "italic",
               color: "black"
@@ -440,7 +436,23 @@ class MyProfile extends Component {
           >
             Change Password
           </Button> */}
+          <div
+            style={{
+              width: "18%",
+              margin: "auto"
+              // border: "1px solid black"
+            }}
+          >
+            <Button
+              color="primary"
+              className="largeButtonOverride"
+              onClick={this.handleCancel}
+            >
+              Home
+            </Button>
+          </div>
         </div>
+
         <br />
       </div>
     );
