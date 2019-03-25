@@ -37,6 +37,7 @@ public class EmployeeDetailsController {
 	}
 	
 	@RequestMapping(value="/employeedetails", method=RequestMethod.GET)
+    @PreAuthorize("hasAuthority('HR')")
 	public List<EmployeeDetails> doListEmployeeDetails() {
 		return this.employeeDetailsService.findAll();
 	}

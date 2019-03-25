@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -25,7 +26,7 @@ public class PublicHolidayRestController {
 	private PublicHolidayService publicHolidayService;
 
     @Autowired
-    private PublicHolidayRestController(PublicHolidayService publicHolidayService) {
+    public PublicHolidayRestController(PublicHolidayService publicHolidayService) {
         this.publicHolidayService = publicHolidayService;
     }
     
@@ -54,12 +55,14 @@ public class PublicHolidayRestController {
     }
     
     @RequestMapping(value="/publicholiday", method=RequestMethod.POST)
+	@PreAuthorize("hasAuthority('HR')")
     public PublicHoliday doSavePublicHoliday(@RequestBody PublicHoliday publicHoliday) {
         PublicHoliday newPublicHoliday = this.publicHolidayService.save(publicHoliday);
         return newPublicHoliday;
     }
     
     @RequestMapping(value="/publicholiday/{id}", method=RequestMethod.DELETE)
+	@PreAuthorize("hasAuthority('HR')")
     public String doDeletePublicHoliday(@PathVariable("id") String idStr) {
     	Date id = null;
         
@@ -85,6 +88,7 @@ public class PublicHolidayRestController {
     }*/
     
     @RequestMapping(value="/publicholiday/{id}", method=RequestMethod.PATCH)
+	@PreAuthorize("hasAuthority('HR')")
     public PublicHoliday doUpdatePublicHoliday(@PathVariable("id") String idStr,
                                                 @RequestBody PublicHoliday publicHoliday) {
         

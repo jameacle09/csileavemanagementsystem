@@ -78,9 +78,7 @@ class ApplyLeave extends Component {
     fetchData({
       url:
         API_BASE_URL +
-        "/leaveentitlement/" +
-        this.state.emplId +
-        "/" +
+        "/leaveentitlement/me/" +
         currDate.getFullYear(),
       method: "GET"
     })
@@ -229,7 +227,7 @@ class ApplyLeave extends Component {
         this.setState({ attachedFileName: res.file });
       })
       .catch(err => {
-        console.log(err);
+        
         this.setState({ attachedFIleName: "" });
         confirmAlert({
           message:

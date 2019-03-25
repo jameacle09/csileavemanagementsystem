@@ -3,6 +3,7 @@ package com.csi.leavemanagement.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -46,12 +47,14 @@ public class TranslateitemRestController {
 	} 
 	
 	@RequestMapping(value="/translateitem", method=RequestMethod.POST)
+	@PreAuthorize("hasAuthority('HR')")
 	public Translateitem doSaveTranslateitem(@RequestBody Translateitem translateitem) {
 		Translateitem newTranslateitem = this.translateitemService.save(translateitem);
 		return newTranslateitem;
 	}
 	
 	@RequestMapping(value="/translateitem/{fieldname}", method=RequestMethod.DELETE)
+	@PreAuthorize("hasAuthority('HR')")
 	public String doDeleteTranslateitemById(@PathVariable("fieldname") String fieldname,  
 											   @RequestParam("fieldvalue") String fieldvalue) {
 
@@ -68,6 +71,7 @@ public class TranslateitemRestController {
 //	}	
 	
 	@RequestMapping(value="/translateitem/{fieldname}/{fieldvalue}", method=RequestMethod.PATCH)
+	@PreAuthorize("hasAuthority('HR')")
 	public Translateitem doUpdateTranslateitemById(@PathVariable("fieldname") String fieldname,
 													@PathVariable("fieldvalue") String fieldvalue,
 													@RequestBody Translateitem translateitem) {

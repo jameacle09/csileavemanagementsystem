@@ -4,6 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -32,6 +33,7 @@ public class JobDetailRestController {
 	}
 
 	@RequestMapping(value="/jobdetails", method=RequestMethod.GET)
+	@PreAuthorize("hasAuthority('HR')")
 	public List<JobDetails> doListJobDetailss() {
 		List<JobDetails> jobDetails = this.jobDetailService.findAll();
 		return jobDetails;
@@ -45,12 +47,14 @@ public class JobDetailRestController {
 	
 	
 	@RequestMapping(value="/jobdetail", method=RequestMethod.POST)
+	@PreAuthorize("hasAuthority('HR')")
 	public JobDetails doSaveJobDetails(@RequestBody JobDetails jobDetail) {
 		JobDetails newJobDetails = this.jobDetailService.save(jobDetail);
 		return newJobDetails;
 	}
 	
 	@RequestMapping(value="/jobdetail/{emplid}", method=RequestMethod.DELETE)
+	@PreAuthorize("hasAuthority('HR')")
 	public String doDeleteJobDetails(@PathVariable("emplid") String emplid,
 									 @RequestParam("effdate") Date effDate) {
 		this.jobDetailService.deleteByID(emplid, effDate);
@@ -59,6 +63,7 @@ public class JobDetailRestController {
 	
 	
 	@RequestMapping(value="/jobdetail/{emplid}", method=RequestMethod.PATCH)
+	@PreAuthorize("hasAuthority('HR')")
 	public JobDetails doUpdateJobDetails(@PathVariable("emplid") JobDetailsId id, @RequestBody JobDetails jobDetail) {
 		jobDetail.setId(id);
 		JobDetails newJobDetails = this.jobDetailService.save(jobDetail);
