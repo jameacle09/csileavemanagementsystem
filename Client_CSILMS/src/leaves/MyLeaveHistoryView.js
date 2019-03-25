@@ -103,7 +103,6 @@ class MyLeaveHistoryView extends Component {
       method: "GET"
     })
       .then(data => {
-        console.log(data);
         this.setState({
           approverName: data.name + " (" + approverId + ")"
         });
@@ -309,7 +308,6 @@ class MyLeaveHistoryView extends Component {
   };
 
   render() {
-    console.log("STATE", this.state);
     const {
       emplId,
       name,
