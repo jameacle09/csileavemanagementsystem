@@ -22,6 +22,7 @@ import ListStaffProfile from "./staffprofile/ListStaffProfile";
 import NewStaffProfile from "./staffprofile/NewStaffProfile";
 // import EditStaffProfile from "./staffprofile/EditStaffProfile";
 import UploadEmployeeProfile from "./staffprofile/UploadStaffProfile";
+import MultipleStaffUpdate from "./staffprofile/MultipleStaffUpdate";
 import PublicHoliday from "./hradmin/PublicHoliday";
 import AddPublicHoliday from "./hradmin/AddPublicHoliday";
 import EditPublicHoliday from "./hradmin/EditPublicHoliday";
@@ -296,6 +297,13 @@ class App extends Component {
                   path="/liststaffprofile/uploadprofiles"
                   title="Upload Employee Profile"
                   component={UploadEmployeeProfile}
+                />
+                <PrivateRoute
+                  authenticated={this.state.isAuthenticated}
+                  currentUser={this.state.currentUser}
+                  path="/liststaffprofile/multipleupdate"
+                  title="Update Multiple Employees"
+                  component={MultipleStaffUpdate}
                 />
 
                 {/* Leave Entitlements */}
