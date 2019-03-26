@@ -63,10 +63,12 @@ public class EmployeeDetailsController {
 	}
 	
 	@GetMapping("/searchemployee")
-	public ResponseEntity<?> doFindEmployee(@RequestParam(value="businessunit", required=false) String businessUnit,
-											 @RequestParam(value="deptid", required=false) String deptId,
-										 	 @RequestParam(value="marriagestatus", required=false) String marriageStatus,
-											 @RequestParam(value="gender", required=false) String gender) {
+	public ResponseEntity<?> doFindEmployee(@RequestParam(value="business_unit", required=false) String businessUnit,
+											 @RequestParam(value="dept_id", required=false) String deptId,
+										 	 @RequestParam(value="marriage_status", required=false) String marriageStatus,
+											 @RequestParam(value="gender", required=false) String gender,
+											 @RequestParam(value="job_title", required=false) String jobTitle,
+											 @RequestParam(value="manager", required=false) String managerId) {
 		Map<String, String> responseEntityMessage = new HashMap<String, String> ();
 		List<EmployeeDetails> matchingEmployees;
 		if(businessUnit != null)
@@ -77,25 +79,16 @@ public class EmployeeDetailsController {
 			matchingEmployees = this.employeeDetailsService.findByMarriageStatus(marriageStatus);
 		else if(gender != null)
 			matchingEmployees = this.employeeDetailsService.findByGender(gender);
+		else if(jobTitle != null)
+			matchingEmployees = this.employeeDetailsService.findByJobTitle(jobTitle);
+		else if(managerId != null)
+			matchingEmployees = this.employeeDetailsService.findByMgrId(managerId);
 		else {
 			responseEntityMessage.put("message", "Search parameter is empty or invalid");
 			return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.BAD_REQUEST);
 		}
-		
-		if(matchingEmployees == null || matchingEmployees.size() == 0) {
-			responseEntityMessage.put("matchingEmployees", "");
-			responseEntityMessage.put("message","No matching employee");
-			return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.OK);
-		}
-		
-		String matchingEmployeesMsg = "";
-		for(EmployeeDetails employee : matchingEmployees) {
-			matchingEmployeesMsg += employee.getName() + " (" + employee.getEmplId() + ");";
-		}
-		
-		responseEntityMessage.put("matchingEmployees", matchingEmployeesMsg);
-		responseEntityMessage.put("message","Success");
-		return new ResponseEntity<Map<String, String>>(responseEntityMessage, HttpStatus.OK);
+				
+		return new ResponseEntity<List<EmployeeDetails>>(matchingEmployees, HttpStatus.OK);
 	}
 	
 	@RequestMapping(value="/employeedetails/{mgrId}/reportee", method=RequestMethod.GET)
@@ -115,4 +108,17 @@ public class EmployeeDetailsController {
     public EmployeeDetails addEditEmployeeDetails(@RequestBody EmployeeDetails employeeDetails,@CurrentUser UserPrincipal currentUser) {
 		return employeeDetailsService.addEditEmployeeDetails(employeeDetails, currentUser);
     }
+	
+	@PostMapping("/bulkUpdateEmployeeDetails")
+    @PreAuthorize("hasAuthority('HR')")
+    public int bulkUpdateEmployeeDetails(@RequestBody EmployeeDetails[] employeeDetailsArray, @CurrentUser UserPrincipal currentUser) {
+		
+		int successCount = 0;
+		for(EmployeeDetails employeeDetails : employeeDetailsArray) {
+			
+			if( this.employeeDetailsService.addEditEmployeeDetails(employeeDetails, currentUser) != null)
+				successCount ++;
+		}
+		return successCount;
+	}
 }

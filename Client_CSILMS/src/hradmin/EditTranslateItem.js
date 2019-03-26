@@ -131,22 +131,16 @@ class AddTranslateItem extends Component {
 
     // To de-activate Translate Item, verify if any employee using the value
     // If yes, disallow deactivate and prompt message
-    if (this.state.changeStatus && effStatus === "I") {
-      let fetchURL = null;
-      switch (fieldname) {
-        case "business_unit":
-          fetchURL =
-            API_BASE_URL + "/searchemployee?businessunit=" + fieldvalue;
-          break;
-        case "dept_id":
-          fetchURL = API_BASE_URL + "/searchemployee?deptid=" + fieldvalue;
-          break;
-        case "marriage_status":
-          fetchURL =
-            API_BASE_URL + "/searchemployee?marriagestatus=" + fieldvalue;
-          break;
-        case "gender":
-          fetchURL = API_BASE_URL + "/searchemployee?gender=" + fieldvalue;
+    if(this.state.changeStatus && effStatus === "I"){
+    
+      let fetchURL = null ;
+      switch(fieldname) {
+        case "business_unit" :
+        case "dept_id" :
+        case "job_title" :
+        case "marriage_status" :
+        case "gender" :
+          fetchURL = API_BASE_URL + "/searchemployee?" + fieldname + "=" + fieldvalue;
           break;
         default:
         // do nothing, no impact
@@ -158,21 +152,18 @@ class AddTranslateItem extends Component {
           method: "GET"
         })
           .then(data => {
-            if (
-              data.matchingEmployees !== "" &&
-              data.matchingEmployees !== null
-            ) {
+          
+            if(data.length > 0) {
               noReference = false;
 
-              // .filter(Boolean) to remove empty array element
-              let employeeList = data.matchingEmployees
-                .split(";")
-                .filter(Boolean);
+              let employeeList = data.map(employee => {
+                return employee.name + " (" + employee.emplId + ")";
+              })                      
               let outputMsgList;
-
+              
               // if employeeList exceeds 3 entry, only display 3 on outputMsgList
-              if (employeeList.length > 3) {
-                outputMsgList = employeeList.slice(0, 3);
+              if(employeeList.length > 3) {
+                outputMsgList = employeeList.slice(0,3);
 
                 const remaining = employeeList.length - 3;
                 outputMsgList[3] = "... and " + remaining + " other employee";
@@ -198,6 +189,10 @@ class AddTranslateItem extends Component {
                 buttons: [
                   {
                     label: "OK"
+                  } ,
+                  {
+                    label: "Update employee",
+                    onClick: () => this.props.history.push("/liststaffprofile/multipleupdate")
                   }
                 ]
               });
