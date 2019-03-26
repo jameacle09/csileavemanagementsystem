@@ -139,10 +139,8 @@ class AddEntitlement extends Component {
     event.preventDefault();
     const {
       emplId,
-      //name,
       year,
       leaveCode,
-      // leaveDescr,
       carryForward,
       entitlement,
       availableLeave,
