@@ -14,10 +14,13 @@ import com.csi.leavemanagement.services.LeaveDetailService;
 import com.csi.leavemanagement.models.LeaveDetail;
 
 
+/*
+ * THIS CONTROLLER IS NO LONGER IN USE
+ */
 
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/depreciated")
 @CrossOrigin
 public class LeaveDetailRestController {
 

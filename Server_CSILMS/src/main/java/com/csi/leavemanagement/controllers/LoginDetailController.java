@@ -47,18 +47,21 @@ public class LoginDetailController {
 	}
 	
 	@RequestMapping(value="/logindetail", method=RequestMethod.POST)
+	@PreAuthorize("hasAuthority('HR')")
 	public LoginDetails doSaveLoginDetails(@RequestBody LoginDetails loginDetail) {
 		LoginDetails newLoginDetails = this.loginDetailService.save(loginDetail);
 		return newLoginDetails;
 	}
 	
 	@RequestMapping(value="/logindetail/{emplId}", method=RequestMethod.DELETE)
+	@PreAuthorize("hasAuthority('HR')")
 	public String doDeleteLoginDetails(@PathVariable("emplId") String emplId) {
 		this.loginDetailService.deleteByEmplId(emplId);
 		return "Successfully Deleted";
 	}
 	
 	@RequestMapping(value="/logindetail/{emplId}", method=RequestMethod.PATCH)
+	@PreAuthorize("hasAuthority('HR')")
 	public LoginDetails doUpdateLoginDetails(@PathVariable("emplId") String emplId, @RequestBody LoginDetails loginDetail) {
 		loginDetail.setEmplId(emplId);
 		LoginDetails newLoginDetails = this.loginDetailService.save(loginDetail);
@@ -66,6 +69,7 @@ public class LoginDetailController {
 	}
 	
 	@PostMapping("/changePassword")
+	@PreAuthorize("hasAuthority('EMPLOYEE')")
 	public ResponseEntity<?> changePassword(@Valid @RequestBody Map<String, String> params,
 			@CurrentUser UserPrincipal currentUser) throws Exception {
 		

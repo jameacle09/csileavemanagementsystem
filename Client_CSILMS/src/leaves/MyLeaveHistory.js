@@ -37,7 +37,6 @@ class MyLeaveHistory extends Component {
         }
         let userData = [];
         this.setState({ userData: userData });
-        console.log(userData);
       });
   }
 

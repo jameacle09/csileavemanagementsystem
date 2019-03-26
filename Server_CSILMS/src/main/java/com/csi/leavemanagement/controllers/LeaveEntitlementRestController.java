@@ -31,6 +31,7 @@ public class LeaveEntitlementRestController {
 	}
 
 	@RequestMapping(value="/leaveentitlements", method=RequestMethod.GET)
+	@PreAuthorize("hasAuthority('HR')")
 	public List<LeaveEntitlement> doListLeaveEntitlement() {
 		List<LeaveEntitlement> leaveEntitlements = this.leaveEntitlementService.findAll();
 		return leaveEntitlements;
@@ -66,7 +67,19 @@ public class LeaveEntitlementRestController {
 	}
 
 
+	@RequestMapping(value="/leaveentitlement/me/{year}", method=RequestMethod.GET)
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
+	public List<LeaveEntitlement> doGetMyLeaveEntitlementByIdYear(@CurrentUser UserPrincipal currentUser,  
+													  @PathVariable("year") int year) {
+		
+		String emplid = currentUser.getId();
+		List<LeaveEntitlement> leaveEntitlements = this.leaveEntitlementService.findByEmplidYear(emplid, year);
+		return leaveEntitlements;
+	}
+	
+
 	@RequestMapping(value="/leaveentitlement/me/{year}/{leavecode}", method=RequestMethod.GET)
+    @PreAuthorize("hasAuthority('EMPLOYEE')")
 	public LeaveEntitlement doGetMyLeaveEntitlementById(@CurrentUser UserPrincipal currentUser,  
 													  @PathVariable("year") int year,
 													  @PathVariable("leavecode") String leaveCode) {
@@ -77,6 +90,7 @@ public class LeaveEntitlementRestController {
 	}
 	
 	@RequestMapping(value="/leaveentitlement/{emplid}", method=RequestMethod.GET)
+	@PreAuthorize("hasAuthority('HR') or hasAuthority('Manager')")
 	public List<LeaveEntitlement> doGetLeaveEntitlement(@PathVariable("emplid") String emplid,  
 														@RequestParam(value="year", required=false) Integer year,
 														@RequestParam(value="leavecode", required=false) String leaveCode) {
@@ -103,6 +117,7 @@ public class LeaveEntitlementRestController {
 	}
 	
 	@RequestMapping(value="/leaveentitlement/{emplid}/{year}/{leavecode}", method=RequestMethod.GET)
+	@PreAuthorize("hasAuthority('HR') or hasAuthority('Manager')")
 	public LeaveEntitlement doGetLeaveEntitlementById(@PathVariable("emplid") String emplid,  
 													  @PathVariable("year") int year,
 													  @PathVariable("leavecode") String leaveCode) {
@@ -112,6 +127,7 @@ public class LeaveEntitlementRestController {
 	}
 	
 	@RequestMapping(value="/leaveentitlement/{emplid}/{year}", method=RequestMethod.GET)
+	@PreAuthorize("hasAuthority('HR') or hasAuthority('Manager')")
 	public List<LeaveEntitlement> doGetLeaveEntitlementByEmplidAndYear(@PathVariable("emplid") String emplid,  
 																       @PathVariable("year") int year) {
 		
@@ -120,12 +136,14 @@ public class LeaveEntitlementRestController {
 	}
 	
 	@RequestMapping(value="/leaveentitlement", method=RequestMethod.POST)
+	@PreAuthorize("hasAuthority('HR')")
 	public LeaveEntitlement doSaveLeaveEntitlement(@RequestBody LeaveEntitlement leaveEntitlement) {
 		LeaveEntitlement newLeaveEntitlement = this.leaveEntitlementService.save(leaveEntitlement);
 		return newLeaveEntitlement;
 	}
 
 	@RequestMapping(value="/leaveentitlement/bulk", method=RequestMethod.POST)
+	@PreAuthorize("hasAuthority('HR')")
 	public int doSaveLeaveEntitlementArray(@RequestBody LeaveEntitlement[] leaveEntitlementArray) {
 		
 		int successCount = 0;
@@ -138,6 +156,7 @@ public class LeaveEntitlementRestController {
 	}
 	
 	@RequestMapping(value="/leaveentitlement/{emplid}", method=RequestMethod.DELETE)
+	@PreAuthorize("hasAuthority('HR')")
 	public String doDeleteLeaveEntitlementById(@PathVariable("emplid") String emplid,  
 											   @RequestParam("year") int year,
 											   @RequestParam("leavecode") String leaveCode) {
@@ -150,6 +169,7 @@ public class LeaveEntitlementRestController {
 	}
 	
 	@RequestMapping(value="/leaveentitlement/{emplid}/{year}/{leavecode}", method=RequestMethod.PATCH)
+	@PreAuthorize("hasAuthority('HR')")
 	public LeaveEntitlement doUpdateLeaveEntitlementById(@PathVariable("emplid") String emplid,  
 														 @PathVariable("year") int year,
 														 @PathVariable("leavecode") String leaveCode,

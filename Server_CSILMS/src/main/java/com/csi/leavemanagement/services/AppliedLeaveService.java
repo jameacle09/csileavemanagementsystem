@@ -74,7 +74,7 @@ public class AppliedLeaveService {
 		for(AppliedLeave userAppliedLeave : userAppliedLeaveList) {
 			
 			// Skip existing leaves that are cancelled or rejected
-			if(userAppliedLeave.getLeaveStatus() == "CANCL" || userAppliedLeave.getLeaveStatus() == "REJCT")
+			if(userAppliedLeave.getLeaveStatus().contentEquals("CANCL") || userAppliedLeave.getLeaveStatus().contentEquals("REJCT"))
 				continue;
 			
 			Date existingLeaveStartDate = userAppliedLeave.getId().getStartDate();

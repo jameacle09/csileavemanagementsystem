@@ -14,9 +14,12 @@ import com.csi.leavemanagement.models.StaffProfile ;
 import com.csi.leavemanagement.services.StaffProfileService;
 
 
+/*
+ * THIS CONTROLLER IS NO LONGER IN USE
+ */
 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/depreciated")
 @CrossOrigin
 public class StaffProfileRestController {
 
