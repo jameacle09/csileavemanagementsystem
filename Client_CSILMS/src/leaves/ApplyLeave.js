@@ -8,12 +8,19 @@ import {
   FormText,
   Col
 } from "reactstrap";
-import { fetchData, getWeekDay, formatDateYMD } from "../util/APIUtils";
+import {
+  fetchData,
+  getWeekDay,
+  formatDateYMD,
+  addNewDateYMD
+} from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import { confirmAlert } from "react-confirm-alert";
 import "react-confirm-alert/src/react-confirm-alert.css";
 import "../common/Styles.css";
 import LoadingPage from "../common/LoadingPage";
+
+let isIE = /*@cc_on!@*/ false || !!document.documentMode;
 
 class ApplyLeave extends Component {
   constructor(props) {
@@ -393,15 +400,11 @@ class ApplyLeave extends Component {
 
     if (startDate && endDate) {
       let arrPublicHolidaysLookup = this.state.publicHolidaysLookup;
-      let arrDateOfLeaves = [],
-        currLeaveDate = "",
+      var arrDateOfLeaves = [],
         nextLeaveDate = "",
         durationleave = 0;
       var x = 366;
-      currLeaveDate = new Date(startDate);
-      nextLeaveDate = formatDateYMD(
-        currLeaveDate.setDate(currLeaveDate.getDate())
-      );
+      nextLeaveDate = formatDateYMD(startDate);
 
       if (
         leaveCategory === "HL" ||
@@ -413,13 +416,10 @@ class ApplyLeave extends Component {
         for (let i = 0; i < x; i++) {
           if (nextLeaveDate <= endDate) {
             arrDateOfLeaves.push(nextLeaveDate);
-            currLeaveDate = new Date(nextLeaveDate);
           } else {
             i = 367;
           }
-          nextLeaveDate = formatDateYMD(
-            currLeaveDate.setDate(currLeaveDate.getDate() + 1)
-          );
+          nextLeaveDate = addNewDateYMD(nextLeaveDate);
         }
       } else {
         for (let i = 0; i < x; i++) {
@@ -429,13 +429,10 @@ class ApplyLeave extends Component {
               getWeekDay(nextLeaveDate) !== "Saturday"
             )
               arrDateOfLeaves.push(nextLeaveDate);
-            currLeaveDate = new Date(nextLeaveDate);
           } else {
             i = 367;
           }
-          nextLeaveDate = formatDateYMD(
-            currLeaveDate.setDate(currLeaveDate.getDate() + 1)
-          );
+          nextLeaveDate = addNewDateYMD(nextLeaveDate);
         }
         arrPublicHolidaysLookup.forEach(holiday => {
           let filtered = arrDateOfLeaves.filter(function(value, index, arr) {
@@ -624,14 +621,26 @@ class ApplyLeave extends Component {
                     <b style={{ color: "red" }}>*</b>Start Date:
                   </Label>
                   <Col sm={10}>
-                    <Input
-                      type="date"
-                      name="startDate"
-                      id="startDate"
-                      value={formatDateYMD(startDate)}
-                      onChange={this.handleChange}
-                      onBlur={this.validateDateFields}
-                    />
+                    {isIE ? (
+                      <Input
+                        type="date"
+                        name="startDate"
+                        id="startDate"
+                        placeholder="YYYY-MM-DD"
+                        value={startDate}
+                        onChange={this.handleChange}
+                        onBlur={this.validateDateFields}
+                      />
+                    ) : (
+                      <Input
+                        type="date"
+                        name="startDate"
+                        id="startDate"
+                        value={formatDateYMD(startDate)}
+                        onChange={this.handleChange}
+                        onBlur={this.validateDateFields}
+                      />
+                    )}
                   </Col>
                 </FormGroup>
                 <FormGroup row>
@@ -639,14 +648,26 @@ class ApplyLeave extends Component {
                     <b style={{ color: "red" }}>*</b>End Date:
                   </Label>
                   <Col sm={10}>
-                    <Input
-                      type="date"
-                      name="endDate"
-                      id="endDate"
-                      value={formatDateYMD(endDate)}
-                      onChange={this.handleChange}
-                      onBlur={this.validateDateFields}
-                    />
+                    {isIE ? (
+                      <Input
+                        type="date"
+                        name="endDate"
+                        id="endDate"
+                        placeholder="YYYY-MM-DD"
+                        value={endDate}
+                        onChange={this.handleChange}
+                        onBlur={this.validateDateFields}
+                      />
+                    ) : (
+                      <Input
+                        type="date"
+                        name="endDate"
+                        id="endDate"
+                        value={formatDateYMD(endDate)}
+                        onChange={this.handleChange}
+                        onBlur={this.validateDateFields}
+                      />
+                    )}
                   </Col>
                 </FormGroup>
                 <FormGroup row>

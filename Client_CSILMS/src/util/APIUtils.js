@@ -1,4 +1,7 @@
+import { fetch as fetchPolyfill } from "whatwg-fetch";
 import { API_BASE_URL, ACCESS_TOKEN } from "../constants";
+
+let isIE = /*@cc_on!@*/ false || !!document.documentMode;
 
 const request = options => {
   let headers;
@@ -20,15 +23,25 @@ const request = options => {
 
   const defaults = { headers: headers };
   options = Object.assign({}, defaults, options);
-
-  return fetch(options.url, options).then(response =>
-    response.json().then(json => {
-      if (!response.ok) {
-        return Promise.reject(json);
-      }
-      return json;
-    })
-  );
+  if (isIE) {
+    return fetchPolyfill(options.url, options).then(response =>
+      response.json().then(json => {
+        if (!response.ok) {
+          return Promise.reject(json);
+        }
+        return json;
+      })
+    );
+  } else {
+    return fetch(options.url, options).then(response =>
+      response.json().then(json => {
+        if (!response.ok) {
+          return Promise.reject(json);
+        }
+        return json;
+      })
+    );
+  }
 };
 
 const requestFileUnparsed = options => {
@@ -42,8 +55,11 @@ const requestFileUnparsed = options => {
 
   const defaults = { headers: headers };
   options = Object.assign({}, defaults, options);
-
-  return fetch(options.url, options).then(response => response);
+  if (isIE) {
+    return fetchPolyfill(options.url, options).then(response => response);
+  } else {
+    return fetch(options.url, options).then(response => response);
+  }
 };
 
 export function getCurrentUser() {
@@ -121,7 +137,10 @@ export function isManagerRole(props) {
 export function formatDateDMY(strDate) {
   // Returns DD/MM/YYYY Date Format
   if (!strDate) return;
-  var date = new Date(strDate),
+  var varDate = strDate;
+  if (isIE) varDate = strDate.toString().substr(0, 10);
+
+  var date = new Date(varDate),
     month = "" + (date.getMonth() + 1),
     day = "" + date.getDate(),
     year = date.getFullYear();
@@ -135,7 +154,10 @@ export function formatDateDMY(strDate) {
 export function formatDateYMD(strDate) {
   // Returns YYYY-MM-DD Date Format
   if (!strDate) return;
-  var date = new Date(strDate),
+  var varDate = strDate;
+  if (isIE) varDate = strDate.toString().substr(0, 10);
+
+  var date = new Date(varDate),
     month = "" + (date.getMonth() + 1),
     day = "" + date.getDate(),
     year = date.getFullYear();
@@ -148,7 +170,10 @@ export function formatDateYMD(strDate) {
 
 export function getWeekDay(strDate) {
   if (!strDate) return;
-  var date = new Date(strDate),
+  var varDate = strDate;
+  if (isIE) varDate = strDate.toString().substr(0, 10);
+
+  var date = new Date(varDate),
     weekday = new Array(7);
   weekday[0] = "Sunday";
   weekday[1] = "Monday";
@@ -159,4 +184,21 @@ export function getWeekDay(strDate) {
   weekday[6] = "Saturday";
 
   return weekday[date.getDay()];
+}
+
+export function addNewDateYMD(strDate) {
+  // Returns YYYY-MM-DD Date Format
+  if (!strDate) return;
+  var varDate = strDate;
+  if (isIE) varDate = strDate.toString().substr(0, 10);
+
+  var date = new Date(varDate),
+    month = "" + (date.getMonth() + 1),
+    day = "" + (date.getDate() + 1),
+    year = date.getFullYear();
+
+  if (month.length < 2) month = "0" + month;
+  if (day.length < 2) day = "0" + day;
+
+  return [year, month, day].join("-");
 }
