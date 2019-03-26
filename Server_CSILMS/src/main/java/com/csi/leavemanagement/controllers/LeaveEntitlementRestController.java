@@ -138,6 +138,14 @@ public class LeaveEntitlementRestController {
 	@RequestMapping(value="/leaveentitlement", method=RequestMethod.POST)
 	@PreAuthorize("hasAuthority('HR')")
 	public LeaveEntitlement doSaveLeaveEntitlement(@RequestBody LeaveEntitlement leaveEntitlement) {
+		
+		LeaveEntitlement leaveEntitlementCheck = this.leaveEntitlementService.findById(leaveEntitlement.getId().getEmplid(), 
+																						leaveEntitlement.getId().getYear(), 
+																						leaveEntitlement.getId().getLeaveCode());
+		// If there's existing Leave Entitlement
+		if(leaveEntitlementCheck != null)
+			return null;
+		
 		LeaveEntitlement newLeaveEntitlement = this.leaveEntitlementService.save(leaveEntitlement);
 		return newLeaveEntitlement;
 	}
