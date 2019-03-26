@@ -13,11 +13,14 @@ import org.springframework.web.bind.annotation.RestController;
 import com.csi.leavemanagement.services.StaffLeaveService;
 import com.csi.leavemanagement.models.StaffLeave;
 
+/*
+ * THIS CONTROLLER IS NO LONGER IN USE
+ */
 
 
-
+ 
 @RestController
-@RequestMapping("/api")
+@RequestMapping("/api/depreciated")
 @CrossOrigin
 public class StaffLeaveRestController {
 

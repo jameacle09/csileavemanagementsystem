@@ -3,6 +3,7 @@ package com.csi.leavemanagement.controllers;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -38,18 +39,21 @@ public class LeaveCategoryRestController {
 	}
 	
 	@RequestMapping(value="/leavecategory", method=RequestMethod.POST)
+	@PreAuthorize("hasAuthority('HR')")
 	public LeaveCategory doSaveLeaveCategory(@RequestBody LeaveCategory leaveCategory) {
 		LeaveCategory newLeaveCategory = this.leaveCategoryService.save(leaveCategory);
 		return newLeaveCategory;
 	}
 	
 	@RequestMapping(value="/leavecategory/{id}", method=RequestMethod.DELETE)
+	@PreAuthorize("hasAuthority('HR')")
 	public String doDeleteLeaveCategory(@PathVariable("id") String id) {
 		this.leaveCategoryService.deleteByID(id);
 		return "Successfully Deleted";
 	}
 	
 	@RequestMapping(value="/leavecategory/{id}", method=RequestMethod.PATCH)
+	@PreAuthorize("hasAuthority('HR')")
 	public LeaveCategory doUpdateLeaveCategory(@PathVariable("id") String id, @RequestBody LeaveCategory leaveCategory) {
 		leaveCategory.setLeaveCode(id);
 		LeaveCategory newLeaveCategory = this.leaveCategoryService.save(leaveCategory);

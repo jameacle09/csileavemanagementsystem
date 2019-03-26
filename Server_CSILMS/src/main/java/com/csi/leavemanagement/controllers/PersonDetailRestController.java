@@ -33,12 +33,14 @@ public class PersonDetailRestController {
 	}
 
 	@RequestMapping(value="/persondetails", method=RequestMethod.GET)
+    @PreAuthorize("hasAuthority('HR')")
 	public List<PersonDetails> doListPersonDetailss() {
 		List<PersonDetails> personDetails = this.personDetailService.findAll();
 		return personDetails;
 	}
 	
 	@RequestMapping(value="/persondetail/{id}", method=RequestMethod.GET)
+    @PreAuthorize("hasAuthority('HR') or hasAuthority('Manager')")
 	public PersonDetails doGetPersonDetailsById(@PathVariable("id") String emplid) {
 		PersonDetails personDetail = this.personDetailService.findById(emplid);
 		return personDetail;
@@ -46,18 +48,21 @@ public class PersonDetailRestController {
 	
 	
 	@RequestMapping(value="/persondetail", method=RequestMethod.POST)
+	@PreAuthorize("hasAuthority('HR')")
 	public PersonDetails doSavePersonDetails(@RequestBody PersonDetails personDetail) {
 		PersonDetails newPersonDetails = this.personDetailService.save(personDetail);
 		return newPersonDetails;
 	}
 	
 	@RequestMapping(value="/persondetail/{id}", method=RequestMethod.DELETE)
+	@PreAuthorize("hasAuthority('HR')")
 	public String doDeletePersonDetails(@PathVariable("id") String emplid) {
 		this.personDetailService.deleteByID(emplid);
 		return "Successfully Deleted";
 	}
 	
 	@RequestMapping(value="/persondetail/{id}", method=RequestMethod.PATCH)
+	@PreAuthorize("hasAuthority('HR')")
 	public PersonDetails doUpdatePersonDetails(@PathVariable("id") String emplid, @RequestBody PersonDetails personDetail) {
 		personDetail.setEmplId(emplid);
 		PersonDetails newPersonDetails = this.personDetailService.save(personDetail);

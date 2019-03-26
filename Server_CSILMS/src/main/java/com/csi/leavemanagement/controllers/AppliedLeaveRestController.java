@@ -393,7 +393,6 @@ public class AppliedLeaveRestController {
 	}
 
 	@RequestMapping(value="/appliedleave/count/me/pendingapproval", method=RequestMethod.GET)
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
 	public long doCountPendingMyApproval(@CurrentUser UserPrincipal currentUser) {
 		String approver = currentUser.getId();
 		List<String> leaveStatusList = new ArrayList<String> ();
@@ -404,7 +403,6 @@ public class AppliedLeaveRestController {
 	}	
 
 	@RequestMapping(value="/appliedleave/me/pendingapproval", method=RequestMethod.GET)
-    @PreAuthorize("hasAuthority('EMPLOYEE')")
 	public List<AppliedLeave> doFindPendingMyApproval(@CurrentUser UserPrincipal currentUser) {
 		String approver = currentUser.getId();
 		List<String> leaveStatusList = new ArrayList<String> ();
