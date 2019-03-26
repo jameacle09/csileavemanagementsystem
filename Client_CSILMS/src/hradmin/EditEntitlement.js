@@ -7,6 +7,8 @@ import {
   Input,
   Col,
   Modal,
+  Alert,
+  Badge,
   ModalHeader,
   ModalFooter
 } from "reactstrap";
@@ -31,6 +33,7 @@ class EditEntitlement extends Component {
       availableLeave: 0,
       takenLeave: 0,
       balanceLeave: 0,
+      computedTakenLeave: 0,
       modalSubmit: false,
       loading: true
     };
@@ -73,11 +76,48 @@ class EditEntitlement extends Component {
       .catch(err => {
         console.log(err);
       });
+      
+    fetchData({
+      url:
+        API_BASE_URL +
+        "/appliedleave/count/" +
+        emplId +
+        "/" +
+        leaveCode +
+        "/" +
+        year,
+      method: "GET"
+    })
+      .then(data => {
+        this.setState({
+          computedTakenLeave: data
+        });
+      })
+      .catch(err => {
+        console.log(err);
+      });
   };
 
   handleChangeLeaveEntitlement = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
+
+    // Calculate Balance Leave, and also perform validation
+    let newBalanceLeave;
+    switch(name) {
+      case "takenLeave" : 
+        newBalanceLeave = this.state.availableLeave - value;
+        break;
+
+      case "availableLeave" :
+        newBalanceLeave = value - this.state.takenLeave;
+        break;
+
+      default :
+        newBalanceLeave = this.state.availableLeave - this.state.takenLeave
+    }
+    
+    this.setState({ balanceLeave: newBalanceLeave < 0 ? 0 : newBalanceLeave})
   };
 
   submitLeaveEntitlement = event => {
@@ -166,8 +206,11 @@ class EditEntitlement extends Component {
 
     const isInvalid =
       carryForward === "" ||
+      carryForward < 0 ||
       entitlement === "" ||
+      entitlement < 0 ||
       availableLeave === "" ||
+      availableLeave < 0 ||
       takenLeave === "" ||
       balanceLeave === "";
     return isInvalid;
@@ -178,6 +221,13 @@ class EditEntitlement extends Component {
       modalSubmit: !prevState.modalSubmit
     }));
   };
+
+  handleResetTakenLeave = () => {
+    
+    this.setState({
+      takenLeave: this.state.computedTakenLeave
+    })
+  }
 
   render() {
     if (!isHrRole(this.props.currentUser)) {
@@ -193,9 +243,71 @@ class EditEntitlement extends Component {
       entitlement,
       availableLeave,
       takenLeave,
-      balanceLeave
+      balanceLeave,
+      computedTakenLeave
     } = this.state;
 
+    let carryForwardMessage = "";
+    if(carryForward < 0)
+      carryForwardMessage = (
+        <Alert 
+          color="danger" 
+          xs={4} sm={3} 
+          style={{padding: ".25em 1em", margin: ".25em 1em"}} 
+        > 
+        Positive number only 
+        </Alert>
+      )
+
+    let entitlementMessage = "";
+    if (entitlement < 0)
+      entitlementMessage = (
+        <Alert 
+          color="danger" 
+          xs={4} sm={3} 
+          style={{padding: ".25em 1em", margin: ".25em 1em"}} 
+        > 
+        Positive number only 
+        </Alert>
+      )
+
+    let availableLeaveMessage = "";
+    if(availableLeave < 0 )
+      availableLeaveMessage = (
+        <Alert 
+          color="danger" 
+          xs={4} sm={3} 
+          style={{padding: ".25em 1em", margin: ".25em 1em"}} 
+        > 
+        Positive number only 
+        </Alert>
+      )
+    
+    let takenLeaveMessage = "";
+    if(computedTakenLeave !== takenLeave)
+      takenLeaveMessage = (
+        <Alert 
+          color="warning" 
+          xs={4} sm={3} 
+          style={{padding: ".25em 1em", margin: ".25em 1em"}} 
+        > 
+        Leave Count differ from Applied Leave ( {computedTakenLeave} approved ) {  }
+        <Badge href="#" onClick={this.handleResetTakenLeave} color="primary">Reset</Badge>
+        </Alert>
+      )
+
+    let balanceLeaveMessage = "";
+    if(balanceLeave !== (availableLeave - takenLeave))
+      balanceLeaveMessage = (
+        <Alert 
+          color="warning" 
+          xs={4} sm={3} 
+          style={{padding: ".25em 1em", margin: ".25em 1em"}} 
+        > 
+        Balance does not tally ( Available Leave - Taken ) 
+        </Alert>
+      )
+    
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -270,10 +382,10 @@ class EditEntitlement extends Component {
                   </Col>
                 </FormGroup>
                 <FormGroup row>
-                  <Label for="carryForward" sm={2}>
+                  <Label for="carryForward" xs={10} sm={2}>
                     Carried Forward:
                   </Label>
-                  <Col sm={8}>
+                  <Col xs={4} sm={2}>
                     <Input
                       type="number"
                       name="carryForward"
@@ -283,13 +395,14 @@ class EditEntitlement extends Component {
                       onChange={this.handleChangeLeaveEntitlement}
                     />
                   </Col>
-                  <Label sm={2}>day(s)</Label>
+                  <Label xs={4} sm={2}>day(s)</Label>
+                  {carryForwardMessage}
                 </FormGroup>
                 <FormGroup row>
-                  <Label for="entitlement" sm={2}>
+                  <Label for="entitlement" xs={10} sm={2}>
                     Entitlement:
                   </Label>
-                  <Col sm={8}>
+                  <Col xs={4} sm={2}>
                     <Input
                       type="number"
                       name="entitlement"
@@ -299,13 +412,14 @@ class EditEntitlement extends Component {
                       onChange={this.handleChangeLeaveEntitlement}
                     />
                   </Col>
-                  <Label sm={2}>day(s)</Label>
+                  <Label xs={4} sm={2}>day(s)</Label>
+                  {entitlementMessage}
                 </FormGroup>
                 <FormGroup row>
-                  <Label for="availableLeave" sm={2}>
+                  <Label for="availableLeave" xs={10} sm={2}>
                     Available Leave:
                   </Label>
-                  <Col sm={8}>
+                  <Col xs={4} sm={2}>
                     <Input
                       type="number"
                       name="availableLeave"
@@ -315,13 +429,14 @@ class EditEntitlement extends Component {
                       onChange={this.handleChangeLeaveEntitlement}
                     />
                   </Col>
-                  <Label sm={2}>day(s)</Label>
+                  <Label xs={4} sm={2}>day(s)</Label>
+                  {availableLeaveMessage}
                 </FormGroup>
                 <FormGroup row>
-                  <Label for="takenLeave" sm={2}>
+                  <Label for="takenLeave" xs={10} sm={2}>
                     Taken Leave:
                   </Label>
-                  <Col sm={8}>
+                  <Col xs={4} sm={2}>
                     <Input
                       type="number"
                       name="takenLeave"
@@ -329,15 +444,17 @@ class EditEntitlement extends Component {
                       placeholder="Taken Leave"
                       value={takenLeave}
                       onChange={this.handleChangeLeaveEntitlement}
+                      disabled
                     />
                   </Col>
-                  <Label sm={2}>day(s)</Label>
+                  <Label xs={4} sm={2}>day(s)</Label>
+                  {takenLeaveMessage}
                 </FormGroup>
                 <FormGroup row>
-                  <Label for="balanceLeave" sm={2}>
+                  <Label for="balanceLeave" xs={10} sm={2}>
                     Balance Leave:
                   </Label>
-                  <Col sm={8}>
+                  <Col xs={4} sm={2}>
                     <Input
                       type="number"
                       name="balanceLeave"
@@ -345,9 +462,11 @@ class EditEntitlement extends Component {
                       placeholder="Balance Leave"
                       value={balanceLeave}
                       onChange={this.handleChangeLeaveEntitlement}
+                      disabled
                     />
                   </Col>
-                  <Label sm={2}>day(s)</Label>
+                  <Label xs={4} sm={2}>day(s)</Label>
+                  {balanceLeaveMessage}
                 </FormGroup>
                 <FormGroup row>
                   <Col sm={{ size: 10, offset: 2 }}>
