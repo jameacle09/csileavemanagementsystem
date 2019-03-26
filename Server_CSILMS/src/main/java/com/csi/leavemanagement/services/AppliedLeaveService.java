@@ -215,7 +215,7 @@ public class AppliedLeaveService {
 		return appliedLeaveRepository.countByIdEmplidAndIdLeaveCode(emplid, leaveCode);
 	}
 	
-	public long countLeaveTakenByEmplidAndLeaveCodeAndYear(String emplid, String leaveCode, int year) {
+	public float countLeaveTakenByEmplidAndLeaveCodeAndYear(String emplid, String leaveCode, int year) {
 		
 		Calendar cal = Calendar.getInstance();
 		cal.set(year, Calendar.JANUARY, 1);
@@ -228,7 +228,15 @@ public class AppliedLeaveService {
 		leaveStatus.add("APPRV");
 		leaveStatus.add("PNCLD");
 		
-		return appliedLeaveRepository.countByIdEmplidAndIdLeaveCodeAndIdStartDateBetweenAndLeaveStatusIn(emplid, leaveCode, startDate, endDate, leaveStatus);
+		List<AppliedLeave> appliedLeaveList = 
+				appliedLeaveRepository.findByIdEmplidAndIdLeaveCodeAndIdStartDateBetweenAndLeaveStatusIn(emplid, leaveCode, startDate, endDate, leaveStatus);
+		
+		float totalLeaveTaken = 0;
+		
+		for(AppliedLeave appliedLeave : appliedLeaveList) {
+			totalLeaveTaken += appliedLeave.getLeaveDuration();
+		}
+		return totalLeaveTaken;
 	}
 	
 	public List<AppliedLeave> findByEmplidAndLeaveCode(String emplid, String leaveCode) {

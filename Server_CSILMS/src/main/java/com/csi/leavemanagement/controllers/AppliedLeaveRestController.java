@@ -140,7 +140,7 @@ public class AppliedLeaveRestController {
 	}
 
 	@RequestMapping(value="/appliedleave/count/{emplid}/{leavecode}/{year}", method=RequestMethod.GET)
-	public long doCountAppliedLeaveTakenByLeaveCode(@PathVariable("emplid") String emplid,
+	public float doCountAppliedLeaveTakenByLeaveCode(@PathVariable("emplid") String emplid,
 													@PathVariable("leavecode") String leaveCode,  
 													@PathVariable("year") int year) {
 		return this.appliedLeaveService.countLeaveTakenByEmplidAndLeaveCodeAndYear(emplid, leaveCode, year);
