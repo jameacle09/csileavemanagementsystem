@@ -30,6 +30,9 @@ public interface AppliedLeaveRepository extends CrudRepository<AppliedLeave, App
 	// Count number of applied leave of a specific leave code, for an employee
 	long countByIdEmplidAndIdLeaveCode(String emplid, String leaveCode);
 	
+	// Count number of approved applied leave of a specific leave code for an employee, to calculate Leave Taken
+	long countByIdEmplidAndIdLeaveCodeAndIdStartDateBetweenAndLeaveStatusIn(String emplid, String leaveCode, Date startDate, Date endDate, List<String> leaveStatus);
+	
 	// Retrieve applied leave of a specific leave code, for an employee
 	List<AppliedLeave> findByIdEmplidAndIdLeaveCode(String emplid, String leaveCode);
 
