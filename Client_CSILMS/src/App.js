@@ -1,4 +1,3 @@
-// import "babel-polyfill";
 import React, { Component } from "react";
 import "./stickyfooter.css";
 import { Route, Switch, withRouter } from "react-router-dom";
