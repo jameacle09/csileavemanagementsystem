@@ -26,6 +26,10 @@ a:focus {
   transition: all 0.3s;
 }
 
+.standardTextStyle {
+  font: Helvetica;
+  font-size: 17px;
+}
 /*** Begin Dashboard Styles ***/
 .containerDashboard {
   width: 100%;
@@ -447,19 +451,46 @@ a:focus {
 }
 
 /**********************************************/
-/*** My Profile *******************************/
+/*** My Profile and Change Password ***********/
 /**********************************************/
+.fontProfileSubHeader {
+  font: Helvetica;
+  font-size: 18px;
+  font-weight: bold;
+  color: #004a9b;
+}
+.fontTableItems {
+  font: Helvetica;
+  font-size: 17px;
+}
+.fontRowItemValue {
+  color: #004a9b;
+}
 .profileFullText {
   display: inline-block;
 }
 .profileShortText {
   display: none;
 }
+.changePasswordContainer {
+  width: 70%;
+  padding-top: 20px;
+  margin: auto;
+}
 @media (max-width: 768px) {
+  .fontProfileSubHeader {
+    font-size: 17px;
+  }
+  .fontTableItems {
+    font-size: 16px;
+  }
   .profileFullText {
     display: none;
   }
   .profileShortText {
     display: inline-block;
+  }
+  .changePasswordContainer {
+    width: 100%;
   }
 }

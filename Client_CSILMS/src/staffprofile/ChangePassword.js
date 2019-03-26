@@ -1,13 +1,12 @@
 import React from "react";
-import { Button, Form, FormGroup, Label, Input, Alert } from "reactstrap";
+import { Button, Form, FormGroup, Label, Input, Alert, Col } from "reactstrap";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { fetchData } from "../util/APIUtils";
+import { withRouter, Redirect } from "react-router-dom";
+import { API_BASE_URL, FIRST_TIME, ACCESS_TOKEN } from "../constants";
+import { library } from "@fortawesome/fontawesome-svg-core";
+import { fas } from "@fortawesome/free-solid-svg-icons";
 import "../common/Styles.css";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { fetchData } from '../util/APIUtils';
-import { withRouter, Redirect } from 'react-router-dom';
-import { API_BASE_URL, FIRST_TIME, ACCESS_TOKEN } from '../constants'; 
-import { library } from '@fortawesome/fontawesome-svg-core';
-import { fas } from '@fortawesome/free-solid-svg-icons';
-
 library.add(fas);
 
 class ChangePassword extends React.Component {
@@ -30,17 +29,15 @@ class ChangePassword extends React.Component {
     this.removedFirstTimeLogin = this.removedFirstTimeLogin.bind(this);
   }
 
-  removedFirstTimeLogin(){
-    if(localStorage.getItem(FIRST_TIME) === "YES"){
+  removedFirstTimeLogin() {
+    if (localStorage.getItem(FIRST_TIME) === "YES") {
       localStorage.removeItem(FIRST_TIME);
       this.props.history.push("/");
     }
   }
 
   onDismiss() {
-    this.setState({ visibleFailed: false,
-                    visibleSuccess: false
-                });
+    this.setState({ visibleFailed: false, visibleSuccess: false });
   }
 
   submitForm(e) {
@@ -49,32 +46,37 @@ class ChangePassword extends React.Component {
       password: this.state.currentPassword,
       newPassword: this.state.password
     };
-    
+
     const request = Object.assign({}, values);
-    
+
     fetchData({
       url: API_BASE_URL + "/changePassword",
-      method: 'POST',
+      method: "POST",
       body: JSON.stringify(request)
-    }).then(response => {
-      if(response.message === "FAILED"){
-        this.setState({visibleFailed:true,
-                        currentPassword:"",
-                        password:"",
-                        confirmPassword:""});
-      } else if(response.message === "SUCCESS"){
-        this.setState({visibleSuccess:true,
-                        currentPassword:"",
-                        password:"",
-                        confirmPassword:""});
-        this.removedFirstTimeLogin();
-      }
-    }).catch(error => {
-      if(error.status === 401) {
-         this.props.history.push("/login");    
-      } 
-    });
-
+    })
+      .then(response => {
+        if (response.message === "FAILED") {
+          this.setState({
+            visibleFailed: true,
+            currentPassword: "",
+            password: "",
+            confirmPassword: ""
+          });
+        } else if (response.message === "SUCCESS") {
+          this.setState({
+            visibleSuccess: true,
+            currentPassword: "",
+            password: "",
+            confirmPassword: ""
+          });
+          this.removedFirstTimeLogin();
+        }
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+      });
   }
 
   handleChange = event => {
@@ -114,31 +116,40 @@ class ChangePassword extends React.Component {
       });
     }
   }
+
+  handleCancel = () => {
+    this.props.history.push("/");
+  };
+
   render() {
-    if(!localStorage.getItem(ACCESS_TOKEN)){
-      return <Redirect to="/login" />
+    if (!localStorage.getItem(ACCESS_TOKEN)) {
+      return <Redirect to="/login" />;
     }
 
-    const divStyle = {
-      maxWidth: "600px",
-      position: "relative",
-      left: "auto",
-      right: "auto",
-      background: "white",
-      padding: "20px 30px 60px 30px",
-      boxShadow: "5px 5px 5px rgb(63, 84, 105)",
-      border: "1px solid gray",
-      borderRadius: "5px",
-      textAlign: "left"
+    const changePasswordLabel = {
+      font: "Helvetica",
+      fontSize: "17px",
+      // fontWeight: "bold",
+      color: "#032a53"
     };
 
-    const inputStyle = {
+    const changePasswordInput = {
+      font: "Helvetica",
+      color: "#004a9b",
+      fontSize: "17px",
+      // fontWeight: "bold",
+      height: "36px",
       borderLeft: "none",
       borderRight: "none",
       borderTop: "none",
-      borderRadius: "0",
-      fontSize: "15px",
-      height: "20px"
+      borderBottom: "1px solid #004a9b",
+      borderRadius: "0"
+    };
+
+    const showHideButton = {
+      height: "36px",
+      color: "white",
+      background: "#004a9b"
     };
 
     const {
@@ -150,8 +161,8 @@ class ChangePassword extends React.Component {
       confirmPassword
     } = this.state;
 
-    let show = (<FontAwesomeIcon icon="eye" />);
-    let hide = (<FontAwesomeIcon icon="eye-slash" />);
+    let show = <FontAwesomeIcon icon="eye" />;
+    let hide = <FontAwesomeIcon icon="eye-slash" />;
 
     return (
       <div className="mainContainerLeavePages">
@@ -160,112 +171,174 @@ class ChangePassword extends React.Component {
             <h3 className="headerStyle">Change Password</h3>
           </span>
         </div>
-        <br />
-        <div className="container" style={divStyle}>
-        <Alert color="danger" isOpen={this.state.visibleFailed} toggle={this.onDismiss}>
-            Sorry! Failed to change new password due to invalid current password.
-        </Alert>
-        <Alert color="info" isOpen={this.state.visibleSuccess} toggle={this.onDismiss}>
-            You have successfully change new password.
-        </Alert>
+        <div className="reactTableContainer">
           <Form onSubmit={e => this.submitForm(e)} name="form">
-            <FormGroup>
-              <Label for="currentPassword" align="left">
-                Current Password
-              </Label>
-              <div className="input-group mb-3">
-                <Input
-                  style={inputStyle}
-                  type={currentPasswordType}
-                  name="currentPassword"
-                  id="currentPassword"
-                  value={currentPassword}
-                  onChange={this.handleChange}
-                  aria-label="currentPassword"
-                  aria-describedby="basic-addon2"
-                  autoFocus required
-                />
-                <div className="container_password_show input-group-append">
-                  <span
-                    className="password__show input-group-text"
-                    id="basic-addon2"
-                    onClick={event =>
-                      this.showHide(event, "currentPasswordType")
-                    }
-                    color="primary"
+            <div className="changePasswordContainer">
+              <Alert
+                color="danger"
+                isOpen={this.state.visibleFailed}
+                toggle={this.onDismiss}
+              >
+                Password change has failed due to invalid Current Password.
+              </Alert>
+              <Alert
+                color="info"
+                isOpen={this.state.visibleSuccess}
+                toggle={this.onDismiss}
+              >
+                Your password has been successfully updated.
+              </Alert>
+
+              <FormGroup row>
+                <Label
+                  for="currentPassword"
+                  align="left"
+                  style={changePasswordLabel}
+                  sm={3}
+                >
+                  Current Password:
+                </Label>
+                <Col sm={9}>
+                  <div
+                    className="input-group mb-3"
+                    style={{
+                      height: "40px",
+                      paddingBottom: "2px",
+                      display: "flex",
+                      alignItems: "center"
+                    }}
                   >
-                    {currentPasswordType === "input" ? show : hide}
-                  </span>
-                </div>
-              </div>
-            </FormGroup>
-            <FormGroup>
-              <Label for="password">New Password</Label>
-              <div className="input-group mb-3">
-                <Input
-                  style={inputStyle}
-                  type={passwordType}
-                  name="password"
-                  id="password"
-                  onChange={this.handleChange}
-                  value={password}
-                  aria-label="password"
-                  aria-describedby="basic-addon2"
-                  required
-                  pattern="^\S{8,}$"
-                  title="8 characters minimum"
-                />
-                <div className="container_password_show input-group-append">
-                  <span
-                    className="password__show input-group-text"
-                    id="basic-addon2"
-                    onClick={event => this.showHide(event, "passwordType")}
-                    color="primary"
+                    <Input
+                      type={currentPasswordType}
+                      name="currentPassword"
+                      id="currentPassword"
+                      style={changePasswordInput}
+                      value={currentPassword}
+                      onChange={this.handleChange}
+                      aria-label="currentPassword"
+                      aria-describedby="basic-addon2"
+                      autoFocus
+                      required
+                    />
+                    <div className="container_password_show input-group-append">
+                      <span
+                        className="password__show input-group-text"
+                        style={showHideButton}
+                        id="basic-addon2"
+                        onClick={event =>
+                          this.showHide(event, "currentPasswordType")
+                        }
+                      >
+                        {currentPasswordType === "input" ? show : hide}
+                      </span>
+                    </div>
+                  </div>
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <Label for="password" style={changePasswordLabel} sm={3}>
+                  New Password:
+                </Label>
+                <Col sm={9}>
+                  <div
+                    className="input-group mb-3"
+                    style={{
+                      height: "40px",
+                      paddingBottom: "2px",
+                      display: "flex",
+                      alignItems: "center"
+                    }}
                   >
-                    {passwordType === "input" ? show : hide}
-                  </span>
-                </div>
-              </div>
-            </FormGroup>
-            <FormGroup>
-              <Label for="confirmPassword">Confirm New Password</Label>
-              <div className="input-group mb-3">
-                <Input
-                  style={inputStyle}
-                  type={confirmPasswordType}
-                  name="confirmPassword"
-                  id="confirmPassword"
-                  onChange={this.handleChange}
-                  onBlur={this.validatePassword}
-                  value={confirmPassword}
-                  aria-label="confirmPassword"
-                  aria-describedby="basic-addon2"
-                  required
-                  pattern="^\S{8,}$"
-                  title="8 characters minimum"
-                />
-                <div className="container_password_show input-group-append">
-                  <span
-                    className="password__show input-group-text"
-                    id="basic-addon2"
-                    onClick={event =>
-                      this.showHide(event, "confirmPasswordType")
-                    }
+                    <Input
+                      type={passwordType}
+                      name="password"
+                      id="password"
+                      style={changePasswordInput}
+                      onChange={this.handleChange}
+                      value={password}
+                      aria-label="password"
+                      aria-describedby="basic-addon2"
+                      required
+                      pattern="^\S{8,}$"
+                      title="8 characters minimum"
+                    />
+                    <div className="container_password_show input-group-append">
+                      <span
+                        className="password__show input-group-text"
+                        style={showHideButton}
+                        id="basic-addon2"
+                        onClick={event => this.showHide(event, "passwordType")}
+                      >
+                        {passwordType === "input" ? show : hide}
+                      </span>
+                    </div>
+                  </div>
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <Label for="confirmPassword" style={changePasswordLabel} sm={3}>
+                  Confirm New Password:
+                </Label>
+                <Col sm={9}>
+                  <div className="input-group mb-3">
+                    <Input
+                      type={confirmPasswordType}
+                      name="confirmPassword"
+                      id="confirmPassword"
+                      style={changePasswordInput}
+                      onChange={this.handleChange}
+                      onBlur={this.validatePassword}
+                      value={confirmPassword}
+                      aria-label="confirmPassword"
+                      aria-describedby="basic-addon2"
+                      required
+                      pattern="^\S{8,}$"
+                      title="8 characters minimum"
+                    />
+                    <div
+                      className="container_password_show input-group-append"
+                      style={{
+                        height: "40px",
+                        paddingBottom: "2px",
+                        display: "flex",
+                        alignItems: "center"
+                      }}
+                    >
+                      <span
+                        className="password__show input-group-text"
+                        style={showHideButton}
+                        id="basic-addon2"
+                        onClick={event =>
+                          this.showHide(event, "confirmPasswordType")
+                        }
+                        color="primary"
+                      >
+                        {confirmPasswordType === "input" ? show : hide}
+                      </span>
+                    </div>
+                  </div>
+                </Col>
+              </FormGroup>
+              <FormGroup row>
+                <Col sm={{ size: 9, offset: 3 }}>
+                  <Button
                     color="primary"
+                    type="submit"
+                    className="largeButtonOverride"
                   >
-                    {confirmPasswordType === "input" ? show : hide}
-                  </span>
-                </div>
-              </div>
-            </FormGroup>
-            <br />
-            <Button
-              color="primary"
-              type="submit"            
-              style={{ textTransform: 'none', float: 'right', backgroundColor: '#3F51B5', color: 'white' }}
-            >
-              Submit
-            </Button>
+                    Change Password
+                  </Button>
+                  <span> </span>
+                  <Button
+                    color="primary"
+                    className="largeButtonOverride"
+                    onClick={this.handleCancel}
+                  >
+                    Cancel
+                  </Button>
+                </Col>
+              </FormGroup>
+            </div>
           </Form>
         </div>
       </div>

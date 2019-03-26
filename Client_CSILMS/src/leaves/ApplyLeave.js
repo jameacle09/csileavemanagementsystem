@@ -383,71 +383,103 @@ class ApplyLeave extends Component {
   };
 
   computeLeaveDuration = () => {
-    const { startDate, endDate, isHalfDay, balanceLeave } = this.state;
-    let arrPublicHolidaysLookup = this.state.publicHolidaysLookup;
-    let arrDateOfLeaves = [],
-      currLeaveDate = "",
-      nextLeaveDate = "",
-      durationleave = 0;
-    var x = 366;
-    currLeaveDate = new Date(startDate);
-    nextLeaveDate = formatDateYMD(
-      currLeaveDate.setDate(currLeaveDate.getDate())
-    );
+    const {
+      leaveCategory,
+      startDate,
+      endDate,
+      isHalfDay,
+      balanceLeave
+    } = this.state;
 
-    for (let i = 0; i < x; i++) {
-      if (nextLeaveDate <= endDate) {
-        if (
-          getWeekDay(nextLeaveDate) !== "Sunday" &&
-          getWeekDay(nextLeaveDate) !== "Saturday"
-        )
-          arrDateOfLeaves.push(nextLeaveDate);
-        currLeaveDate = new Date(nextLeaveDate);
-      } else {
-        i = 367;
-      }
+    if (startDate && endDate) {
+      let arrPublicHolidaysLookup = this.state.publicHolidaysLookup;
+      let arrDateOfLeaves = [],
+        currLeaveDate = "",
+        nextLeaveDate = "",
+        durationleave = 0;
+      var x = 366;
+      currLeaveDate = new Date(startDate);
       nextLeaveDate = formatDateYMD(
-        currLeaveDate.setDate(currLeaveDate.getDate() + 1)
+        currLeaveDate.setDate(currLeaveDate.getDate())
       );
-    }
 
-    arrPublicHolidaysLookup.forEach(holiday => {
-      let filtered = arrDateOfLeaves.filter(function(value, index, arr) {
-        return value !== formatDateYMD(holiday.holidayDate);
-      });
-      arrDateOfLeaves = filtered;
-    });
-    durationleave = arrDateOfLeaves.length;
-    if (durationleave === 1 && isHalfDay) {
-      this.setState({
-        leaveDuration: 0.5
-      });
-    } else {
-      this.setState({
-        leaveDuration: durationleave
-      });
-    }
-    if (durationleave === 0) {
-      confirmAlert({
-        message: "Leave Duration should not be zero.",
-        buttons: [
-          {
-            label: "OK"
+      if (
+        leaveCategory === "HL" ||
+        leaveCategory === "MT" ||
+        leaveCategory === "PT" ||
+        leaveCategory === "SL"
+      ) {
+        // (HL) Medical - Hospitalization, (MT) Maternity, (PT) Paternity or (SL) Medical - Outpatient
+        for (let i = 0; i < x; i++) {
+          if (nextLeaveDate <= endDate) {
+            arrDateOfLeaves.push(nextLeaveDate);
+            currLeaveDate = new Date(nextLeaveDate);
+          } else {
+            i = 367;
           }
-        ]
-      });
-    } else {
-      if (balanceLeave < durationleave) {
+          nextLeaveDate = formatDateYMD(
+            currLeaveDate.setDate(currLeaveDate.getDate() + 1)
+          );
+        }
+      } else {
+        for (let i = 0; i < x; i++) {
+          if (nextLeaveDate <= endDate) {
+            if (
+              getWeekDay(nextLeaveDate) !== "Sunday" &&
+              getWeekDay(nextLeaveDate) !== "Saturday"
+            )
+              arrDateOfLeaves.push(nextLeaveDate);
+            currLeaveDate = new Date(nextLeaveDate);
+          } else {
+            i = 367;
+          }
+          nextLeaveDate = formatDateYMD(
+            currLeaveDate.setDate(currLeaveDate.getDate() + 1)
+          );
+        }
+        arrPublicHolidaysLookup.forEach(holiday => {
+          let filtered = arrDateOfLeaves.filter(function(value, index, arr) {
+            return value !== formatDateYMD(holiday.holidayDate);
+          });
+          arrDateOfLeaves = filtered;
+        });
+      }
+      durationleave = arrDateOfLeaves.length;
+      if (durationleave === 1 && isHalfDay) {
+        this.setState({
+          leaveDuration: 0.5
+        });
+      } else {
+        this.setState({
+          leaveDuration: durationleave
+        });
+      }
+      if (durationleave === 0) {
         confirmAlert({
-          message:
-            "Leave Duration shouldn't be higher than your Leave Balance.",
+          message: "Leave Duration should not be zero.",
           buttons: [
             {
               label: "OK"
             }
           ]
         });
+      } else {
+        if (balanceLeave < durationleave) {
+          confirmAlert({
+            message:
+              "Leave Duration shouldn't be higher than your Leave Balance.",
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
       }
+    } else {
+      this.setState({
+        leaveDuration: 0
+      });
     }
   };
 
@@ -512,7 +544,6 @@ class ApplyLeave extends Component {
       // attachedFile,
       approverId
     } = this.state;
-
     return (
       <div className="mainContainerFlex ">
         <div className="headerContainerFlex">
@@ -559,7 +590,7 @@ class ApplyLeave extends Component {
                 </FormGroup>
                 <FormGroup row>
                   <Label for="leaveCategory" sm={2}>
-                    Leave Type:
+                    <b style={{ color: "red" }}>*</b>Leave Type:
                   </Label>
                   <Col sm={10}>
                     <Input
@@ -590,7 +621,7 @@ class ApplyLeave extends Component {
                 </FormGroup>
                 <FormGroup row>
                   <Label for="startDate" sm={2}>
-                    Start Date:
+                    <b style={{ color: "red" }}>*</b>Start Date:
                   </Label>
                   <Col sm={10}>
                     <Input
@@ -605,7 +636,7 @@ class ApplyLeave extends Component {
                 </FormGroup>
                 <FormGroup row>
                   <Label for="endDate" sm={2}>
-                    End Date:
+                    <b style={{ color: "red" }}>*</b>End Date:
                   </Label>
                   <Col sm={10}>
                     <Input
@@ -657,7 +688,7 @@ class ApplyLeave extends Component {
                 </FormGroup>
                 <FormGroup row>
                   <Label for="leaveReason" sm={2}>
-                    Leave Reason:
+                    <b style={{ color: "red" }}>*</b>Leave Reason:
                   </Label>
                   <Col sm={10}>
                     <Input
@@ -670,7 +701,7 @@ class ApplyLeave extends Component {
                 </FormGroup>
                 <FormGroup row>
                   <Label for="attachment" sm={2}>
-                    File:
+                    File Attachment:
                   </Label>
                   <Col sm={10}>
                     <Input
@@ -686,7 +717,7 @@ class ApplyLeave extends Component {
                 </FormGroup>
                 <FormGroup row>
                   <Label for="approverId" sm={2}>
-                    Approver Name:
+                    <b style={{ color: "red" }}>*</b>Approver Name:
                   </Label>
                   <Col sm={10}>
                     <Input
@@ -695,6 +726,7 @@ class ApplyLeave extends Component {
                       id="approverId"
                       onChange={this.handleChange}
                       value={approverId}
+                      required
                     >
                       {approversLookup.map(approver => {
                         if (approver.emplId !== emplId) {
@@ -724,6 +756,20 @@ class ApplyLeave extends Component {
                     </Button>
                     <span> </span>
                     <Button onClick={this.handleCancel}>Cancel</Button>
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Col sm={{ size: 10, offset: 2 }}>
+                    <span
+                      style={{
+                        // color: "red",
+                        fontSize: "14px",
+                        verticalAlign: "top"
+                      }}
+                    >
+                      <b style={{ color: "red" }}>*</b>{" "}
+                      <i>Indicates that field input is required.</i>
+                    </span>
                   </Col>
                 </FormGroup>
               </Form>
