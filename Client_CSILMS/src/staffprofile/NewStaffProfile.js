@@ -630,11 +630,12 @@ class NewStaffProfile extends Component {
                   </Label>
                   <Col sm={10}>
                     <Input
-                      type="number"
+                      type="text"
+                      maxLength="2"
                       name="totalChildren"
                       id="totalChildren"
                       placeholder="Total Children"
-                      onChange={this.handleChange}
+                      onChange={event => this.setState({totalChildren: event.target.value.replace(/\D/,'')})}
                       value={totalChildren}
                       required
                     />
