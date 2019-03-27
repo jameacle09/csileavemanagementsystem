@@ -512,6 +512,7 @@ class NewStaffProfile extends Component {
                   <Col sm={10}>
                     <Input
                       type="text"
+                      maxLength="14"
                       name="icNumber"
                       id="icNumber"
                       placeholder="NRIC / Passport No."

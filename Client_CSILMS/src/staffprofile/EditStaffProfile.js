@@ -140,6 +140,7 @@ class EditStaffProfile extends Component {
               <Label for="nricPassport">NRIC / Passport No.</Label>
               <Input
                 type="text"
+                maxLength="14"
                 name="nricPassport"
                 id="nricPassport"
                 value={nricPassport}
