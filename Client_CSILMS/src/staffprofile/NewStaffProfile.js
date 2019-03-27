@@ -476,6 +476,7 @@ class NewStaffProfile extends Component {
                   <Col sm={10}>
                     <Input
                       type="text"
+                      maxLength="80"
                       name="staffName"
                       id="staffName"
                       placeholder="Employee Name"

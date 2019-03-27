@@ -118,6 +118,7 @@ class EditStaffProfile extends Component {
               <Label for="name">Staff Name</Label>
               <Input
                 type="text"
+                maxLength="80"
                 name="name"
                 id="name"
                 value={name}
