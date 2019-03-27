@@ -161,6 +161,7 @@ class EditStaffProfile extends Component {
               <Label for="mobileNo">Mobile No.</Label>
               <Input
                 type="text"
+                maxLength="15"
                 name="mobileNo"
                 id="mobileNo"
                 value={mobileNo}
