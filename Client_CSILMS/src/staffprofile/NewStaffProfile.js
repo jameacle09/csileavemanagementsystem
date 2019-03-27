@@ -457,6 +457,7 @@ class NewStaffProfile extends Component {
                   <Col sm={10}>
                     <Input
                       type="text"
+                      maxLength="10"
                       name="csiStaffId"
                       id="csiStaffId"
                       ref="csiStaffId"
