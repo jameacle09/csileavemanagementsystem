@@ -493,6 +493,7 @@ class NewStaffProfile extends Component {
                   <Col sm={10}>
                     <Input
                       type="email"
+                      maxLength="30"
                       name="email"
                       id="email"
                       ref="email"

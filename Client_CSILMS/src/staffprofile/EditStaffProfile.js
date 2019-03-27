@@ -129,6 +129,7 @@ class EditStaffProfile extends Component {
               <Label for="businessEmail">Email</Label>
               <Input
                 type="email"
+                maxLength="30"
                 name="businessEmail"
                 id="businessEmail"
                 value={businessEmail}
