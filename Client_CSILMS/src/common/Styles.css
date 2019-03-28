@@ -414,6 +414,7 @@ a:focus {
   color: rgb(39, 129, 247);
 }
 .uploadTemplateLink:hover {
+  color: rgb(39, 129, 247);
   text-decoration: underline;
 }
 

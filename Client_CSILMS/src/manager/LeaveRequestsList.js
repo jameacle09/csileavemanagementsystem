@@ -111,7 +111,7 @@ class LeaveRequestsList extends Component {
         id: "jobTitle",
         Header: "Job Title",
         accessor: "employeeDetails.jobTitle",
-        minWidth: 120,
+        minWidth: 100,
         sortable: true,
         filterable: true,
         style: {

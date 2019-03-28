@@ -6,6 +6,11 @@ import { withRouter } from "react-router-dom";
 import "./Login.css";
 import { FormErrors } from "./LoginError";
 import CSILogo from "../img/CSI_Logo.png";
+import ChromeLogo from "../img/chrome.jpg";
+import FirefoxLogo from "../img/firefox.jpg";
+
+let isFirefox = typeof InstallTrigger !== "undefined";
+let isChrome = !!window.chrome && !!window.chrome.webstore;
 
 class Login extends Component {
   constructor(props) {
@@ -154,6 +159,46 @@ class Login extends Component {
                 Please login to submit your Leave Request or you may reach out
                 to the HR Department to request for your own access.
               </p>
+              {isFirefox || isChrome ? (
+                ""
+              ) : (
+                <React.Fragment>
+                  <br />
+                  <span
+                    style={{
+                      fontFamily: "Helvetica",
+                      fontStyle: "italic",
+                      fontSize: "14px",
+                      color: "rgb(214, 209, 209)"
+                    }}
+                  >
+                    Some features of this site doesn't work well with this
+                    browser. It is highly recommended that you use &nbsp;
+                    <a
+                      href="https://www.google.com/chrome/"
+                      className="browserLink"
+                    >
+                      <img
+                        src={ChromeLogo}
+                        alt="Chrome"
+                        style={{ height: "14px", width: "14px" }}
+                      />
+                      Google Chrome
+                    </a>{" "}
+                    or &nbsp;
+                    <a href="https://www.mozilla.org" className="browserLink">
+                      <img
+                        src={FirefoxLogo}
+                        alt="Firefox"
+                        style={{ height: "14px", width: "14px" }}
+                      />
+                      Mozilla Firefox
+                    </a>{" "}
+                    browsers to enjoy all features and best performance of this
+                    site.
+                  </span>
+                </React.Fragment>
+              )}
             </div>
           </div>
         </div>

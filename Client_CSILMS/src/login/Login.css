@@ -33,7 +33,8 @@
   left: 0;
   right: 0;
   width: 474px;
-  height: 380px;
+  /* height: 380px; */
+  height: 400px;
   margin-top: auto;
   margin-bottom: auto;
   margin-left: auto;
@@ -43,6 +44,7 @@
   position: absolute;
   width: 100%;
   bottom: 0;
+  padding-top: 20px;
 }
 .loginContainer {
   width: 50%;
@@ -61,7 +63,8 @@
   left: 0;
   right: 0;
   width: 474px;
-  height: 380px;
+  /* height: 380px; */
+  height: 400px;
   margin-top: auto;
   margin-bottom: auto;
   margin-left: 20px;
@@ -79,6 +82,16 @@
   width: 100%;
   bottom: 20px;
   border-radius: 5px;
+}
+
+.browserLink,
+.browserLink:visited,
+.browserLink:focus {
+  color: rgb(39, 129, 247);
+}
+.browserLink:hover {
+  color: rgb(39, 129, 247);
+  text-decoration: underline;
 }
 
 @media (max-width: 768px) {

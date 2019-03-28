@@ -1,5 +1,8 @@
-import "core-js/stable";
-import "regenerator-runtime/runtime";
+// import "core-js/stable";
+// import "regenerator-runtime/runtime";
+import "core-js/es";
+import "core-js/proposals/set-methods";
+import "core-js/features/set/map";
 import React from "react";
 import ReactDOM from "react-dom";
 import "./index.css";
