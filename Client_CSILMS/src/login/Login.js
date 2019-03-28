@@ -10,9 +10,10 @@ import ChromeLogo from "../img/chrome.jpg";
 import FirefoxLogo from "../img/firefox.jpg";
 
 let isFirefox = typeof InstallTrigger !== "undefined";
-// let isChrome = !!window.chrome && !!window.chrome.webstore;
-let isChrome = (isChrome =
-  /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor));
+let isChrome =
+  /Chrome/.test(navigator.userAgent) &&
+  /Google Inc/.test(navigator.vendor) &&
+  !/OPR/.test(navigator.userAgent);
 
 class Login extends Component {
   constructor(props) {
@@ -117,7 +118,7 @@ class Login extends Component {
 
   render() {
     const { email, password } = this.state;
-    console.log("Chrome", isChrome);
+
     const textInputStyle = {
       fontSize: "18px",
       border: "1px solid rgb(95, 116, 136)",
