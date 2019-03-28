@@ -457,6 +457,7 @@ class NewStaffProfile extends Component {
                   <Col sm={10}>
                     <Input
                       type="text"
+                      maxLength="10"
                       name="csiStaffId"
                       id="csiStaffId"
                       ref="csiStaffId"
@@ -475,6 +476,7 @@ class NewStaffProfile extends Component {
                   <Col sm={10}>
                     <Input
                       type="text"
+                      maxLength="80"
                       name="staffName"
                       id="staffName"
                       placeholder="Employee Name"
@@ -491,6 +493,7 @@ class NewStaffProfile extends Component {
                   <Col sm={10}>
                     <Input
                       type="email"
+                      maxLength="30"
                       name="email"
                       id="email"
                       ref="email"
@@ -509,6 +512,7 @@ class NewStaffProfile extends Component {
                   <Col sm={10}>
                     <Input
                       type="text"
+                      maxLength="14"
                       name="icNumber"
                       id="icNumber"
                       placeholder="NRIC / Passport No."
@@ -609,11 +613,12 @@ class NewStaffProfile extends Component {
                   </Label>
                   <Col sm={10}>
                     <Input
-                      type="number"
+                      type="text"
+                      maxLength="2"
                       name="marriageCount"
                       id="marriageCount"
                       placeholder="Marriage Count"
-                      onChange={this.handleChange}
+                      onChange={event => this.setState({marriageCount: event.target.value.replace(/\D/,'')})}
                       value={marriageCount}
                       required
                     />
@@ -625,11 +630,12 @@ class NewStaffProfile extends Component {
                   </Label>
                   <Col sm={10}>
                     <Input
-                      type="number"
+                      type="text"
+                      maxLength="2"
                       name="totalChildren"
                       id="totalChildren"
                       placeholder="Total Children"
-                      onChange={this.handleChange}
+                      onChange={event => this.setState({totalChildren: event.target.value.replace(/\D/,'')})}
                       value={totalChildren}
                       required
                     />
@@ -678,6 +684,7 @@ class NewStaffProfile extends Component {
                   <Col sm={10}>
                     <Input
                       type="text"
+                      maxLength="15"
                       name="mobileNo"
                       id="mobileNo"
                       placeholder="Mobile No."

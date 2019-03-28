@@ -14,6 +14,7 @@ import "../common/Styles.css";
 import { Redirect, withRouter } from "react-router-dom";
 import { isHrRole, getWeekDay } from "../util/APIUtils";
 import { fetchData, formatDateYMD } from "../util/APIUtils";
+import { confirmAlert } from "react-confirm-alert";
 import { API_BASE_URL } from "../constants";
 
 class AddPublicHoliday extends Component {
@@ -80,8 +81,18 @@ class AddPublicHoliday extends Component {
         url: API_BASE_URL + "/publicholiday",
         method: "POST",
         body: JSON.stringify(AddPublicHoliday)
+      }).then(response => {
+        this.toggleSave()
+        confirmAlert({
+          message: "Public Holiday has been successfully added!",
+          buttons: [
+            {
+              label: "OK",
+              onClick: () => this.props.history.push("/publicholiday")
+            }
+          ]
+        });        
       });
-      this.props.history.push("/publicholiday");
     }
   }
 

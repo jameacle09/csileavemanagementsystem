@@ -118,6 +118,7 @@ class EditStaffProfile extends Component {
               <Label for="name">Staff Name</Label>
               <Input
                 type="text"
+                maxLength="80"
                 name="name"
                 id="name"
                 value={name}
@@ -128,6 +129,7 @@ class EditStaffProfile extends Component {
               <Label for="businessEmail">Email</Label>
               <Input
                 type="email"
+                maxLength="30"
                 name="businessEmail"
                 id="businessEmail"
                 value={businessEmail}
@@ -138,6 +140,7 @@ class EditStaffProfile extends Component {
               <Label for="nricPassport">NRIC / Passport No.</Label>
               <Input
                 type="text"
+                maxLength="14"
                 name="nricPassport"
                 id="nricPassport"
                 value={nricPassport}
@@ -158,6 +161,7 @@ class EditStaffProfile extends Component {
               <Label for="mobileNo">Mobile No.</Label>
               <Input
                 type="text"
+                maxLength="15"
                 name="mobileNo"
                 id="mobileNo"
                 value={mobileNo}

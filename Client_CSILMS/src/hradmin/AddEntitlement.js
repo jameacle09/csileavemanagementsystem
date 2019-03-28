@@ -7,6 +7,7 @@ import {
   Input,
   Col,
   Modal,
+  Alert,
   ModalHeader,
   ModalFooter
 } from "reactstrap";
@@ -88,6 +89,23 @@ class AddEntitlement extends Component {
   handleChangeLeaveEntitlement = event => {
     const { name, value } = event.target;
     this.setState({ [name]: value });
+
+    // Calculate Balance Leave, and also perform validation
+    let newBalanceLeave;
+    switch(name) {
+      case "takenLeave" : 
+        newBalanceLeave = this.state.availableLeave - value;
+        break;
+
+      case "availableLeave" :
+        newBalanceLeave = value - this.state.takenLeave;
+        break;
+
+      default :
+        newBalanceLeave = this.state.availableLeave - this.state.takenLeave
+    }
+    
+    this.setState({ balanceLeave: newBalanceLeave < 0 ? 0 : newBalanceLeave})
   };
 
   validateLeaveEntitlementFields = () => {
@@ -107,8 +125,11 @@ class AddEntitlement extends Component {
       !year ||
       !leaveCode ||
       carryForward === "" ||
+      carryForward < 0 ||
       entitlement === "" ||
+      entitlement < 0 ||
       availableLeave === "" ||
+      availableLeave < 0 ||
       takenLeave === "" ||
       balanceLeave === "";
     return isInvalid;
@@ -118,17 +139,15 @@ class AddEntitlement extends Component {
     event.preventDefault();
     const {
       emplId,
-      //name,
       year,
       leaveCode,
-      // leaveDescr,
       carryForward,
       entitlement,
       availableLeave,
       takenLeave,
       balanceLeave
     } = this.state;
-
+    
     const jsonRowValues = {
       id: {
         emplid: emplId,
@@ -188,9 +207,39 @@ class AddEntitlement extends Component {
   };
 
   toggleConfirmSubmit = () => {
-    this.setState(prevState => ({
-      modalSubmit: !prevState.modalSubmit
-    }));
+
+    const {
+      emplId,
+      year,
+      leaveCode
+    } = this.state;
+    
+    // Check if Leave Entitlement exists
+    fetchData({
+      url: API_BASE_URL + "/leaveentitlement/" + emplId + "/" + year + "/" + leaveCode,
+      method: "GET"
+    })
+      .then( response => {
+        if(response === null){
+          // If Leave Entitlement Not Found, proceed to create
+          this.setState(prevState => ({
+            modalSubmit: !prevState.modalSubmit
+          }));
+        
+        } else {
+          confirmAlert({
+            message: "Leave Entitlement already defined: " + emplId + ", " + year + ", " + leaveCode,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          })          
+        }          
+      })
+      .catch( error => {
+        return false;
+      })
   };
 
   render() {
@@ -210,6 +259,43 @@ class AddEntitlement extends Component {
       takenLeave,
       balanceLeave
     } = this.state;
+
+    let carryForwardMessage = "";
+    if(carryForward < 0)
+      carryForwardMessage = (
+        <Alert 
+          color="danger" 
+          xs={4} sm={3} 
+          style={{padding: ".25em 1em", margin: ".25em 1em"}} 
+        > 
+        Positive number only 
+        </Alert>
+      )
+
+    let entitlementMessage = "";
+    if (entitlement < 0)
+      entitlementMessage = (
+        <Alert 
+          color="danger" 
+          xs={4} sm={3} 
+          style={{padding: ".25em 1em", margin: ".25em 1em"}} 
+        > 
+        Positive number only 
+        </Alert>
+      )
+
+    let availableLeaveMessage = "";
+    if(availableLeave < 0 )
+      availableLeaveMessage = (
+        <Alert 
+          color="danger" 
+          xs={4} sm={3} 
+          style={{padding: ".25em 1em", margin: ".25em 1em"}} 
+        > 
+        Positive number only 
+        </Alert>
+      )
+
     return (
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
@@ -287,10 +373,10 @@ class AddEntitlement extends Component {
               </Col>
             </FormGroup>
             <FormGroup row>
-              <Label for="carryForward" sm={2}>
+              <Label for="carryForward" xs={10} sm={2}>
                 Carried Forward:
               </Label>
-              <Col sm={8}>
+              <Col xs={4} sm={2}>
                 <Input
                   type="number"
                   name="carryForward"
@@ -301,13 +387,14 @@ class AddEntitlement extends Component {
                   required
                 />
               </Col>
-              <Label sm={2}>day(s)</Label>
+              <Label xs={4} sm={2}>day(s)</Label>
+              {carryForwardMessage}
             </FormGroup>
             <FormGroup row>
-              <Label for="entitlement" sm={2}>
+              <Label for="entitlement" xs={10} sm={2}>
                 Entitlement:
               </Label>
-              <Col sm={8}>
+              <Col xs={4} sm={2}>
                 <Input
                   type="number"
                   name="entitlement"
@@ -318,13 +405,14 @@ class AddEntitlement extends Component {
                   required
                 />
               </Col>
-              <Label sm={2}>day(s)</Label>
+              <Label xs={4} sm={2}>day(s)</Label>
+              {entitlementMessage}
             </FormGroup>
             <FormGroup row>
-              <Label for="availableLeave" sm={2}>
+              <Label for="availableLeave" xs={10} sm={2}>
                 Available Leave:
               </Label>
-              <Col sm={8}>
+              <Col xs={4} sm={2}>
                 <Input
                   type="number"
                   name="availableLeave"
@@ -335,13 +423,14 @@ class AddEntitlement extends Component {
                   required
                 />
               </Col>
-              <Label sm={2}>day(s)</Label>
+              <Label xs={4} sm={2}>day(s)</Label>
+              {availableLeaveMessage}
             </FormGroup>
             <FormGroup row>
-              <Label for="takenLeave" sm={2}>
+              <Label for="takenLeave" xs={10} sm={2}>
                 Taken Leave:
               </Label>
-              <Col sm={8}>
+              <Col xs={4} sm={2}>
                 <Input
                   type="number"
                   name="takenLeave"
@@ -349,16 +438,16 @@ class AddEntitlement extends Component {
                   placeholder="Taken Leave"
                   onChange={this.handleChangeLeaveEntitlement}
                   value={takenLeave}
-                  required
+                  disabled
                 />
               </Col>
-              <Label sm={2}>day(s)</Label>
+              <Label xs={4} sm={2}>day(s)</Label>
             </FormGroup>
             <FormGroup row>
-              <Label for="balanceLeave" sm={2}>
+              <Label for="balanceLeave" xs={10} sm={2}>
                 Balance Leave:
               </Label>
-              <Col sm={8}>
+              <Col xs={4} sm={2}>
                 <Input
                   type="number"
                   name="balanceLeave"
@@ -366,10 +455,10 @@ class AddEntitlement extends Component {
                   placeholder="Balance Leave"
                   onChange={this.handleChangeLeaveEntitlement}
                   value={balanceLeave}
-                  required
+                  disabled
                 />
               </Col>
-              <Label sm={2}>day(s)</Label>
+              <Label xs={4} sm={2}>day(s)</Label>
             </FormGroup>
             <FormGroup row>
               <Col sm={{ size: 10, offset: 2 }}>
