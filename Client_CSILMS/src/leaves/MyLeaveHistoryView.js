@@ -216,22 +216,17 @@ class MyLeaveHistoryView extends Component {
       });
   };
 
-  deleteAppliedLeaveStatus = (event, strLeaveStatus) => {
+  deleteAppliedLeaveStatus = event => {
     const {
       emplId,
       effDate,
       startDate,
       leaveCode
     } = this.props.computedMatch.params;
-    const leaveStatus = strLeaveStatus;
 
     event.preventDefault();
 
-    if (leaveStatus === "PNAPV") {
-      this.toggleDeleteLeave();
-    } else {
-      this.handleBackToMain();
-    }
+    this.toggleDeleteLeave();
 
     fetchData({
       url:

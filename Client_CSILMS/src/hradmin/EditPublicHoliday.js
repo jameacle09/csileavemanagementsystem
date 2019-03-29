@@ -15,6 +15,7 @@ import { Redirect, withRouter } from "react-router-dom";
 import { isHrRole } from "../util/APIUtils";
 import { fetchData, formatDateYMD } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
+import { confirmAlert } from "react-confirm-alert";
 import LoadingPage from "../common/LoadingPage";
 
 class EditPublicHoliday extends Component {
@@ -109,8 +110,33 @@ class EditPublicHoliday extends Component {
         url: API_BASE_URL + "/publicholiday/" + holidayDate,
         method: "PATCH",
         body: JSON.stringify(editPublicHoliday)
+      })
+      .then(data => {
+        this.toggleSave()        
+        confirmAlert({
+          message: "Public Holiday has been successfully added!",
+          buttons: [
+            {
+              label: "OK",
+              onClick: () => this.props.history.push("/publicholiday")
+            }
+          ]
+        });      
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
       });
-      this.props.history.push("/publicholiday");
     }
   }
 
