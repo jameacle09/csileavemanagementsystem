@@ -168,6 +168,7 @@ class AddEntitlement extends Component {
     };
 
     const postRequest = Object.assign({}, jsonRowValues);
+    this.toggleConfirmSubmit();
 
     fetchData({
       url: API_BASE_URL + "/leaveentitlement",
@@ -175,7 +176,6 @@ class AddEntitlement extends Component {
       body: JSON.stringify(postRequest)
     })
       .then(response => {
-        this.toggleConfirmSubmit();
         confirmAlert({
           message: "Leave Entitlement has been successfully added!",
           buttons: [
@@ -238,7 +238,20 @@ class AddEntitlement extends Component {
         }          
       })
       .catch( error => {
-        return false;
+        if(error.hasOwnProperty("status")) {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          })  
+        } else 
+          // If Leave Entitlement Not Found, proceed to create
+          this.setState(prevState => ({
+            modalSubmit: !prevState.modalSubmit
+          }));
       })
   };
 
