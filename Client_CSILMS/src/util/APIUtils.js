@@ -1,5 +1,6 @@
 import { fetch as fetchPolyfill } from "whatwg-fetch";
 import { API_BASE_URL, ACCESS_TOKEN } from "../constants";
+import moment from "moment";
 
 let isIE = /*@cc_on!@*/ false || !!document.documentMode;
 
@@ -135,7 +136,7 @@ export function isManagerRole(props) {
 }
 
 export function formatDateDMY(strDate) {
-  // Returns DD/MM/YYYY Date Format
+  // Returns Date in DD/MM/YYYY Format
   if (!strDate) return;
   var varDate = strDate;
   if (isIE) varDate = strDate.toString().substr(0, 10);
@@ -152,7 +153,7 @@ export function formatDateDMY(strDate) {
 }
 
 export function formatDateYMD(strDate) {
-  // Returns YYYY-MM-DD Date Format
+  // Returns Date in YYYY-MM-DD Format
   if (!strDate) return;
   var varDate = strDate;
   if (isIE) varDate = strDate.toString().substr(0, 10);
@@ -187,18 +188,52 @@ export function getWeekDay(strDate) {
 }
 
 export function addNewDateYMD(strDate) {
-  // Returns YYYY-MM-DD Date Format
+  // Returns Date in YYYY-MM-DD Format
   if (!strDate) return;
   var varDate = strDate;
   if (isIE) varDate = strDate.toString().substr(0, 10);
 
   var date = new Date(varDate),
-    month = "" + (date.getMonth() + 1),
-    day = "" + (date.getDate() + 1),
+    month = date.getMonth() + 1,
+    day = date.getDate() + 1,
     year = date.getFullYear();
 
-  if (month.length < 2) month = "0" + month;
-  if (day.length < 2) day = "0" + day;
+  var newMonth = month,
+    newDay = day,
+    newYear = year,
+    maxDay = 0;
 
-  return [year, month, day].join("-");
+  switch (month) {
+    case 4:
+    case 6:
+    case 9:
+    case 11:
+      maxDay = 30;
+      break;
+    case 2:
+      if (year % 4 === 0) {
+        maxDay = 29;
+      } else {
+        maxDay = 28;
+      }
+      break;
+    default:
+      maxDay = 31;
+      break;
+  }
+
+  if (newDay > maxDay) {
+    newDay = 1;
+    newMonth = newMonth + 1;
+
+    if (newMonth > 12) {
+      newMonth = 1;
+      newYear = year + 1;
+    }
+  }
+
+  if (newMonth < 10) newMonth = "0" + newMonth;
+  if (newDay < 10) newDay = "0" + newDay;
+
+  return [newYear, newMonth, newDay].join("-");
 }

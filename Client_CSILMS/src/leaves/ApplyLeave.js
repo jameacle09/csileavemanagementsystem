@@ -83,10 +83,7 @@ class ApplyLeave extends Component {
   loadCurrentUserEntitlements = () => {
     var currDate = new Date();
     fetchData({
-      url:
-        API_BASE_URL +
-        "/leaveentitlement/me/" +
-        currDate.getFullYear(),
+      url: API_BASE_URL + "/leaveentitlement/me/" + currDate.getFullYear(),
       method: "GET"
     })
       .then(data =>
@@ -234,7 +231,6 @@ class ApplyLeave extends Component {
         this.setState({ attachedFileName: res.file });
       })
       .catch(err => {
-        
         this.setState({ attachedFIleName: "" });
         confirmAlert({
           message:
