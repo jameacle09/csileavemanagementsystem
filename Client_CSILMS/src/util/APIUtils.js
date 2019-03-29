@@ -1,6 +1,5 @@
 import { fetch as fetchPolyfill } from "whatwg-fetch";
 import { API_BASE_URL, ACCESS_TOKEN } from "../constants";
-import moment from "moment";
 
 let isIE = /*@cc_on!@*/ false || !!document.documentMode;
 
