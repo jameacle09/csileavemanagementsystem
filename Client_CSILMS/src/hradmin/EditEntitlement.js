@@ -229,6 +229,13 @@ class EditEntitlement extends Component {
     })
   }
 
+  handleResetBalanceLeave = () => {
+    
+    this.setState({
+      balanceLeave: this.state.availableLeave - this.state.takenLeave
+    })
+  }
+
   render() {
     if (!isHrRole(this.props.currentUser)) {
       return <Redirect to="/forbidden" />;
@@ -304,7 +311,8 @@ class EditEntitlement extends Component {
           xs={4} sm={3} 
           style={{padding: ".25em 1em", margin: ".25em 1em"}} 
         > 
-        Balance does not tally ( Available Leave - Taken ) 
+        Balance does not tally ( Available Leave - Taken )  {  }
+        <Badge href="#" onClick={this.handleResetBalanceLeave} color="primary">Reset</Badge>
         </Alert>
       )
     
