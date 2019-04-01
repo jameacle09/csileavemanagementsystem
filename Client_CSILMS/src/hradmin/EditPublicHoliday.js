@@ -145,11 +145,46 @@ class EditPublicHoliday extends Component {
 
     const { holidayDate } = this.props.computedMatch.params;
 
+    this.toggleDelete()
     fetchData({
       url: API_BASE_URL + "/publicholiday/" + holidayDate,
       method: "DELETE"
-    });
-    this.props.history.push("/publicholiday");
+    })
+    .then(data => {
+      confirmAlert({
+        message: "Public Holiday has been deleted.",
+        buttons: [
+          {
+            label: "OK",
+            onClick: () => this.props.history.push("/publicholiday")
+          }
+        ]
+      })
+    })
+    .catch(error => {
+      if (error.status === 401) {
+        this.props.history.push("/login");
+      } else if ( error.hasOwnProperty("status") ){
+        confirmAlert({
+          message: "Failed to delete Public Holiday, please try again later",
+          buttons: [
+            {
+              label: "OK"
+            }
+          ]
+        });
+      } else {
+        confirmAlert({
+          message: "Public Holiday has been deleted.",
+          buttons: [
+            {
+              label: "OK",
+              onClick: () => this.props.history.push("/publicholiday")
+            }
+          ]
+        })
+      }
+    });    
   }
 
   render() {
