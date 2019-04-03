@@ -350,11 +350,13 @@ class AddEntitlement extends Component {
               </Label>
               <Col sm={10}>
                 <Input
-                  type="number"
+                  type="text"
+                  maxLength="4"
                   name="year"
                   id="year"
                   placeholder="Leave Year"
                   onChange={this.handleChangeLeaveEntitlement}
+                  onInput={event => this.setState({ year: event.target.value.replace(/\D/,'')})}
                   value={year}
                 />
               </Col>
