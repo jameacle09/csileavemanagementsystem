@@ -126,6 +126,7 @@ class AddEntitlement extends Component {
       !leaveCode ||
       carryForward === "" ||
       carryForward < 0 ||
+      isNaN(carryForward) ||
       entitlement === "" ||
       entitlement < 0 ||
       availableLeave === "" ||
@@ -274,14 +275,14 @@ class AddEntitlement extends Component {
     } = this.state;
 
     let carryForwardMessage = "";
-    if(carryForward < 0)
+    if(isNaN(carryForward) || carryForward < 0)
       carryForwardMessage = (
         <Alert 
           color="danger" 
           xs={4} sm={3} 
           style={{padding: ".25em 1em", margin: ".25em 1em"}} 
         > 
-        Positive number only 
+        Please enter a valid number only
         </Alert>
       )
 
@@ -356,7 +357,6 @@ class AddEntitlement extends Component {
                   id="year"
                   placeholder="Leave Year"
                   onChange={this.handleChangeLeaveEntitlement}
-                  onInput={event => this.setState({ year: event.target.value.replace(/\D/,'')})}
                   value={year}
                 />
               </Col>
@@ -393,7 +393,8 @@ class AddEntitlement extends Component {
               </Label>
               <Col xs={4} sm={2}>
                 <Input
-                  type="number"
+                  type="text"
+                  maxLength="2"
                   name="carryForward"
                   id="carryForward"
                   placeholder="Carried Forward"
