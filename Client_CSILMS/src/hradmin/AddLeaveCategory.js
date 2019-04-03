@@ -167,7 +167,8 @@ class AddLeaveCategory extends Component {
               </Label>
               <Col sm={10}>
                 <Input
-                  type="number"
+                  type="text"
+                  maxLength="2"
                   name="entitlement"
                   id="leaveEntitlement"
                   value={entitlement}
