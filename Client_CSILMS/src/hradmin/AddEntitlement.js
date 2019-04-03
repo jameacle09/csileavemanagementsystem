@@ -124,6 +124,7 @@ class AddEntitlement extends Component {
       !emplId ||
       !year ||
       !leaveCode ||
+      isNaN(year) ||
       carryForward === "" ||
       carryForward < 0 ||
       isNaN(carryForward) ||
@@ -258,6 +259,13 @@ class AddEntitlement extends Component {
       })
   };
 
+  validateYear(year) {
+    // Validate if year input is a number
+    if (isNaN(year)) {
+      return <Alert color="danger">Invalid number</Alert>;
+    }
+  }
+
   render() {
     if (!isHrRole(this.props.currentUser)) {
       return <Redirect to="/forbidden" />;
@@ -275,6 +283,8 @@ class AddEntitlement extends Component {
       takenLeave,
       balanceLeave
     } = this.state;
+
+    let yearErrorMsg = this.validateYear(year);
 
     let carryForwardMessage = "";
     if(isNaN(carryForward) || carryForward < 0)
@@ -358,9 +368,10 @@ class AddEntitlement extends Component {
                   name="year"
                   id="year"
                   placeholder="Leave Year"
-                  onChange={event => this.setState({ year: event.target.value.replace(/\D/,'')})}
+                  onChange={this.handleChangeLeaveEntitlement}
                   value={year}
                 />
+                <span>{yearErrorMsg}</span>
               </Col>
             </FormGroup>
             <FormGroup row>
