@@ -261,7 +261,7 @@ class AddEntitlement extends Component {
 
   validateYear(year) {
     // Validate if year input is a number
-    if (isNaN(year)) {
+    if (isNaN(year) || year < 0) {
       return <Alert color="danger">Invalid number</Alert>;
     }
   }
