@@ -48,7 +48,7 @@ class AddLeaveCategory extends Component {
 
   validateFields = () => {
     const { leaveCode, leaveDescr, entitlement } = this.state;
-    const isInvalid = !leaveCode || !leaveDescr || !entitlement || entitlement < 0;
+    const isInvalid = !leaveCode || !leaveDescr || !entitlement || entitlement < 0 || isNaN(entitlement);
     return isInvalid;
   };
 
