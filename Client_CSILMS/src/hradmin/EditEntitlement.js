@@ -207,10 +207,13 @@ class EditEntitlement extends Component {
     const isInvalid =
       carryForward === "" ||
       carryForward < 0 ||
+      isNaN(carryForward) ||
       entitlement === "" ||
       entitlement < 0 ||
+      isNaN(entitlement) ||
       availableLeave === "" ||
       availableLeave < 0 ||
+      isNaN(availableLeave) ||
       takenLeave === "" ||
       balanceLeave === "";
     return isInvalid;
