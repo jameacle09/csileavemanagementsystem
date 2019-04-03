@@ -129,6 +129,7 @@ class AddEntitlement extends Component {
       isNaN(carryForward) ||
       entitlement === "" ||
       entitlement < 0 ||
+      isNaN(entitlement) ||
       availableLeave === "" ||
       availableLeave < 0 ||
       takenLeave === "" ||
@@ -287,14 +288,14 @@ class AddEntitlement extends Component {
       )
 
     let entitlementMessage = "";
-    if (entitlement < 0)
+    if (isNaN(entitlement) || entitlement < 0)
       entitlementMessage = (
         <Alert 
           color="danger" 
           xs={4} sm={3} 
           style={{padding: ".25em 1em", margin: ".25em 1em"}} 
         > 
-        Positive number only 
+        Please enter a valid number only 
         </Alert>
       )
 
@@ -412,7 +413,8 @@ class AddEntitlement extends Component {
               </Label>
               <Col xs={4} sm={2}>
                 <Input
-                  type="number"
+                  type="text"
+                  maxLength="2"
                   name="entitlement"
                   id="entitlement"
                   placeholder="Entitlement"
