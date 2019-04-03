@@ -358,7 +358,7 @@ class AddEntitlement extends Component {
                   name="year"
                   id="year"
                   placeholder="Leave Year"
-                  onChange={this.handleChangeLeaveEntitlement}
+                  onChange={event => this.setState({ year: event.target.value.replace(/\D/,'')})}
                   value={year}
                 />
               </Col>
