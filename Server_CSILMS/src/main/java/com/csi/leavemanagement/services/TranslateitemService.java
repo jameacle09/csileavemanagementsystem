@@ -5,8 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.csi.leavemanagement.models.LeaveEntitlement;
-import com.csi.leavemanagement.models.LeaveEntitlementId;
+import com.csi.leavemanagement.exceptions.TranslateItemServiceException;
 import com.csi.leavemanagement.models.Translateitem;
 import com.csi.leavemanagement.models.TranslateitemId;
 import com.csi.leavemanagement.repositories.TranslateitemRepository;
@@ -24,6 +23,15 @@ public class TranslateitemService {
 	public List<Translateitem> findAll() {
 		List<Translateitem> translateitemList = (List<Translateitem>)this.translateitemRepository.findAll();
 		return translateitemList;
+	}
+	
+	public Translateitem create(Translateitem newTranslateitem) throws TranslateItemServiceException {
+		
+		Translateitem translateItemCheck = this.findById(newTranslateitem.getId());
+		if(translateItemCheck != null)
+			throw new TranslateItemServiceException(TranslateItemServiceException.TRANSLATE_ITEM_ALREADY_EXIST);
+		
+		return this.translateitemRepository.save(newTranslateitem);
 	}
 	
 	public Translateitem save(Translateitem newTranslateitem) {

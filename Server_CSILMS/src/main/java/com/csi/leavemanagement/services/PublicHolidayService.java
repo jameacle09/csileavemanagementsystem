@@ -6,7 +6,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.csi.leavemanagement.models.LeaveCategory;
+import com.csi.leavemanagement.exceptions.PublicHolidayServiceException;
 import com.csi.leavemanagement.models.PublicHoliday;
 import com.csi.leavemanagement.repositories.PublicHolidayRepository;
 
@@ -23,6 +23,15 @@ public class PublicHolidayService {
 	public List<PublicHoliday> findAll() {
 		List<PublicHoliday> publicHolidayList = (List<PublicHoliday>) this.publicHolidayRepository.findAll();
 		return publicHolidayList;
+	}
+	
+	public PublicHoliday create(PublicHoliday publicHoliday) throws PublicHolidayServiceException {
+    	
+    	PublicHoliday publicHolidayCheck = this.findById(publicHoliday.getHolidayDate());
+    	if(publicHolidayCheck != null)
+    		throw new PublicHolidayServiceException(PublicHolidayServiceException.PUBLIC_HOLIDAY_ALREADY_EXIST);
+    	
+		return this.publicHolidayRepository.save(publicHoliday);
 	}
 	
 	public PublicHoliday save(PublicHoliday publicHoliday) {

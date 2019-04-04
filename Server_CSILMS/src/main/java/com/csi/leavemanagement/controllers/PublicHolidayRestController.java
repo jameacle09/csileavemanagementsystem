@@ -7,6 +7,8 @@ import java.util.List;
 import java.util.TimeZone;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -14,7 +16,9 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.server.ResponseStatusException;
 
+import com.csi.leavemanagement.exceptions.PublicHolidayServiceException;
 import com.csi.leavemanagement.models.PublicHoliday;
 import com.csi.leavemanagement.services.PublicHolidayService;
 
@@ -56,9 +60,38 @@ public class PublicHolidayRestController {
     
     @RequestMapping(value="/publicholiday", method=RequestMethod.POST)
 	@PreAuthorize("hasAuthority('HR')")
-    public PublicHoliday doSavePublicHoliday(@RequestBody PublicHoliday publicHoliday) {
-        PublicHoliday newPublicHoliday = this.publicHolidayService.save(publicHoliday);
-        return newPublicHoliday;
+    public ResponseEntity<?> doCreatePublicHoliday(@RequestBody PublicHoliday publicHoliday) {
+    	
+        PublicHoliday newPublicHoliday = null;        
+		try {			
+			newPublicHoliday = this.publicHolidayService.create(publicHoliday);			
+		} catch (PublicHolidayServiceException e) {
+			
+			String errorMessage = "";
+			switch(e.getExceptionCode()) {
+				case PublicHolidayServiceException.PUBLIC_HOLIDAY_ALREADY_EXIST:
+					SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+					String holidayDate = sdf.format(publicHoliday.getHolidayDate());
+					errorMessage = holidayDate + " is already a Public Holiday";
+					break;
+					
+				case PublicHolidayServiceException.PUBLIC_HOLIDAY_INVALID_DATE:
+					errorMessage = "Date specified is invalid";
+					break;
+					
+				default:
+					errorMessage = "An unknown error has occured";
+			}
+			throw new ResponseStatusException(HttpStatus.CONFLICT, errorMessage);
+			
+		} catch (Exception e) {
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "An unknown error has occured");
+		}
+		
+		if(newPublicHoliday == null) 
+			throw new ResponseStatusException(HttpStatus.INTERNAL_SERVER_ERROR, "Failed to create Public Holiday");
+		
+        return new ResponseEntity<PublicHoliday>(newPublicHoliday, HttpStatus.CREATED);
     }
     
     @RequestMapping(value="/publicholiday/{id}", method=RequestMethod.DELETE)

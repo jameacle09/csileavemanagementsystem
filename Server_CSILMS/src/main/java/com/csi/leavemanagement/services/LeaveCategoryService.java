@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.csi.leavemanagement.exceptions.LeaveCategoryServiceException;
 import com.csi.leavemanagement.models.LeaveCategory;
 import com.csi.leavemanagement.repositories.LeaveCategoryRepository;
 
@@ -21,6 +22,15 @@ public class LeaveCategoryService {
 	public List<LeaveCategory> findAll() {
 		List<LeaveCategory> leaveCategories = (List<LeaveCategory>)this.leaveCategoryRepository.findAll();
 		return leaveCategories;
+	}
+	
+	public LeaveCategory create(LeaveCategory newLeaveCategory) throws LeaveCategoryServiceException {
+		
+		LeaveCategory leaveCategoryCheck = this.findById(newLeaveCategory.getLeaveCode());
+		if(leaveCategoryCheck != null)
+			throw new LeaveCategoryServiceException(LeaveCategoryServiceException.LEAVE_CATEGORY_ALREADY_EXIST);
+		
+		return this.leaveCategoryRepository.save(newLeaveCategory);
 	}
 	
 	public LeaveCategory save(LeaveCategory leaveCategory) {
