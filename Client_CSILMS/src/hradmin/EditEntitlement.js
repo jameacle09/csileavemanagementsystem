@@ -207,10 +207,13 @@ class EditEntitlement extends Component {
     const isInvalid =
       carryForward === "" ||
       carryForward < 0 ||
+      isNaN(carryForward) ||
       entitlement === "" ||
       entitlement < 0 ||
+      isNaN(entitlement) ||
       availableLeave === "" ||
       availableLeave < 0 ||
+      isNaN(availableLeave) ||
       takenLeave === "" ||
       balanceLeave === "";
     return isInvalid;
@@ -255,38 +258,38 @@ class EditEntitlement extends Component {
     } = this.state;
 
     let carryForwardMessage = "";
-    if(carryForward < 0)
+    if(isNaN(carryForward) || carryForward < 0)
       carryForwardMessage = (
         <Alert 
           color="danger" 
           xs={4} sm={3} 
           style={{padding: ".25em 1em", margin: ".25em 1em"}} 
         > 
-        Positive number only 
+        Please enter a valid number only
         </Alert>
       )
 
     let entitlementMessage = "";
-    if (entitlement < 0)
+    if (isNaN(entitlement) || entitlement < 0)
       entitlementMessage = (
         <Alert 
           color="danger" 
           xs={4} sm={3} 
           style={{padding: ".25em 1em", margin: ".25em 1em"}} 
         > 
-        Positive number only 
+        Please enter a valid number only
         </Alert>
       )
 
     let availableLeaveMessage = "";
-    if(availableLeave < 0 )
+    if(isNaN(availableLeave) || availableLeave < 0 )
       availableLeaveMessage = (
         <Alert 
           color="danger" 
           xs={4} sm={3} 
           style={{padding: ".25em 1em", margin: ".25em 1em"}} 
         > 
-        Positive number only 
+        Please enter a valid number only 
         </Alert>
       )
     
@@ -395,7 +398,8 @@ class EditEntitlement extends Component {
                   </Label>
                   <Col xs={4} sm={2}>
                     <Input
-                      type="number"
+                      type="text"
+                      maxLength="2"
                       name="carryForward"
                       id="carryForward"
                       placeholder="Carried Forward"
@@ -412,7 +416,8 @@ class EditEntitlement extends Component {
                   </Label>
                   <Col xs={4} sm={2}>
                     <Input
-                      type="number"
+                      type="text"
+                      maxLength="2"
                       name="entitlement"
                       id="entitlement"
                       placeholder="Entitlement"
@@ -429,7 +434,8 @@ class EditEntitlement extends Component {
                   </Label>
                   <Col xs={4} sm={2}>
                     <Input
-                      type="number"
+                      type="text"
+                      maxLength="2"
                       name="availableLeave"
                       id="availableLeave"
                       placeholder="Available Leave"

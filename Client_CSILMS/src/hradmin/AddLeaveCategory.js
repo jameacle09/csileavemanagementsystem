@@ -48,7 +48,7 @@ class AddLeaveCategory extends Component {
 
   validateFields = () => {
     const { leaveCode, leaveDescr, entitlement } = this.state;
-    const isInvalid = !leaveCode || !leaveDescr || !entitlement;
+    const isInvalid = !leaveCode || !leaveDescr || !entitlement || entitlement < 0 || isNaN(entitlement);
     return isInvalid;
   };
 
@@ -108,7 +108,7 @@ class AddLeaveCategory extends Component {
 
   validateLeaveEnt(leaveEnt) {
     // Validate if input is a number
-    if (isNaN(leaveEnt)) {
+    if (isNaN(leaveEnt) || leaveEnt < 0) {
       return <Alert color="danger">Invalid number</Alert>;
     }
   }
@@ -167,7 +167,8 @@ class AddLeaveCategory extends Component {
               </Label>
               <Col sm={10}>
                 <Input
-                  type="number"
+                  type="text"
+                  maxLength="2"
                   name="entitlement"
                   id="leaveEntitlement"
                   value={entitlement}

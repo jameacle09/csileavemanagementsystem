@@ -124,12 +124,16 @@ class AddEntitlement extends Component {
       !emplId ||
       !year ||
       !leaveCode ||
+      isNaN(year) ||
       carryForward === "" ||
       carryForward < 0 ||
+      isNaN(carryForward) ||
       entitlement === "" ||
       entitlement < 0 ||
+      isNaN(entitlement) ||
       availableLeave === "" ||
       availableLeave < 0 ||
+      isNaN(availableLeave) ||
       takenLeave === "" ||
       balanceLeave === "";
     return isInvalid;
@@ -255,6 +259,13 @@ class AddEntitlement extends Component {
       })
   };
 
+  validateYear(year) {
+    // Validate if year input is a number
+    if (isNaN(year) || year < 0) {
+      return <Alert color="danger">Invalid number</Alert>;
+    }
+  }
+
   render() {
     if (!isHrRole(this.props.currentUser)) {
       return <Redirect to="/forbidden" />;
@@ -273,39 +284,41 @@ class AddEntitlement extends Component {
       balanceLeave
     } = this.state;
 
+    let yearErrorMsg = this.validateYear(year);
+
     let carryForwardMessage = "";
-    if(carryForward < 0)
+    if(isNaN(carryForward) || carryForward < 0)
       carryForwardMessage = (
         <Alert 
           color="danger" 
           xs={4} sm={3} 
           style={{padding: ".25em 1em", margin: ".25em 1em"}} 
         > 
-        Positive number only 
+        Please enter a valid number only
         </Alert>
       )
 
     let entitlementMessage = "";
-    if (entitlement < 0)
+    if (isNaN(entitlement) || entitlement < 0)
       entitlementMessage = (
         <Alert 
           color="danger" 
           xs={4} sm={3} 
           style={{padding: ".25em 1em", margin: ".25em 1em"}} 
         > 
-        Positive number only 
+        Please enter a valid number only 
         </Alert>
       )
 
     let availableLeaveMessage = "";
-    if(availableLeave < 0 )
+    if(isNaN(availableLeave) || availableLeave < 0 )
       availableLeaveMessage = (
         <Alert 
           color="danger" 
           xs={4} sm={3} 
           style={{padding: ".25em 1em", margin: ".25em 1em"}} 
         > 
-        Positive number only 
+        Please enter a valid number only 
         </Alert>
       )
 
@@ -350,13 +363,15 @@ class AddEntitlement extends Component {
               </Label>
               <Col sm={10}>
                 <Input
-                  type="number"
+                  type="text"
+                  maxLength="4"
                   name="year"
                   id="year"
                   placeholder="Leave Year"
                   onChange={this.handleChangeLeaveEntitlement}
                   value={year}
                 />
+                <span>{yearErrorMsg}</span>
               </Col>
             </FormGroup>
             <FormGroup row>
@@ -391,7 +406,8 @@ class AddEntitlement extends Component {
               </Label>
               <Col xs={4} sm={2}>
                 <Input
-                  type="number"
+                  type="text"
+                  maxLength="2"
                   name="carryForward"
                   id="carryForward"
                   placeholder="Carried Forward"
@@ -409,7 +425,8 @@ class AddEntitlement extends Component {
               </Label>
               <Col xs={4} sm={2}>
                 <Input
-                  type="number"
+                  type="text"
+                  maxLength="2"
                   name="entitlement"
                   id="entitlement"
                   placeholder="Entitlement"
@@ -427,7 +444,8 @@ class AddEntitlement extends Component {
               </Label>
               <Col xs={4} sm={2}>
                 <Input
-                  type="number"
+                  type="text"
+                  maxLength="2"
                   name="availableLeave"
                   id="availableLeave"
                   placeholder="Available Leave"
