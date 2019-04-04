@@ -1,8 +1,6 @@
 package com.csi.leavemanagement.controllers;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,9 +14,9 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.server.ResponseStatusException;
 
-import com.csi.leavemanagement.services.LeaveCategoryService;
 import com.csi.leavemanagement.exceptions.LeaveCategoryServiceException;
 import com.csi.leavemanagement.models.LeaveCategory;
+import com.csi.leavemanagement.services.LeaveCategoryService;
 
 @RestController
 @RequestMapping("/api")
