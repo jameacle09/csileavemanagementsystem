@@ -32,9 +32,47 @@ class AddPublicHoliday extends Component {
   }
 
   toggleSave = () => {
-    this.setState(prevState => ({
-      modalSave: !prevState.modalSave
-    }));
+
+    const holidayID = this.state.holidayDate;
+
+    fetchData({
+      url: API_BASE_URL + "/publicholiday/" + holidayID,
+      method: "GET"
+    })
+      .then(response => {
+        if(response === null) {
+          // If Public Holiday not found, proceed to create
+          this.setState(prevState => ({
+            modalSave: !prevState.modalSave
+          }))
+        } else {
+          confirmAlert({
+            message: holidayID + " is already a Public Holiday",
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          })
+        }
+      })
+      .catch(error => {
+        if(error.hasOwnProperty("status")) {
+          confirmAlert({
+            message: error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          })
+        } else {
+          // If Public Holiday not found, proceed to create
+          this.setState(prevState => ({
+            modalSave: !prevState.modalSave
+          }))
+        }
+      })    
   };
 
   handleCancel = () => {
@@ -76,19 +114,28 @@ class AddPublicHoliday extends Component {
       };
 
       // console.log(JSON.stringify(AddPublicHoliday));
-
+      this.toggleSave()
       fetchData({
         url: API_BASE_URL + "/publicholiday",
         method: "POST",
         body: JSON.stringify(AddPublicHoliday)
       }).then(response => {
-        this.toggleSave()
         confirmAlert({
           message: "Public Holiday has been successfully added!",
           buttons: [
             {
               label: "OK",
               onClick: () => this.props.history.push("/publicholiday")
+            }
+          ]
+        });        
+      }).catch(error => {
+        console.log(error)
+        confirmAlert({
+          message: error.message,
+          buttons: [
+            {
+              label: "OK"
             }
           ]
         });        

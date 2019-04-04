@@ -83,6 +83,7 @@ class AddTranslateItem extends Component {
     };
 
     const postRequest = Object.assign({}, jsonRowValues);
+    this.toggleConfirmSubmit();
 
     fetchData({
       url: API_BASE_URL + "/translateitem",
@@ -90,7 +91,6 @@ class AddTranslateItem extends Component {
       body: JSON.stringify(postRequest)
     })
       .then(response => {
-        this.toggleConfirmSubmit();
         confirmAlert({
           message: "New Translate Item has been successfully added!",
           buttons: [
@@ -118,9 +118,51 @@ class AddTranslateItem extends Component {
   };
 
   toggleConfirmSubmit = () => {
-    this.setState(prevState => ({
-      modalSubmit: !prevState.modalSubmit
-    }));
+
+    const {
+      fieldname,
+      fieldvalue,
+    } = this.state;
+
+    // Check if Translate Item already exists
+    fetchData({
+      url: API_BASE_URL + "/translateitem/" + fieldname + "/" + fieldvalue,
+      method: "GET"
+    })
+      .then( response => {
+        if(response === null){
+          // If Translate Item not found, proceed to create
+          this.setState(prevState => ({
+            modalSubmit: !prevState.modalSubmit
+          }));
+            
+        } else {
+          confirmAlert({
+            message: "Translate Item already defined: " + fieldname + ", " + fieldvalue,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          })          
+        }          
+      })
+      .catch( error => {
+        if(error.hasOwnProperty("status")) {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          })  
+        } else 
+          // If Translate Item not found, proceed to create
+          this.setState(prevState => ({
+            modalSubmit: !prevState.modalSubmit
+          }));
+      })
   };
 
   render() {
