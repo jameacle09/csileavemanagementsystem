@@ -32,9 +32,47 @@ class AddLeaveCategory extends Component {
   }
 
   toggleApprove = () => {
-    this.setState(prevState => ({
-      modalApprove: !prevState.modalApprove
-    }));
+
+    const leaveCategoryID = this.state.leaveCode;
+
+    fetchData({
+      url: API_BASE_URL + "/leavecategory/" + leaveCategoryID,
+      method: "GET"
+    })
+      .then(response => {
+        if(response === null) {
+          // If Public Holiday not found, proceed to create
+          this.setState(prevState => ({
+            modalApprove: !prevState.modalApprove
+          }))
+        } else {
+          confirmAlert({
+            message: "Leave Category '" + leaveCategoryID + "' is already defined",
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          })
+        }
+      })
+      .catch(error => {
+        if(error.hasOwnProperty("status")) {
+          confirmAlert({
+            message: error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          })
+        } else {
+          // If Public Holiday not found, proceed to create
+          this.setState(prevState => ({
+            modalApprove: !prevState.modalApprove
+          }))
+        }
+      })    
   };
 
   handleCancel = () => {
@@ -71,14 +109,13 @@ class AddLeaveCategory extends Component {
       };
 
       // console.log(JSON.stringify(addLeaveCategory));
-
+      this.toggleApprove()
       fetchData({
         url: API_BASE_URL + "/leavecategory",
         method: "POST",
         body: JSON.stringify(addLeaveCategory)
       })
       .then(response => {
-        this.toggleApprove();
         confirmAlert({
           message: "Leave Category has been successfully added!",
           buttons: [
