@@ -52,7 +52,15 @@ class EditPublicHoliday extends Component {
         });
       })
       .catch(err => {
-        console.log(err);
+        confirmAlert({
+          message: "Record not found!",
+          buttons: [
+            {
+              label: "OK",
+              onClick: () => this.props.history.push("/publicholiday")
+            }
+          ]
+        });    
       });
   }
 
@@ -114,7 +122,7 @@ class EditPublicHoliday extends Component {
       .then(data => {
         this.toggleSave()        
         confirmAlert({
-          message: "Public Holiday has been successfully added!",
+          message: "Public Holiday has been successfully updated!",
           buttons: [
             {
               label: "OK",
