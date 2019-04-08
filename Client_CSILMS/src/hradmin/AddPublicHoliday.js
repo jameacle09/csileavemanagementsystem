@@ -196,6 +196,7 @@ class AddPublicHoliday extends Component {
               <Col sm={10}>
                 <Input
                   type="text"
+                  maxLength="30"
                   name="holidayDescr"
                   id="holiday"
                   value={holidayDescr}
@@ -210,6 +211,7 @@ class AddPublicHoliday extends Component {
               <Col sm={10}>
                 <Input
                   type="text"
+                  maxLength="100"
                   name="holidayState"
                   id="state"
                   value={holidayState}
