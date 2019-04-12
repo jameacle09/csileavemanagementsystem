@@ -43,11 +43,26 @@ public class AppliedLeaveRestController {
 	}
 	
 	@RequestMapping(value="/appliedleave", method=RequestMethod.GET)
+	@PreAuthorize("hasAuthority('HR')")
 	public List<AppliedLeave> doListAppliedLeave() {
 		List<AppliedLeave> appliedLeave = this.appliedLeaveService.findAll();
 		return appliedLeave;
 	}
+	
+	@RequestMapping(value="/appliedleave/{year}", method=RequestMethod.GET)
+	@PreAuthorize("hasAuthority('HR')")
+	public List<AppliedLeave> doListAppliedLeaveByYear(@PathVariable("year") int year) {
 
+		Calendar cal = Calendar.getInstance();
+		cal.set(year, Calendar.JANUARY, 1);
+		Date startDate = cal.getTime();
+		cal.set(year, Calendar.DECEMBER, 31);
+		Date endDate = cal.getTime();
+		
+		List<AppliedLeave> appliedLeave = this.appliedLeaveService.findLeaveBetweenDates(startDate, endDate);
+		return appliedLeave;
+	}
+	
 	@RequestMapping(value="/appliedleave", method=RequestMethod.POST)
 	public ResponseEntity<?> doSaveAppliedLeave(@RequestBody AppliedLeave appliedLeave) {
 

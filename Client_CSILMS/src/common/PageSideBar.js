@@ -83,6 +83,14 @@ class PageSideBar extends Component {
               </li>
               <li>
                 <NavLink
+                  to="/listallappliedleave"
+                  activeClassName="sidebarLinkActive"
+                >
+                  Employee Leave History
+                </NavLink>
+              </li>
+              <li>
+                <NavLink
                   to="/leaveentitlement"
                   activeClassName="sidebarLinkActive"
                 >
