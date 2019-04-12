@@ -36,6 +36,14 @@ public class LeaveEntitlementRestController {
 		List<LeaveEntitlement> leaveEntitlements = this.leaveEntitlementService.findAll();
 		return leaveEntitlements;
 	}
+
+	/* @RequestMapping(value="/leaveentitlement/managerreportees", method=RequestMethod.GET)
+	@PreAuthorize("hasAuthority('MANAGER')")
+	public List<LeaveEntitlement> doListEmployeeLeaveEntitlement(@CurrentUser UserPrincipal currentUser) {
+		String manager = currentUser.getId();
+		List<LeaveEntitlement> leaveEntitlementManager = this.leaveEntitlementService.findByManager(manager);
+		return leaveEntitlementManager;
+	} */
 	
 	@RequestMapping(value="/leaveentitlement/me", method=RequestMethod.GET)
     @PreAuthorize("hasAuthority('EMPLOYEE')")

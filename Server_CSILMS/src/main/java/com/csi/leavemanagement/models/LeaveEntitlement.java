@@ -1,9 +1,13 @@
 package com.csi.leavemanagement.models;
-
+import java.util.HashSet;
+import java.util.Set;
 import javax.persistence.Column;
 import javax.persistence.EmbeddedId;
 import javax.persistence.Entity;
+import javax.persistence.FetchType;
 import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
 import javax.persistence.ManyToOne;
 import javax.persistence.MapsId;
 import javax.persistence.Table;
@@ -39,6 +43,10 @@ public class LeaveEntitlement {
 	
 	@Column(name="balance_leave")
 	private float balanceLeave;
+
+	/* @ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "job_details", joinColumns = @JoinColumn(name = "emplid"), inverseJoinColumns = @JoinColumn(name = "reports_to"))
+	private Set<JobDetails> jobDetails = new HashSet<JobDetails>(); */
 
 	public LeaveEntitlement() {
 		this.id = new LeaveEntitlementId();
@@ -118,6 +126,14 @@ public class LeaveEntitlement {
 
 	public void setBalanceLeave(float balanceLeave) {
 		this.balanceLeave = balanceLeave;
+	}
+
+	public Set<JobDetails> getJobDetails() {
+		return jobDetails;
+	}
+
+	public void setJobDetails(Set<JobDetails> jobDetails) {
+		this.jobDetails = jobDetails;
 	}
 
 	@Override
