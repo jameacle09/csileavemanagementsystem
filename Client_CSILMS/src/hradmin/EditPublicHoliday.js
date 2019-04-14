@@ -252,7 +252,7 @@ class EditPublicHoliday extends Component {
                   <Col sm={10}>
                     <Input
                       type="text"
-                      maxLength="30"
+                      maxLength="50"
                       name="holidayDescr"
                       id="holiday"
                       value={holidayDescr}
