@@ -3,8 +3,7 @@ import { Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
 import { Redirect, withRouter } from "react-router-dom";
-import { isHrRole } from "../util/APIUtils";
-import { fetchData } from "../util/APIUtils";
+import { fetchData, isHrRole } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import ReactTable from "react-table";
 import TranslateitemToExcel from "./TranslateitemToExcel";
@@ -17,10 +16,9 @@ class TranslateItems extends Component {
       translateItemsData: [],
       loading: true
     };
-    this.loadTranslateItems = this.loadTranslateItems.bind(this);
   }
 
-  loadTranslateItems() {
+  loadTranslateItems = () => {
     fetchData({
       url: API_BASE_URL + "/translateitems",
       method: "GET"
@@ -41,7 +39,7 @@ class TranslateItems extends Component {
           loading: false
         });
       });
-  }
+  };
 
   componentDidMount() {
     this.loadTranslateItems();
