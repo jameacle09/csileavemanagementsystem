@@ -22,6 +22,8 @@ import NewStaffProfile from "./staffprofile/NewStaffProfile";
 // import EditStaffProfile from "./staffprofile/EditStaffProfile";
 import UploadEmployeeProfile from "./staffprofile/UploadStaffProfile";
 import MultipleStaffUpdate from "./staffprofile/MultipleStaffUpdate";
+import LeaveHistoryHR from "./hradmin/LeaveHistoryHR";
+import LeaveHistoryViewHR from "./hradmin/LeaveHistoryViewHR";
 import PublicHoliday from "./hradmin/PublicHoliday";
 import AddPublicHoliday from "./hradmin/AddPublicHoliday";
 import EditPublicHoliday from "./hradmin/EditPublicHoliday";
@@ -303,6 +305,22 @@ class App extends Component {
                   path="/liststaffprofile/multipleupdate"
                   title="Update Multiple Employees"
                   component={MultipleStaffUpdate}
+                />
+
+                {/* Applied Leave of all Employees*/}                
+                <PrivateRoute
+                  authenticated={this.state.isAuthenticated}
+                  currentUser={this.state.currentUser}
+                  path="/listallappliedleave"
+                  title="Employee Leave History"
+                  component={LeaveHistoryHR}
+                />            
+                <PrivateRoute
+                  authenticated={this.state.isAuthenticated}
+                  currentUser={this.state.currentUser}
+                  path="/leavehistoryhr/view/:emplId/:effDate/:startDate/:leaveCode"
+                  title="Employee Leave History"
+                  component={LeaveHistoryViewHR}
                 />
 
                 {/* Leave Entitlements */}
