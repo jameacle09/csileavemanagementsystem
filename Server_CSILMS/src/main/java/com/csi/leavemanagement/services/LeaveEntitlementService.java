@@ -41,9 +41,9 @@ public class LeaveEntitlementService {
 		return !(leaveEntitlementRepository.existsById(id));
 	}
 	
-	/* public List<LeaveEntitlement> findByManager(String manager) {
+	public List<LeaveEntitlement> findByManager(String manager) {
 		return leaveEntitlementRepository.findByManager(manager);
-	} */
+	} 
 
 	public List<LeaveEntitlement> findByEmplidYear(String emplid, int year) {		
 		return leaveEntitlementRepository.findByIdEmplidAndIdYear(emplid, year);

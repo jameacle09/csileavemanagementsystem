@@ -35,7 +35,7 @@ import TranslateItems from "./hradmin/TranslateItems";
 import AddTranslateItem from "./hradmin/AddTranslateItem";
 import EditTranslateItem from "./hradmin/EditTranslateItem";
 import LeaveEntitlement from "./hradmin/LeaveEntitlement";
-/* import LeaveEntitlementManager from "./manager/LeaveEntitlementManager"; */
+import LeaveEntitlementManager from "./manager/LeaveEntitlementManager";
 import AddEntitlement from "./hradmin/AddEntitlement";
 import EditEntitlement from "./hradmin/EditEntitlement";
 import UploadEntitlement from "./hradmin/UploadEntitlement";
@@ -334,14 +334,14 @@ class App extends Component {
                   component={LeaveEntitlement}
                 />
                 {/* Leave Entitlements for Employees under direct report only */}
-               {/* <PrivateRoute
+               <PrivateRoute
                   exact
                   authenticated={this.state.isAuthenticated}
                   currentUser={this.state.currentUser}
                   path="/leaveentitlementmanager"
                   title="Employee Leave Entitlement"
                   component={LeaveEntitlementManager}
-                /> */}
+                />
                 <PrivateRoute
                   authenticated={this.state.isAuthenticated}
                   currentUser={this.state.currentUser}

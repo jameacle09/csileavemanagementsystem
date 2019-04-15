@@ -44,9 +44,9 @@ public class LeaveEntitlement {
 	@Column(name="balance_leave")
 	private float balanceLeave;
 
-	/* @ManyToMany(fetch = FetchType.LAZY)
-	@JoinTable(name = "job_details", joinColumns = @JoinColumn(name = "emplid"), inverseJoinColumns = @JoinColumn(name = "reports_to"))
-	private Set<JobDetails> jobDetails = new HashSet<JobDetails>(); */
+	@ManyToMany(fetch = FetchType.LAZY)
+	@JoinTable(name = "empl_details", joinColumns = @JoinColumn(name = "emplid"), inverseJoinColumns = @JoinColumn(name = "reports_to"))
+	private Set<ReportingManager> reportingManager = new HashSet<ReportingManager>();
 
 	public LeaveEntitlement() {
 		this.id = new LeaveEntitlementId();
@@ -128,13 +128,13 @@ public class LeaveEntitlement {
 		this.balanceLeave = balanceLeave;
 	}
 
-	public Set<JobDetails> getJobDetails() {
-		return jobDetails;
+	public Set<ReportingManager> getReportingManager() {
+		return reportingManager;
 	}
 
-	public void setJobDetails(Set<JobDetails> jobDetails) {
-		this.jobDetails = jobDetails;
-	}
+	public void setReportingManger(Set<ReportingManager> reportingManager) {
+		this.reportingManager = reportingManager;
+	} 
 
 	@Override
 	public String toString() {

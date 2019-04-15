@@ -146,7 +146,6 @@ class PageSideBar extends Component {
                   Leave History
                 </NavLink>
               </li>
-            {/*         
               <li>
                 <NavLink
                   to="/leaveentitlementmanager"
@@ -154,8 +153,7 @@ class PageSideBar extends Component {
                 >
                   Leave Entitlements
                 </NavLink>
-              </li> 
-            */}
+              </li>
             </ul>
           </li>
           <li>
