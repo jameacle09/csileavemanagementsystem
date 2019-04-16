@@ -101,7 +101,7 @@ class LeaveHistoryView extends Component {
       });
   };
 
-  getAttachement = () => {
+  getAttachment = () => {
     let attachmentFile = this.state.attachment;
     if (attachmentFile !== "") {
       fetchFile({
@@ -251,7 +251,7 @@ class LeaveHistoryView extends Component {
     const showAttachment = attachment => {
       if (attachment !== "") {
         return (
-          <Button color="link" onClick={this.getAttachement}>
+          <Button color="link" onClick={this.getAttachment}>
             {" "}
             {attachment}
           </Button>
