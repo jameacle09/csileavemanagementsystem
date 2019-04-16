@@ -399,7 +399,7 @@ class EditEntitlement extends Component {
                   <Col xs={4} sm={2}>
                     <Input
                       type="text"
-                      maxLength="2"
+                      maxLength="5"
                       name="carryForward"
                       id="carryForward"
                       placeholder="Carried Forward"
@@ -417,7 +417,7 @@ class EditEntitlement extends Component {
                   <Col xs={4} sm={2}>
                     <Input
                       type="text"
-                      maxLength="2"
+                      maxLength="5"
                       name="entitlement"
                       id="entitlement"
                       placeholder="Entitlement"
@@ -435,7 +435,7 @@ class EditEntitlement extends Component {
                   <Col xs={4} sm={2}>
                     <Input
                       type="text"
-                      maxLength="2"
+                      maxLength="5"
                       name="availableLeave"
                       id="availableLeave"
                       placeholder="Available Leave"
