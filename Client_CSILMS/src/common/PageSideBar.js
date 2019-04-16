@@ -58,6 +58,11 @@ class PageSideBar extends Component {
               My Leave Details
             </NavLink>
           </li>
+          <li>
+            <NavLink to="/mypublicholiday" activeClassName="sidebarLinkActive">
+              My Public Holidays
+            </NavLink>
+          </li>
           <li style={displayByRole(this.props.currentUser, "HR")}>
             <a
               href="#hRSubmenu"
