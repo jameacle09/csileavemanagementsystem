@@ -158,7 +158,7 @@ class LeaveEntitlementManager extends Component {
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Employee Leave Entitlements</h3>
+            <h3 className="headerStyle">Leave Entitlements</h3>
           </span>
         </div>
         {this.state.loading ? (
