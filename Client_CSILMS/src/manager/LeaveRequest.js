@@ -306,7 +306,9 @@ class LeaveRequest extends Component {
               contentType = "";
               break;
           }
-          if (contentType) {
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, attachmentFile);
+          } else if (contentType) {
             const url = URL.createObjectURL(
               new Blob([blob], { type: contentType })
             );
