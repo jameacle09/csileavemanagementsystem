@@ -12,6 +12,8 @@ import MyProfile from "./staffprofile/MyProfile";
 import MyLeaveDetails from "./leaves/MyLeaveDetails";
 import MyLeaveHistory from "./leaves/MyLeaveHistory";
 import MyLeaveHistoryView from "./leaves/MyLeaveHistoryView";
+import MyPublicHoliday from "./leaves/MyPublicHoliday";
+import MyPublicHolidayView from "./leaves/MyPublicHolidayView";
 import LeaveRequestsList from "./manager/LeaveRequestsList";
 import LeaveRequest from "./manager/LeaveRequest";
 import LeaveHistoryList from "./manager/LeaveHistoryList";
@@ -215,6 +217,22 @@ class App extends Component {
                   component={MyLeaveDetails}
                 />
                 <PrivateRoute
+                  exact
+                  authenticated={this.state.isAuthenticated}
+                  currentUser={this.state.currentUser}
+                  path="/mypublicholiday"
+                  title="My Public Holiday"
+                  component={MyPublicHoliday}
+                />
+                <PrivateRoute
+                  authenticated={this.state.isAuthenticated}
+                  currentUser={this.state.currentUser}
+                  path="/mypublicholiday/view/:holidayDate"
+                  title="View Public Holiday"
+                  component={MyPublicHolidayView}
+                />
+
+                <PrivateRoute
                   authenticated={this.state.isAuthenticated}
                   currentUser={this.state.currentUser}
                   path="/myprofile"
@@ -308,14 +326,14 @@ class App extends Component {
                   component={MultipleStaffUpdate}
                 />
 
-                {/* Applied Leave of all Employees*/}                
+                {/* Applied Leave of all Employees*/}
                 <PrivateRoute
                   authenticated={this.state.isAuthenticated}
                   currentUser={this.state.currentUser}
                   path="/listallappliedleave"
                   title="Employee Leave History"
                   component={LeaveHistoryHR}
-                />            
+                />
                 <PrivateRoute
                   authenticated={this.state.isAuthenticated}
                   currentUser={this.state.currentUser}

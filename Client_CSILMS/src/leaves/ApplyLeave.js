@@ -725,10 +725,12 @@ class ApplyLeave extends Component {
                       type="file"
                       name="attachment"
                       id="attachment"
+                      accept=".pdf,.jpg,.jpeg,.jpe,.jfif,.gif,.bmp,.png"
                       onChange={this.handleChange}
                     />
                     <FormText color="muted">
-                      Please attach your document (maximum file size is 5 MB).
+                      Preferred attachment file type is .pdf, .gif, .jpg, .jpeg,
+                      .png or .bmp (file size must not exceed 5MB)
                     </FormText>
                   </Col>
                 </FormGroup>

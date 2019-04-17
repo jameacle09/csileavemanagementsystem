@@ -2,30 +2,30 @@ import React, { Component } from "react";
 import { Button } from "reactstrap";
 import { Link } from "react-router-dom";
 import "../common/Styles.css";
-import { Redirect, withRouter } from "react-router-dom";
-import { fetchData, isHrRole } from "../util/APIUtils";
+import { withRouter } from "react-router-dom";
 import { API_BASE_URL } from "../constants";
 import ReactTable from "react-table";
-import TranslateitemToExcel from "./TranslateitemToExcel";
+import { fetchData, formatDateDMY, formatDateYMD } from "../util/APIUtils";
+import ExportToExcel from "../hradmin/PublicHolidayToExcel";
 import LoadingPage from "../common/LoadingPage";
 
-class TranslateItems extends Component {
+class MyPublicHoliday extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      translateItemsData: [],
+      publicHolidayDetails: [],
       loading: true
     };
   }
 
-  loadTranslateItems = () => {
+  loadPublicHolidayDetails = () => {
     fetchData({
-      url: API_BASE_URL + "/translateitems",
+      url: API_BASE_URL + "/publicholidays",
       method: "GET"
     })
       .then(data => {
         this.setState({
-          translateItemsData: data,
+          publicHolidayDetails: data,
           loading: false
         });
       })
@@ -34,50 +34,27 @@ class TranslateItems extends Component {
           this.props.history.push("/login");
         }
         let userData = [];
-        this.setState({
-          translateItemsData: userData,
-          loading: false
-        });
+        this.setState({ userData: userData });
       });
   };
 
   componentDidMount() {
-    this.loadTranslateItems();
+    this.loadPublicHolidayDetails();
   }
 
   componentDidUpdate(nextProps) {
     if (this.props.isAuthenticated !== nextProps.isAuthenticated) {
-      this.loadTranslateItems();
+      this.loadPublicHolidayDetails();
     }
   }
 
   render() {
-    if (!isHrRole(this.props.currentUser)) {
-      return <Redirect to="/forbidden" />;
-    }
-
-    const showStatusDesc = strStatus => {
-      if (strStatus === "A") {
-        return "Active";
-      } else {
-        return "Inactive";
-      }
-    };
-
-    const TranslateItemsCols = [
+    const PublicHolidayCols = [
       {
-        id: "fieldname",
-        Header: "Field Name",
-        accessor: "id.fieldname",
-        width: 120,
-        sortable: true,
-        filterable: true
-      },
-      {
-        id: "fieldvalue",
-        Header: "Field Value",
-        accessor: "id.fieldvalue",
-        width: 120,
+        id: "holidayDate",
+        Header: "Date",
+        accessor: d => formatDateDMY(d.holidayDate),
+        width: 100,
         sortable: true,
         filterable: true,
         style: {
@@ -85,45 +62,43 @@ class TranslateItems extends Component {
         }
       },
       {
-        id: "xlatlongname",
-        Header: "Field Long Name",
-        accessor: "xlatlongname",
-        minWidth: 180,
-        sortable: true,
-        filterable: true
-      },
-      {
-        id: "xlatshortname",
-        Header: "Field Short Name",
-        accessor: "xlatshortname",
-        minWidth: 150,
-        sortable: true,
-        filterable: true
-      },
-      {
-        id: "effStatus",
-        Header: "Effective Status",
-        accessor: str => showStatusDesc(str.effStatus),
+        id: "holidayDay",
+        Header: "Day",
+        accessor: "holidayDay",
         minWidth: 100,
         sortable: true,
-        filterable: true,
-        style: {
-          textAlign: "center"
-        }
+        filterable: true
+      },
+      {
+        id: "holidayDescr",
+        Header: "Holiday",
+        accessor: "holidayDescr",
+        minWidth: 160,
+        sortable: true,
+        filterable: true
+      },
+      {
+        id: "holidayState",
+        Header: "State(s)",
+        accessor: "holidayState",
+        minWidth: 290,
+        sortable: true,
+        filterable: true
       },
       {
         id: "editAction",
         Header: "Action",
-        accessor: editButton => (
+        accessor: viewButton => (
           <Button
             size="sm"
             tag={Link}
-            to={`/translateitems/edit/${editButton.id.fieldname}/${
-              editButton.id.fieldvalue
-            }`}
+            to={`/mypublicholiday/view/${formatDateYMD(
+              viewButton.holidayDate
+            )}`}
             className="smallButtonOverride"
           >
-            <span className="fa fa-edit" /> Edit
+            <span className="fa fa-folder-open" style={{ color: "white" }} />
+            &nbsp;View
           </Button>
         ),
         minWidth: 80,
@@ -139,7 +114,7 @@ class TranslateItems extends Component {
       <div className="mainContainerFlex">
         <div className="headerContainerFlex">
           <span className="header">
-            <h3 className="headerStyle">Translate Items</h3>
+            <h3 className="headerStyle">My Public Holidays</h3>
           </span>
         </div>
         {this.state.loading ? (
@@ -166,23 +141,16 @@ class TranslateItems extends Component {
                 </div>
                 <div className="SubListBtnRightContainer">
                   <div>
-                    <Button
-                      tag={Link}
-                      to={`/translateitems/add`}
-                      className="largeButtonOverride"
-                    >
-                      <span
-                        className="fa fa-plus"
-                        style={{ margin: "0px 5px 0px 0px" }}
-                      />
-                      Add Translate Item
-                    </Button>
+                    <span> </span>
+                  </div>
+                  <div style={{ paddingLeft: "4px" }}>
+                    <span> </span>
                   </div>
                 </div>
               </div>
               <ReactTable
-                data={this.state.translateItemsData}
-                columns={TranslateItemsCols}
+                data={this.state.publicHolidayDetails}
+                columns={PublicHolidayCols}
                 defaultFilterMethod={(filter, row) =>
                   String(row[filter.id])
                     .toLowerCase()
@@ -190,14 +158,16 @@ class TranslateItems extends Component {
                 }
                 defaultPageSize={10}
                 pages={this.state.pages}
+                loading={this.state.loading}
                 filterable={true}
                 sortable={true}
                 multiSort={true}
+                loadingText="Loading Public Holidays..."
                 noDataText="No data available."
                 className="-striped"
               />
-              <TranslateitemToExcel
-                translateItemsData={this.state.translateItemsData}
+              <ExportToExcel
+                publicHolidayDetails={this.state.publicHolidayDetails}
               />
             </div>
           </React.Fragment>
@@ -207,4 +177,4 @@ class TranslateItems extends Component {
   }
 }
 
-export default withRouter(TranslateItems);
+export default withRouter(MyPublicHoliday);

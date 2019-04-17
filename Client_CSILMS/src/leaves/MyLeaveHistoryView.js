@@ -5,6 +5,7 @@ import {
   FormGroup,
   Label,
   Input,
+  CustomInput,
   FormText,
   Col,
   Modal,
@@ -28,6 +29,7 @@ class MyLeaveHistoryView extends Component {
       startDate: "",
       endDate: "",
       leaveDuration: "1 day(s)",
+      isHalfDay: "N",
       leaveReason: "",
       approver: "",
       approverName: "",
@@ -84,6 +86,7 @@ class MyLeaveHistoryView extends Component {
           startDate: data.id.startDate,
           endDate: data.endDate,
           leaveDuration: data.leaveDuration + " day(s)",
+          isHalfDay: data.halfDay,
           leaveReason: data.reason,
           approver: data.approver,
           leaveStatus: data.leaveStatus,
@@ -114,14 +117,16 @@ class MyLeaveHistoryView extends Component {
       });
   };
 
-  getAttachement = () => {
-    if (this.state.attachment !== "") {
+  getAttachment = () => {
+    let attachmentFile = this.state.attachment;
+    if (attachmentFile !== "") {
       fetchFile({
         url: API_BASE_URL + "/attachment/files/" + this.state.attachment,
         method: "GET"
       })
         .then(response => response.blob())
         .then(blob => {
+          /*
           // 2. Create blob link to download
           const url = window.URL.createObjectURL(new Blob([blob]));
           const link = document.createElement("a");
@@ -133,6 +138,52 @@ class MyLeaveHistoryView extends Component {
           link.click();
           // 5. Clean up and remove the link
           link.parentNode.removeChild(link);
+          */
+          let contentType = "";
+          switch (
+            attachmentFile
+              .split(".")
+              .pop()
+              .toLowerCase()
+          ) {
+            case "pdf":
+              contentType = "application/pdf";
+              break;
+            case "jpg":
+            case "jpe":
+            case "jfif":
+            case "jpeg":
+              contentType = "image/jpg";
+              break;
+            case "png":
+              contentType = "image/png";
+              break;
+            case "gif":
+              contentType = "image/gif";
+              break;
+            case "bmp":
+              contentType = "image/bmp";
+              break;
+            default:
+              contentType = "";
+              break;
+          }
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, attachmentFile);
+          } else if (contentType) {
+            const url = URL.createObjectURL(
+              new Blob([blob], { type: contentType })
+            );
+            window.open(url);
+          } else {
+            const url = window.URL.createObjectURL(new Blob([blob]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", attachmentFile);
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+          }
         })
         .catch(err => {
           alert(err);
@@ -310,6 +361,7 @@ class MyLeaveHistoryView extends Component {
       startDate,
       endDate,
       leaveDuration,
+      isHalfDay,
       leaveReason,
       approverName,
       leaveStatus,
@@ -329,6 +381,13 @@ class MyLeaveHistoryView extends Component {
     //     return "Rejected";
     //   }
     // };
+    const BooleanHalfDay = strHalfDay => {
+      if (strHalfDay === "Y") {
+        return true;
+      } else {
+        return false;
+      }
+    };
 
     const getLeaveStatusDesc = strLeaveStatus => {
       let arrLeaveStatusLookup = this.state.leaveStatusLookup;
@@ -369,7 +428,7 @@ class MyLeaveHistoryView extends Component {
     const showAttachment = attachment => {
       if (attachment !== "") {
         return (
-          <Button color="link" onClick={this.getAttachement}>
+          <Button color="link" onClick={this.getAttachment}>
             {" "}
             {attachment}
           </Button>
@@ -422,7 +481,7 @@ class MyLeaveHistoryView extends Component {
                 </FormGroup>
                 <FormGroup row>
                   <Label for="leaveDescr" sm={2}>
-                    Leave Category:
+                    Leave Type:
                   </Label>
                   <Col sm={10}>
                     <Input
@@ -473,6 +532,20 @@ class MyLeaveHistoryView extends Component {
                       id="leaveDuration"
                       value={leaveDuration}
                       placeholder="Days"
+                      disabled={true}
+                    />
+                  </Col>
+                </FormGroup>
+                <FormGroup row>
+                  <Label for="endDate" sm={2}>
+                    Taking Half Day?
+                  </Label>
+                  <Col sm={10}>
+                    <CustomInput
+                      type="checkbox"
+                      id="isHalfDay"
+                      label=""
+                      checked={BooleanHalfDay(isHalfDay)}
                       disabled={true}
                     />
                   </Col>

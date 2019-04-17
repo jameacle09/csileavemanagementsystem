@@ -12,8 +12,7 @@ import {
 } from "reactstrap";
 import "../common/Styles.css";
 import { Redirect, withRouter } from "react-router-dom";
-import { isHrRole } from "../util/APIUtils";
-import { fetchData } from "../util/APIUtils";
+import { fetchData, isHrRole } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import { confirmAlert } from "react-confirm-alert";
 
@@ -26,9 +25,77 @@ class AddTranslateItem extends Component {
       effStatus: "A",
       xlatlongname: "",
       xlatshortname: "",
+      uniqueEntry: false,
+      translateItemsData: [],
+      fieldNameLookUp: [],
       modalSubmit: false
     };
   }
+
+  loadTranslateItems = () => {
+    fetchData({
+      url: API_BASE_URL + "/translateitems",
+      method: "GET"
+    })
+      .then(data => {
+        this.setState({ translateItemsData: data }, () =>
+          this.getUniqueFieldName()
+        );
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+      });
+  };
+
+  getUniqueFieldName = () => {
+    let arrTranslateItemLookup = this.state.translateItemsData,
+      arrUniqueFieldNames = [],
+      currFieldName = "A1B2C3D4";
+    arrTranslateItemLookup.forEach(transItem => {
+      if (transItem.id.fieldname !== currFieldName) {
+        currFieldName = transItem.id.fieldname;
+        arrUniqueFieldNames.push({ fieldname: currFieldName });
+      }
+    });
+    this.setState({ fieldNameLookUp: arrUniqueFieldNames });
+  };
+
+  componentDidMount() {
+    this.loadTranslateItems();
+  }
+
+  validateFieldNameAndValue = event => {
+    const fieldName = event.target.name;
+    const { fieldname, fieldvalue, translateItemsData } = this.state;
+    let arrTranslateItemsData = translateItemsData;
+    if (
+      (fieldName === "fieldname" || fieldName === "fieldvalue") &&
+      fieldname &&
+      fieldvalue
+    ) {
+      if (
+        arrTranslateItemsData.filter(
+          transItem =>
+            transItem.id.fieldname === fieldname &&
+            transItem.id.fieldvalue === fieldvalue
+        ).length > 0
+      ) {
+        confirmAlert({
+          message: "Combination of Field Name and Field Value already exist.",
+          buttons: [
+            {
+              label: "OK",
+              onClick: () => this.setState({ uniqueEntry: false })
+            }
+          ]
+        });
+      } else {
+        this.setState({ uniqueEntry: true });
+      }
+    }
+  };
 
   toggleApprove = () => {
     this.setState(prevState => ({
@@ -51,14 +118,16 @@ class AddTranslateItem extends Component {
       fieldvalue,
       effStatus,
       xlatlongname,
-      xlatshortname
+      xlatshortname,
+      uniqueEntry
     } = this.state;
     const isInvalid =
       !fieldname ||
       !fieldvalue ||
       !effStatus ||
       !xlatlongname ||
-      !xlatshortname;
+      !xlatshortname ||
+      !uniqueEntry;
     return isInvalid;
   };
 
@@ -118,37 +187,36 @@ class AddTranslateItem extends Component {
   };
 
   toggleConfirmSubmit = () => {
-
-    const {
-      fieldname,
-      fieldvalue,
-    } = this.state;
+    const { fieldname, fieldvalue } = this.state;
 
     // Check if Translate Item already exists
     fetchData({
       url: API_BASE_URL + "/translateitem/" + fieldname + "/" + fieldvalue,
       method: "GET"
     })
-      .then( response => {
-        if(response === null){
+      .then(response => {
+        if (response === null) {
           // If Translate Item not found, proceed to create
           this.setState(prevState => ({
             modalSubmit: !prevState.modalSubmit
           }));
-            
         } else {
           confirmAlert({
-            message: "Translate Item already defined: " + fieldname + ", " + fieldvalue,
+            message:
+              "Translate Item already defined: " +
+              fieldname +
+              ", " +
+              fieldvalue,
             buttons: [
               {
                 label: "OK"
               }
             ]
-          })          
-        }          
+          });
+        }
       })
-      .catch( error => {
-        if(error.hasOwnProperty("status")) {
+      .catch(error => {
+        if (error.hasOwnProperty("status")) {
           confirmAlert({
             message: error.status + " : " + error.message,
             buttons: [
@@ -156,13 +224,14 @@ class AddTranslateItem extends Component {
                 label: "OK"
               }
             ]
-          })  
-        } else 
-          // If Translate Item not found, proceed to create
+          });
+        }
+        // If Translate Item not found, proceed to create
+        else
           this.setState(prevState => ({
             modalSubmit: !prevState.modalSubmit
           }));
-      })
+      });
   };
 
   render() {
@@ -175,7 +244,8 @@ class AddTranslateItem extends Component {
       fieldvalue,
       effStatus,
       xlatlongname,
-      xlatshortname
+      xlatshortname,
+      fieldNameLookUp
     } = this.state;
 
     return (
@@ -192,14 +262,33 @@ class AddTranslateItem extends Component {
                 Field Name:
               </Label>
               <Col sm={10}>
-                <Input
+                {/* <Input
                   type="text"
                   name="fieldname"
                   id="fieldname"
                   value={fieldname}
                   onChange={this.handleChange}
                   required
-                />
+                /> */}
+                <Input
+                  type="select"
+                  name="fieldname"
+                  id="fieldname"
+                  onChange={this.handleChange}
+                  onBlur={this.validateFieldNameAndValue}
+                  value={fieldname}
+                >
+                  <option key="" value="">
+                    --Select Field Name--
+                  </option>
+                  {fieldNameLookUp.map(field => {
+                    return (
+                      <option key={field.fieldname} value={field.fieldname}>
+                        {field.fieldname}
+                      </option>
+                    );
+                  })}
+                </Input>
               </Col>
             </FormGroup>
             <FormGroup row>
@@ -213,6 +302,7 @@ class AddTranslateItem extends Component {
                   id="fieldvalue"
                   value={fieldvalue}
                   onChange={this.handleChange}
+                  onBlur={this.validateFieldNameAndValue}
                   required
                 />
               </Col>

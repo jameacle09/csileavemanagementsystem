@@ -255,14 +255,16 @@ class LeaveRequest extends Component {
       });
   };
 
-  getAttachement = () => {
-    if (this.state.attachment !== "") {
+  getAttachment = () => {
+    let attachmentFile = this.state.attachment;
+    if (attachmentFile !== "") {
       fetchFile({
         url: API_BASE_URL + "/attachment/files/" + this.state.attachment,
         method: "GET"
       })
         .then(response => response.blob())
         .then(blob => {
+          /*
           // 2. Create blob link to download
           const url = window.URL.createObjectURL(new Blob([blob]));
           const link = document.createElement("a");
@@ -274,6 +276,52 @@ class LeaveRequest extends Component {
           link.click();
           // 5. Clean up and remove the link
           link.parentNode.removeChild(link);
+          */
+          let contentType = "";
+          switch (
+            attachmentFile
+              .split(".")
+              .pop()
+              .toLowerCase()
+          ) {
+            case "pdf":
+              contentType = "application/pdf";
+              break;
+            case "jpg":
+            case "jpe":
+            case "jfif":
+            case "jpeg":
+              contentType = "image/jpg";
+              break;
+            case "png":
+              contentType = "image/png";
+              break;
+            case "gif":
+              contentType = "image/gif";
+              break;
+            case "bmp":
+              contentType = "image/bmp";
+              break;
+            default:
+              contentType = "";
+              break;
+          }
+          if (window.navigator && window.navigator.msSaveOrOpenBlob) {
+            window.navigator.msSaveOrOpenBlob(blob, attachmentFile);
+          } else if (contentType) {
+            const url = URL.createObjectURL(
+              new Blob([blob], { type: contentType })
+            );
+            window.open(url);
+          } else {
+            const url = window.URL.createObjectURL(new Blob([blob]));
+            const link = document.createElement("a");
+            link.href = url;
+            link.setAttribute("download", attachmentFile);
+            document.body.appendChild(link);
+            link.click();
+            link.parentNode.removeChild(link);
+          }
         })
         .catch(err => {
           alert(err);
@@ -501,7 +549,7 @@ class LeaveRequest extends Component {
     const showAttachment = attachment => {
       if (attachment !== "") {
         return (
-          <Button color="link" onClick={this.getAttachement}>
+          <Button color="link" onClick={this.getAttachment}>
             {" "}
             {attachment}
           </Button>
@@ -554,7 +602,7 @@ class LeaveRequest extends Component {
                 </FormGroup>
                 <FormGroup row>
                   <Label for="leaveDescr" sm={2}>
-                    Leave Category:
+                    Leave Type:
                   </Label>
                   <Col sm={10}>
                     <Input
