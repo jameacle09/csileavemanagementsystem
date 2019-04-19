@@ -4,8 +4,7 @@ import "../common/Styles.css";
 import { Redirect, withRouter } from "react-router-dom";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import { isManagerRole } from "../util/APIUtils";
-import { fetchData } from "../util/APIUtils";
+import { isManagerRole, fetchData, exportTableToExcel } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import ExportToExcel from "../hradmin/LeaveEntitlementToExcel";
 import LoadingPage from "../common/LoadingPage";
@@ -151,7 +150,7 @@ class LeaveEntitlementManager extends Component {
         style: {
           textAlign: "center"
         }
-      },
+      }
     ];
 
     return (
@@ -172,8 +171,11 @@ class LeaveEntitlementManager extends Component {
                     variant="contained"
                     color="primary"
                     className="largeButtonOverride"
+                    // onClick={() =>
+                    //   document.getElementById("test-table-xls-button").click()
+                    // }
                     onClick={() =>
-                      document.getElementById("test-table-xls-button").click()
+                      exportTableToExcel("table-to-xls", "LeaveEntitlementsMgr")
                     }
                   >
                     <span
@@ -183,8 +185,7 @@ class LeaveEntitlementManager extends Component {
                     Export List to Excel
                   </Button>
                 </div>
-
-              </div> 
+              </div>
               <ReactTable
                 data={this.state.leaveEntitlementData}
                 columns={leaveEntitlementCols}
