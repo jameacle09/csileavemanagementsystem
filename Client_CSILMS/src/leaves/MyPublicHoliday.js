@@ -5,7 +5,12 @@ import "../common/Styles.css";
 import { withRouter } from "react-router-dom";
 import { API_BASE_URL } from "../constants";
 import ReactTable from "react-table";
-import { fetchData, formatDateDMY, formatDateYMD } from "../util/APIUtils";
+import {
+  fetchData,
+  formatDateDMY,
+  formatDateYMD,
+  exportTableToExcel
+} from "../util/APIUtils";
 import ExportToExcel from "../hradmin/PublicHolidayToExcel";
 import LoadingPage from "../common/LoadingPage";
 
@@ -128,8 +133,11 @@ class MyPublicHoliday extends Component {
                     variant="contained"
                     color="primary"
                     className="largeButtonOverride"
+                    // onClick={() =>
+                    //   document.getElementById("test-table-xls-button").click()
+                    // }
                     onClick={() =>
-                      document.getElementById("test-table-xls-button").click()
+                      exportTableToExcel("table-to-xls", "MyPublicHolidays")
                     }
                   >
                     <span

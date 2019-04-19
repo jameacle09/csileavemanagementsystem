@@ -1,8 +1,8 @@
 import React, { Component } from "react";
 import { NavLink, Link } from "react-router-dom";
+import { displayByRole } from "../util/APIUtils";
 import "./SideBarHeader.css";
 import CSILogo from "../img/CSI_Logo.png";
-import { displayByRole } from "../util/APIUtils";
 
 class PageSideBar extends Component {
   constructor(props) {

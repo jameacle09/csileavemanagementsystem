@@ -4,7 +4,7 @@ import ReactTable from "react-table";
 import { API_BASE_URL } from "../constants";
 import { withRouter } from "react-router-dom";
 import "react-table/react-table.css";
-import { fetchData } from "../util/APIUtils";
+import { fetchData, exportTableToExcel } from "../util/APIUtils";
 import MyLeaveDetailsToExcel from "./MyLeaveDetailsToExcel";
 import LoadingPage from "../common/LoadingPage";
 
@@ -162,8 +162,11 @@ class MyLeaveDetails extends Component {
                     variant="contained"
                     color="primary"
                     className="largeButtonOverride"
+                    // onClick={() =>
+                    //   document.getElementById("test-table-xls-button").click()
+                    // }
                     onClick={() =>
-                      document.getElementById("test-table-xls-button").click()
+                      exportTableToExcel("table-to-xls", "MyLeaveDetails")
                     }
                   >
                     <span

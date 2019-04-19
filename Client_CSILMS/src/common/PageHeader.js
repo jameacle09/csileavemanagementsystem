@@ -1,6 +1,7 @@
 import React, { Component } from "react";
 import { Link } from "react-router-dom";
 import "./SideBarHeader.css";
+import Logout from "../img/Logout.png";
 
 class PageHeader extends Component {
   constructor(props) {
@@ -9,6 +10,11 @@ class PageHeader extends Component {
       sideBarOpen: true
     };
   }
+
+  handleLogout = e => {
+    e.preventDefault();
+    this.props.handleLogout("/login");
+  };
 
   toggleSideBarMenu = e => {
     e.preventDefault();
@@ -37,7 +43,7 @@ class PageHeader extends Component {
   showSideBarMenu = () => {
     document.getElementById("PageSidebar").style.width = "250px";
     document.getElementById("MainPage").style.marginLeft = "250px";
-    document.getElementById("MainPage").style.width = "83.5%";
+    document.getElementById("MainPage").style.width = "calc(100% - 250px)";
     document.getElementById("PageSidebar").style.transitionDuration = "0s";
     document.getElementById("MainPage").style.transitionDuration = "0s";
   };
@@ -76,6 +82,26 @@ class PageHeader extends Component {
               Leave Management System
             </Link>
           </span>
+        </div>
+        <div className="pageHeaderLogoutBox">
+          {/* <span> */}
+          <button
+            className="pageHeaderLogoutButton"
+            onClick={this.handleLogout}
+          >
+            <span>
+              <img
+                src={Logout}
+                alt="Logout"
+                style={{ height: "24px", width: "24px" }}
+              />{" "}
+              <span className="pageHeaderLogoutText">Logout</span>
+            </span>
+          </button>
+          {/* <Link to="/" title="Quick Logout" className="pageHeaderLogoutLink">
+              Logout
+            </Link> */}
+          {/* </span> */}
         </div>
       </div>
     );

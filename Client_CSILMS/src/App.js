@@ -139,7 +139,7 @@ class App extends Component {
   };
 
   createSideBarSpace = () => {
-    document.getElementById("MainPage").style.width = "83.5%";
+    document.getElementById("MainPage").style.width = "calc(100% - 250px)";
     document.getElementById("MainPage").style.marginLeft = "250px";
     document.getElementById("MainPage").style.transitionDuration = "0s";
   };
@@ -168,6 +168,7 @@ class App extends Component {
             <PageHeader
               isAuthenticated={this.state.isAuthenticated}
               currentUser={this.state.currentUser}
+              handleLogout={this.handleLogout}
             />
             <div className="mainContainerFlex">
               <Switch>

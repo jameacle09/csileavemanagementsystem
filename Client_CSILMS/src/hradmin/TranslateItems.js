@@ -1,9 +1,8 @@
 import React, { Component } from "react";
 import { Button } from "reactstrap";
-import { Link } from "react-router-dom";
 import "../common/Styles.css";
-import { Redirect, withRouter } from "react-router-dom";
-import { fetchData, isHrRole } from "../util/APIUtils";
+import { Link, Redirect, withRouter } from "react-router-dom";
+import { fetchData, isHrRole, exportTableToExcel } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import ReactTable from "react-table";
 import TranslateitemToExcel from "./TranslateitemToExcel";
@@ -153,8 +152,11 @@ class TranslateItems extends Component {
                     variant="contained"
                     color="primary"
                     className="largeButtonOverride"
+                    // onClick={() =>
+                    //   document.getElementById("test-table-xls-button").click()
+                    // }
                     onClick={() =>
-                      document.getElementById("test-table-xls-button").click()
+                      exportTableToExcel("table-to-xls", "TranslateItems")
                     }
                   >
                     <span

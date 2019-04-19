@@ -3,7 +3,12 @@ import { API_BASE_URL } from "../constants";
 import { confirmAlert } from "react-confirm-alert";
 import ReactTable from "react-table";
 import "react-table/react-table.css";
-import { fetchData, formatDateYMD, formatDateDMY } from "../util/APIUtils";
+import {
+  fetchData,
+  formatDateYMD,
+  formatDateDMY,
+  exportTableToExcel
+} from "../util/APIUtils";
 import { Link } from "react-router-dom";
 import { Button } from "reactstrap";
 import MyLeaveHistoryToExcel from "./MyLeaveHistoryToExcel";
@@ -214,8 +219,11 @@ class MyLeaveHistory extends Component {
                     variant="contained"
                     color="primary"
                     className="largeButtonOverride"
+                    // onClick={() =>
+                    //   document.getElementById("test-table-xls-button").click()
+                    // }
                     onClick={() =>
-                      document.getElementById("test-table-xls-button").click()
+                      exportTableToExcel("table-to-xls", "MyLeaveHistory")
                     }
                   >
                     <span

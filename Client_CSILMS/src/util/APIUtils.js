@@ -236,3 +236,45 @@ export function addNewDateYMD(strDate) {
 
   return [newYear, newMonth, newDay].join("-");
 }
+
+export function exportTableToExcel(tableID, filename) {
+  var downloadLink;
+  var dataType = "application/vnd.ms-excel";
+  var tableSelect = document.getElementById(tableID);
+  var tableHTML = tableSelect.outerHTML.replace(/ /g, "%20");
+
+  // Specify file name
+  filename = filename ? filename + ".xls" : "excel_data.xls";
+
+  // Create download link element
+  downloadLink = document.createElement("a");
+
+  document.body.appendChild(downloadLink);
+
+  if (navigator.msSaveOrOpenBlob) {
+    const table = document.getElementById(tableID).outerHTML;
+    const fileData = [
+      `${'<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:x="urn:schemas-mic' +
+        'rosoft-com:office:excel" xmlns="http://www.w3.org/TR/REC-html40"><head><meta cha' +
+        'rset="UTF-8"><!--[if gte mso 9]><xml><x:ExcelWorkbook><x:ExcelWorksheets><x:Exce' +
+        "lWorksheet><x:Name>"}${filename}</x:Name><x:WorksheetOptions><x:DisplayGridlines/>" +
+        "</x:WorksheetOptions></x:ExcelWorksheet></x:ExcelWorksheets></x:ExcelWorkbook></" +
+        "xml><![endif]--></head><body>"}${table}</body></html>`
+    ];
+    const blobObject = new Blob(fileData);
+    navigator.msSaveOrOpenBlob(blobObject, filename);
+    // var blob = new Blob(["\ufeff", tableHTML], {
+    //   type: dataType
+    // });
+    // navigator.msSaveOrOpenBlob(blob, filename);
+  } else {
+    // Create a link to the file
+    downloadLink.href = "data:" + dataType + ", " + tableHTML;
+
+    // Setting the file name
+    downloadLink.download = filename;
+
+    //triggering the function
+    downloadLink.click();
+  }
+}

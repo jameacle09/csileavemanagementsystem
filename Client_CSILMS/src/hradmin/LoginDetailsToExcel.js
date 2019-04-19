@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ReactHTMLTableToExcel from "react-html-table-to-excel";
+// import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import "../common/Styles.css";
 
 class ExportToExcel extends Component {
@@ -11,31 +11,38 @@ class ExportToExcel extends Component {
         return "Yes";
       }
     };
+    const borderStyle = {
+      border: "1px solid black"
+    };
     return (
       <div>
-        <ReactHTMLTableToExcel
+        {/* <ReactHTMLTableToExcel
           id="test-table-xls-button"
           className="exportToExcelButton"
           table="table-to-xls"
           filename="LoginDetails"
           sheet="LoginDetails"
           buttonText="Export List to Excel"
-        />
+        /> */}
         <table hidden={true} id="table-to-xls">
           <thead>
             <tr>
-              <th>User ID (Business Email)</th>
-              <th>Employee ID</th>
-              <th>Account Locked?</th>
+              <th style={borderStyle}>User ID (Business Email)</th>
+              <th style={borderStyle}>Employee ID</th>
+              <th style={borderStyle}>Account Locked?</th>
             </tr>
           </thead>
           <tbody>
             {this.props.LoginDetails.map((login, index) => {
               return (
                 <tr key={index}>
-                  <td>{login.userId}</td>
-                  <td align="center">{login.emplId}</td>
-                  <td align="center">{showYesNoDesc(login.lockAccount)}</td>
+                  <td style={borderStyle}>{login.userId}</td>
+                  <td align="center" style={borderStyle}>
+                    {login.emplId}
+                  </td>
+                  <td align="center" style={borderStyle}>
+                    {showYesNoDesc(login.lockAccount)}
+                  </td>
                 </tr>
               );
             })}

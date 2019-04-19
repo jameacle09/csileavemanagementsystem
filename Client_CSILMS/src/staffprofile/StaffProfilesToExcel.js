@@ -1,5 +1,5 @@
 import React, { Component } from "react";
-import ReactHTMLTableToExcel from "react-html-table-to-excel";
+// import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { fetchData, formatDateDMY } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import "../common/Styles.css";
@@ -39,14 +39,14 @@ class ExportToExcel extends Component {
     };
     return (
       <div>
-        <ReactHTMLTableToExcel
+        {/* <ReactHTMLTableToExcel
           id="test-table-xls-button"
           className="exportToExcelButton"
           table="table-to-xls"
           filename="EmployeeProfiles"
           sheet="EmployeeProfiles"
           buttonText="Export List to Excel"
-        />
+        /> */}
         <table hidden={true} id="table-to-xls">
           <thead>
             <tr>

@@ -1,47 +1,60 @@
 import React, { Component } from "react";
-import ReactHTMLTableToExcel from "react-html-table-to-excel";
+// import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { formatDateDMY } from "../util/APIUtils";
 import "../common/Styles.css";
 
 class ExportToExcel extends Component {
   render() {
+    const borderStyle = {
+      border: "1px solid black"
+    };
     return (
       <div>
-        <ReactHTMLTableToExcel
+        {/* <ReactHTMLTableToExcel
           id="test-table-xls-button"
           className="exportToExcelButton"
           table="table-to-xls"
           filename="Leave Request List"
           sheet="LeaveRequest"
           buttonText="Export List to Excel"
-        />
+        /> */}
         <table hidden={true} id="table-to-xls">
           <thead>
             <tr>
-              <th>Employee ID</th>
-              <th>Employee Name</th>
-              <th>Job Title</th>
-              <th>Start Date</th>
-              <th>End Date</th>
-              <th>Leave Type</th>
-              <th>Half Day</th>
-              <th>Duration</th>
-              <th>Leave Status</th>
+              <th style={borderStyle}>Employee ID</th>
+              <th style={borderStyle}>Employee Name</th>
+              <th style={borderStyle}>Job Title</th>
+              <th style={borderStyle}>Start Date</th>
+              <th style={borderStyle}>End Date</th>
+              <th style={borderStyle}>Leave Type</th>
+              <th style={borderStyle}>Half Day</th>
+              <th style={borderStyle}>Duration</th>
+              <th style={borderStyle}>Leave Status</th>
             </tr>
           </thead>
           <tbody>
             {this.props.leaveRequestData.map((LeaveRequest, index) => {
               return (
                 <tr key={index}>
-                  <td>{LeaveRequest.id.emplid}</td>
-                  <td>{LeaveRequest.employeeDetails.name}</td>
-                  <td>{LeaveRequest.employeeDetails.jobTitle}</td>
-                  <td>{formatDateDMY(LeaveRequest.id.startDate)}</td>
-                  <td>{formatDateDMY(LeaveRequest.endDate)}</td>
-                  <td>{LeaveRequest.leaveCategory.leaveDescr}</td>
-                  <td>{LeaveRequest.halfDay}</td>
-                  <td>{LeaveRequest.leaveDuration}</td>
-                  <td>{LeaveRequest.leaveStatus}</td>
+                  <td style={borderStyle}>{LeaveRequest.id.emplid}</td>
+                  <td style={borderStyle}>
+                    {LeaveRequest.employeeDetails.name}
+                  </td>
+                  <td style={borderStyle}>
+                    {LeaveRequest.employeeDetails.jobTitle}
+                  </td>
+                  <td style={borderStyle}>
+                    {formatDateDMY(LeaveRequest.id.startDate)}
+                  </td>
+                  <td style={borderStyle}>
+                    {formatDateDMY(LeaveRequest.endDate)}
+                  </td>
+                  <td style={borderStyle}>
+                    {LeaveRequest.leaveCategory.leaveDescr}
+                  </td>
+                  <td style={borderStyle}>{LeaveRequest.halfDay}</td>
+                  <td style={borderStyle}>{LeaveRequest.leaveDuration}</td>
+                  <td style={borderStyle}>{LeaveRequest.leaveStatus}</td>
                 </tr>
               );
             })}

@@ -5,7 +5,8 @@ import {
   fetchData,
   isManagerRole,
   formatDateYMD,
-  formatDateDMY
+  formatDateDMY,
+  exportTableToExcel
 } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
 import { confirmAlert } from "react-confirm-alert";
@@ -227,8 +228,11 @@ class LeaveHistoryList extends Component {
                     variant="contained"
                     color="primary"
                     className="largeButtonOverride"
+                    // onClick={() =>
+                    //   document.getElementById("test-table-xls-button").click()
+                    // }
                     onClick={() =>
-                      document.getElementById("test-table-xls-button").click()
+                      exportTableToExcel("table-to-xls", "LeaveHistory")
                     }
                   >
                     <span
