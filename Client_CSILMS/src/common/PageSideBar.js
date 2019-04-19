@@ -151,6 +151,14 @@ class PageSideBar extends Component {
                   Leave History
                 </NavLink>
               </li>
+              <li>
+                <NavLink
+                  to="/leaveentitlementmanager"
+                  activeClassName="sidebarLinkActive"
+                >
+                  Leave Entitlements
+                </NavLink>
+              </li>
             </ul>
           </li>
           <li>

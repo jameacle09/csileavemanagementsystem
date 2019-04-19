@@ -15,4 +15,5 @@ public interface LeaveEntitlementRepository extends CrudRepository<LeaveEntitlem
 	List<LeaveEntitlement> findByIdEmplidAndIdLeaveCode(String emplid, String leaveCode);
 	List<LeaveEntitlement> findByIdEmplid(String emplid);
 	List<LeaveEntitlement> findByIdYear(int year);
+	List<LeaveEntitlement> findByIdEmplidIn(List<String> emplIdList);
 }

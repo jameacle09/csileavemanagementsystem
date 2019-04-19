@@ -1,10 +1,12 @@
 package com.csi.leavemanagement.services;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.csi.leavemanagement.models.EmployeeDetails;
 import com.csi.leavemanagement.models.LeaveEntitlement;
 import com.csi.leavemanagement.models.LeaveEntitlementId;
 import com.csi.leavemanagement.repositories.LeaveEntitlementRepository;
@@ -13,10 +15,13 @@ import com.csi.leavemanagement.repositories.LeaveEntitlementRepository;
 public class LeaveEntitlementService {
 
 	private LeaveEntitlementRepository leaveEntitlementRepository;
+	private EmployeeDetailsService employeeDetailsService;
 
 	@Autowired
-	public LeaveEntitlementService(LeaveEntitlementRepository leaveEntitlementRepository) {
+	public LeaveEntitlementService(LeaveEntitlementRepository leaveEntitlementRepository,
+									EmployeeDetailsService employeeDetailsService) {
 		this.leaveEntitlementRepository = leaveEntitlementRepository;
+		this.employeeDetailsService = employeeDetailsService;
 	}
 	
 	public List<LeaveEntitlement> findAll() {
@@ -41,6 +46,18 @@ public class LeaveEntitlementService {
 		return !(leaveEntitlementRepository.existsById(id));
 	}
 	
+	public List<LeaveEntitlement> findByManager(String manager) {
+		ArrayList<String> emplIdList = new ArrayList<String>();
+		
+		// Retrieve the list of employee reporting under Manager ID
+		List<EmployeeDetails> empList= this.employeeDetailsService.findByMgrId(manager);
+		for(EmployeeDetails emp : empList){
+			emplIdList.add(emp.getEmplId());
+		}
+
+		return leaveEntitlementRepository.findByIdEmplidIn(emplIdList);
+	} 
+
 	public List<LeaveEntitlement> findByEmplidYear(String emplid, int year) {		
 		return leaveEntitlementRepository.findByIdEmplidAndIdYear(emplid, year);
 	}
