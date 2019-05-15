@@ -14,6 +14,8 @@ class LeaveCategory extends Component {
     super(props);
     this.state = {
       leaveCategoryDetails: [],
+      filteredData: [],
+      filteredLength: 0,
       loading: true
     };
     this.loadleaveCategoryDetails = this.loadleaveCategoryDetails.bind(this);
@@ -29,6 +31,7 @@ class LeaveCategory extends Component {
           leaveCategoryDetails: data,
           loading: false
         });
+        this.populateFilteredData();
       })
       .catch(error => {
         if (error.status === 401) {
@@ -41,6 +44,19 @@ class LeaveCategory extends Component {
         });
       });
   }
+
+  populateFilteredData = () => {
+    // This will initialize values for the State Filtered Data
+    const arrFilteredData = [...this.state.leaveCategoryDetails];
+    arrFilteredData.forEach(filterRow => {
+      filterRow["id"] = true;
+    });
+    this.setState({
+      filteredData: arrFilteredData,
+      filteredLength: arrFilteredData.length,
+      loading: false
+    });
+  };
 
   componentDidMount() {
     this.loadleaveCategoryDetails();
@@ -166,17 +182,40 @@ class LeaveCategory extends Component {
                     .toLowerCase()
                     .includes(filter.value.toLowerCase())
                 }
+                pageSizeOptions={[
+                  10,
+                  20,
+                  30,
+                  50,
+                  100,
+                  this.state.filteredLength
+                ]}
                 defaultPageSize={10}
                 pages={this.state.pages}
+                loading={this.state.loading}
                 filterable={true}
                 sortable={true}
                 multiSort={true}
+                loadingText="Loading Leave Categories..."
                 noDataText="No data available."
                 className="-striped"
+                showPagination={true}
+                showPageSizeOptions={true}
+                ref={refer => {
+                  this.selectTable = refer;
+                }}
+                onFilteredChange={() => {
+                  const filteredData = this.selectTable.getResolvedState()
+                    .sortedData;
+                  const filteredDataLength = this.selectTable.getResolvedState()
+                    .sortedData.length;
+                  this.setState({
+                    filteredData: filteredData,
+                    filteredLength: filteredDataLength
+                  });
+                }}
               />
-              <ExportToExcel
-                leaveCategoryDetails={this.state.leaveCategoryDetails}
-              />
+              <ExportToExcel leaveCategoryDetails={this.state.filteredData} />
             </div>
           </React.Fragment>
         )}

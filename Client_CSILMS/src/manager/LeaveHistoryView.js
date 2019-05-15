@@ -89,7 +89,7 @@ class LeaveHistoryView extends Component {
       method: "GET"
     })
       .then(data => {
-        console.log(data);
+        // console.log(data);
         this.setState({
           approverName: data.name + " (" + approverId + ")"
         });

@@ -18,31 +18,30 @@ class EditStaffProfile extends Component {
       lineManager: "",
       joinDate: "",
       status: "",
-      roles: [{
-        role: "",
-        roleName: ""
-      }],
-      rolesList: [{
-        role: "",
-        roleName: ""
-      }]
+      roles: [
+        {
+          role: "",
+          roleName: ""
+        }
+      ],
+      rolesList: [
+        {
+          role: "",
+          roleName: ""
+        }
+      ]
     };
   }
 
   componentDidMount() {
-    const {
-      emplId
-    } = this.props.computedMatch.params;
+    const { emplId } = this.props.computedMatch.params;
 
     fetchData({
-      url:
-        API_BASE_URL +
-        "/employeedetails/" +
-        emplId,
+      url: API_BASE_URL + "/employeedetails/" + emplId,
       method: "GET"
     })
       .then(data => {
-        console.log("Fetched Data", data);
+        // console.log("Fetched Data", data);
         this.setState({
           emplId: data.emplId,
           name: data.name,
@@ -61,8 +60,8 @@ class EditStaffProfile extends Component {
             { role: "A", roleName: "Admin" }
           ]
         });
-       // console.log(data.roles);
-       // console.log(this.rolesList);
+        // console.log(data.roles);
+        // console.log(this.rolesList);
       })
       .catch(err => {
         console.log(err);
@@ -204,7 +203,7 @@ class EditStaffProfile extends Component {
                 <Input
                   type="radio"
                   name="status"
-                  value='A'
+                  value="A"
                   checked={status === "A"}
                   onChange={this.handleChange}
                 />
@@ -224,31 +223,22 @@ class EditStaffProfile extends Component {
             </FormGroup>
             <FormGroup>
               <Label for="role">Role</Label>
-              {this.state.rolesList.map(function (item, key) {
+              {this.state.rolesList.map(function(item, key) {
                 return (
                   <div className="form-check">
-                    <Input
-                      type="checkbox"
-                      name="roles"
-                      value={item.role} />
+                    <Input type="checkbox" name="roles" value={item.role} />
                     <span>{item.roleName}</span>
                   </div>
-                )
+                );
               })}
-              {this.state.roles.map(function (item, key) {
-                return (
-                  <tr key={key}>
-                    {/* <td>{item.roleName}</td> */}
-                  </tr>
-                )
+              {this.state.roles.map(function(item, key) {
+                return <tr key={key}>{/* <td>{item.roleName}</td> */}</tr>;
               })}
             </FormGroup>
             <br />
-            <Button color="primary"
-              className="largeButtonOverride"
-            >
+            <Button color="primary" className="largeButtonOverride">
               Save
-                </Button>
+            </Button>
             &nbsp;&nbsp;
             <Button color="secondary" onClick={this.handleCancel}>
               Cancel

@@ -19,6 +19,8 @@ class LoginDetails extends Component {
     super(props);
     this.state = {
       userData: [],
+      filteredData: [],
+      filteredLength: 0,
       loading: true
     };
     this.loadLoginDetails = this.loadLoginDetails.bind(this);
@@ -152,6 +154,7 @@ class LoginDetails extends Component {
           userData: response,
           loading: false
         });
+        this.populateFilteredData();
       })
       .catch(error => {
         if (error.status === 401) {
@@ -161,6 +164,20 @@ class LoginDetails extends Component {
         this.setState({ userData: userData });
       });
   }
+
+  populateFilteredData = () => {
+    // This will initialize values for the State Filtered Data
+    const arrFilteredData = [...this.state.userData];
+    arrFilteredData.forEach(filterRow => {
+      filterRow["id"] = true;
+      filterRow["accountLocked"] = filterRow.lockAccount;
+    });
+    this.setState({
+      filteredData: arrFilteredData,
+      filteredLength: arrFilteredData.length,
+      loading: false
+    });
+  };
 
   componentDidMount() {
     this.loadLoginDetails();
@@ -236,6 +253,14 @@ class LoginDetails extends Component {
         }
       },
       {
+        id: "accountLocked",
+        Header: "Account Locked?",
+        accessor: "lockAccount",
+        sortable: false,
+        filterable: false,
+        show: false
+      },
+      {
         id: "quickReset",
         Header: "Quick Reset",
         accessor: resetButton => (
@@ -250,7 +275,7 @@ class LoginDetails extends Component {
             activeclassname="active"
             className="smallButtonOverride"
           >
-            Reset Password
+            <FontAwesomeIcon icon="key" /> Reset Password
           </Button>
         ),
         minWidth: 140,
@@ -303,6 +328,48 @@ class LoginDetails extends Component {
                     .toLowerCase()
                     .includes(filter.value.toLowerCase())
                 }
+                pageSizeOptions={[
+                  10,
+                  20,
+                  30,
+                  50,
+                  100,
+                  this.state.filteredLength
+                ]}
+                defaultPageSize={10}
+                pages={this.state.pages}
+                loading={this.state.loading}
+                filterable={true}
+                sortable={true}
+                multiSort={true}
+                loadingText="Loading Employee Login Details..."
+                noDataText="No data available."
+                className="-striped"
+                showPagination={true}
+                showPageSizeOptions={true}
+                ref={refer => {
+                  this.selectTable = refer;
+                }}
+                onFilteredChange={() => {
+                  const filteredData = this.selectTable.getResolvedState()
+                    .sortedData;
+                  const filteredDataLength = this.selectTable.getResolvedState()
+                    .sortedData.length;
+                  this.setState({
+                    filteredData: filteredData,
+                    filteredLength: filteredDataLength
+                  });
+                }}
+              />
+
+              {/* <ReactTable
+                data={this.state.userData}
+                columns={loginDetailsCols}
+                defaultFilterMethod={(filter, row) =>
+                  String(row[filter.id])
+                    .toLowerCase()
+                    .includes(filter.value.toLowerCase())
+                }
                 defaultPageSize={10}
                 pages={this.state.pages}
                 loading={this.state.loading}
@@ -313,8 +380,8 @@ class LoginDetails extends Component {
                 loadingText="Loading Employee Login Details..."
                 noDataText="No data available."
                 className="-striped"
-              />
-              <ExportToExcel LoginDetails={this.state.userData} />
+              /> */}
+              <ExportToExcel LoginDetails={this.state.filteredData} />
             </div>
           </React.Fragment>
         )}

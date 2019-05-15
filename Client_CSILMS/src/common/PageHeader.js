@@ -24,8 +24,11 @@ class PageHeader extends Component {
       // Smaller devices view
       if (this.state.sideBarOpen) {
         this.showSideBarMenu();
+        document.getElementById("pageHeaderTitle").style.display = "none";
       } else {
         this.hideSideBarMenu();
+        document.getElementById("pageHeaderTitle").style.display =
+          "inline-block";
       }
     } else {
       // Bigger devices view
@@ -72,7 +75,7 @@ class PageHeader extends Component {
           </button>
         </div>
 
-        <div className="pageHeaderTitleBox">
+        <div id="pageHeaderTitle" className="pageHeaderTitleBox">
           <span>
             <Link
               to="/"
