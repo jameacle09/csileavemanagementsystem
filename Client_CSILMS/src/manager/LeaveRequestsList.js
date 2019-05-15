@@ -15,6 +15,7 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import ExportToExcel from "./LeaveRequestListToExcel";
 import LoadingPage from "../common/LoadingPage";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class LeaveRequestsList extends Component {
   constructor(props) {
@@ -22,6 +23,8 @@ class LeaveRequestsList extends Component {
     this.state = {
       leaveStatusLookup: [],
       leaveRequestData: [],
+      filteredData: [],
+      filteredLength: 0,
       loading: true
     };
     this.loadLeaveRequestList = this.loadLeaveRequestList.bind(this);
@@ -50,11 +53,22 @@ class LeaveRequestsList extends Component {
           leaveRequestData: data,
           loading: false
         });
+        this.populateFilteredData();
       })
       .catch(err => {
         console.log(err);
       });
   }
+
+  populateFilteredData = () => {
+    // This will initialize values for the State Filtered Data
+    const arrFilteredData = [...this.state.leaveRequestData];
+    this.setState({
+      filteredData: arrFilteredData,
+      filteredLength: arrFilteredData.length,
+      loading: false
+    });
+  };
 
   loadLeaveStatusLookup = () => {
     fetchData({
@@ -161,7 +175,7 @@ class LeaveRequestsList extends Component {
         }
       },
       {
-        id: "Duration",
+        id: "duration",
         Header: "Duration",
         accessor: str => str.leaveDuration + " day(s)",
         minWidth: 120,
@@ -195,8 +209,9 @@ class LeaveRequestsList extends Component {
             activeclassname="active"
             className="smallButtonOverride"
           >
-            <span className="fa fa-folder-open" style={{ color: "white" }} />
-            &nbsp;View
+            <FontAwesomeIcon icon="eye" />
+            {/* <span className="fa fa-folder-open" style={{ color: "white" }} /> */}{" "}
+            View
           </Button>
         ),
         minWidth: 90,
@@ -274,17 +289,43 @@ class LeaveRequestsList extends Component {
                     .toLowerCase()
                     .includes(filter.value.toLowerCase())
                 }
+                pageSizeOptions={[
+                  10,
+                  20,
+                  30,
+                  50,
+                  100,
+                  this.state.filteredLength
+                ]}
                 defaultPageSize={10}
                 pages={this.state.pages}
                 loading={this.state.loading}
                 filterable={true}
                 sortable={true}
                 multiSort={true}
-                loadingText="Loading Employe Profiles..."
+                loadingText="Loading Leave Requests List..."
                 noDataText="No data available."
                 className="-striped"
+                showPagination={true}
+                showPageSizeOptions={true}
+                ref={refer => {
+                  this.selectTable = refer;
+                }}
+                onFilteredChange={() => {
+                  const filteredData = this.selectTable.getResolvedState()
+                    .sortedData;
+                  const filteredDataLength = this.selectTable.getResolvedState()
+                    .sortedData.length;
+                  this.setState({
+                    filteredData: filteredData,
+                    filteredLength: filteredDataLength
+                  });
+                }}
               />
-              <ExportToExcel leaveRequestData={this.state.leaveRequestData} />
+              <ExportToExcel
+                leaveRequestData={this.state.filteredData}
+                leaveStatusLookup={this.state.leaveStatusLookup}
+              />
             </div>
           </React.Fragment>
         )}

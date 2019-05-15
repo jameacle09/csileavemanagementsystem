@@ -13,6 +13,8 @@ class TranslateItems extends Component {
     super(props);
     this.state = {
       translateItemsData: [],
+      filteredData: [],
+      filteredLength: 0,
       loading: true
     };
   }
@@ -27,6 +29,7 @@ class TranslateItems extends Component {
           translateItemsData: data,
           loading: false
         });
+        this.populateFilteredData();
       })
       .catch(error => {
         if (error.status === 401) {
@@ -38,6 +41,16 @@ class TranslateItems extends Component {
           loading: false
         });
       });
+  };
+
+  populateFilteredData = () => {
+    // This will initialize values for the State Filtered Data
+    const arrFilteredData = [...this.state.translateItemsData];
+    this.setState({
+      filteredData: arrFilteredData,
+      filteredLength: arrFilteredData.length,
+      loading: false
+    });
   };
 
   componentDidMount() {
@@ -190,16 +203,41 @@ class TranslateItems extends Component {
                     .toLowerCase()
                     .includes(filter.value.toLowerCase())
                 }
+                pageSizeOptions={[
+                  10,
+                  20,
+                  30,
+                  50,
+                  100,
+                  this.state.filteredLength
+                ]}
                 defaultPageSize={10}
                 pages={this.state.pages}
+                loading={this.state.loading}
                 filterable={true}
                 sortable={true}
                 multiSort={true}
+                loadingText="Loading Translate Items..."
                 noDataText="No data available."
                 className="-striped"
+                showPagination={true}
+                showPageSizeOptions={true}
+                ref={refer => {
+                  this.selectTable = refer;
+                }}
+                onFilteredChange={() => {
+                  const filteredData = this.selectTable.getResolvedState()
+                    .sortedData;
+                  const filteredDataLength = this.selectTable.getResolvedState()
+                    .sortedData.length;
+                  this.setState({
+                    filteredData: filteredData,
+                    filteredLength: filteredDataLength
+                  });
+                }}
               />
               <TranslateitemToExcel
-                translateItemsData={this.state.translateItemsData}
+                translateItemsData={this.state.filteredData}
               />
             </div>
           </React.Fragment>

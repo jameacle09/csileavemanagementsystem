@@ -15,14 +15,16 @@ import ReactTable from "react-table";
 import "react-table/react-table.css";
 import ExportToExcel from "./LeaveHistoryToExcel";
 import LoadingPage from "../common/LoadingPage";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class LeaveHistoryList extends Component {
   constructor(props) {
     super(props);
-
     this.state = {
       leaveStatusLookup: [],
       leaveHistoryData: [],
+      filteredData: [],
+      filteredLength: 0,
       loading: true
     };
     this.loadHistoryData = this.loadHistoryData.bind(this);
@@ -39,6 +41,7 @@ class LeaveHistoryList extends Component {
     })
       .then(data => {
         this.setState({ leaveHistoryData: data, loading: false });
+        this.populateFilteredData();
       })
       .catch(err => {
         // if unable to fetch data, assign default (spaces) to values
@@ -46,6 +49,16 @@ class LeaveHistoryList extends Component {
         this.setState({ leaveHistoryData: leaveHistory, loading: false });
       });
   }
+
+  populateFilteredData = () => {
+    // This will initialize values for the State Filtered Data
+    const arrFilteredData = [...this.state.leaveHistoryData];
+    this.setState({
+      filteredData: arrFilteredData,
+      filteredLength: arrFilteredData.length,
+      loading: false
+    });
+  };
 
   componentDidMount() {
     this.loadHistoryData();
@@ -182,6 +195,18 @@ class LeaveHistoryList extends Component {
         filterable: true
       },
       {
+        id: "approvedDate",
+        Header: "Approved Date",
+        accessor: "approvedDate",
+        show: false
+      },
+      {
+        id: "approver",
+        Header: "Approver",
+        accessor: "approver",
+        show: false
+      },
+      {
         id: "Action",
         Header: "Action",
         accessor: viewButton => (
@@ -197,8 +222,9 @@ class LeaveHistoryList extends Component {
             activeclassname="active"
             className="smallButtonOverride"
           >
-            <span className="fa fa-folder-open" style={{ color: "white" }} />
-            &nbsp;View
+            <FontAwesomeIcon icon="eye" />
+            {/* <span className="fa fa-folder-open" style={{ color: "white" }} /> */}{" "}
+            View
           </Button>
         ),
         minWidth: 90,
@@ -251,18 +277,40 @@ class LeaveHistoryList extends Component {
                     .toLowerCase()
                     .includes(filter.value.toLowerCase())
                 }
+                pageSizeOptions={[
+                  10,
+                  20,
+                  30,
+                  50,
+                  100,
+                  this.state.filteredLength
+                ]}
                 defaultPageSize={10}
                 pages={this.state.pages}
                 loading={this.state.loading}
                 filterable={true}
                 sortable={true}
                 multiSort={true}
-                // rowsText="Rows per page"
-                loadingText="Loading Employee Leave History..."
+                loadingText="Loading Leave History..."
                 noDataText="No data available."
                 className="-striped"
+                showPagination={true}
+                showPageSizeOptions={true}
+                ref={refer => {
+                  this.selectTable = refer;
+                }}
+                onFilteredChange={() => {
+                  const filteredData = this.selectTable.getResolvedState()
+                    .sortedData;
+                  const filteredDataLength = this.selectTable.getResolvedState()
+                    .sortedData.length;
+                  this.setState({
+                    filteredData: filteredData,
+                    filteredLength: filteredDataLength
+                  });
+                }}
               />
-              <ExportToExcel leaveHistoryData={this.state.leaveHistoryData} />
+              <ExportToExcel leaveHistoryData={this.state.filteredData} />
             </div>
           </React.Fragment>
         )}

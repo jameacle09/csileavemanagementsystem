@@ -2,6 +2,7 @@ import React, { Component } from "react";
 // import ReactHTMLTableToExcel from "react-html-table-to-excel";
 import { fetchData, formatDateDMY } from "../util/APIUtils";
 import { API_BASE_URL } from "../constants";
+import { confirmAlert } from "react-confirm-alert";
 import "../common/Styles.css";
 
 class ExportToExcel extends Component {
@@ -29,6 +30,15 @@ class ExportToExcel extends Component {
       .catch(error => {
         if (error.status === 401) {
           this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
         }
       });
   };
@@ -56,15 +66,14 @@ class ExportToExcel extends Component {
             </tr>
             <tr>
               <th colSpan="17" align="left">
-                Report Extracted On: {formatDateDMY(new Date())}
+                Extracted By: {this.state.userProfile.name}
               </th>
             </tr>
             <tr>
               <th colSpan="17" align="left">
-                Report Extracted By: {this.state.userProfile.name}
+                Date Extracted: {formatDateDMY(new Date())}
               </th>
             </tr>
-
             <tr>
               <th colSpan="17" />
             </tr>

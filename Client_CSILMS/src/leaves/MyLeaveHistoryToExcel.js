@@ -9,13 +9,41 @@ class MyLeaveHistoryToExcel extends Component {
   constructor(props) {
     super(props);
     this.state = {
+      userProfile: [],
       leaveStatusLookup: []
     };
   }
 
   componentDidMount() {
+    this.loadCurrentUserProfile();
     this.loadLeaveStatusLookup();
   }
+
+  loadCurrentUserProfile = () => {
+    fetchData({
+      url: API_BASE_URL + "/persondetail/me",
+      method: "GET"
+    })
+      .then(data => {
+        this.setState({
+          userProfile: data
+        });
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        } else {
+          confirmAlert({
+            message: error.status + " : " + error.message,
+            buttons: [
+              {
+                label: "OK"
+              }
+            ]
+          });
+        }
+      });
+  };
 
   loadLeaveStatusLookup = () => {
     fetchData({
@@ -55,6 +83,47 @@ class MyLeaveHistoryToExcel extends Component {
       border: "1px solid black"
     };
 
+    const tableRowsInit = (leaveHistory, index) => (
+      <tr key={index}>
+        <td style={borderStyle} align="center">
+          {formatDateDMY(leaveHistory.id.startDate)}
+        </td>
+        <td style={borderStyle} align="center">
+          {formatDateDMY(leaveHistory.endDate)}
+        </td>
+        <td style={borderStyle} align="center">
+          {leaveHistory.leaveDuration} day(s)
+        </td>
+        <td style={borderStyle}>{leaveHistory.leaveCategory.leaveDescr}</td>
+        <td style={borderStyle}>{leaveHistory.reason}</td>
+        <td style={borderStyle} align="center">
+          {formatDateDMY(leaveHistory.id.effDate)}
+        </td>
+        <td style={borderStyle}>
+          {getLeaveStatusDesc(leaveHistory.leaveStatus)}
+        </td>
+      </tr>
+    );
+    const tableRowsFiltered = (leaveHistory, index) => (
+      <tr key={index}>
+        <td style={borderStyle} align="center">
+          {leaveHistory.startDate}
+        </td>
+        <td style={borderStyle} align="center">
+          {leaveHistory.endDate}
+        </td>
+        <td style={borderStyle} align="center">
+          {leaveHistory.leaveDuration}
+        </td>
+        <td style={borderStyle}>{leaveHistory.leaveType}</td>
+        <td style={borderStyle}>{leaveHistory.reason}</td>
+        <td style={borderStyle} align="center">
+          {leaveHistory.effDate}
+        </td>
+        <td style={borderStyle}>{leaveHistory.leaveStatus}</td>
+      </tr>
+    );
+
     return (
       <div>
         {/* <ReactHTMLTableToExcel
@@ -68,6 +137,24 @@ class MyLeaveHistoryToExcel extends Component {
         <table hidden={true} id="table-to-xls">
           <thead>
             <tr>
+              <th colSpan="7" style={{ fontSize: "28px", textAlign: "left" }}>
+                My Leave History
+              </th>
+            </tr>
+            <tr>
+              <th colSpan="7" align="left">
+                Leave History Of: {this.state.userProfile.name}
+              </th>
+            </tr>
+            <tr>
+              <th colSpan="7" align="left">
+                Date Extracted: {formatDateDMY(new Date())}
+              </th>
+            </tr>
+            <tr>
+              <th colSpan="7" />
+            </tr>
+            <tr>
               <th style={borderStyle}>Start Date</th>
               <th style={borderStyle}>End Date</th>
               <th style={borderStyle}>Duration</th>
@@ -79,29 +166,9 @@ class MyLeaveHistoryToExcel extends Component {
           </thead>
           <tbody>
             {this.props.userData.map((leaveHistory, index) => {
-              return (
-                <tr key={index}>
-                  <td style={borderStyle}>
-                    {formatDateDMY(leaveHistory.id.startDate)}
-                  </td>
-                  <td style={borderStyle}>
-                    {formatDateDMY(leaveHistory.endDate)}
-                  </td>
-                  <td style={borderStyle}>
-                    {leaveHistory.leaveDuration} day(s)
-                  </td>
-                  <td style={borderStyle}>
-                    {leaveHistory.leaveCategory.leaveDescr}
-                  </td>
-                  <td style={borderStyle}>{leaveHistory.reason}</td>
-                  <td style={borderStyle}>
-                    {formatDateDMY(leaveHistory.id.effDate)}
-                  </td>
-                  <td style={borderStyle}>
-                    {getLeaveStatusDesc(leaveHistory.leaveStatus)}
-                  </td>
-                </tr>
-              );
+              return leaveHistory.id
+                ? tableRowsInit(leaveHistory, index)
+                : tableRowsFiltered(leaveHistory, index);
             })}
           </tbody>
         </table>

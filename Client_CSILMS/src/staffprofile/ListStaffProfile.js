@@ -72,7 +72,7 @@ class ListStaffProfile extends Component {
 
   populateFilteredProfiles = () => {
     // This will initialize values for the State Filtered Profiles
-    let arrFilteredProfiles = this.state.employeeProfiles;
+    const arrFilteredProfiles = [...this.state.employeeProfiles];
     arrFilteredProfiles.forEach(empRow => {
       empRow["LineMgrID"] = empRow.reportsTo.emplId;
       empRow["LineMgrName"] = empRow.reportsTo.name;

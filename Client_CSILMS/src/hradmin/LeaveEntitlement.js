@@ -14,6 +14,8 @@ class LeaveEntitlement extends Component {
     super(props);
     this.state = {
       leaveEntitlementData: [],
+      filteredData: [],
+      filteredLength: 0,
       loading: true
     };
   }
@@ -29,6 +31,7 @@ class LeaveEntitlement extends Component {
           leaveEntitlementData: data,
           loading: false
         });
+        this.populateFilteredData();
       })
       .catch(error => {
         if (error.status === 401) {
@@ -39,6 +42,16 @@ class LeaveEntitlement extends Component {
           loading: false
         });
       });
+  };
+
+  populateFilteredData = () => {
+    // This will initialize values for the State Filtered Data
+    const arrFilteredData = [...this.state.leaveEntitlementData];
+    this.setState({
+      filteredData: arrFilteredData,
+      filteredLength: arrFilteredData.length,
+      loading: false
+    });
   };
 
   componentDidMount() {
@@ -78,6 +91,24 @@ class LeaveEntitlement extends Component {
         filterable: true
       },
       {
+        id: "jobTitle",
+        Header: "Job Title",
+        accessor: "employeeDetails.jobTitle",
+        show: false
+      },
+      {
+        id: "businessUnit",
+        Header: "Business Unit",
+        accessor: "employeeDetails.businessUnit",
+        show: false
+      },
+      {
+        id: "deptId",
+        Header: "Department Id",
+        accessor: "employeeDetails.deptId",
+        show: false
+      },
+      {
         id: "leaveYear",
         Header: "Year",
         accessor: "id.year",
@@ -87,6 +118,12 @@ class LeaveEntitlement extends Component {
         style: {
           textAlign: "center"
         }
+      },
+      {
+        id: "leaveCode",
+        Header: "Leave Code",
+        accessor: "leaveCategory.leaveCode",
+        show: false
       },
       {
         id: "leaveType",
@@ -250,6 +287,14 @@ class LeaveEntitlement extends Component {
                     .toLowerCase()
                     .includes(filter.value.toLowerCase())
                 }
+                pageSizeOptions={[
+                  10,
+                  20,
+                  30,
+                  50,
+                  100,
+                  this.state.filteredLength
+                ]}
                 defaultPageSize={10}
                 pages={this.state.pages}
                 loading={this.state.loading}
@@ -259,10 +304,23 @@ class LeaveEntitlement extends Component {
                 loadingText="Loading Leave Entitlements..."
                 noDataText="No data available."
                 className="-striped"
+                showPagination={true}
+                showPageSizeOptions={true}
+                ref={refer => {
+                  this.selectTable = refer;
+                }}
+                onFilteredChange={() => {
+                  const filteredData = this.selectTable.getResolvedState()
+                    .sortedData;
+                  const filteredDataLength = this.selectTable.getResolvedState()
+                    .sortedData.length;
+                  this.setState({
+                    filteredData: filteredData,
+                    filteredLength: filteredDataLength
+                  });
+                }}
               />
-              <ExportToExcel
-                leaveEntitlementData={this.state.leaveEntitlementData}
-              />
+              <ExportToExcel leaveEntitlementData={this.state.filteredData} />
             </div>
           </React.Fragment>
         )}

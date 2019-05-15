@@ -13,6 +13,7 @@ import { Link } from "react-router-dom";
 import { Button } from "reactstrap";
 import MyLeaveHistoryToExcel from "./MyLeaveHistoryToExcel";
 import LoadingPage from "../common/LoadingPage";
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 class MyLeaveHistory extends Component {
   constructor(props) {
@@ -20,29 +21,11 @@ class MyLeaveHistory extends Component {
     this.state = {
       leaveStatusLookup: [],
       userData: [],
+      filteredData: [],
+      filteredLength: 0,
       loading: true
     };
     this.loadMyLeaveHistory = this.loadMyLeaveHistory.bind(this);
-  }
-
-  loadMyLeaveHistory() {
-    fetchData({
-      url: API_BASE_URL + "/appliedleave/me",
-      method: "GET"
-    })
-      .then(response => {
-        this.setState({
-          userData: response,
-          loading: false
-        });
-      })
-      .catch(error => {
-        if (error.status === 401) {
-          this.props.history.push("/login");
-        }
-        let userData = [];
-        this.setState({ userData: userData });
-      });
   }
 
   componentDidMount() {
@@ -55,6 +38,37 @@ class MyLeaveHistory extends Component {
       this.loadMyLeaveHistory();
     }
   }
+
+  loadMyLeaveHistory() {
+    fetchData({
+      url: API_BASE_URL + "/appliedleave/me",
+      method: "GET"
+    })
+      .then(response => {
+        this.setState({
+          userData: response,
+          loading: false
+        });
+        this.populateFilteredData();
+      })
+      .catch(error => {
+        if (error.status === 401) {
+          this.props.history.push("/login");
+        }
+        let userData = [];
+        this.setState({ userData: userData });
+      });
+  }
+
+  populateFilteredData = () => {
+    // This will initialize values for the State Filtered Data
+    const arrFilteredData = [...this.state.userData];
+    this.setState({
+      filteredData: arrFilteredData,
+      filteredLength: arrFilteredData.length,
+      loading: false
+    });
+  };
 
   loadLeaveStatusLookup = () => {
     fetchData({
@@ -79,20 +93,6 @@ class MyLeaveHistory extends Component {
   };
 
   render() {
-    // const showFullString = strStatus => {
-    //   if (strStatus === "PNAPV") {
-    //     return "Pending Approve";
-    //   } else if (strStatus === "APPRV") {
-    //     return "Approved";
-    //   } else if (strStatus === "CANCL") {
-    //     return "Cancelled";
-    //   } else if (strStatus === "PNCLD") {
-    //     return "Pending Cancel";
-    //   } else if (strStatus === "REJCT") {
-    //     return "Rejected";
-    //   }
-    // };
-
     const getLeaveStatusDesc = strLeaveStatus => {
       let arrLeaveStatusLookup = this.state.leaveStatusLookup;
       let leaveDesc = "";
@@ -188,8 +188,9 @@ class MyLeaveHistory extends Component {
             activeclassname="active"
             className="smallButtonOverride"
           >
-            <span className="fa fa-folder-open" style={{ color: "white" }} />
-            &nbsp;View
+            <FontAwesomeIcon icon="eye" />
+            {/* <span className="fa fa-folder-open" style={{ color: "white" }} /> */}{" "}
+            View
           </Button>
         ),
         minWidth: 90,
@@ -242,18 +243,40 @@ class MyLeaveHistory extends Component {
                     .toLowerCase()
                     .includes(filter.value.toLowerCase())
                 }
+                pageSizeOptions={[
+                  10,
+                  20,
+                  30,
+                  50,
+                  100,
+                  this.state.filteredLength
+                ]}
                 defaultPageSize={10}
                 pages={this.state.pages}
                 loading={this.state.loading}
                 filterable={true}
                 sortable={true}
                 multiSort={true}
-                // rowsText="Rows per page"
                 loadingText="Loading Leave History..."
                 noDataText="No data available."
                 className="-striped"
+                showPagination={true}
+                showPageSizeOptions={true}
+                ref={refer => {
+                  this.selectTable = refer;
+                }}
+                onFilteredChange={() => {
+                  const filteredData = this.selectTable.getResolvedState()
+                    .sortedData;
+                  const filteredDataLength = this.selectTable.getResolvedState()
+                    .sortedData.length;
+                  this.setState({
+                    filteredData: filteredData,
+                    filteredLength: filteredDataLength
+                  });
+                }}
               />
-              <MyLeaveHistoryToExcel userData={this.state.userData} />
+              <MyLeaveHistoryToExcel userData={this.state.filteredData} />
             </div>
           </React.Fragment>
         )}
