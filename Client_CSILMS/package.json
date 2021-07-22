@@ -27,7 +27,7 @@
     "react-table": "^6.9.2",
     "reactstrap": "^7.0.2",
     "whatwg-fetch": "^3.0.0",
-    "xlsx": "^0.14.1"
+    "xlsx": "^0.17.0"
   },
   "scripts": {
     "start": "react-scripts start",
